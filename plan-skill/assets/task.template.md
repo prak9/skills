@@ -8,6 +8,7 @@
 - Program: `../program.md`
 - Plan node: `NODE-NNN`
 - Context refs: `CTX-NNN / REF-NNN / REF-EXT-NNN / OWN-NNN`
+- Preference refs: `PREF-NNN / None`
 - Owner: `<person, role, or AI>`
 - Created: `YYYY-MM-DD`
 - Updated: `YYYY-MM-DD`
@@ -31,6 +32,12 @@
 **Dependencies:** <Task numbers or NODE IDs this depends on, or `None`>
 
 **Context/Refs:** <CTX/REF IDs from `../program.md#2-上下文与-references`, or `None`>
+
+**Preference refs:** <PREF IDs from `../program.md#3-preferences--tradeoffs`, or `None`>
+
+**Locked constraints:** <constraints this task must not change without escalation, or `None`>
+
+**Negotiable space:** <implementation details the agent may optimize or propose alternatives for, or `None`>
 
 **Files likely touched:**
 
@@ -118,6 +125,7 @@ When this task package is done, update `../program.md`:
 - update current status and next step
 - update decisions or hypothesis results if this task changed them
 - update `program.md#2-上下文与-references` if new context, entry points, refs, or owners were discovered
+- update `program.md#3-preferences--tradeoffs` if execution reveals a better tradeoff, wrong assumption, or changed preference
 - do not append changelog, run-log, or historical status sections to `program.md`
 
 Also update `../memory.md`:
@@ -128,6 +136,7 @@ Also update `../memory.md`:
 - add run-log entries to `memory.md#4-运行日志`
 - add task outcome summary to `memory.md#5-历史执行记录总结`
 - add failed-attempt lessons to `memory.md#6-失败与回炉记录`
+- add preference learning to `memory.md#8-preference-learning`
 - if no memory writeback is needed, record that decision in this task's completion summary
 
 Completion summary:

@@ -17,6 +17,10 @@ PROGRAM_REQUIRED = [
     "代码与运行入口",
     "外部资料与证据",
     "人与决策上下文",
+    "Preferences & Tradeoffs",
+    "Preferences",
+    "Tradeoffs",
+    "Locked Constraints",
     "目标与度量",
     "验收标准",
     "约束",
@@ -48,6 +52,9 @@ TASK_REQUIRED = [
     "Verification",
     "Dependencies",
     "Context/Refs",
+    "Preference refs",
+    "Locked constraints",
+    "Negotiable space",
     "Files likely touched",
     "Estimated scope",
     "Atomic Implementation Plan",
@@ -68,6 +75,7 @@ MEMORY_REQUIRED = [
     "历史执行记录总结",
     "失败与回炉记录",
     "开放知识缺口",
+    "Preference Learning",
     "更新规则",
 ]
 
@@ -161,8 +169,16 @@ def context_ref_ids(text: str) -> list[str]:
     return sorted(set(re.findall(r"\b(?:CTX|REF|REF-EXT|OWN)-\d{3}\b", text)))
 
 
+def preference_ref_ids(text: str) -> list[str]:
+    return sorted(set(re.findall(r"\bPREF-\d{3}\b", text)))
+
+
 def explicit_no_context_refs(text: str) -> bool:
     return bool(re.search(r"Context/(?:Refs|refs)[^\n]*(?:None|无)", text))
+
+
+def explicit_no_preference_refs(text: str) -> bool:
+    return bool(re.search(r"Preference refs[^\n]*(?:None|无)", text, flags=re.IGNORECASE))
 
 
 def status_values(text: str) -> list[str]:
@@ -232,10 +248,12 @@ def main() -> int:
             warnings.append("program.md 未发现计划节点 ID，例如 NODE-001")
         if not context_ref_ids(program_text):
             warnings.append("program.md 未发现上下文或引用 ID，例如 CTX-001/REF-001")
+        if not preference_ref_ids(program_text):
+            warnings.append("program.md 未发现偏好 ID，例如 PREF-001")
     if memory_text:
         find_unresolved(memory_path, memory_text, warnings)
-        if not re.search(r"\b(?:F|K|CHG|RUN|H|R|Q)-\d{3}\b", memory_text):
-            warnings.append("memory.md 未发现记忆条目编号，例如 F-001/K-001/CHG-001/RUN-001/H-001")
+        if not re.search(r"\b(?:F|K|CHG|RUN|H|R|Q|PL)-\d{3}\b", memory_text):
+            warnings.append("memory.md 未发现记忆条目编号，例如 F-001/K-001/CHG-001/RUN-001/H-001/PL-001")
 
     task_links = task_links_from_program(program_text) if program_text else []
     current_task = current_task_from_program(program_text) if program_text else None
@@ -276,6 +294,12 @@ def main() -> int:
             and not explicit_no_context_refs(task_text)
         ):
             warnings.append(f"{task_path} 未发现 Context/Refs ID，例如 CTX-001")
+        if (
+            "Preference refs" in task_text
+            and not preference_ref_ids(task_text)
+            and not explicit_no_preference_refs(task_text)
+        ):
+            warnings.append(f"{task_path} 未发现 Preference refs ID，例如 PREF-001")
         if "Memory writeback" not in task_text:
             warnings.append(f"{task_path} 未发现 Memory writeback 完成回写字段")
         if not status_values(task_text):

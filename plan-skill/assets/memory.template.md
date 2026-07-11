@@ -62,12 +62,21 @@ Track unknowns that are not current blockers but matter later.
 |---|---|---|---|---|---|
 | Q-001 | `待验证` | <未知问题> | <影响> | <验证方式> | `NODE-NNN / 无` |
 
-## 8. 更新规则
+## 8. Preference Learning
+
+Capture what execution taught about preferences, tradeoffs, locked constraints, or negotiable space.
+
+| ID | Learned preference | Previous assumption | Evidence | Scope | Promote to default? |
+|---|---|---|---|---|---|
+| PL-001 | <what we now know matters> | <old assumption or blank> | <RUN-NNN、CHG-NNN、TASK-NNN 或 review> | `strategic / tactical` | `yes / no / later` |
+
+## 9. 更新规则
 
 - 重要发现必须有证据指针，不能只写印象。
+- Preference Learning 只记录会改变未来计划或任务执行方式的偏好学习。
 - CHANGELOG 只记录有后续影响的变更，不记录普通编辑流水账。
 - 运行日志写摘要和证据指针，不复制完整终端输出或大段 CI 日志。
 - 历史执行总结写结论和影响，不复制完整运行日志。
 - 失败记录要写明已排除方案，避免后续重复试错。
 - 如果发现已过期，标记为 `已废弃`，不要静默删除。
-- 每个完成、阻塞或取消的任务包，至少评估一次是否需要写入本文件的 CHG/RUN/F/K/H/R 区域；若不需要，在任务包完成回写中说明“不需要”。
+- 每个完成、阻塞或取消的任务包，至少评估一次是否需要写入本文件的 CHG/RUN/F/K/H/R/PL 区域；若不需要，在任务包完成回写中说明“不需要”。

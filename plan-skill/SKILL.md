@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: Use this skill to create, refine, audit, or continue an AI-executable project plan with program.md as the current-state source of truth, tasks/TASK-*.md as task packages, and memory.md as durable findings/history memory. Trigger when the user asks for a plan skill, planning-and-task-breakdown, implementation plan, Loop-mode plan, project control plan, task-package decomposition, dependency ordering, vertical slicing, scope estimation, parallelizable work, execution status tracking, acceptance criteria, measurable goals, constraints, hypothesis validation, checkpoints, iterative ACT/VERIFY/REFLECT cycles, important findings, knowledge-base capture, CHANGELOG, run logs, execution-history summaries, or cross-session AI coding handoff.
+description: Use this skill to create, refine, audit, or continue an AI-executable project plan with program.md as the current-state source of truth, tasks/TASK-*.md as task packages, and memory.md as durable findings/history memory. Trigger when the user asks for a plan skill, planning-and-task-breakdown, implementation plan, Loop-mode plan, project control plan, preference/tradeoff clarification, declarative vs imperative preferences, locked constraints, negotiable space, task-package decomposition, dependency ordering, vertical slicing, scope estimation, parallelizable work, execution status tracking, acceptance criteria, measurable goals, constraints, hypothesis validation, checkpoints, iterative ACT/VERIFY/REFLECT cycles, important findings, knowledge-base capture, CHANGELOG, run logs, execution-history summaries, or cross-session AI coding handoff.
 ---
 
 # Plan Skill
@@ -34,6 +34,7 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 - the problem being solved and why it matters
 - entrypoint links to the active task package, current memory file, latest evidence pointers, and next checkpoint
 - the context and references the plan depends on, including specs, code entry points, external docs, evidence, and owners
+- preferences and tradeoffs: what is locked, what is negotiable, and which tradeoffs define success
 - goals, metrics, and final acceptance criteria
 - constraints, non-goals, risk boundaries, and escalation rules
 - overall strategy and important decisions
@@ -48,6 +49,7 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 
 - important findings and knowledge items with evidence pointers
 - reusable implementation, testing, product, or operational lessons
+- preference learning: what execution revealed about preferences, tradeoffs, locked constraints, or negotiable space
 - CHANGELOG entries for meaningful plan, implementation, interface, or decision changes
 - run-log summaries for execution, verification, rollout, rollback, and manual acceptance events
 - historical execution summaries by task package or milestone
@@ -55,6 +57,23 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 - open knowledge gaps that need future validation
 
 Context and references are not memory. `program.md` stores the current context index and reference pointers needed to understand the plan; `memory.md` stores distilled findings and historical learning extracted from execution.
+
+## Preference Layer
+
+Before decomposing work, make preferences explicit:
+
+```text
+Preference -> Goal -> Plan -> Task -> Verify -> Memory
+```
+
+Use English labels because they are shorter and less ambiguous:
+
+- `declarative preference`: desired outcome, implementation open.
+- `imperative preference`: required path, implementation constrained.
+- `locked constraint`: must not be changed without escalation.
+- `negotiable space`: the agent may optimize or propose alternatives.
+
+For important plans, ask what hidden assumptions would materially change implementation. Put the answers in `program.md#Preferences & Tradeoffs`. If execution reveals a better tradeoff or a wrong assumption, record the learning in `memory.md`.
 
 Each task package must define:
 
@@ -65,6 +84,7 @@ Each task package must define:
 - latest evidence pointers for completed or failed checks
 - blockers, decisions, and rollback notes
 - memory writeback requirements for findings, CHANGELOG entries, run logs, and execution summaries
+- preference references, locked constraints, and negotiable space when tradeoffs matter
 - required `program.md` status updates when the package moves state
 
 ## Planning Discipline
@@ -230,15 +250,16 @@ Rules:
 
 1. Enter read-only planning mode and gather context.
 2. Build or update the `program.md` context/ref index.
-3. Restate the problem, desired outcome, constraints, and unknowns in one concise checkpoint before large edits if the goal is ambiguous.
-4. Map dependency order and identify high-risk assumptions.
-5. For high-risk assumptions, write a concrete exploratory implementation plan in the exploration section before committing to full task packages.
-6. Split into vertical task packages where each plan node has a verifiable result.
-7. Write the implementation plan in `program.md`: entrypoint links, overview, architecture decisions, dependency graph, node-status table, phased task list, checkpoints, risks, and open questions. Keep it to latest state only.
-8. Decide whether the plan is `Linear` or `Loop`. If Loop, define budget, verifier, reflect trigger, and stop condition.
-9. Create or update `program.md` from `assets/program.template.md`.
-10. Create task files from `assets/task.template.md` only for task packages that are ready to execute or need precise scoping now.
-11. Run `scripts/validate_plan.py <project-root>` when possible.
+3. Define preferences and tradeoffs: locked constraints, negotiable space, declarative preferences, imperative preferences.
+4. Restate the problem, desired outcome, constraints, and unknowns in one concise checkpoint before large edits if the goal is ambiguous.
+5. Map dependency order and identify high-risk assumptions.
+6. For high-risk assumptions, write a concrete exploratory implementation plan in the exploration section before committing to full task packages.
+7. Split into vertical task packages where each plan node has a verifiable result.
+8. Write the implementation plan in `program.md`: entrypoint links, overview, architecture decisions, dependency graph, node-status table, phased task list, checkpoints, risks, and open questions. Keep it to latest state only.
+9. Decide whether the plan is `Linear` or `Loop`. If Loop, define budget, verifier, reflect trigger, and stop condition.
+10. Create or update `program.md` from `assets/program.template.md`.
+11. Create task files from `assets/task.template.md` only for task packages that are ready to execute or need precise scoping now.
+12. Run `scripts/validate_plan.py <project-root>` when possible.
 
 ### 2. Continue A Plan
 
@@ -277,6 +298,7 @@ Do not mark a task package complete because code was written. Mark it complete o
 Check for these failures:
 
 - `program.md` lacks measurable goals, final acceptance criteria, or task-package status.
+- `program.md` lacks preferences/tradeoffs for a non-trivial plan, or fails to mark locked constraints and negotiable space.
 - `program.md` contains CHANGELOG, run-log, historical status, or old Loop-attempt sections instead of only latest state.
 - context and references are missing, stale, or lack source/freshness information.
 - dependency graph, node-status table, checkpoints, or parallelization assumptions are missing.
@@ -290,6 +312,7 @@ Check for these failures:
 - Status fields are stale or disagree between `program.md` and task files.
 - Exploration questions have no validation method or stop condition.
 - Exploration implementation exists without atomic steps, verification, evidence pointer, or promotion rule to task package / memory.
+- Task packages make tradeoff-sensitive changes without preference refs or escalation rules for locked constraints.
 - Decisions are hidden in chat, commit messages, or code comments instead of `program.md`.
 - "完成" means code landed rather than acceptance evidence passed.
 
@@ -340,6 +363,12 @@ Start each task package with this contract shape:
 **Dependencies:** [Task numbers or NODE IDs, or "None"]
 
 **Context/Refs:** [CTX/REF/OWN IDs from `program.md`, or "None"]
+
+**Preference refs:** [PREF IDs from `program.md`, or "None"]
+
+**Locked constraints:** [what must not change without escalation, or "None"]
+
+**Negotiable space:** [what the agent may optimize or propose alternatives for, or "None"]
 
 **Files likely touched:**
 - `<path>`

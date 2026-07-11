@@ -63,7 +63,33 @@
 |---|---|---|---|---|
 | OWN-001 | <Owner、Reviewer、Domain Expert> | <范围> | <决策点或风险> | <记录位置> |
 
-## 3. 目标与度量
+## 3. Preferences & Tradeoffs
+
+Use this layer to define what matters before decomposing work.
+
+```text
+Preference -> Goal -> Plan -> Task -> Verify -> Memory
+```
+
+### Preferences
+
+| ID | Preference | Type | Strength | Scope | Rationale |
+|---|---|---|---|---|---|
+| PREF-001 | <what matters> | `declarative / imperative` | `locked / strong / negotiable` | `strategic / tactical` | <why this matters> |
+
+### Tradeoffs
+
+| Decision | Option A | Option B | Tradeoff | Choice | Negotiable? |
+|---|---|---|---|---|---|
+| <decision point> | <A> | <B> | <cost / benefit> | <current choice> | `yes / no` |
+
+### Locked Constraints & Negotiable Space
+
+| Area | Locked constraints | Negotiable space | Escalation rule |
+|---|---|---|---|
+| <critical 20% or major area> | <must not change without approval> | <agent may optimize or propose alternatives> | <when to ask before changing> |
+
+## 4. 目标与度量
 
 ### 目标
 
@@ -77,7 +103,7 @@
 |---|---|---|---|---|
 | A-001 | <端到端可观察结果> | <测试、演示、日志、人工验收等> | <明确条件> | <角色> |
 
-## 4. 约束
+## 5. 约束
 
 ### 硬约束
 
@@ -93,7 +119,7 @@
 | 跨模块、关键假设未验证、引入长期承诺 | 到任务包 Checkpoint 展示 |
 | 可能违反硬约束、造成不可逆损失、改变目标或验收标准 | 停止并先征询 |
 
-## 5. 总体策略
+## 6. 总体策略
 
 ### 策略概述
 
@@ -115,7 +141,7 @@
 - <原则，例如每个任务包必须有独立验收证据>
 - <原则，例如每 2-3 个任务包设置一个 Checkpoint>
 
-## 6. 决策记录
+## 7. 决策记录
 
 只记录会影响后续任务包的决定；普通实现细节写入任务包。
 
@@ -123,9 +149,9 @@
 |---|---|---|---|---|---|
 | D-001 | `提议 / 已批准 / 已替代 / 已废弃` | <决定> | <证据或取舍> | <影响> | `YYYY-MM-DD` |
 
-## 7. 探索与假设验证
+## 8. 探索与假设验证
 
-本节可定义具体探索实现计划，用于 spike、prototype、实验脚本、数据核验或技术可行性验证。探索计划只覆盖验证假设所需的最小实现；如果探索结果进入正式交付，升级为第 8 节的计划节点和 `tasks/TASK-*.md`。
+本节可定义具体探索实现计划，用于 spike、prototype、实验脚本、数据核验或技术可行性验证。探索计划只覆盖验证假设所需的最小实现；如果探索结果进入正式交付，升级为第 9 节的计划节点和 `tasks/TASK-*.md`。
 
 | ID | 状态 | 假设/未知 | 验证方法 | 截止任务包 | 通过/失败后的动作 |
 |---|---|---|---|---|---|
@@ -141,9 +167,9 @@
 
 - 探索实现计划必须最小化，只服务于验证假设，不承载正式交付范围。
 - 探索动作产生的运行日志、失败记录、变更和总结写入 `memory.md`。
-- 探索结论影响正式实现时，更新第 6 节决策记录、第 8 节计划节点和对应任务包。
+- 探索结论影响正式实现时，更新第 7 节决策记录、第 9 节计划节点和对应任务包。
 
-## 8. Implementation Plan
+## 9. Implementation Plan
 
 每个计划节点必须拆为一个任务包。任务包内再拆为原子实现节点。本节维护计划依赖图、每个节点状态、阶段任务清单、Checkpoint、风险和开放问题。
 
@@ -262,7 +288,7 @@ GOAL -> PLAN -> ACT -> VERIFY -> PASS
 
 - `[待决策]` <需要人输入的问题、可选方案和建议默认值>
 
-## 9. 当前状态
+## 10. 当前状态
 
 本节只保存最新状态，不追加历史记录。状态变化、CHANGELOG 和运行日志写入 `memory.md`。
 
@@ -272,14 +298,15 @@ GOAL -> PLAN -> ACT -> VERIFY -> PASS
 - 下一次需要人判断：<无；或决策点>
 - Memory 待写入：<无；或变更记录/运行日志/重要发现/执行总结的来源>
 
-## 10. 更新协议
+## 11. 更新协议
 
-- 新增、阻塞、待验收、完成或取消计划节点/任务包时，必须更新第 8 节的 Plan Dependency Graph、Node Status 和 Task List。
+- 新增、阻塞、待验收、完成或取消计划节点/任务包时，必须更新第 9 节的 Plan Dependency Graph、Node Status 和 Task List。
 - Loop 模式下，每次 ACT/VERIFY/REFLECT/ITERATE 后必须覆盖更新当前 Loop State；PASS 后同步更新 Node Status；历史 Loop 尝试写入 `memory.md#运行日志`。
 - 新增或发现影响计划的上下文、代码入口、证据或外部引用时，必须更新第 2 节。
-- 出现 CHANGELOG-worthy 变更、运行日志、重要发现、失败教训、可复用知识或任务包历史总结时，必须更新 `memory.md`，并同步第 8 节 Memory Sync。
-- 目标、度量、验收标准、硬约束或总体策略变化时，必须新增或更新第 3-6 节。
-- 假设验证或探索实现完成时，必须更新第 7 节，并把影响反映到第 6 节决策记录、第 8 节计划节点和相关任务包。
+- 偏好、权衡、locked constraints 或 negotiable space 变化时，必须更新第 3 节；执行中学到的偏好变化写入 `memory.md#Preference Learning`。
+- 出现 CHANGELOG-worthy 变更、运行日志、重要发现、失败教训、可复用知识或任务包历史总结时，必须更新 `memory.md`，并同步第 9 节 Memory Sync。
+- 目标、度量、验收标准、硬约束或总体策略变化时，必须新增或更新第 4-7 节。
+- 假设验证或探索实现完成时，必须更新第 8 节，并把影响反映到第 7 节决策记录、第 9 节计划节点和相关任务包。
 - 任务包内部原子节点状态只写在对应 `tasks/TASK-*.md`；本文件只写计划节点/任务包级状态。
 - 本文件不得新增 CHANGELOG、运行日志、历史状态流转或已完成 Loop 尝试记录；这些都写入 `memory.md`。
 - 状态为 `完成` 必须有证据位置，不能只写“已实现”。
