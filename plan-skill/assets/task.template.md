@@ -112,6 +112,17 @@ Stop and ask first when:
 |---|---|---|---|
 | <risk> | <impact> | <measure> | <measure> |
 
+## Pre-completion Red Team
+
+Answer all four questions before moving this package to `待验收` or `完成`.
+
+| # | Question | Answer |
+|---|---|---|
+| RT-1 | If the deliverable were actually broken, would the evidence above still pass? If yes, the evidence proves nothing — replace it with a check that can fail. | <answer> |
+| RT-2 | What was NOT verified? (inputs, error paths, concurrency, scale, platforms) | <explicit list, or why nothing material is missing> |
+| RT-3 | Re-read the original problem in `../program.md#1-问题定义` — the original text, not this task's restatement. Does the result solve it? | <yes with reason / gap found> |
+| RT-4 | What is the single most likely post-delivery failure path? Rule it out now, or record it as a known risk in `../memory.md`. | <what was done> |
+
 ## Completion Writeback
 
 When this task package is done, update `../program.md`:

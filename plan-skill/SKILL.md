@@ -291,7 +291,7 @@ Work from the task package, not from memory.
 5. Write CHANGELOG entries, run-log summaries, durable findings, and execution-history deltas to `memory.md`.
 6. If the task package status changes, update only the latest task-package status table in `program.md`.
 
-Do not mark a task package complete because code was written. Mark it complete only when verification evidence satisfies its acceptance criteria.
+Do not mark a task package complete because code was written. Mark it complete only when verification evidence satisfies its acceptance criteria and the task package's Pre-completion Red Team questions are answered.
 
 ### 4. Audit Or Repair A Plan
 
@@ -311,10 +311,12 @@ Check for these failures:
 - task package size is L/XL without a reason.
 - Status fields are stale or disagree between `program.md` and task files.
 - Exploration questions have no validation method or stop condition.
+- A hypothesis or exploration entry was closed by producing an artifact instead of a verdict (`支持 / 推翻 / 不确定`) with evidence.
 - Exploration implementation exists without atomic steps, verification, evidence pointer, or promotion rule to task package / memory.
 - Task packages make tradeoff-sensitive changes without preference refs or escalation rules for locked constraints.
 - Decisions are hidden in chat, commit messages, or code comments instead of `program.md`.
 - "完成" means code landed rather than acceptance evidence passed.
+- A task package reached `待验收` or `完成` without answered Pre-completion Red Team questions.
 
 Repair by restoring the three-layer authority: entrypoint and latest plan state in `program.md`; durable findings, CHANGELOG, run logs, and history in `memory.md`; active task execution state in `tasks/TASK-*.md`.
 
@@ -376,7 +378,7 @@ Start each task package with this contract shape:
 **Estimated scope:** [Small: 1-2 files | Medium: 3-5 files | Large: 5+ files]
 ```
 
-Then add the atomic implementation plan, verification matrix, checkpoint, current Loop attempt, latest execution snapshot, escalation, rollback, and completion writeback sections.
+Then add the atomic implementation plan, verification matrix, checkpoint, current Loop attempt, latest execution snapshot, escalation, rollback, pre-completion red team, and completion writeback sections.
 
 For Loop mode, update only the current Loop attempt in the task package. Move completed attempt summaries to `memory.md#运行日志`.
 
@@ -387,7 +389,7 @@ For Loop mode, update only the current Loop attempt in the task package. Move co
 - Update the task package whenever an atomic node starts, finishes, fails verification, or changes scope; keep only latest execution state and point to memory IDs for history.
 - Record evidence as concise pointers to tests, logs, screenshots, commits, reports, or manual acceptance notes.
 - Use ISO dates: `YYYY-MM-DD`.
-- Mark uncertainty explicitly with `[待确认]`, `[待验证]`, or `[待决策]`; include the next validation or decision step.
+- Mark uncertainty explicitly with `[待确认]`, `[待验证]`, or `[待决策]`; include the next validation or decision step. Markers are legitimate on active work, but a node or row marked `完成` must not carry them.
 
 ## Resources
 

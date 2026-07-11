@@ -64,6 +64,7 @@ TASK_REQUIRED = [
     "Latest Execution Snapshot",
     "Escalation",
     "Risks and Rollback",
+    "Pre-completion Red Team",
     "Completion Writeback",
 ]
 
@@ -129,15 +130,57 @@ def check_required(path: Path, required: list[str], errors: list[str]) -> str:
     return text
 
 
-def find_unresolved(path: Path, text: str, warnings: list[str]) -> None:
-    for pattern in UNRESOLVED_PATTERNS:
-        count = len(re.findall(pattern, text, flags=re.IGNORECASE))
-        if count:
-            warnings.append(f"{path} 含 {count} 个未决标记：{pattern}")
-
+def find_placeholders(path: Path, text: str, warnings: list[str]) -> None:
     placeholders = len(re.findall(r"<[^>\n]{1,120}>", text))
     if placeholders:
         warnings.append(f"{path} 仍含 {placeholders} 个模板占位符")
+
+
+def iter_table_rows(text: str):
+    """Yield (header_cells, row_cells) for each data row of each markdown table."""
+    header: list[str] | None = None
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not (stripped.startswith("|") and stripped.endswith("|") and len(stripped) > 2):
+            header = None
+            continue
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        if all(re.fullmatch(r":?-+:?", cell) for cell in cells):
+            continue
+        if header is None:
+            header = cells
+        else:
+            yield header, cells
+
+
+def norm_cell(cell: str) -> str:
+    return cell.strip("`").strip()
+
+
+EVIDENCE_EMPTY = {"", "无", "None", "-", "不适用", "N/A", "待运行", "待补充", "待填"}
+
+
+def check_completed_rows(path: Path, text: str, errors: list[str]) -> None:
+    """完成/待验收 rows must carry real evidence; 完成 rows must not carry unresolved markers."""
+    unresolved = re.compile("|".join(UNRESOLVED_PATTERNS), flags=re.IGNORECASE)
+    for header, cells in iter_table_rows(text):
+        statuses = {norm_cell(cell) for cell in cells} & {"完成", "待验收"}
+        if not statuses:
+            continue
+        row_id = norm_cell(cells[0]) if cells else "?"
+        norm_header = [norm_cell(cell) for cell in header]
+        ev_idx = next(
+            (i for i, h in enumerate(norm_header) if "证据" in h or "evidence" in h.lower()),
+            None,
+        )
+        if ev_idx is not None and ev_idx < len(cells):
+            evidence = norm_cell(cells[ev_idx])
+            if evidence in EVIDENCE_EMPTY or re.fullmatch(r"<[^>\n]*>", evidence):
+                errors.append(
+                    f"{path} 行 `{row_id}` 状态为 {'/'.join(sorted(statuses))} 但证据为空或占位符"
+                )
+        if "完成" in statuses and unresolved.search(" ".join(cells)):
+            errors.append(f"{path} 行 `{row_id}` 状态为 完成 但仍含未决标记")
 
 
 def find_program_history_sections(path: Path, text: str, warnings: list[str]) -> None:
@@ -154,6 +197,32 @@ def current_task_from_program(text: str) -> str | None:
     if value in {"无", "none", "None"} or value.startswith("<"):
         return None
     return value.split()[0].strip()
+
+
+def program_node_statuses(text: str) -> dict[str, str]:
+    """Map task-package link -> node status from the program.md Node Status table."""
+    result: dict[str, str] = {}
+    for header, cells in iter_table_rows(text):
+        norm_header = [norm_cell(cell) for cell in header]
+        if "状态" not in norm_header or "任务包" not in norm_header:
+            continue
+        status_idx = norm_header.index("状态")
+        task_idx = norm_header.index("任务包")
+        if max(status_idx, task_idx) >= len(cells):
+            continue
+        status = norm_cell(cells[status_idx])
+        link = re.search(r"tasks/TASK-\d{3}[-A-Za-z0-9_]*\.md", cells[task_idx])
+        if status in VALID_STATUSES and link:
+            result[link.group(0)] = status
+    return result
+
+
+def task_status(text: str) -> str | None:
+    match = re.search(r"^-\s*Status[：:]\s*`?([^`\n]+)`?", text, flags=re.MULTILINE)
+    if not match:
+        return None
+    value = match.group(1).strip()
+    return value if value in VALID_STATUSES else None
 
 
 def task_links_from_program(text: str) -> list[str]:
@@ -232,7 +301,8 @@ def main() -> int:
         checked_paths.append(memory_path)
 
     if program_text:
-        find_unresolved(program_path, program_text, warnings)
+        find_placeholders(program_path, program_text, warnings)
+        check_completed_rows(program_path, program_text, errors)
         find_program_history_sections(program_path, program_text, warnings)
         if "Node Status" not in program_text:
             warnings.append("program.md 应维护 Node Status 表")
@@ -251,7 +321,7 @@ def main() -> int:
         if not preference_ref_ids(program_text):
             warnings.append("program.md 未发现偏好 ID，例如 PREF-001")
     if memory_text:
-        find_unresolved(memory_path, memory_text, warnings)
+        find_placeholders(memory_path, memory_text, warnings)
         if not re.search(r"\b(?:F|K|CHG|RUN|H|R|Q|PL)-\d{3}\b", memory_text):
             warnings.append("memory.md 未发现记忆条目编号，例如 F-001/K-001/CHG-001/RUN-001/H-001/PL-001")
 
@@ -264,20 +334,30 @@ def main() -> int:
     existing_tasks = sorted(task_dir.glob("TASK-*.md")) if task_dir.exists() else []
     if not task_links and existing_tasks:
         warnings.append("存在 tasks/TASK-*.md，但 program.md 未在执行计划中引用任务包")
-        task_paths = existing_tasks
+        task_entries = [(f"tasks/{path.name}", path) for path in existing_tasks]
     else:
-        task_paths = [
-            task_path
+        task_entries = [
+            (link, task_path)
             for link in task_links
             if (task_path := check_task_link(root, link, errors)) is not None
         ]
 
-    for task_path in task_paths:
+    node_statuses = program_node_statuses(program_text) if program_text else {}
+
+    for link, task_path in task_entries:
         checked_paths.append(task_path)
         task_text = check_required(task_path, TASK_REQUIRED, errors)
         if not task_text:
             continue
-        find_unresolved(task_path, task_text, warnings)
+        find_placeholders(task_path, task_text, warnings)
+        check_completed_rows(task_path, task_text, errors)
+        program_status = node_statuses.get(link)
+        package_status = task_status(task_text)
+        if program_status and package_status and program_status != package_status:
+            errors.append(
+                f"状态不一致：program.md Node Status 记录 {link} 为 `{program_status}`，"
+                f"任务包 Status 为 `{package_status}`"
+            )
         if "N-001" not in task_text:
             warnings.append(f"{task_path} 未发现原子节点编号，例如 N-001")
         if "V-001" not in task_text:
