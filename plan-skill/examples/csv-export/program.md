@@ -1,6 +1,7 @@
 # Program: demo-cli CSV 导出
 
 - 总状态：`进行中`
+- Profile：`Full`
 - 计划模式：`Linear`
 - Memory：memory.md
 - 当前任务包：`tasks/TASK-001-add-export.md`

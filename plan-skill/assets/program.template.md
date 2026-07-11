@@ -5,6 +5,7 @@
 > CHANGELOG、运行日志、重要发现、知识库沉淀和历史执行记录总结统一写入 `memory.md`。
 
 - 总状态：`待开始 / 探索中 / 进行中 / 阻塞 / 待验收 / 完成 / 已取消`
+- Profile：`Full / Lite`
 - 计划模式：`Linear / Loop`
 - Loop 状态：`Goal / Plan / Act / Verify / Reflect / Iterate / Pass / Blocked / 不适用`
 - Loop 轮次：`0/<最大轮次或不适用>`

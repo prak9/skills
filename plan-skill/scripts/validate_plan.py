@@ -68,6 +68,25 @@ TASK_REQUIRED = [
     "Completion Writeback",
 ]
 
+# Lite profile: for work of one or two focused sessions. Declared via `- Profile: Lite`
+# in the program.md header; default is Full. Semantic checks apply to both profiles.
+PROGRAM_REQUIRED_LITE = [
+    "问题定义",
+    "验收标准",
+    "Node Status",
+    "当前状态",
+]
+
+TASK_REQUIRED_LITE = [
+    "Task ",
+    "Description",
+    "Acceptance criteria",
+    "Verification",
+    "Atomic Implementation Plan",
+    "Pre-completion Red Team",
+    "Completion Writeback",
+]
+
 MEMORY_REQUIRED = [
     "重要发现",
     "知识库沉淀",
@@ -131,13 +150,9 @@ def check_required_items(path: Path, text: str, required: list[str], errors: lis
             errors.append(f"{path} 缺少必要章节或字段：{item}")
 
 
-def check_required(path: Path, required: list[str], errors: list[str]) -> str:
-    if not path.exists():
-        errors.append(f"缺少文件：{path}")
-        return ""
-    text = read_text(path)
-    check_required_items(path, text, required, errors)
-    return text
+def detect_profile(text: str) -> str:
+    match = re.search(r"^-\s*Profile[：:]\s*`?(Lite|Full)`?", text, flags=re.MULTILINE | re.IGNORECASE)
+    return match.group(1).capitalize() if match else "Full"
 
 
 def find_placeholders(path: Path, text: str, warnings: list[str]) -> None:
@@ -300,8 +315,26 @@ def main() -> int:
 
     program_path = root / "program.md"
     memory_path = root / "memory.md"
-    program_text = check_required(program_path, PROGRAM_REQUIRED, errors)
-    memory_text = check_required(memory_path, MEMORY_REQUIRED, errors)
+    if program_path.exists():
+        program_text = read_text(program_path)
+    else:
+        errors.append(f"缺少文件：{program_path}")
+        program_text = ""
+    profile = detect_profile(program_text)
+    lite = profile == "Lite"
+    if program_text:
+        check_required_items(
+            program_path, program_text, PROGRAM_REQUIRED_LITE if lite else PROGRAM_REQUIRED, errors
+        )
+
+    memory_text = ""
+    if memory_path.exists():
+        memory_text = read_text(memory_path)
+        if not lite:
+            check_required_items(memory_path, memory_text, MEMORY_REQUIRED, errors)
+    elif not lite:
+        errors.append(f"缺少文件：{memory_path}")
+
     checked_paths: list[Path] = [program_path] if program_path.exists() else []
     if memory_path.exists():
         checked_paths.append(memory_path)
@@ -316,14 +349,15 @@ def main() -> int:
             warnings.append("program.md 计划模式为 Loop，但未发现 Loop 轮次编号，例如 L-001")
         if not status_values(program_text):
             warnings.append("program.md 未发现规范状态值")
-        if not size_values(program_text):
-            warnings.append("program.md 未发现任务包规模值，例如 `S` 或 `M`")
         if not node_ids(program_text):
             warnings.append("program.md 未发现计划节点 ID，例如 NODE-001")
-        if not context_ref_ids(program_text):
-            warnings.append("program.md 未发现上下文或引用 ID，例如 CTX-001/REF-001")
-        if not preference_ref_ids(program_text):
-            warnings.append("program.md 未发现偏好 ID，例如 PREF-001")
+        if not lite:
+            if not size_values(program_text):
+                warnings.append("program.md 未发现任务包规模值，例如 `S` 或 `M`")
+            if not context_ref_ids(program_text):
+                warnings.append("program.md 未发现上下文或引用 ID，例如 CTX-001/REF-001")
+            if not preference_ref_ids(program_text):
+                warnings.append("program.md 未发现偏好 ID，例如 PREF-001")
     if memory_text:
         find_placeholders(memory_path, memory_text, warnings)
         if not re.search(r"\b(?:F|K|CHG|RUN|HIST|R|Q|PL)-\d{3}\b", memory_text):
@@ -353,9 +387,10 @@ def main() -> int:
 
     for link, task_path in task_entries:
         checked_paths.append(task_path)
-        task_text = check_required(task_path, TASK_REQUIRED, errors)
-        if not task_text:
-            continue
+        task_text = read_text(task_path)
+        check_required_items(
+            task_path, task_text, TASK_REQUIRED_LITE if lite else TASK_REQUIRED, errors
+        )
         find_placeholders(task_path, task_text, warnings)
         check_completed_rows(task_path, task_text, errors)
         program_status = node_statuses.get(link)
@@ -367,15 +402,19 @@ def main() -> int:
             )
         if "N-001" not in task_text:
             warnings.append(f"{task_path} 未发现原子节点编号，例如 N-001")
-        if "V-001" not in task_text:
-            warnings.append(f"{task_path} 未发现验证项编号，例如 V-001")
-        if "CP-001" not in task_text:
-            warnings.append(f"{task_path} 未发现 Checkpoint 编号，例如 CP-001")
         is_loop = bool(re.search(r"^-\s*Plan mode[：:].*Loop", task_text, flags=re.MULTILINE))
         if is_loop and not re.search(r"\bL-\d{3}\b", task_text):
             warnings.append(f"{task_path} 未发现 Loop 轮次编号，例如 L-001")
         if not node_ids(task_text):
             warnings.append(f"{task_path} 未发现对应计划节点 ID，例如 NODE-001")
+        if not status_values(task_text):
+            warnings.append(f"{task_path} 未发现规范状态值")
+        if lite:
+            continue
+        if "V-001" not in task_text:
+            warnings.append(f"{task_path} 未发现验证项编号，例如 V-001")
+        if "CP-001" not in task_text:
+            warnings.append(f"{task_path} 未发现 Checkpoint 编号，例如 CP-001")
         if (
             "Context/Refs" in task_text
             and not context_ref_ids(task_text)
@@ -390,8 +429,6 @@ def main() -> int:
             warnings.append(f"{task_path} 未发现 Preference refs ID，例如 PREF-001")
         if "Memory writeback" not in task_text:
             warnings.append(f"{task_path} 未发现 Memory writeback 完成回写字段")
-        if not status_values(task_text):
-            warnings.append(f"{task_path} 未发现规范状态值")
         sizes = size_values(task_text)
         if not sizes:
             warnings.append(f"{task_path} 未发现预计规模，例如 `S` 或 `M`")
@@ -400,6 +437,7 @@ def main() -> int:
 
     result = {
         "root": str(root),
+        "profile": profile,
         "ok": not errors,
         "errors": errors,
         "warnings": warnings,

@@ -17,6 +17,15 @@ Do not create `codemap.md` by default. If implementation mapping is needed, keep
 
 If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, generate them only as derived exports from `program.md` and `tasks/TASK-*.md`. They are not authoritative.
 
+## Profiles
+
+Declare `- Profile: Lite / Full` in the `program.md` header; `scripts/validate_plan.py` reads it and defaults to `Full`.
+
+- `Full`: the complete structure below. Use for multi-session, multi-package, or Loop-mode work.
+- `Lite`: for work of roughly one or two focused sessions. `program.md` needs only 问题定义, 验收标准, a Node Status table, and 当前状态. Each task package needs only the Task contract (description, acceptance criteria, verification), Atomic Implementation Plan, Pre-completion Red Team, and Completion Writeback. `memory.md` is optional — create it at the first durable finding.
+- Semantic rules hold in both profiles: `完成`/`待验收` requires evidence, statuses must agree across files, hypotheses close only with a verdict.
+- Upgrade Lite to Full when the plan grows past ~3 task packages, needs Loop mode, or spans multiple sessions.
+
 ## Authority Model
 
 - `program.md` is the main entrypoint for the project plan and the source of truth for the current plan plus the latest status of every task package. It must link to relevant task packages and memory entries, but it must not accumulate CHANGELOG entries, run logs, historical status transitions, or old Loop attempts.
@@ -28,6 +37,8 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 - Never silently reconcile conflicts. Mark drift, name the conflicting sources, and choose the authority to update.
 
 ## Core Shape
+
+The shape below describes the `Full` profile; `Lite` keeps only the subset named in Profiles.
 
 `program.md` must define:
 
@@ -269,7 +280,7 @@ Rules:
 6. For high-risk assumptions, write a concrete exploratory implementation plan in the exploration section before committing to full task packages.
 7. Split into vertical task packages where each plan node has a verifiable result.
 8. Write the implementation plan in `program.md`: entrypoint links, overview, architecture decisions, dependency graph, node-status table, phased task list, checkpoints, risks, and open questions. Keep it to latest state only.
-9. Decide whether the plan is `Linear` or `Loop`. If Loop, define budget, verifier, reflect trigger, and stop condition.
+9. Decide the profile (`Lite` or `Full`) and whether the plan is `Linear` or `Loop`. If Loop, define budget, verifier, reflect trigger, and stop condition.
 10. Create or update `program.md` from `assets/program.template.md`.
 11. Create task files from `assets/task.template.md` only for task packages that are ready to execute or need precise scoping now.
 12. Run `scripts/validate_plan.py <project-root>` when possible.
