@@ -7,6 +7,7 @@
 - Loop budget: `<max attempts or not applicable>`
 - Program: `../program.md`
 - Plan node: `NODE-NNN`
+- Context refs: `CTX-NNN / REF-NNN / REF-EXT-NNN / OWN-NNN`
 - Owner: `<person, role, or AI>`
 - Created: `YYYY-MM-DD`
 - Updated: `YYYY-MM-DD`
@@ -28,6 +29,8 @@
 - [ ] Manual check: <what to verify manually, or not applicable with reason>
 
 **Dependencies:** <Task numbers or NODE IDs this depends on, or `None`>
+
+**Context/Refs:** <CTX/REF IDs from `../program.md#2-上下文与-references`, or `None`>
 
 **Files likely touched:**
 
@@ -106,13 +109,24 @@ When this task package is done, update `../program.md`:
 - update `Node Status` for `NODE-NNN`
 - update `Loop State` if this task ran in Loop mode
 - update `Task List` checkbox for this node
+- update `Memory Sync` when durable findings or execution summaries were written
 - fill evidence location
 - update current status and next step
 - update decisions or hypothesis results if this task changed them
+- update `program.md#2-上下文与-references` if new context, entry points, refs, or owners were discovered
+
+Also update `../memory.md`:
+
+- add important findings to `memory.md#1-重要发现`
+- add reusable knowledge to `memory.md#2-知识库沉淀`
+- add task outcome summary to `memory.md#3-历史执行记录总结`
+- add failed-attempt lessons to `memory.md#4-失败与回炉记录`
+- if no memory writeback is needed, record that decision in this task's completion summary
 
 Completion summary:
 
 - Final result: <observable result>
 - Key evidence: <V-NNN or E-NNN>
+- Memory writeback: `已写入 / 不需要：<原因>`
 - Remaining work: <new task package or None>
 - Completed: `YYYY-MM-DD`

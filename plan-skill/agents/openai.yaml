@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan Skill"
-  short_description: "Task breakdown with checkpoints and status"
-  default_prompt: "Use $plan-skill to break this spec into ordered task packages with dependencies, acceptance criteria, checkpoints, and verification."
+  short_description: "Executable plans with memory and refs"
+  default_prompt: "Use $plan-skill to create or continue a program.md plan with task packages, context refs, verification, and memory.md writeback."
