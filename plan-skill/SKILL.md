@@ -22,7 +22,7 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 Declare `- Profile: Lite / Full` in the `program.md` header; `scripts/validate_plan.py` reads it and defaults to `Full`.
 
 - `Full`: the complete structure below. Use for multi-session, multi-package, or Loop-mode work.
-- `Lite`: for work of roughly one or two focused sessions. `program.md` needs only 问题定义, 验收标准, a Node Status table, and 当前状态. Each task package needs only the Task contract (description, acceptance criteria, verification), Atomic Implementation Plan, Pre-completion Red Team, and Completion Writeback. `memory.md` is optional — create it at the first durable finding.
+- `Lite`: for work of roughly one or two focused sessions. `program.md` needs only 问题定义, 验收标准, a Node Status table, and 当前状态. Each task package needs only the Task contract (description, acceptance criteria, verification), Atomic Implementation Plan, Standing Checklist, Pre-completion Red Team, and Completion Writeback. `memory.md` is optional — create it at the first durable finding.
 - Semantic rules hold in both profiles: `完成`/`待验收` requires evidence, statuses must agree across files, hypotheses close only with a verdict.
 - Upgrade Lite to Full when the plan grows past ~3 task packages, needs Loop mode, or spans multiple sessions.
 
@@ -97,6 +97,7 @@ Each task package must define:
 - blockers, decisions, and rollback notes
 - memory writeback requirements for findings, CHANGELOG entries, run logs, and execution summaries
 - preference references, locked constraints, and negotiable space when tradeoffs matter
+- a Standing Checklist that applies the task/feature completion bar before acceptance
 - required `program.md` status updates when the package moves state
 
 ## Planning Discipline
@@ -268,6 +269,27 @@ Rules:
 - A task package is `阻塞` only when the next action depends on missing information, permission, external state, or a failed prerequisite.
 - Atomic nodes use the same statuses and must name the next verification action when not complete.
 
+## Standing Completion Bar
+
+Apply this bar before moving a task package to `待验收` or `完成`. The task package's `Standing Checklist` is the executable record; every applicable item must be checked, and every non-applicable item must say `N/A: <reason>`.
+
+Per task:
+
+- acceptance criteria are met and tied to evidence
+- runtime behavior was verified, not only compiled or typechecked
+- new behavior is covered by tests that would fail without the change, or the task records why this is not practical
+- existing tests, build/typecheck, lint, and formatting pass or are explicitly scoped out with reasons
+- relevant edge cases and error paths are handled or recorded as known risk
+- changes stay scoped to the task; no unrelated refactors, duplicated business logic, dead code, debug output, or commented-out blocks remain
+
+Per feature or risky change:
+
+- integration points are accounted for, including migrations, config, feature flags, public contracts, and backward compatibility
+- public interfaces, APIs, user-facing behavior, and durable architecture decisions are documented when they changed
+- security implications are reviewed for untrusted input, auth, and data handling
+- observability and rollback are defined for new critical paths or risky changes
+- human review happens before merge, deploy, or acceptance when the plan, owner, or risk boundary requires it
+
 ## Workflow
 
 ### 1. Create Or Refresh The Plan
@@ -315,7 +337,7 @@ Work from the task package, not from memory.
 5. Write CHANGELOG entries, run-log summaries, durable findings, and execution-history deltas to `memory.md`.
 6. If the task package status changes, update only the latest task-package status table in `program.md`.
 
-Do not mark a task package complete because code was written. Mark it complete only when verification evidence satisfies its acceptance criteria and the task package's Pre-completion Red Team questions are answered.
+Do not mark a task package complete because code was written. Mark it complete only when verification evidence satisfies its acceptance criteria, the Standing Checklist is complete, and the task package's Pre-completion Red Team questions are answered.
 
 ### 4. Audit Or Repair A Plan
 
@@ -350,7 +372,7 @@ Avoid vague nodes such as "improve UI", "clean up backend", or "write tests". Re
 
 ## Task Package Contract
 
-Start each task package from `assets/task.template.md` — it is the single source of truth for the contract shape. The contract at the top defines description, acceptance criteria, verification, dependencies, context/preference refs, locked constraints, negotiable space, files likely touched, and estimated scope; the sections below it cover the atomic implementation plan, verification matrix, checkpoint, current Loop attempt, latest execution snapshot, escalation, rollback, pre-completion red team, and completion writeback.
+Start each task package from `assets/task.template.md` — it is the single source of truth for the contract shape. The contract at the top defines description, acceptance criteria, verification, dependencies, context/preference refs, locked constraints, negotiable space, files likely touched, and estimated scope; the sections below it cover the atomic implementation plan, verification matrix, checkpoint, current Loop attempt, latest execution snapshot, escalation, rollback, Standing Checklist, pre-completion red team, and completion writeback.
 
 For Loop mode, update only the current Loop attempt in the task package. Move completed attempt summaries to `memory.md#运行日志`.
 
@@ -374,4 +396,4 @@ For Loop mode, update only the current Loop attempt in the task package. Move co
 
 ## Source
 
-Absorbs the planning-and-task-breakdown method: read-only planning first, dependency graph, vertical slicing, task sizing, checkpoints, parallelization notes, and per-task acceptance plus verification.
+Absorbs the planning-and-task-breakdown method: read-only planning first, dependency graph, vertical slicing, task sizing, checkpoints, parallelization notes, per-task acceptance plus verification, and a standing completion bar.

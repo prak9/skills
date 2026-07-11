@@ -22,5 +22,7 @@ Check a plan for these failures:
 - Task packages make tradeoff-sensitive changes without preference refs or escalation rules for locked constraints.
 - Decisions are hidden in chat, commit messages, or code comments instead of `program.md`.
 - "完成" means code landed rather than acceptance evidence passed.
+- A task package lacks a Standing Checklist.
+- A task package reached `待验收` or `完成` while applicable Standing Checklist items are unchecked or marked N/A without reasons.
 - A task package reached `待验收` or `完成` without answered Pre-completion Red Team questions.
 - A Lite-profile plan grew past ~3 task packages, multiple sessions, or Loop mode without upgrading to Full.

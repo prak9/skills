@@ -96,6 +96,28 @@ Stop and ask first when:
 |---|---|---|---|
 | 转义错误破坏下游报表 | Medium | 转义用例 + 人工验收 | 回退 exporter 提交 |
 
+## Standing Checklist
+
+### Per Task
+
+- [ ] Acceptance criteria are met and tied to evidence: 待 N-002 完成后确认。
+- [x] Runtime behavior was verified, not only compiled or typechecked: RUN-001 覆盖 exporter 转义行为。
+- [x] New behavior is covered by tests that fail without the change and pass with it: RUN-001。
+- [ ] Existing tests still pass; no regression signal is ignored: 待 N-002 后跑全量 pytest。
+- [x] Relevant edge cases and error paths are handled or recorded as known risk: 逗号、引号、换行已覆盖。
+- [x] Changes are scoped to this task; no unrelated refactors are included。
+- [x] No duplicated business logic, dead code, debug output, or commented-out blocks were left behind。
+- [ ] Linting and formatting pass: 待 N-002 后执行。
+
+### Per Feature / Risky Change
+
+- [x] Integration points are accounted for: 仅 CLI 参数和 exporter，无迁移、config 或 feature flag。
+- [ ] Public interfaces, APIs, user-facing behavior, and durable architecture decisions are documented when changed: 待 CLI 帮助文本确认。
+- [x] Security implications are reviewed for untrusted input, auth, and data handling: 本地文件写出仅使用用户显式路径，无 auth/data access 变化。
+- [x] Observability is in place for new critical paths: N/A: CLI 本地导出无长期服务路径。
+- [x] Rollback or containment path is defined for risky changes: 回退 exporter/CLI 提交。
+- [ ] Human review is complete before merge, deploy, or acceptance when required: CP-001 需要人审。
+
 ## Pre-completion Red Team
 
 Answer all four questions before moving this package to `待验收` or `完成`.

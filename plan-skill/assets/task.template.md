@@ -112,6 +112,30 @@ Stop and ask first when:
 |---|---|---|---|
 | <risk> | <impact> | <measure> | <measure> |
 
+## Standing Checklist
+
+Complete applicable items before moving this package to `待验收` or `完成`. Mark non-applicable items as `N/A: <reason>`.
+
+### Per Task
+
+- [ ] Acceptance criteria are met and tied to evidence.
+- [ ] Runtime behavior was verified, not only compiled or typechecked.
+- [ ] New behavior is covered by tests that fail without the change and pass with it, or `N/A: <reason>`.
+- [ ] Existing tests still pass; no regression signal is ignored.
+- [ ] Relevant edge cases and error paths are handled or recorded as known risk.
+- [ ] Changes are scoped to this task; no unrelated refactors are included.
+- [ ] No duplicated business logic, dead code, debug output, or commented-out blocks were left behind.
+- [ ] Linting and formatting pass, or `N/A: <reason>`.
+
+### Per Feature / Risky Change
+
+- [ ] Integration points are accounted for: migrations, config, feature flags, public contracts, and backward compatibility.
+- [ ] Public interfaces, APIs, user-facing behavior, and durable architecture decisions are documented when changed, or `N/A: <reason>`.
+- [ ] Security implications are reviewed for untrusted input, auth, and data handling, or `N/A: <reason>`.
+- [ ] Observability is in place for new critical paths, or `N/A: <reason>`.
+- [ ] Rollback or containment path is defined for risky changes, or `N/A: <reason>`.
+- [ ] Human review is complete before merge, deploy, or acceptance when required, or `N/A: <reason>`.
+
 ## Pre-completion Red Team
 
 Answer all four questions before moving this package to `待验收` or `完成`.

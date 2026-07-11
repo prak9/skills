@@ -64,6 +64,7 @@ TASK_REQUIRED = [
     "Latest Execution Snapshot",
     "Escalation",
     "Risks and Rollback",
+    "Standing Checklist",
     "Pre-completion Red Team",
     "Completion Writeback",
 ]
@@ -83,6 +84,7 @@ TASK_REQUIRED_LITE = [
     "Acceptance criteria",
     "Verification",
     "Atomic Implementation Plan",
+    "Standing Checklist",
     "Pre-completion Red Team",
     "Completion Writeback",
 ]
@@ -206,6 +208,30 @@ def check_completed_rows(path: Path, text: str, errors: list[str]) -> None:
                 )
         if "完成" in statuses and unresolved.search(" ".join(cells)):
             errors.append(f"{path} 行 `{row_id}` 状态为 完成 但仍含未决标记")
+
+
+def markdown_h2_section(text: str, title: str) -> str | None:
+    pattern = rf"^##\s+{re.escape(title)}\b(?P<body>.*?)(?=^##\s+|\Z)"
+    match = re.search(pattern, text, flags=re.MULTILINE | re.DOTALL)
+    return match.group("body") if match else None
+
+
+def check_standing_checklist_completion(path: Path, text: str, errors: list[str]) -> None:
+    """待验收/完成 task packages must have no unchecked Standing Checklist items."""
+    status = task_status(text)
+    if status not in {"待验收", "完成"}:
+        return
+    section = markdown_h2_section(text, "Standing Checklist")
+    if section is None:
+        return
+    unchecked = re.findall(r"^\s*-\s+\[\s\]\s+(.+)$", section, flags=re.MULTILINE)
+    if unchecked:
+        errors.append(
+            f"{path} 状态为 `{status}`，但 Standing Checklist 仍有 {len(unchecked)} 个未勾选项"
+        )
+    for line in re.findall(r"^\s*-\s+\[[xX]\]\s+(.+)$", section, flags=re.MULTILINE):
+        if re.search(r"N/A\s*:\s*(?:$|<[^>\n]*>)", line, flags=re.IGNORECASE):
+            errors.append(f"{path} Standing Checklist 中 N/A 项缺少具体原因：{line}")
 
 
 def find_program_history_sections(path: Path, text: str, warnings: list[str]) -> None:
@@ -393,6 +419,7 @@ def main() -> int:
         )
         find_placeholders(task_path, task_text, warnings)
         check_completed_rows(task_path, task_text, errors)
+        check_standing_checklist_completion(task_path, task_text, errors)
         program_status = node_statuses.get(link)
         package_status = task_status(task_text)
         if program_status and package_status and program_status != package_status:
