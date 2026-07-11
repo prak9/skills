@@ -1,173 +1,238 @@
-# Program: demo-cli CSV 导出
+# Program: demo-cli CSV export
 
-- 总状态：`进行中`
-- Profile：`Full`
-- 计划模式：`Linear`
-- Memory：memory.md
-- 当前任务包：`tasks/TASK-001-add-export.md`
-- 当前计划节点：`NODE-001`
-- 最新证据入口：RUN-001
-- 下一 Checkpoint：CP-001
-- Owner / TL：x
-- 最后更新：2026-07-11
+- Overall status: `进行中`
+- Profile: `Full`
+- Plan mode: `Linear`
+- Memory: memory.md
+- Active task package: `tasks/TASK-001-add-export.md`
+- Active plan node: `NODE-001`
+- Latest evidence: RUN-001
+- Next checkpoint: CP-001
+- Owner / TL: x
+- Last updated: 2026-07-11
 
-## 1. 问题定义
+## 0. Concept Refinement
 
-### 背景
-CLI 查询结果只能打印到终端，下游报表流程需要 CSV。
+Refine raw ideas into sharp, actionable concepts worth building through structured divergent and convergent thinking.
 
-### 要解决的问题
-无法把查询结果导出为文件。
+### How It Works
 
-### 为什么现在做
-报表流程本月上线，依赖导出。
+- Understand & Expand (Divergent): Restate the idea, ask sharpening questions, and generate variations.
+- Evaluate & Converge: Cluster ideas, stress-test them, and surface hidden assumptions.
+- Sharpen & Ship: Produce a concrete markdown one-pager moving work forward.
 
-### 非目标
-- 不做 Excel 导出
+### One-Page Brief
 
-## 2. 上下文与 References
+The request was already a clear implementation need, so no divergent ideation session was required.
 
-### 关键上下文
-| ID | 类型 | 内容摘要 | 位置/Ref | 为什么重要 | 状态/新鲜度 |
+| Field | Content |
+|---|---|
+| Raw idea / Source | Clear user request: add CSV export to demo-cli query results |
+| Problem statement | How might we let report users export CLI query results to a file without changing the query flow? |
+| Target user | Downstream report workflow users |
+| Success criteria | `demo query --csv out.csv` writes valid CSV |
+| Recommended direction | Add a small standard-library CSV exporter at the query output boundary |
+| Key assumptions to validate | Query output is iterable and column names can come from row keys |
+| MVP scope | exporter module, CLI flag, escaping tests, and one e2e check |
+| Not doing | Excel export |
+| Open questions | Memory usage for very large result sets |
+
+## 1. Problem Definition
+
+### Background
+
+CLI query results only print to the terminal. The downstream report workflow needs CSV files.
+
+### Problem To Solve
+
+Query results cannot be exported to a file.
+
+### Why Now
+
+The report workflow launches this month and depends on export.
+
+### Non-goals
+
+- Excel export
+
+## 2. Context And References
+
+### Key Context
+
+| ID | Type | Summary | Location / Ref | Why it matters | Freshness |
 |---|---|---|---|---|---|
-| CTX-001 | code | 查询出口函数 | src/query.py | 导出逻辑挂在此处 | 当前 |
+| CTX-001 | code | Query output function | src/query.py | Export logic attaches here | current |
 
-### 代码与运行入口
-| ID | 入口 | 路径/命令 | 关联节点 | 备注 |
+### Code And Runtime Entrypoints
+
+| ID | Entrypoint | Path / Command | Related node | Notes |
 |---|---|---|---|---|
-| REF-001 | 测试 | pytest tests/ | NODE-001 | 全量测试 |
+| REF-001 | Tests | pytest tests/ | NODE-001 | Full test suite |
 
-### 外部资料与证据
-| ID | 来源 | Ref | 用途 | 获取/核对日期 |
+### External References And Evidence
+
+| ID | Source | Ref | Use | Checked date |
 |---|---|---|---|---|
-| REF-EXT-001 | RFC 4180 | https://www.rfc-editor.org/rfc/rfc4180 | CSV 转义规则 | 2026-07-11 |
+| REF-EXT-001 | RFC 4180 | https://www.rfc-editor.org/rfc/rfc4180 | CSV escaping rules | 2026-07-11 |
 
-### 人与决策上下文
-| ID | 角色/人 | 负责内容 | 何时需要介入 | 联系或记录 |
+### People And Decisions
+
+| ID | Role / Person | Scope | When to involve | Contact or record |
 |---|---|---|---|---|
-| OWN-001 | x | 最终验收 | 验收标准变化时 | 本文件 |
+| OWN-001 | x | Final acceptance | Acceptance criteria changes | This file |
 
-## 3. Preferences & Tradeoffs
+## 3. Preferences And Tradeoffs
 
 ### Preferences
+
 | ID | Preference | Type | Strength | Scope | Rationale |
 |---|---|---|---|---|---|
-| PREF-001 | 标准库优先，不新增依赖 | imperative | locked | strategic | 依赖是长期成本 |
+| PREF-001 | Prefer standard library; do not add dependencies | imperative | locked | strategic | Dependencies are long-term cost |
 
 ### Tradeoffs
+
 | Decision | Option A | Option B | Tradeoff | Choice | Negotiable? |
 |---|---|---|---|---|---|
-| CSV 实现 | csv 模块 | pandas | 依赖 vs 便利 | csv 模块 | no |
+| CSV implementation | Python `csv` module | pandas | dependency cost vs convenience | `csv` module | no |
 
-### Locked Constraints & Negotiable Space
+### Locked Constraints And Negotiable Space
+
 | Area | Locked constraints | Negotiable space | Escalation rule |
 |---|---|---|---|
-| 依赖 | 不新增第三方依赖 | 输出列顺序 | 需要新依赖时先问 |
+| Dependencies | No new third-party dependency | Output column order | Ask before adding a dependency |
 
-## 4. 目标与度量
+## 4. Goals And Metrics
 
-### 目标
-| ID | 目标 | 成功度量 | 基线 | 目标值 | 数据来源/观察方式 |
+### Goals
+
+| ID | Goal | Success metric | Baseline | Target | Data source / observation |
 |---|---|---|---:|---:|---|
-| G-001 | 支持 CSV 导出 | 导出命令可用且转义正确 | 0 | 1 | pytest |
+| G-001 | Support CSV export | Export command works and escaping is correct | 0 | 1 | pytest |
 
-### 验收标准
-| ID | 验收标准 | 验证方法 | 通过条件 | 责任方 |
+### Acceptance Criteria
+
+| ID | Acceptance criterion | Verification method | Pass condition | Owner |
 |---|---|---|---|---|
-| A-001 | demo query --csv out.csv 生成合法 CSV | pytest tests/test_export.py | 全部通过 | x |
+| A-001 | `demo query --csv out.csv` writes valid CSV | pytest tests/test_export.py | All tests pass | x |
 
-## 5. 约束
+## 5. Constraints
 
-### 硬约束
-| ID | 约束 | 适用范围 | 验证/监控方法 |
+### Hard Constraints
+
+| ID | Constraint | Scope | Verification / monitoring |
 |---|---|---|---|
-| C-001 | 兼容 Python 3.10+ | 全部代码 | CI |
+| C-001 | Python 3.10+ compatibility | All code | CI |
 
-### 风险边界与升级条件
-| 情况 | 处理规则 |
+### Risk Boundaries And Escalation
+
+| Situation | Rule |
 |---|---|
-| 可逆、局部变更 | AI 自主推进并记录证据 |
+| Reversible local change | AI may proceed and record evidence |
 
-## 6. 总体策略
+## 6. Strategy
 
-### 策略概述
-在查询出口处接 CSV writer，纵向一刀切到 e2e 测试。
+### Strategy Summary
 
-### 依赖与切片策略
-查询出口 -> exporter 模块 -> CLI 参数 -> e2e 测试
+Attach a CSV writer at the query output boundary and verify the full vertical path with tests.
 
-- 切片方式：纵向切片
+### Dependency And Slicing Strategy
 
-### 执行原则
-- 每个任务包有独立验收证据
+```text
+query output -> exporter module -> CLI flag -> e2e test
+```
 
-## 7. 决策记录
-| ID | 状态 | 决策 | 原因/证据 | 影响范围 | 日期 |
+- Slice type: vertical
+- Why this slice: one complete export flow is independently testable
+- Early high-risk item: escaping fields with commas, quotes, and newlines
+
+### Execution Principles
+
+- Each task package needs independent acceptance evidence.
+
+## 7. Decisions
+
+| ID | Status | Decision | Reason / Evidence | Impact | Date |
 |---|---|---|---|---|---|
-| D-001 | 已批准 | 用标准库 csv 模块 | PREF-001 | NODE-001 | 2026-07-11 |
+| D-001 | approved | Use the standard-library `csv` module | PREF-001 | NODE-001 | 2026-07-11 |
 
-## 8. 探索与假设验证
-| ID | 状态 | 假设/未知 | 验证方法 | 截止任务包 | 通过/失败后的动作 |
+## 8. Exploration And Hypothesis Validation
+
+| ID | Status | Hypothesis / Unknown | Validation method | Deadline task | Pass / fail action |
 |---|---|---|---|---|---|
-| H-001 | 支持 | 查询出口返回可迭代行 | 读 src/query.py 并在 REPL 验证 | TASK-001 | 已确认，直接实现 |
+| H-001 | supported | Query output returns iterable rows | Read src/query.py and verify in REPL | TASK-001 | Confirmed; implement directly |
 
-### 探索实现计划
-无。假设已通过代码阅读关闭，证据见 memory.md F-001。
+### Exploration Plan
+
+None. The assumption was closed through code reading; evidence is in memory.md F-001.
 
 ## 9. Implementation Plan
 
 ### Overview
-一个任务包完成导出功能并验收。
+
+One task package delivers and verifies CSV export.
 
 ### Architecture Decisions
-- CSV 逻辑独立为 exporter 模块，便于单测
+
+- Keep CSV logic in a small exporter module so it can be unit tested.
 
 ### Plan Dependency Graph
+
 ```text
-NODE-001 CSV 导出（进行中）
+NODE-001 CSV export（进行中）
 ```
 
 ### Node Status
-| 节点 | 阶段 | 状态 | 规模 | 任务包 | 目标 | 依赖节点 | 验收/验证入口 | 证据 | 最后更新 |
+
+| Node | Phase | Status | Size | Task package | Goal | Dependencies | Acceptance / Verification | Evidence | Updated |
 |---|---|---|---|---|---|---|---|---|---|
-| NODE-001 | Phase 1 | `进行中` | `Small` | `tasks/TASK-001-add-export.md` | CSV 导出可用 | 无 | A-001 | RUN-001 | 2026-07-11 |
+| NODE-001 | Phase 1 | `进行中` | `Small` | `tasks/TASK-001-add-export.md` | CSV export works | None | A-001 | RUN-001 | 2026-07-11 |
 
 ### Loop Contract
-不适用（Linear）。
+
+Not applicable (Linear).
 
 ### Loop State
-不适用。
+
+Not applicable.
 
 ### Memory Sync
-| 类型 | 状态 | 来源 | memory.md 位置 | 最后更新 |
+
+| Type | Status | Source | memory.md location | Updated |
 |---|---|---|---|---|
-| 重要发现 | 已写入 | TASK-001 | memory.md#重要发现 | 2026-07-11 |
+| Finding | written | TASK-001 | memory.md#1-important-findings | 2026-07-11 |
 
 ### Task List
 
 #### Phase 1
-- [ ] NODE-001 / tasks/TASK-001-add-export.md：CSV 导出
+
+- [ ] NODE-001 / tasks/TASK-001-add-export.md: CSV export
 
 ### Checkpoints
-| Checkpoint | 位置 | 验证要求 | 是否需要人审 |
+
+| Checkpoint | Position | Verification requirements | Human review |
 |---|---|---|---|
-| CP-001 | NODE-001 后 | pytest 全绿 + 人工查看输出文件 | 是 |
+| CP-001 | After NODE-001 | pytest green + manual inspection of output file | yes |
 
 ### Parallelization Opportunities
-无。
 
-### Risks and Mitigations
+None.
+
+### Risks And Mitigations
+
 | Risk | Impact | Mitigation |
 |---|---|---|
-| 字段含逗号/换行时转义错误 | Medium | 用 csv 模块并加转义用例 |
+| Incorrect escaping for commas/newlines | Medium | Use `csv` module and add escaping cases |
 
 ### Open Questions
-无。
 
-## 10. 当前状态
-- 当前阻塞：无
-- 下一步：N-002 CLI 参数
-- Memory 待写入：无
+None.
 
-## 11. 更新协议
-按 plan-skill 更新规则维护：任务包状态变化更新第 9 节；历史与发现写 memory.md。
+## 10. Current Status
+
+- Current blocker: None
+- Next step: N-002 CLI flag
+- Pending memory write: None
+
+## 11. Update Protocol
+
+Follow plan-skill update rules: task package status changes update Section 9; history and findings go to memory.md.

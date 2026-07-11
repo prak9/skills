@@ -1,70 +1,96 @@
-# Program: <项目名称>
+# Program: <Project Name>
 
-> 项目计划总入口和当前计划 Source of Truth：只保存问题、上下文与引用、目标、度量、验收标准、约束、总体策略、依赖与切片策略、决策、探索假设、执行计划和任务包的最新状态。
-> 任务包当前执行态写入 `tasks/TASK-*.md`；本文件只维护总状态和每个任务包的最新状态。
-> CHANGELOG、运行日志、重要发现、知识库沉淀和历史执行记录总结统一写入 `memory.md`。
+> Current-state source of truth for the work. Keep only the concept brief, context, goals, constraints, strategy, decisions, hypotheses, implementation plan, task-package status, blockers, and next action here.
+> Task execution state lives in `tasks/TASK-*.md`.
+> Durable findings, changelog entries, run logs, lessons, and history summaries live in `memory.md`.
 
-- 总状态：`待开始 / 探索中 / 进行中 / 阻塞 / 待验收 / 完成 / 已取消`
-- Profile：`Full / Lite`
-- 计划模式：`Linear / Loop`
-- Loop 状态：`Goal / Plan / Act / Verify / Reflect / Iterate / Pass / Blocked / 不适用`
-- Loop 轮次：`0/<最大轮次或不适用>`
-- Memory：`memory.md`
-- 当前任务包：`tasks/TASK-NNN-<slug>.md / 无`
-- 当前计划节点：`NODE-NNN / 无`
-- 下一计划节点：`NODE-NNN / 决策点 / 无`
-- 最新证据入口：`<V-NNN、RUN-NNN、CHG-NNN、提交、CI 或报告>`
-- 下一 Checkpoint：`CP-NNN / 无`
-- Owner / TL：`<姓名或角色>`
-- 最后更新：`YYYY-MM-DD`
+- Overall status: `待开始 / 探索中 / 进行中 / 阻塞 / 待验收 / 完成 / 已取消`
+- Profile: `Full / Lite`
+- Plan mode: `Linear / Loop`
+- Loop state: `Goal / Plan / Act / Verify / Reflect / Iterate / Pass / Blocked / Not applicable`
+- Loop iteration: `0/<max iterations or Not applicable>`
+- Memory: `memory.md`
+- Active task package: `tasks/TASK-NNN-<slug>.md / None`
+- Active plan node: `NODE-NNN / None`
+- Next plan node: `NODE-NNN / Decision point / None`
+- Latest evidence: `<V-NNN, RUN-NNN, CHG-NNN, commit, CI run, or report>`
+- Next checkpoint: `CP-NNN / None`
+- Owner / TL: `<name or role>`
+- Last updated: `YYYY-MM-DD`
 
-## 1. 问题定义
+## 0. Concept Refinement
 
-### 背景
+Refine raw ideas into sharp, actionable concepts worth building through structured divergent and convergent thinking.
 
-<当前现状、触发原因、相关用户或系统。>
+### How It Works
 
-### 要解决的问题
+- Understand & Expand (Divergent): Restate the idea, ask sharpening questions, and generate variations.
+- Evaluate & Converge: Cluster ideas, stress-test them, and surface hidden assumptions.
+- Sharpen & Ship: Produce a concrete markdown one-pager moving work forward.
 
-<明确写出问题，而不是直接写解决方案。>
+### One-Page Brief
 
-### 为什么现在做
+If the work starts from an already-clear spec, write `None` in fields that do not apply and explain the source. Do not keep brainstorming history here; keep only the current confirmed direction.
 
-<风险、机会、成本、依赖或时机。>
+| Field | Content |
+|---|---|
+| Raw idea / Source | <user request, issue, spec, screenshot, codebase context, or None> |
+| Problem statement | <one-sentence "How might we..." framing> |
+| Target user | <specific user, role, team, operator, buyer, or system actor> |
+| Success criteria | <observable success conditions> |
+| Recommended direction | <chosen direction and why it wins> |
+| Key assumptions to validate | <assumption + fast validation method> |
+| MVP scope | <smallest version that tests the core assumption> |
+| Not doing | <clear exclusions and why> |
+| Open questions | <questions that must be answered before or during planning> |
 
-### 非目标
+## 1. Problem Definition
 
-- <本轮明确不解决的事项>
+### Background
 
-## 2. 上下文与 References
+<Current situation, trigger, users, or affected systems.>
 
-本节维护理解和执行当前计划所需的上下文索引。只放摘要和引用位置；可复用发现、历史变更和运行记录写入 `memory.md`。
+### Problem To Solve
 
-### 关键上下文
+<Define the problem, not just the solution.>
 
-| ID | 类型 | 内容摘要 | 位置/Ref | 为什么重要 | 状态/新鲜度 |
+### Why Now
+
+<Risk, opportunity, cost, dependency, or timing.>
+
+### Non-goals
+
+- <Explicitly out of scope for this round>
+
+## 2. Context And References
+
+Keep only summaries and pointers needed to understand or execute the current plan. Durable findings, historical changes, and run logs belong in `memory.md`.
+
+### Key Context
+
+| ID | Type | Summary | Location / Ref | Why it matters | Freshness |
 |---|---|---|---|---|---|
-| CTX-001 | `spec / code / test / design / data / ops / external / evidence` | <摘要> | <路径、URL、Issue、提交、日志或人> | <影响的问题、目标或任务包> | `当前 / 待验证 / 可能过期` |
+| CTX-001 | `spec / code / test / design / data / ops / external / evidence` | <summary> | <path, URL, issue, commit, log, or person> | <affected goal or task package> | `current / needs validation / possibly stale` |
 
-### 代码与运行入口
+### Code And Runtime Entrypoints
 
-| ID | 入口 | 路径/命令 | 关联节点 | 备注 |
+| ID | Entrypoint | Path / Command | Related node | Notes |
 |---|---|---|---|---|
-| REF-001 | <模块、测试、脚本、配置或服务> | `<路径或命令>` | `NODE-NNN` | <如何使用或注意事项> |
+| REF-001 | <module, test, script, config, or service> | `<path or command>` | `NODE-NNN` | <how to use it or what to watch> |
 
-### 外部资料与证据
+### External References And Evidence
 
-| ID | 来源 | Ref | 用途 | 获取/核对日期 |
+| ID | Source | Ref | Use | Checked date |
 |---|---|---|---|---|
-| REF-EXT-001 | <文档、API、标准、报告、截图、CI、日志等> | <URL、路径或记录> | <支持哪个判断或验收> | `YYYY-MM-DD` |
+| REF-EXT-001 | <docs, API, standard, report, screenshot, CI, log> | <URL, path, or record> | <which judgment or acceptance criterion it supports> | `YYYY-MM-DD` |
 
-### 人与决策上下文
+### People And Decisions
 
-| ID | 角色/人 | 负责内容 | 何时需要介入 | 联系或记录 |
+| ID | Role / Person | Scope | When to involve | Contact or record |
 |---|---|---|---|---|
-| OWN-001 | <Owner、Reviewer、Domain Expert> | <范围> | <决策点或风险> | <记录位置> |
+| OWN-001 | <Owner, Reviewer, Domain Expert> | <scope> | <decision point or risk> | <record location> |
 
-## 3. Preferences & Tradeoffs
+## 3. Preferences And Tradeoffs
 
 Use this layer to define what matters before decomposing work.
 
@@ -84,123 +110,123 @@ Preference -> Goal -> Plan -> Task -> Verify -> Memory
 |---|---|---|---|---|---|
 | <decision point> | <A> | <B> | <cost / benefit> | <current choice> | `yes / no` |
 
-### Locked Constraints & Negotiable Space
+### Locked Constraints And Negotiable Space
 
 | Area | Locked constraints | Negotiable space | Escalation rule |
 |---|---|---|---|
-| <critical 20% or major area> | <must not change without approval> | <agent may optimize or propose alternatives> | <when to ask before changing> |
+| <critical area> | <must not change without approval> | <agent may optimize or propose alternatives> | <when to ask before changing> |
 
-## 4. 目标与度量
+## 4. Goals And Metrics
 
-### 目标
+### Goals
 
-| ID | 目标 | 成功度量 | 基线 | 目标值 | 数据来源/观察方式 |
+| ID | Goal | Success metric | Baseline | Target | Data source / observation |
 |---|---|---|---:|---:|---|
-| G-001 | <目标> | <指标> | <值> | <值> | <来源> |
+| G-001 | <goal> | <metric> | <value> | <value> | <source> |
 
-### 验收标准
+### Acceptance Criteria
 
-| ID | 验收标准 | 验证方法 | 通过条件 | 责任方 |
+| ID | Acceptance criterion | Verification method | Pass condition | Owner |
 |---|---|---|---|---|
-| A-001 | <端到端可观察结果> | <测试、演示、日志、人工验收等> | <明确条件> | <角色> |
+| A-001 | <end-to-end observable result> | <test, demo, log, manual acceptance> | <clear condition> | <role> |
 
-## 5. 约束
+## 5. Constraints
 
-### 硬约束
+### Hard Constraints
 
-| ID | 约束 | 适用范围 | 验证/监控方法 |
+| ID | Constraint | Scope | Verification / monitoring |
 |---|---|---|---|
-| C-001 | <安全、数据、兼容性、延迟、合规等> | <范围> | <方法> |
+| C-001 | <security, data, compatibility, latency, compliance> | <scope> | <method> |
 
-### 风险边界与升级条件
+### Risk Boundaries And Escalation
 
-| 情况 | 处理规则 |
+| Situation | Rule |
 |---|---|
-| 可逆、局部、不会改变外部契约 | AI 可自主推进并记录证据 |
-| 跨模块、关键假设未验证、引入长期承诺 | 到任务包 Checkpoint 展示 |
-| 可能违反硬约束、造成不可逆损失、改变目标或验收标准 | 停止并先征询 |
+| Reversible, local, does not change external contracts | AI may proceed and record evidence |
+| Cross-module, unvalidated key assumption, or long-term commitment | Show at task-package checkpoint |
+| Could violate a hard constraint, cause irreversible loss, or change goals/acceptance criteria | Stop and ask first |
 
-## 6. 总体策略
+## 6. Strategy
 
-### 策略概述
+### Strategy Summary
 
-<用几句话说明总体解法、先后顺序和取舍。>
+<Briefly explain the solution, ordering, and main tradeoffs.>
 
-### 依赖与切片策略
+### Dependency And Slicing Strategy
 
 ```text
-<基础依赖> -> <中间能力> -> <用户/系统可观察结果>
+<foundation> -> <intermediate capability> -> <user/system-observable result>
 ```
 
-- 切片方式：`纵向切片 / 水平分层 / 混合`
-- 选择原因：<为什么这样切>
-- 高风险优先项：<最早验证的风险或假设>
+- Slice type: `vertical / horizontal / mixed`
+- Why this slice: <reason>
+- Early high-risk item: <risk or assumption to validate first>
 
-### 执行原则
+### Execution Principles
 
-- <原则，例如先验证最高风险假设>
-- <原则，例如每个任务包必须有独立验收证据>
-- <原则，例如每 2-3 个任务包设置一个 Checkpoint>
+- <principle, such as validate the riskiest assumption first>
+- <principle, such as every task package needs independent acceptance evidence>
+- <principle, such as checkpoint every 2-3 task packages>
 
-## 7. 决策记录
+## 7. Decisions
 
-只记录会影响后续任务包的决定；普通实现细节写入任务包。
+Record only decisions that affect later task packages. Put ordinary implementation details in the relevant task package.
 
-| ID | 状态 | 决策 | 原因/证据 | 影响范围 | 日期 |
+| ID | Status | Decision | Reason / Evidence | Impact | Date |
 |---|---|---|---|---|---|
-| D-001 | `提议 / 已批准 / 已替代 / 已废弃` | <决定> | <证据或取舍> | <影响> | `YYYY-MM-DD` |
+| D-001 | `proposed / approved / replaced / deprecated` | <decision> | <evidence or tradeoff> | <impact> | `YYYY-MM-DD` |
 
-## 8. 探索与假设验证
+## 8. Exploration And Hypothesis Validation
 
-本节可定义具体探索实现计划，用于 spike、prototype、实验脚本、数据核验或技术可行性验证。探索计划只覆盖验证假设所需的最小实现；如果探索结果进入正式交付，升级为第 9 节的计划节点和 `tasks/TASK-*.md`。
+Use this section for spikes, prototypes, scripts, data checks, or technical feasibility validation. Exploration must be minimal and serve only to validate a hypothesis. If the result becomes delivery scope, promote it into Section 9 and a task package.
 
-| ID | 状态 | 假设/未知 | 验证方法 | 截止任务包 | 通过/失败后的动作 |
+| ID | Status | Hypothesis / Unknown | Validation method | Deadline task | Pass / fail action |
 |---|---|---|---|---|---|
-| H-001 | `[待验证]` | <假设或未知> | <实验、代码阅读、原型、用户确认等> | `TASK-NNN` | <动作> |
+| H-001 | `[待验证]` | <hypothesis or unknown> | <experiment, code read, prototype, user confirmation> | `TASK-NNN` | <action> |
 
-### 探索实现计划
+### Exploration Plan
 
-| ID | 关联假设 | 状态 | 实现动作 | 触达范围 | 验证方法 | 证据入口 | 通过后的动作 | 失败后的动作 |
+| ID | Hypothesis | Status | Action | Touched area | Verification | Evidence | Pass action | Fail action |
 |---|---|---|---|---|---|---|---|---|
-| EXP-001 | `H-001` | `待开始 / 进行中 / 待验证 / 完成 / 阻塞` | <最小 spike/prototype/脚本/实验动作> | <文件、模块、数据、命令或外部系统> | <命令、指标、人工验收或观察方式> | <RUN-NNN、报告、日志、截图或提交> | <升级为 NODE/TASK、更新决策或关闭假设> | <回炉、放弃、拆分、升级或改假设> |
+| EXP-001 | `H-001` | `待开始 / 进行中 / 待验证 / 完成 / 阻塞` | <minimal spike/prototype/script/experiment> | <files, modules, data, command, or external system> | <command, metric, manual check, or observation> | <RUN-NNN, report, log, screenshot, or commit> | <promote to NODE/TASK, update decision, or close hypothesis> | <retry, drop, split, escalate, or revise hypothesis> |
 
-规则：
+Rules:
 
-- 探索实现计划必须最小化，只服务于验证假设，不承载正式交付范围。
-- 探索动作产生的运行日志、失败记录、变更和总结写入 `memory.md`。
-- 探索结论影响正式实现时，更新第 7 节决策记录、第 9 节计划节点和对应任务包。
-- 假设与探索条目只能以结论关闭：`支持 / 推翻 / 不确定` 加证据指针；产出物（报告、脚本、论文）生成不等于假设关闭。
+- Keep exploration minimal. It does not carry formal delivery scope.
+- Write exploration run logs, failures, changes, and summaries to `memory.md`.
+- When an exploration conclusion changes implementation, update Decisions, Implementation Plan, and the related task package.
+- Close hypotheses only with a verdict: `supported / disproven / uncertain` plus evidence. Producing an artifact is not the same as closing a hypothesis.
 
 ## 9. Implementation Plan
 
-每个计划节点必须拆为一个任务包。任务包内再拆为原子实现节点。本节维护计划依赖图、每个节点状态、阶段任务清单、Checkpoint、风险和开放问题。
+Every plan node must map to one task package. Each task package then breaks into atomic implementation nodes. This section tracks the dependency graph, node status, phased task list, checkpoints, risks, and open questions.
 
 ### Overview
 
-<一段话说明本轮要构建什么、为什么这样分阶段、最终如何验收。>
+<Describe what this round builds, why it is staged this way, and how final acceptance works.>
 
 ### Architecture Decisions
 
-- <关键决策 1 和原因>
-- <关键决策 2 和原因>
+- <key decision and reason>
+- <key decision and reason>
 
 ### Plan Dependency Graph
 
 ```text
-NODE-001 Foundation (<status>) 
+NODE-001 Foundation (<status>)
   -> NODE-002 Core slice (<status>)
       -> NODE-003 Polish / hardening (<status>)
 ```
 
 ### Node Status
 
-| 节点 | 阶段 | 状态 | 规模 | 任务包 | 目标 | 依赖节点 | 验收/验证入口 | 证据 | 最后更新 |
+| Node | Phase | Status | Size | Task package | Goal | Dependencies | Acceptance / Verification | Evidence | Updated |
 |---|---|---|---|---|---|---|---|---|---|
-| NODE-001 | Phase 1: Foundation | `待开始` | `Small / Medium` | `tasks/TASK-001-short-slug.md` | <可观察结果> | `无` | <A-NNN、V-NNN 或命令> | <证据位置> | `YYYY-MM-DD` |
+| NODE-001 | Phase 1: Foundation | `待开始` | `Small / Medium` | `tasks/TASK-001-short-slug.md` | <observable result> | `None` | <A-NNN, V-NNN, or command> | <evidence location> | `YYYY-MM-DD` |
 
 ### Loop Contract
 
-用于需要多轮收敛的计划。线性计划也保留本节，写 `不适用`。本节只保留当前最新 Loop 状态；历史尝试写入 `memory.md#运行日志`。
+Use this for plans that need iterative convergence. For linear plans, keep this section and write `Not applicable`. Keep only the latest loop state here; historical attempts go to `memory.md#4-run-logs`.
 
 ```text
 GOAL -> PLAN -> ACT -> VERIFY -> PASS
@@ -209,39 +235,39 @@ GOAL -> PLAN -> ACT -> VERIFY -> PASS
                 REFLECT -> ITERATE -> PLAN
 ```
 
-| 字段 | 内容 |
+| Field | Content |
 |---|---|
-| Loop 目标 | <本轮循环要收敛到什么结果；线性计划写不适用> |
-| 成功标准 | <PASS 的可验证条件> |
-| 失败信号 | <什么结果算 FAIL，需要 Reflect> |
-| 验证器 | <测试、构建、人工场景、指标或审查方式> |
-| 最大轮次 | `<数字；线性计划写不适用>` |
-| Reflect 触发 | <验证失败、风险升高、范围漂移、证据不足等> |
-| Iterate 规则 | <每轮允许调整什么，不允许改什么> |
-| 停止/升级条件 | <预算耗尽、重复失败、触碰硬约束等> |
-| Memory 写入规则 | <哪些变更、运行记录、发现、失败、执行总结必须写入 memory.md> |
+| Loop goal | <what this loop must converge to, or Not applicable> |
+| Success criteria | <verifiable PASS condition> |
+| Failure signal | <what result triggers Reflect> |
+| Verifier | <test, build, manual scenario, metric, or review> |
+| Max iterations | `<number, or Not applicable>` |
+| Reflect trigger | <verification failure, risk increase, scope drift, insufficient evidence> |
+| Iterate rule | <what may change each round and what may not> |
+| Stop / escalation condition | <budget exhausted, repeated failure, hard constraint touched> |
+| Memory write rule | <which changes, runs, findings, failures, and summaries must be written to memory.md> |
 
 ### Loop State
 
-| 当前轮次 | 当前节点 | Loop 步骤 | 当前假设/计划变化 | 验证入口 | 最新结果 | 当前决策 | 下一步 |
+| Iteration | Node | Step | Current hypothesis / plan delta | Verification | Latest result | Decision | Next |
 |---|---|---|---|---|---|---|---|
-| L-001 | `NODE-001` | `Plan / Act / Verify / Reflect / Iterate / Pass` | <变化> | <命令或验收> | `待验证 / 通过 / 失败 / 阻塞` | <继续、回炉、拆分、升级> | <下一步> |
+| L-001 | `NODE-001` | `Plan / Act / Verify / Reflect / Iterate / Pass` | <delta> | <command or acceptance check> | `待验证 / passed / failed / blocked` | <continue, revise, split, escalate> | <next step> |
 
 ### Memory Sync
 
-| 类型 | 状态 | 来源 | memory.md 位置 | 最后更新 |
+| Type | Status | Source | memory.md location | Updated |
 |---|---|---|---|---|
-| 重要发现 | `待写入 / 已写入 / 不适用` | <TASK-NNN、证据或 Loop 轮次> | `memory.md#重要发现` | `YYYY-MM-DD` |
-| 变更记录 | `待写入 / 已写入 / 不适用` | <TASK-NNN、提交或决策> | `memory.md#变更记录-changelog` | `YYYY-MM-DD` |
-| 运行日志 | `待写入 / 已写入 / 不适用` | <TASK-NNN、命令、验证或 Loop 轮次> | `memory.md#运行日志` | `YYYY-MM-DD` |
-| 历史执行总结 | `待写入 / 已写入 / 不适用` | <TASK-NNN 或 Checkpoint> | `memory.md#历史执行记录总结` | `YYYY-MM-DD` |
+| Finding | `pending / written / not applicable` | <TASK-NNN, evidence, or loop iteration> | `memory.md#1-important-findings` | `YYYY-MM-DD` |
+| Changelog | `pending / written / not applicable` | <TASK-NNN, commit, or decision> | `memory.md#3-changelog` | `YYYY-MM-DD` |
+| Run log | `pending / written / not applicable` | <TASK-NNN, command, verification, or loop iteration> | `memory.md#4-run-logs` | `YYYY-MM-DD` |
+| History summary | `pending / written / not applicable` | <TASK-NNN or Checkpoint> | `memory.md#5-history-summaries` | `YYYY-MM-DD` |
 
 ### Task List
 
 #### Phase 1: Foundation
 
-- [ ] NODE-001 / `tasks/TASK-001-short-slug.md`：<基础能力或最高风险假设验证>
-- [ ] NODE-002 / `tasks/TASK-002-short-slug.md`：<后续基础节点>
+- [ ] NODE-001 / `tasks/TASK-001-short-slug.md`: <foundation or highest-risk hypothesis validation>
+- [ ] NODE-002 / `tasks/TASK-002-short-slug.md`: <next foundation node>
 
 #### Checkpoint: Foundation
 
@@ -250,8 +276,8 @@ GOAL -> PLAN -> ACT -> VERIFY -> PASS
 
 #### Phase 2: Core Features
 
-- [ ] NODE-003 / `tasks/TASK-003-short-slug.md`：<核心纵向切片>
-- [ ] NODE-004 / `tasks/TASK-004-short-slug.md`：<核心纵向切片>
+- [ ] NODE-003 / `tasks/TASK-003-short-slug.md`: <core vertical slice>
+- [ ] NODE-004 / `tasks/TASK-004-short-slug.md`: <core vertical slice>
 
 #### Checkpoint: Core Features
 
@@ -260,7 +286,7 @@ GOAL -> PLAN -> ACT -> VERIFY -> PASS
 
 #### Phase 3: Polish
 
-- [ ] NODE-005 / `tasks/TASK-005-short-slug.md`：<收尾、硬化或文档>
+- [ ] NODE-005 / `tasks/TASK-005-short-slug.md`: <hardening, documentation, or release work>
 
 #### Checkpoint: Complete
 
@@ -270,46 +296,47 @@ GOAL -> PLAN -> ACT -> VERIFY -> PASS
 
 ### Checkpoints
 
-| Checkpoint | 位置 | 验证要求 | 是否需要人审 |
+| Checkpoint | Position | Verification requirements | Human review |
 |---|---|---|---|
-| CP-001 | <NODE-001 后或 NODE-001~003 后> | <测试、构建、端到端流或人工验收> | `是 / 否` |
+| CP-001 | <after NODE-001 or NODE-001~003> | <tests, build, end-to-end flow, or manual acceptance> | `yes / no` |
 
 ### Parallelization Opportunities
 
-| 工作 | 是否可并行 | 前置条件 | 协调方式 |
+| Work | Parallelizable? | Prerequisite | Coordination |
 |---|---|---|---|
-| <节点、任务包或测试/文档工作> | `是 / 否 / 待确认` | <共享契约或依赖> | <文件、接口、Owner 或 Checkpoint> |
+| <node, task package, test, or doc work> | `yes / no / needs confirmation` | <shared contract or dependency> | <file, interface, owner, or checkpoint> |
 
-### Risks and Mitigations
+### Risks And Mitigations
 
 | Risk | Impact | Mitigation |
 |---|---|---|
-| <风险> | `High / Medium / Low` | <缓解策略> |
+| <risk> | `High / Medium / Low` | <mitigation> |
 
 ### Open Questions
 
-- `[待决策]` <需要人输入的问题、可选方案和建议默认值>
+- `[待决策]` <question, options, and recommended default>
 
-## 10. 当前状态
+## 10. Current Status
 
-本节只保存最新状态，不追加历史记录。状态变化、CHANGELOG 和运行日志写入 `memory.md`。
+Keep only the latest state here. Status changes, changelog entries, and run logs belong in `memory.md`.
 
-- 当前阻塞：<无；或阻塞说明、Owner、解除条件>
-- 当前风险：<无；或风险和控制方式>
-- 下一步：<下一个计划节点、任务包或原子节点>
-- 下一次需要人判断：<无；或决策点>
-- Memory 待写入：<无；或变更记录/运行日志/重要发现/执行总结的来源>
+- Current blocker: <None, or blocker, owner, and unblock condition>
+- Current risk: <None, or risk and control>
+- Next step: <next plan node, task package, or atomic node>
+- Next human decision: <None, or decision point>
+- Pending memory write: <None, or source for changelog/run log/finding/history summary>
 
-## 11. 更新协议
+## 11. Update Protocol
 
-- 新增、阻塞、待验收、完成或取消计划节点/任务包时，必须更新第 9 节的 Plan Dependency Graph、Node Status 和 Task List。
-- Loop 模式下，每次 ACT/VERIFY/REFLECT/ITERATE 后必须覆盖更新当前 Loop State；PASS 后同步更新 Node Status；历史 Loop 尝试写入 `memory.md#运行日志`。
-- 新增或发现影响计划的上下文、代码入口、证据或外部引用时，必须更新第 2 节。
-- 偏好、权衡、locked constraints 或 negotiable space 变化时，必须更新第 3 节；执行中学到的偏好变化写入 `memory.md#Preference Learning`。
-- 出现 CHANGELOG-worthy 变更、运行日志、重要发现、失败教训、可复用知识或任务包历史总结时，必须更新 `memory.md`，并同步第 9 节 Memory Sync。
-- 目标、度量、验收标准、硬约束或总体策略变化时，必须新增或更新第 4-7 节。
-- 假设验证或探索实现完成时，必须更新第 8 节，并把影响反映到第 7 节决策记录、第 9 节计划节点和相关任务包。
-- 任务包内部原子节点状态只写在对应 `tasks/TASK-*.md`；本文件只写计划节点/任务包级状态。
-- 本文件不得新增 CHANGELOG、运行日志、历史状态流转或已完成 Loop 尝试记录；这些都写入 `memory.md`。
-- 状态为 `完成` 必须有证据位置，不能只写“已实现”。
-- 如果需要兼容 `tasks/plan.md` 或 `tasks/todo.md`，只能从本文件和任务包导出，不能作为权威来源。
+- When an idea is refined or materially changed, update Section 0 and the context/ref index.
+- When a plan node or task package is created, blocked, ready for acceptance, completed, or cancelled, update Plan Dependency Graph, Node Status, and Task List.
+- In Loop mode, update the current Loop State after every ACT/VERIFY/REFLECT/ITERATE. After PASS, update Node Status. Historical loop attempts go to `memory.md#4-run-logs`.
+- When new context, code entrypoints, evidence, or external references are found, update Section 2.
+- When preferences, tradeoffs, locked constraints, or negotiable space change, update Section 3. Preference learning from execution goes to `memory.md#8-preference-learning`.
+- When a changelog-worthy change, run log, important finding, failed lesson, reusable knowledge, or task-package history summary appears, update `memory.md` and Memory Sync.
+- When goals, metrics, acceptance criteria, hard constraints, or strategy change, update Sections 4-7.
+- When hypothesis validation or exploration completes, update Section 8 and reflect the impact in Decisions, Implementation Plan, and related task packages.
+- Atomic node state lives only in `tasks/TASK-*.md`; this file records plan-node and task-package status.
+- Do not add CHANGELOG, run logs, historical status transitions, or completed Loop attempts to this file.
+- A `完成` row must have an evidence location; never mark work done because it was merely implemented.
+- If downstream tooling requires `tasks/plan.md` or `tasks/todo.md`, generate them only from this file and task packages. They are not authoritative.

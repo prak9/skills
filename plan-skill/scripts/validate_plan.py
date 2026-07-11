@@ -11,23 +11,24 @@ from pathlib import Path
 
 
 PROGRAM_REQUIRED = [
-    "问题定义",
-    "上下文与 References",
-    "关键上下文",
-    "代码与运行入口",
-    "外部资料与证据",
-    "人与决策上下文",
-    "Preferences & Tradeoffs",
+    "Concept Refinement",
+    "Problem Definition",
+    "Context And References",
+    "Key Context",
+    "Code And Runtime Entrypoints",
+    "External References And Evidence",
+    "People And Decisions",
+    "Preferences And Tradeoffs",
     "Preferences",
     "Tradeoffs",
-    "Locked Constraints",
-    "目标与度量",
-    "验收标准",
-    "约束",
-    "总体策略",
-    "依赖与切片策略",
-    "决策记录",
-    "探索与假设验证",
+    "Locked Constraints And Negotiable Space",
+    "Goals And Metrics",
+    "Acceptance Criteria",
+    "Constraints",
+    "Strategy",
+    "Dependency And Slicing Strategy",
+    "Decisions",
+    "Exploration And Hypothesis Validation",
     "Implementation Plan",
     "Overview",
     "Architecture Decisions",
@@ -39,10 +40,10 @@ PROGRAM_REQUIRED = [
     "Task List",
     "Checkpoints",
     "Parallelization Opportunities",
-    "Risks and Mitigations",
+    "Risks And Mitigations",
     "Open Questions",
-    "当前状态",
-    "更新协议",
+    "Current Status",
+    "Update Protocol",
 ]
 
 TASK_REQUIRED = [
@@ -72,10 +73,11 @@ TASK_REQUIRED = [
 # Lite profile: for work of one or two focused sessions. Declared via `- Profile: Lite`
 # in the program.md header; default is Full. Semantic checks apply to both profiles.
 PROGRAM_REQUIRED_LITE = [
-    "问题定义",
-    "验收标准",
+    "Concept Refinement",
+    "Problem Definition",
+    "Acceptance Criteria",
     "Node Status",
-    "当前状态",
+    "Current Status",
 ]
 
 TASK_REQUIRED_LITE = [
@@ -90,16 +92,16 @@ TASK_REQUIRED_LITE = [
 ]
 
 MEMORY_REQUIRED = [
-    "重要发现",
-    "知识库沉淀",
-    "变更记录",
-    "运行日志",
-    "历史执行记录总结",
-    "失败与回炉记录",
-    "开放知识缺口",
+    ("Important Findings", "重要发现"),
+    ("Knowledge Base", "知识库沉淀"),
+    ("Changelog", "变更记录"),
+    ("Run Logs", "运行日志"),
+    ("History Summaries", "历史执行记录总结"),
+    ("Failures And Rework", "失败与回炉记录"),
+    ("Open Knowledge Gaps", "开放知识缺口"),
     "Preference Learning",
-    "提炼与整理",
-    "更新规则",
+    ("Reflection And Curation", "提炼与整理"),
+    ("Update Rules", "更新规则"),
 ]
 
 VALID_STATUSES = {
@@ -128,7 +130,7 @@ UNRESOLVED_PATTERNS = [
 PROGRAM_HISTORY_PATTERNS = [
     r"^#{1,6}\s*(?:CHANGELOG|Changelog|变更记录)",
     r"^#{1,6}\s*(?:Run Log|运行日志|Execution Log)",
-    r"^#{1,6}\s*历史执行记录总结",
+    r"^#{1,6}\s*(?:History Summaries|历史执行记录总结)",
 ]
 
 
@@ -136,7 +138,7 @@ def read_text(path: Path) -> str:
     try:
         return path.read_text(encoding="utf-8")
     except UnicodeDecodeError as exc:
-        raise RuntimeError(f"文件不是 UTF-8：{path}") from exc
+        raise RuntimeError(f"File is not UTF-8: {path}") from exc
 
 
 def has_required(text: str, item: str) -> bool:
@@ -146,10 +148,11 @@ def has_required(text: str, item: str) -> bool:
     return bool(re.search(pattern, text, flags=re.MULTILINE))
 
 
-def check_required_items(path: Path, text: str, required: list[str], errors: list[str]) -> None:
+def check_required_items(path: Path, text: str, required: list, errors: list[str]) -> None:
     for item in required:
-        if not has_required(text, item):
-            errors.append(f"{path} 缺少必要章节或字段：{item}")
+        options = (item,) if isinstance(item, str) else item
+        if not any(has_required(text, option) for option in options):
+            errors.append(f"{path} is missing required section or field: {' / '.join(options)}")
 
 
 def detect_profile(text: str) -> str:
@@ -160,7 +163,7 @@ def detect_profile(text: str) -> str:
 def find_placeholders(path: Path, text: str, warnings: list[str]) -> None:
     placeholders = len(re.findall(r"<[^>\n]{1,120}>", text))
     if placeholders:
-        warnings.append(f"{path} 仍含 {placeholders} 个模板占位符")
+        warnings.append(f"{path} still contains {placeholders} template placeholders")
 
 
 def iter_table_rows(text: str):
@@ -204,10 +207,10 @@ def check_completed_rows(path: Path, text: str, errors: list[str]) -> None:
             evidence = norm_cell(cells[ev_idx])
             if evidence in EVIDENCE_EMPTY or re.fullmatch(r"<[^>\n]*>", evidence):
                 errors.append(
-                    f"{path} 行 `{row_id}` 状态为 {'/'.join(sorted(statuses))} 但证据为空或占位符"
+                    f"{path} row `{row_id}` is {'/'.join(sorted(statuses))} but evidence is empty or a placeholder"
                 )
         if "完成" in statuses and unresolved.search(" ".join(cells)):
-            errors.append(f"{path} 行 `{row_id}` 状态为 完成 但仍含未决标记")
+            errors.append(f"{path} row `{row_id}` is 完成 but still contains unresolved markers")
 
 
 def markdown_h2_section(text: str, title: str) -> str | None:
@@ -227,21 +230,25 @@ def check_standing_checklist_completion(path: Path, text: str, errors: list[str]
     unchecked = re.findall(r"^\s*-\s+\[\s\]\s+(.+)$", section, flags=re.MULTILINE)
     if unchecked:
         errors.append(
-            f"{path} 状态为 `{status}`，但 Standing Checklist 仍有 {len(unchecked)} 个未勾选项"
+            f"{path} status is `{status}`, but Standing Checklist still has {len(unchecked)} unchecked items"
         )
     for line in re.findall(r"^\s*-\s+\[[xX]\]\s+(.+)$", section, flags=re.MULTILINE):
         if re.search(r"N/A\s*:\s*(?:$|<[^>\n]*>)", line, flags=re.IGNORECASE):
-            errors.append(f"{path} Standing Checklist 中 N/A 项缺少具体原因：{line}")
+            errors.append(f"{path} Standing Checklist has an N/A item without a concrete reason: {line}")
 
 
 def find_program_history_sections(path: Path, text: str, warnings: list[str]) -> None:
     for pattern in PROGRAM_HISTORY_PATTERNS:
         if re.search(pattern, text, flags=re.IGNORECASE | re.MULTILINE):
-            warnings.append(f"{path} 含历史记录章节，应迁移到 memory.md：{pattern}")
+            warnings.append(f"{path} contains a history/log section that should move to memory.md: {pattern}")
 
 
 def current_task_from_program(text: str) -> str | None:
-    match = re.search(r"^-\s*当前任务包[：:]\s*`?([^`\n]+)`?", text, flags=re.MULTILINE)
+    match = re.search(
+        r"^-\s*(?:Active task package|当前任务包)[：:]\s*`?([^`\n]+)`?",
+        text,
+        flags=re.MULTILINE | re.IGNORECASE,
+    )
     if not match:
         return None
     value = match.group(1).strip()
@@ -255,10 +262,15 @@ def program_node_statuses(text: str) -> dict[str, str]:
     result: dict[str, str] = {}
     for header, cells in iter_table_rows(text):
         norm_header = [norm_cell(cell) for cell in header]
-        if "状态" not in norm_header or "任务包" not in norm_header:
+        header_lookup = {cell.lower(): i for i, cell in enumerate(norm_header)}
+        status_idx = header_lookup.get("status")
+        task_idx = header_lookup.get("task package")
+        if status_idx is None and "状态" in norm_header:
+            status_idx = norm_header.index("状态")
+        if task_idx is None and "任务包" in norm_header:
+            task_idx = norm_header.index("任务包")
+        if status_idx is None or task_idx is None:
             continue
-        status_idx = norm_header.index("状态")
-        task_idx = norm_header.index("任务包")
         if max(status_idx, task_idx) >= len(cells):
             continue
         status = norm_cell(cells[status_idx])
@@ -319,20 +331,20 @@ def check_task_link(root: Path, link: str, errors: list[str]) -> Path | None:
     try:
         task_path.relative_to(root)
     except ValueError:
-        errors.append(f"任务包路径越出项目根目录：{link}")
+        errors.append(f"Task package path escapes the project root: {link}")
         return None
     if not task_path.exists():
-        errors.append(f"program.md 引用了不存在的任务包：{link}")
+        errors.append(f"program.md references a missing task package: {link}")
         return None
     return task_path
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="检查 program.md 和 tasks/TASK-*.md 的计划结构、任务链接和状态记录。"
+        description="Validate plan-skill program.md and tasks/TASK-*.md structure, links, and status records."
     )
-    parser.add_argument("root", nargs="?", default=".", help="项目根目录，默认当前目录")
-    parser.add_argument("--json", action="store_true", help="以 JSON 输出结果")
+    parser.add_argument("root", nargs="?", default=".", help="Project root, default: current directory")
+    parser.add_argument("--json", action="store_true", help="Output JSON")
     args = parser.parse_args()
 
     root = Path(args.root).resolve()
@@ -344,7 +356,7 @@ def main() -> int:
     if program_path.exists():
         program_text = read_text(program_path)
     else:
-        errors.append(f"缺少文件：{program_path}")
+        errors.append(f"Missing file: {program_path}")
         program_text = ""
     profile = detect_profile(program_text)
     lite = profile == "Lite"
@@ -359,7 +371,7 @@ def main() -> int:
         if not lite:
             check_required_items(memory_path, memory_text, MEMORY_REQUIRED, errors)
     elif not lite:
-        errors.append(f"缺少文件：{memory_path}")
+        errors.append(f"Missing file: {memory_path}")
 
     checked_paths: list[Path] = [program_path] if program_path.exists() else []
     if memory_path.exists():
@@ -369,28 +381,30 @@ def main() -> int:
         find_placeholders(program_path, program_text, warnings)
         check_completed_rows(program_path, program_text, errors)
         find_program_history_sections(program_path, program_text, warnings)
-        if re.search(r"^-\s*计划模式[：:].*Loop", program_text, flags=re.MULTILINE) and not re.search(
-            r"\bL-\d{3}\b", program_text
-        ):
-            warnings.append("program.md 计划模式为 Loop，但未发现 Loop 轮次编号，例如 L-001")
+        if re.search(
+            r"^-\s*(?:Plan mode|计划模式)[：:].*Loop",
+            program_text,
+            flags=re.MULTILINE | re.IGNORECASE,
+        ) and not re.search(r"\bL-\d{3}\b", program_text):
+            warnings.append("program.md is in Loop mode, but no loop iteration ID was found, e.g. L-001")
         if not status_values(program_text):
-            warnings.append("program.md 未发现规范状态值")
+            warnings.append("program.md has no recognized status value")
         if not node_ids(program_text):
-            warnings.append("program.md 未发现计划节点 ID，例如 NODE-001")
+            warnings.append("program.md has no plan node ID, e.g. NODE-001")
         if not lite:
             if not size_values(program_text):
-                warnings.append("program.md 未发现任务包规模值，例如 `S` 或 `M`")
+                warnings.append("program.md has no task-package size value, e.g. `S` or `M`")
             if not context_ref_ids(program_text):
-                warnings.append("program.md 未发现上下文或引用 ID，例如 CTX-001/REF-001")
+                warnings.append("program.md has no context/reference ID, e.g. CTX-001/REF-001")
             if not preference_ref_ids(program_text):
-                warnings.append("program.md 未发现偏好 ID，例如 PREF-001")
+                warnings.append("program.md has no preference ID, e.g. PREF-001")
     if memory_text:
         find_placeholders(memory_path, memory_text, warnings)
         if not re.search(r"\b(?:F|K|CHG|RUN|HIST|R|Q|PL)-\d{3}\b", memory_text):
-            warnings.append("memory.md 未发现记忆条目编号，例如 F-001/K-001/CHG-001/RUN-001/HIST-001/PL-001")
+            warnings.append("memory.md has no memory entry ID, e.g. F-001/K-001/CHG-001/RUN-001/HIST-001/PL-001")
         pending = len(re.findall(r"\|\s*`?待提炼`?\s*\|", memory_text))
         if pending >= 5:
-            warnings.append(f"memory.md 有 {pending} 条运行日志待提炼，应执行提炼与整理（Reflection & Curation）")
+            warnings.append(f"memory.md has {pending} run logs pending distillation; run Reflection & Curation")
 
     task_links = task_links_from_program(program_text) if program_text else []
     current_task = current_task_from_program(program_text) if program_text else None
@@ -400,7 +414,7 @@ def main() -> int:
     task_dir = root / "tasks"
     existing_tasks = sorted(task_dir.glob("TASK-*.md")) if task_dir.exists() else []
     if not task_links and existing_tasks:
-        warnings.append("存在 tasks/TASK-*.md，但 program.md 未在执行计划中引用任务包")
+        warnings.append("tasks/TASK-*.md files exist, but program.md does not reference task packages")
         task_entries = [(f"tasks/{path.name}", path) for path in existing_tasks]
     else:
         task_entries = [
@@ -424,43 +438,43 @@ def main() -> int:
         package_status = task_status(task_text)
         if program_status and package_status and program_status != package_status:
             errors.append(
-                f"状态不一致：program.md Node Status 记录 {link} 为 `{program_status}`，"
-                f"任务包 Status 为 `{package_status}`"
+                f"Status mismatch: program.md Node Status records {link} as `{program_status}`, "
+                f"but task package Status is `{package_status}`"
             )
         if "N-001" not in task_text:
-            warnings.append(f"{task_path} 未发现原子节点编号，例如 N-001")
+            warnings.append(f"{task_path} has no atomic node ID, e.g. N-001")
         is_loop = bool(re.search(r"^-\s*Plan mode[：:].*Loop", task_text, flags=re.MULTILINE))
         if is_loop and not re.search(r"\bL-\d{3}\b", task_text):
-            warnings.append(f"{task_path} 未发现 Loop 轮次编号，例如 L-001")
+            warnings.append(f"{task_path} has no Loop iteration ID, e.g. L-001")
         if not node_ids(task_text):
-            warnings.append(f"{task_path} 未发现对应计划节点 ID，例如 NODE-001")
+            warnings.append(f"{task_path} has no related plan node ID, e.g. NODE-001")
         if not status_values(task_text):
-            warnings.append(f"{task_path} 未发现规范状态值")
+            warnings.append(f"{task_path} has no recognized status value")
         if lite:
             continue
         if "V-001" not in task_text:
-            warnings.append(f"{task_path} 未发现验证项编号，例如 V-001")
+            warnings.append(f"{task_path} has no verification item ID, e.g. V-001")
         if "CP-001" not in task_text:
-            warnings.append(f"{task_path} 未发现 Checkpoint 编号，例如 CP-001")
+            warnings.append(f"{task_path} has no Checkpoint ID, e.g. CP-001")
         if (
             "Context/Refs" in task_text
             and not context_ref_ids(task_text)
             and not explicit_no_context_refs(task_text)
         ):
-            warnings.append(f"{task_path} 未发现 Context/Refs ID，例如 CTX-001")
+            warnings.append(f"{task_path} has no Context/Refs ID, e.g. CTX-001")
         if (
             "Preference refs" in task_text
             and not preference_ref_ids(task_text)
             and not explicit_no_preference_refs(task_text)
         ):
-            warnings.append(f"{task_path} 未发现 Preference refs ID，例如 PREF-001")
+            warnings.append(f"{task_path} has no Preference refs ID, e.g. PREF-001")
         if "Memory writeback" not in task_text:
-            warnings.append(f"{task_path} 未发现 Memory writeback 完成回写字段")
+            warnings.append(f"{task_path} has no Memory writeback completion field")
         sizes = size_values(task_text)
         if not sizes:
-            warnings.append(f"{task_path} 未发现预计规模，例如 `S` 或 `M`")
+            warnings.append(f"{task_path} has no estimated size, e.g. `S` or `M`")
         if any(size in {"L", "XL", "Large"} for size in sizes):
-            warnings.append(f"{task_path} 规模为 L/XL/Large，应确认是否继续拆分")
+            warnings.append(f"{task_path} size is L/XL/Large; confirm whether it should be split")
 
     result = {
         "root": str(root),
@@ -480,7 +494,7 @@ def main() -> int:
         for item in warnings:
             print(f"WARN: {item}")
         if not errors and not warnings:
-            print("计划结构、任务链接和状态记录检查通过。")
+            print("Plan structure, task links, and status records passed validation.")
 
     return 0 if not errors else 1
 

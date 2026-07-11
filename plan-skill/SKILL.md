@@ -1,234 +1,143 @@
 ---
 name: plan-skill
-description: Use this skill to create, refine, audit, or continue an AI-executable project plan with program.md as the current-state source of truth, tasks/TASK-*.md as task packages, and memory.md as durable findings/history memory. Trigger when the user asks for a plan skill, planning-and-task-breakdown, implementation plan, Loop-mode plan, project control plan, preference/tradeoff clarification, declarative vs imperative preferences, locked constraints, negotiable space, task-package decomposition, dependency ordering, vertical slicing, scope estimation, parallelizable work, execution status tracking, acceptance criteria, measurable goals, constraints, hypothesis validation, checkpoints, iterative ACT/VERIFY/REFLECT cycles, important findings, knowledge-base capture, CHANGELOG, run logs, execution-history summaries, or cross-session AI coding handoff.
+description: Use this skill to turn a raw idea, vague project, existing spec, or ongoing implementation into a controlled plan-and-execution loop. It refines ideas into program.md, creates or repairs AI-executable plans, decomposes work into tasks/TASK-*.md packages, tracks verification and checkpoints, and preserves durable findings in memory.md. Trigger when the user asks to refine an idea, ideate, stress-test a plan, create an implementation plan, break down tasks, run Loop-mode execution, manage project control, clarify preferences/tradeoffs, order dependencies, slice work vertically, define acceptance criteria, track evidence, write run logs/CHANGELOG/history, or hand off coding work across sessions.
 ---
 
 # Plan Skill
 
-Use this skill to turn an ambiguous project or ongoing implementation into a verifiable execution plan. The plan has three layers:
+Use this skill to move from idea to verified implementation without losing state. It has three authoritative artifacts:
 
 ```text
-program.md                 # Main entrypoint and current state only: latest plan, node status, blockers, next step, links.
-memory.md                  # Durable memory: findings, reusable knowledge, CHANGELOG, run logs, history summaries, lessons, evidence pointers.
-tasks/TASK-NNN-<slug>.md   # Active task package: one plan node decomposed into atomic implementation nodes with status and verification.
+program.md                 # Current state: concept brief, plan, status, blockers, next step, links.
+memory.md                  # Durable history: findings, lessons, changelog, run logs, summaries.
+tasks/TASK-NNN-<slug>.md   # Executable task packages with atomic nodes, verification, and evidence.
 ```
 
-Do not create `codemap.md` by default. If implementation mapping is needed, keep it inside the relevant task package unless it becomes large enough to justify a separate file.
+Do not create `codemap.md` by default. Keep implementation maps inside the relevant task package unless they become large enough to deserve a separate file.
 
-If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, generate them only as derived exports from `program.md` and `tasks/TASK-*.md`. They are not authoritative.
+If downstream tooling requires `tasks/plan.md` or `tasks/todo.md`, generate them only from `program.md` and `tasks/TASK-*.md`. They are exports, not sources of truth.
+
+## Operating Model
+
+- `program.md` owns the refined concept, current plan, task-package status, blockers, checkpoints, and next action. It must stay current-state only.
+- `tasks/TASK-*.md` owns task execution state: atomic nodes, latest attempt, verification, evidence, blockers, rollback, and completion writeback.
+- `memory.md` owns durable knowledge: findings, reusable lessons, changelog entries, run logs, failed attempts, and history summaries.
+- Code, tests, logs, screenshots, CI, and runtime output are facts. Markdown records intent, status, decisions, and evidence pointers.
+- Chat is not durable. Write decisions that matter into `program.md` or the active task package. Write reusable discoveries into `memory.md`.
+- Never silently reconcile drift. Name the conflicting sources, pick the authority, and update it.
 
 ## Profiles
 
-Declare `- Profile: Lite / Full` in the `program.md` header; `scripts/validate_plan.py` reads it and defaults to `Full`.
+Declare `- Profile: Lite / Full` in `program.md`; `scripts/validate_plan.py` defaults to `Full`.
 
-- `Full`: the complete structure below. Use for multi-session, multi-package, or Loop-mode work.
-- `Lite`: for work of roughly one or two focused sessions. `program.md` needs only 问题定义, 验收标准, a Node Status table, and 当前状态. Each task package needs only the Task contract (description, acceptance criteria, verification), Atomic Implementation Plan, Standing Checklist, Pre-completion Red Team, and Completion Writeback. `memory.md` is optional — create it at the first durable finding.
-- Semantic rules hold in both profiles: `完成`/`待验收` requires evidence, statuses must agree across files, hypotheses close only with a verdict.
-- Upgrade Lite to Full when the plan grows past ~3 task packages, needs Loop mode, or spans multiple sessions.
+- `Full`: Use for multi-session, multi-package, Loop-mode, high-risk, or handoff-heavy work.
+- `Lite`: Use for one or two focused sessions. `program.md` needs Concept Refinement, Problem Definition, Acceptance Criteria, Node Status, and Current Status. Each task package needs the Task contract, Atomic Implementation Plan, Standing Checklist, Pre-completion Red Team, and Completion Writeback. `memory.md` is optional until the first durable finding.
+- Semantic rules apply in both profiles: `完成`/`待验收` requires evidence; statuses must agree across files; hypotheses close only with a verdict and evidence.
+- Upgrade Lite to Full once the plan grows beyond about three task packages, spans multiple sessions, or needs Loop mode.
 
-## Authority Model
+## Stage 0: Concept Refinement
 
-- `program.md` is the main entrypoint for the project plan and the source of truth for the current plan plus the latest status of every task package. It must link to relevant task packages and memory entries, but it must not accumulate CHANGELOG entries, run logs, historical status transitions, or old Loop attempts.
-- `memory.md` is the source of truth for durable findings, reusable knowledge, CHANGELOG entries, run-log summaries, historical execution summaries, lessons learned, and evidence pointers that should survive task closure.
-- Each `tasks/TASK-*.md` is the source of truth for its own active atomic implementation plan, current attempt state, latest evidence pointer, and verification state.
-- Code, tests, logs, and runtime evidence are facts. Markdown records intent, plan, status, and evidence pointers.
-- When chat decisions matter beyond the current reply, write them into `program.md` or the active task package before treating them as durable.
-- When a discovery matters beyond the current task, write it into `memory.md` before treating it as durable knowledge.
-- Never silently reconcile conflicts. Mark drift, name the conflicting sources, and choose the authority to update.
+Use this stage when the input is still a raw idea, multiple directions are plausible, target users are unclear, success criteria are missing, or the user asks to ideate, refine, or stress-test a plan.
 
-## Core Shape
+Skip it when the user already provides a clear spec, accepted direction, or existing plan.
 
-The shape below describes the `Full` profile; `Lite` keeps only the subset named in Profiles.
+Goal: refine raw ideas into sharp, actionable concepts worth building through structured divergent and convergent thinking.
 
-`program.md` must define:
+```text
+Idea -> Concept brief -> Plan -> Task packages -> Execute -> Verify -> Memory
+```
 
-- the problem being solved and why it matters
-- entrypoint links to the active task package, current memory file, latest evidence pointers, and next checkpoint
-- the context and references the plan depends on, including specs, code entry points, external docs, evidence, and owners
-- preferences and tradeoffs: what is locked, what is negotiable, and which tradeoffs define success
-- goals, metrics, and final acceptance criteria
-- constraints, non-goals, risk boundaries, and escalation rules
-- overall strategy and important decisions
-- exploration questions, hypothesis-validation plan, and concrete exploratory implementation plan when validation requires a spike, prototype, script, or experiment
-- an implementation plan section with overview, architecture decisions, phased task list, checkpoints, risks, and open questions
-- a plan dependency graph and node-status table where each node maps to one task package
-- a Loop contract and Loop state table when execution should iterate through `ACT -> VERIFY -> REFLECT -> ITERATE`
-- current plan status, active node, and next checkpoint
-- only the latest state. Historical changes, run logs, previous Loop attempts, and old status transitions belong in `memory.md`
+### Understand And Expand
 
-`memory.md` must define:
+- Restate the idea as a concise "How might we..." problem statement.
+- Ask at most 3-5 sharpening questions. Target user and success criteria are required.
+- If inside a codebase, read relevant specs, entry points, tests, and prior docs before generating options.
+- Generate 5-8 considered variations using only useful lenses: inversion, simplification, audience shift, constraint removal, adjacent combination, 10x scale, or expert-domain obviousness.
 
-- important findings and knowledge items with evidence pointers
-- reusable implementation, testing, product, or operational lessons
-- preference learning: what execution revealed about preferences, tradeoffs, locked constraints, or negotiable space
-- CHANGELOG entries for meaningful plan, implementation, interface, or decision changes
-- run-log summaries for execution, verification, rollout, rollback, and manual acceptance events
-- historical execution summaries by task package or milestone
-- failed attempts worth preserving and why they failed
-- open knowledge gaps that need future validation
-- a reflection-and-curation pass that periodically distills run logs into reusable entries
+### Evaluate And Converge
 
-Context and references are not memory. `program.md` stores the current context index and reference pointers needed to understand the plan; `memory.md` stores distilled findings and historical learning extracted from execution.
+After the user reacts, cluster promising options into 2-3 distinct directions. Stress-test each on:
+
+- user value: who benefits, how much, and whether the idea is a painkiller or a vitamin
+- feasibility: technical/resource cost and hardest unknown
+- differentiation: why it wins or why users would switch
+
+For each direction, name what must be true, what could kill the idea, and what is intentionally ignored for now. Be direct when an idea is weak.
+
+### Sharpen And Ship The Brief
+
+Write the confirmed one-page brief into `program.md#0-concept-refinement`. Do not create a separate idea document by default.
+
+Map the brief into the plan:
+
+- Problem Statement -> `program.md#1-problem-definition`
+- Target User / Success Criteria -> `program.md#4-goals-and-metrics`
+- Recommended Direction -> `program.md#6-strategy`
+- Key Assumptions -> `program.md#8-exploration-and-hypothesis-validation`
+- MVP Scope -> initial `program.md#9-implementation-plan` nodes
+- Not Doing -> `program.md#1-problem-definition` Non-goals
+- Open Questions -> `program.md#9-implementation-plan` Open Questions
+
+## Planning Rules
+
+When creating or refreshing a plan, stay in read-only planning mode unless the user explicitly asks to execute:
+
+- Read specs, docs, code entry points, tests, configuration, and recent changes.
+- Identify existing patterns, ownership boundaries, dependencies, risks, unknowns, and decisions needed.
+- Build or update `program.md` from `assets/program.template.md`.
+- Planning is complete only when implementation can continue from the artifacts without relying on chat memory.
+
+`program.md` must include:
+
+- Concept Refinement, or `None` when the work starts from a clear spec
+- problem, goals, final acceptance criteria, constraints, non-goals, and escalation rules
+- context/reference index with source, purpose, and freshness
+- preferences/tradeoffs, locked constraints, and negotiable space
+- decisions, strategy, dependency graph, node status, task list, checkpoints, risks, and open questions
+- exploration/hypothesis plan when assumptions need validation
+- Loop contract and Loop state when iterative convergence is expected
+- current status, active task package, next action, latest evidence, and next checkpoint
+
+Keep `program.md` latest-state only. Historical changes and run logs belong in `memory.md`.
 
 ## Preference Layer
 
-Before decomposing work, make preferences explicit:
+Make important preferences explicit before decomposing work:
 
 ```text
 Preference -> Goal -> Plan -> Task -> Verify -> Memory
 ```
 
-Use English labels because they are shorter and less ambiguous:
+Use these labels:
 
-- `declarative preference`: desired outcome, implementation open.
-- `imperative preference`: required path, implementation constrained.
-- `locked constraint`: must not be changed without escalation.
-- `negotiable space`: the agent may optimize or propose alternatives.
+- `declarative preference`: desired outcome, implementation open
+- `imperative preference`: required path, implementation constrained
+- `locked constraint`: must not change without escalation
+- `negotiable space`: agent may optimize or propose alternatives
 
-For important plans, ask what hidden assumptions would materially change implementation. Put the answers in `program.md#Preferences & Tradeoffs`. If execution reveals a better tradeoff or a wrong assumption, record the learning in `memory.md`.
+If execution reveals a better tradeoff or a wrong assumption, update `program.md#3-preferences-and-tradeoffs` and record durable learning in `memory.md`.
 
-Each task package must define:
+## Decomposition Rules
 
-- a `Task N` contract with description, acceptance criteria, verification, dependencies, likely files touched, and estimated scope
-- atomic implementation nodes with clear status
-- exact verification method for each node
-- current Loop attempt state when attempts need verify-reflect-iterate cycles
-- latest evidence pointers for completed or failed checks
-- blockers, decisions, and rollback notes
-- memory writeback requirements for findings, CHANGELOG entries, run logs, and execution summaries
-- preference references, locked constraints, and negotiable space when tradeoffs matter
-- a Standing Checklist that applies the task/feature completion bar before acceptance
-- required `program.md` status updates when the package moves state
+### Map Dependencies
 
-## Planning Discipline
-
-When the user asks for planning or task breakdown, enter read-only planning mode:
-
-- Read specs, existing docs, code entry points, tests, configuration, and recent changes.
-- Identify existing patterns, ownership boundaries, and dependency chains.
-- Note risks, unknowns, and decisions needed.
-- Do not write implementation code during planning. Only create or update planning artifacts unless the user explicitly asks to execute.
-
-Planning is complete only when the plan can drive implementation without relying on chat memory.
-
-## Context And References
-
-Maintain a `program.md` section for context and refs before detailed goals:
-
-- product/spec context: PRDs, tickets, user requests, screenshots, designs
-- code context: entry points, modules, tests, configs, migrations, scripts
-- external references: docs, APIs, standards, upstream issues, papers
-- evidence refs: logs, benchmarks, prior reports, screenshots, CI runs
-- ownership refs: decision owner, reviewer, domain expert, escalation contact
-
-Every ref should include a location, why it matters, and freshness/status. Do not paste large source material into `program.md`; link or point to it. If a ref produces a reusable finding, promote the distilled finding to `memory.md`.
-
-## Loop Mode
-
-Use Loop mode when a plan is expected to converge through repeated attempts, not one pass:
-
-- unclear implementation path but clear success criteria
-- high-risk hypothesis needs proof before full buildout
-- verification may fail and should produce structured reflection
-- model/agent work must preserve failed attempts as learning
-- task package is a repair, optimization, eval, research, migration, or integration effort
-
-Loop mode is:
-
-```text
-GOAL -> PLAN -> ACT -> VERIFY -> PASS
-                   |
-                   v
-                REFLECT -> ITERATE -> PLAN
-```
-
-`program.md` owns the project-level Loop contract:
-
-- loop objective
-- success criteria
-- failure signals
-- iteration budget
-- reflect trigger
-- stop/escalation condition
-- current Loop state and next action
-- what findings or failed attempts must be promoted to `memory.md`
-
-Task packages own the current attempt state:
-
-- what was tried
-- what verification said
-- why it failed or passed
-- what changed in the next plan
-- whether the package should continue, split, block, or escalate
-- which lessons, CHANGELOG entries, run logs, or execution summaries were written to `memory.md`
-
-Completed Loop attempts should be summarized in `memory.md`; keep only the latest active attempt in `program.md` and the task package.
-
-Do not use Loop mode to hide indecision. Every loop must have a finite budget and a verifier. If the same failure repeats without new information, stop and mark blocked or escalate.
-
-## Memory Discipline
-
-Use `memory.md` to preserve knowledge that should outlive one task package. Keep it concise and evidence-backed.
-
-Write to `memory.md` when:
-
-- a task reveals an important implementation fact, invariant, hidden dependency, or system behavior
-- a meaningful plan, interface, behavior, dependency, or decision change would otherwise become a CHANGELOG entry
-- an execution, verification, rollout, rollback, or manual acceptance event would otherwise become a run log
-- verification fails in a way that teaches a reusable lesson
-- a loop iteration changes the plan because of evidence
-- a task package completes, blocks, or is cancelled and future agents need the history
-- a decision's evidence is longer-lived than the decision record in `program.md`
-
-Do not write ordinary progress chatter. A memory entry should change future planning or execution.
-Do not append CHANGELOG, run-log, or historical status sections to `program.md`; update its latest state in place and link to the relevant memory IDs when needed.
-
-Use this promotion rule:
-
-```text
-raw evidence/log -> memory.md run log or summary -> task/program latest evidence pointer -> program.md current status if plan-level
-```
-
-`memory.md` is not a replacement for evidence. It stores the distilled claim plus the pointer to the evidence.
-
-### Reflection & Curation
-
-Treat `memory.md` as an evolving playbook (ACE-style), never a rewrite target:
-
-- Execution writes traces: every run-log entry gets a `提炼` state — `待提炼` or `不需要`.
-- Reflect when a task package closes or pending entries reach 5: extract lessons from successes and failures into K/R/PL/F entries, then mark the source RUN entries with the produced IDs.
-- Curate by delta only: add or revise individual ID'd entries; never rewrite the whole file. Merge duplicates by keeping the surviving ID and marking the other `已废弃` with a pointer.
-- Against brevity bias: a distilled entry must keep concrete trigger conditions, applicable scope, counterexamples, and an evidence pointer. A lesson with no applicable scenario does not enter the playbook.
-- Against context collapse: compaction may only turn already-distilled RUN spans into one HIST summary; superseded entries are marked `已废弃`, not deleted.
-
-## Breakdown Algorithm
-
-### 1. Map Dependencies
-
-Build foundations before dependents. Typical chains look like:
+Build foundations before dependents. Typical order:
 
 ```text
 schema/data -> models/types -> service/API contract -> endpoint/client -> UI/workflow -> e2e verification
 ```
 
-Record dependency order in `program.md` as both:
+Record dependencies in `program.md` as both a graph/list and a node-status table. If a task package depends on another package or shared contract, name it explicitly.
 
-- a graph/list that shows node dependencies
-- a node-status table that tracks status, task-package link, phase, dependency, verification, and evidence
+### Prefer Vertical Slices
 
-If a task package depends on another package or shared contract, name it explicitly.
+Default to vertical slices that deliver one working, testable path. Avoid horizontal plans such as "all schema, then all APIs, then all UI" unless the architecture forces it.
 
-### 2. Prefer Vertical Slices
+Good: "User can create a task" with data shape, API, UI path, and verification for that flow.
 
-Default to vertical slices that deliver one working, testable path. Avoid horizontal plans such as "build all schema, then all APIs, then all UI" unless the architecture forces it.
+Weak: "Implement backend and frontend" with no single observable result.
 
-Good task package: "User can create a task" with data shape, API, UI path, and verification for that single flow.
-
-Weak task package: "Implement backend and frontend" with no single user-visible result.
-
-### 3. Size Tasks
-
-Use this sizing guide:
+### Size Work
 
 | Size | Files | Scope | Rule |
 |---|---:|---|---|
@@ -238,76 +147,138 @@ Use this sizing guide:
 | L | 5-8 | Multi-component feature | Split unless tightly coupled |
 | XL | 8+ | Too large | Must split |
 
-Use `Small`, `Medium`, and `Large` in task-package contracts; `XS/S/M/L/XL` may be used internally for finer sizing.
+Use `Small`, `Medium`, and `Large` in task-package contracts; `XS/S/M/L/XL` may be used internally.
 
-Split further when the title contains "and", acceptance criteria exceed three bullets, the work crosses independent subsystems, or one focused session is unlikely to finish implementation plus verification.
+Split further when the title contains "and", acceptance criteria exceed three bullets, work crosses independent subsystems, or implementation plus verification is unlikely to fit in one focused session.
 
-### 4. Order Checkpoints
+### Place Checkpoints
 
-Arrange task packages so:
+- satisfy dependencies bottom-up
+- keep every task package in a working state when completed
+- validate high-risk assumptions early
+- checkpoint every 2-3 task packages or at risk boundaries
+- call out parallel work only after shared contracts are defined
 
-- dependencies are satisfied bottom-up
-- every task package leaves the system in a working state
-- high-risk or assumption-validating work happens early
-- checkpoints appear after every 2-3 task packages or at risk boundaries
-- parallelizable work is called out only after shared contracts are defined
+## Task Packages
+
+Start each task package from `assets/task.template.md`.
+
+Each task package must define:
+
+- Task contract: description, acceptance criteria, verification, dependencies, context/preference refs, locked constraints, negotiable space, likely files, and estimated scope
+- Atomic Implementation Plan with status, action, dependency, touched area, verification, evidence, and failure action
+- Verification Matrix and Checkpoint
+- Current Loop Attempt when needed
+- Latest Execution Snapshot
+- Escalation, Risks and Rollback
+- Standing Checklist
+- Pre-completion Red Team
+- Completion Writeback to `program.md` and `memory.md`
+
+Work from the task package, not from memory. Execute the smallest useful node, run its verifier, record evidence, then update status and write durable findings as needed.
+
+## Loop Mode
+
+Use Loop mode when work must converge through attempts:
+
+- implementation path is unclear but success criteria are clear
+- a high-risk hypothesis needs proof
+- verification may fail and should trigger reflection
+- the task is repair, optimization, eval, research, migration, or integration work
+
+Every loop needs a finite budget, verifier, reflect trigger, iterate rule, and stop/escalation condition.
+
+```text
+GOAL -> PLAN -> ACT -> VERIFY -> PASS
+                   |
+                   v
+                REFLECT -> ITERATE -> PLAN
+```
+
+`program.md` owns the project-level Loop contract and latest Loop state. Task packages own the current attempt. Completed attempts are summarized in `memory.md`.
+
+Do not use Loop mode to hide indecision. If the same failure repeats without new information, stop and mark blocked or escalate.
+
+## Memory Discipline
+
+Write to `memory.md` when:
+
+- a task reveals an important implementation fact, invariant, dependency, or system behavior
+- a meaningful plan, interface, behavior, dependency, or decision change occurs
+- execution, verification, rollout, rollback, or manual acceptance creates a run log
+- verification fails in a way future agents should learn from
+- a Loop iteration changes the plan because of evidence
+- a task package completes, blocks, or is cancelled
+
+Do not write ordinary progress chatter. A memory entry should change future planning or execution.
+
+Promotion rule:
+
+```text
+raw evidence/log -> memory.md run log or summary -> task/program evidence pointer -> program.md current status if plan-level
+```
+
+Treat `memory.md` as an evolving playbook:
+
+- every run-log entry gets a distillation state: `待提炼` or `不需要`
+- reflect when a task package closes or pending entries reach 5
+- distill useful lessons into K/R/PL/F entries with trigger conditions, scope, counterexamples, and evidence
+- revise by delta; do not rewrite the whole memory file
+- mark superseded entries `已废弃` with a pointer instead of deleting them
 
 ## Status Vocabulary
 
-Use one vocabulary across `program.md` and task packages:
+Use one status vocabulary across `program.md` and task packages:
 
 ```text
 待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消
 ```
 
-`探索中` is additionally valid for the program-level 总状态 only.
+`探索中` is additionally valid for the program-level overall status.
 
 Rules:
 
-- A task package is `完成` only when its task package acceptance criteria pass and `program.md` has been updated.
-- A task package is `待验收` when implementation and verification evidence are ready but human acceptance is required.
-- A task package is `阻塞` only when the next action depends on missing information, permission, external state, or a failed prerequisite.
-- Atomic nodes use the same statuses and must name the next verification action when not complete.
+- `完成` only when acceptance criteria pass, evidence is recorded, and required writeback is done.
+- `待验收` when implementation and verification evidence are ready but human acceptance is required.
+- `阻塞` only when the next action depends on missing information, permission, external state, or a failed prerequisite.
+- Atomic nodes use the same statuses and must name the next verification action when incomplete.
 
 ## Standing Completion Bar
 
-Apply this bar before moving a task package to `待验收` or `完成`. The task package's `Standing Checklist` is the executable record; every applicable item must be checked, and every non-applicable item must say `N/A: <reason>`.
+Before moving a task package to `待验收` or `完成`, complete its Standing Checklist. Every applicable item must be checked; every non-applicable item needs `N/A: <reason>`.
 
 Per task:
 
 - acceptance criteria are met and tied to evidence
 - runtime behavior was verified, not only compiled or typechecked
-- new behavior is covered by tests that would fail without the change, or the task records why this is not practical
-- existing tests, build/typecheck, lint, and formatting pass or are explicitly scoped out with reasons
+- new behavior is covered by tests that would fail without the change, or a reason is recorded
+- existing tests, build/typecheck, lint, and formatting pass or are explicitly scoped out
 - relevant edge cases and error paths are handled or recorded as known risk
-- changes stay scoped to the task; no unrelated refactors, duplicated business logic, dead code, debug output, or commented-out blocks remain
+- changes stay scoped; no unrelated refactors, duplicated business logic, dead code, debug output, or commented-out blocks remain
 
 Per feature or risky change:
 
-- integration points are accounted for, including migrations, config, feature flags, public contracts, and backward compatibility
-- public interfaces, APIs, user-facing behavior, and durable architecture decisions are documented when they changed
+- integration points are covered: migrations, config, feature flags, public contracts, and backward compatibility
+- public interfaces, APIs, user-facing behavior, and durable architecture decisions are documented when changed
 - security implications are reviewed for untrusted input, auth, and data handling
 - observability and rollback are defined for new critical paths or risky changes
-- human review happens before merge, deploy, or acceptance when the plan, owner, or risk boundary requires it
+- human review happens before merge, deploy, or acceptance when required
+
+Do not mark a task package complete because code was written. Completion requires acceptance evidence, completed Standing Checklist, answered Pre-completion Red Team, and writeback.
 
 ## Workflow
 
-### 1. Create Or Refresh The Plan
+### Create Or Refresh A Plan
 
-1. Enter read-only planning mode and gather context.
-2. Build or update the `program.md` context/ref index.
-3. Define preferences and tradeoffs: locked constraints, negotiable space, declarative preferences, imperative preferences.
-4. Restate the problem, desired outcome, constraints, and unknowns in one concise checkpoint before large edits if the goal is ambiguous.
-5. Map dependency order and identify high-risk assumptions.
-6. For high-risk assumptions, write a concrete exploratory implementation plan in the exploration section before committing to full task packages.
-7. Split into vertical task packages where each plan node has a verifiable result.
-8. Write the implementation plan in `program.md`: entrypoint links, overview, architecture decisions, dependency graph, node-status table, phased task list, checkpoints, risks, and open questions. Keep it to latest state only.
-9. Decide the profile (`Lite` or `Full`) and whether the plan is `Linear` or `Loop`. If Loop, define budget, verifier, reflect trigger, and stop condition.
-10. Create or update `program.md` from `assets/program.template.md`.
-11. Create task files from `assets/task.template.md` only for task packages that are ready to execute or need precise scoping now.
-12. Run `scripts/validate_plan.py <project-root>` when possible.
+1. Classify input: raw idea, refined idea/spec, existing plan, or active execution.
+2. If raw idea, refine it first and write the confirmed brief into `program.md#0-concept-refinement`.
+3. Gather context in read-only planning mode.
+4. Create/update `program.md`, preferences, dependency graph, risks, checkpoints, and open questions.
+5. Decide `Lite` or `Full`, and `Linear` or `Loop`.
+6. Create task packages only for nodes ready to execute or needing precise scoping now.
+7. Run `scripts/validate_plan.py <project-root>` when possible.
 
-### 2. Continue A Plan
+### Continue A Plan
 
 At session start, read in order:
 
@@ -317,83 +288,30 @@ At session start, read in order:
 4. evidence referenced by that task package
 5. relevant code, tests, and recent commits
 
-Then report from the `program.md` entrypoint:
+Then report current status, relevant memory, next node, stale evidence, blockers, decisions needed, and what will be updated if the next step succeeds.
 
-- current plan status and active task package
-- relevant memory findings and whether any appear stale
-- next atomic node to execute
-- stale or missing evidence
-- blockers and decisions needed
-- what will be updated if the next step succeeds
+### Execute A Task Package
 
-### 3. Execute A Task Package
+1. Pick the next actionable atomic node.
+2. Execute the smallest useful step.
+3. Run the node's verifier.
+4. Update status, evidence, and next action.
+5. Write durable findings, changelog entries, run logs, and history deltas to `memory.md`.
+6. If package status changes, update the latest status table in `program.md`.
 
-Work from the task package, not from memory.
+### Audit Or Repair A Plan
 
-1. Pick the next atomic node with status `待开始`, `进行中`, or `阻塞` after unblocking.
-2. Execute the smallest useful implementation step.
-3. Run the node's verification method.
-4. Update the node status, latest evidence pointer, and next action.
-5. Write CHANGELOG entries, run-log summaries, durable findings, and execution-history deltas to `memory.md`.
-6. If the task package status changes, update only the latest task-package status table in `program.md`.
+Use `references/audit-checklist.md`. Repair by restoring the three-layer authority:
 
-Do not mark a task package complete because code was written. Mark it complete only when verification evidence satisfies its acceptance criteria, the Standing Checklist is complete, and the task package's Pre-completion Red Team questions are answered.
-
-### 4. Audit Or Repair A Plan
-
-Walk through `references/audit-checklist.md` and record every failure found.
-
-Repair by restoring the three-layer authority: entrypoint and latest plan state in `program.md`; durable findings, CHANGELOG, run logs, and history in `memory.md`; active task execution state in `tasks/TASK-*.md`.
-
-## Task Package Sizing
-
-A task package should be:
-
-- large enough to let the AI autonomously design, implement, test, and fix within a bounded area
-- small enough that failure can be localized, retried, or rolled back
-- tied to one observable plan node in `program.md`
-- closed by evidence, not by effort
-
-Split a package when two parts can be accepted independently, have different blockers, touch unrelated risk areas, or require different human decisions.
-
-## Atomic Node Rules
-
-Every atomic node inside a task package must include:
-
-- status
-- concrete implementation action
-- dependency on earlier node, or `无`
-- expected touched area
-- verification method or command
-- evidence location once run
-- next action if verification fails
-
-Avoid vague nodes such as "improve UI", "clean up backend", or "write tests". Rewrite them as observable actions with checks.
-
-## Task Package Contract
-
-Start each task package from `assets/task.template.md` — it is the single source of truth for the contract shape. The contract at the top defines description, acceptance criteria, verification, dependencies, context/preference refs, locked constraints, negotiable space, files likely touched, and estimated scope; the sections below it cover the atomic implementation plan, verification matrix, checkpoint, current Loop attempt, latest execution snapshot, escalation, rollback, Standing Checklist, pre-completion red team, and completion writeback.
-
-For Loop mode, update only the current Loop attempt in the task package. Move completed attempt summaries to `memory.md#运行日志`.
-
-## Updating Rules
-
-- Update `program.md` whenever a task package is created, blocked, ready for acceptance, completed, or cancelled; overwrite latest state instead of appending history.
-- Update `memory.md` whenever a durable finding appears, a CHANGELOG-worthy change happens, a run-log event occurs, a loop teaches a reusable lesson, or a task package completes/blocks/cancels.
-- Update the task package whenever an atomic node starts, finishes, fails verification, or changes scope; keep only latest execution state and point to memory IDs for history.
-- Record evidence as concise pointers to tests, logs, screenshots, commits, reports, or manual acceptance notes.
-- Use ISO dates: `YYYY-MM-DD`.
-- Mark uncertainty explicitly with `[待确认]`, `[待验证]`, or `[待决策]`; include the next validation or decision step. Markers are legitimate on active work, but a node or row marked `完成` must not carry them.
+- `program.md`: current entrypoint and latest plan state
+- `memory.md`: durable findings, changelog, run logs, and history
+- `tasks/TASK-*.md`: active execution state
 
 ## Resources
 
-- Use `references/audit-checklist.md` when auditing or repairing a plan.
-- Use `assets/program.template.md` when creating or restructuring `program.md`.
-- Use `assets/memory.template.md` when creating or restructuring `memory.md`.
-- Use `assets/task.template.md` when creating a task package.
-- Use `scripts/validate_plan.py <project-root>` to check required sections, task links, status consistency, memory structure, placeholders, and unresolved markers.
-- See `examples/csv-export/` for a minimal filled-in three-file plan that passes validation cleanly; copy its shape instead of reasoning from the templates alone.
-
-## Source
-
-Absorbs the planning-and-task-breakdown method: read-only planning first, dependency graph, vertical slicing, task sizing, checkpoints, parallelization notes, per-task acceptance plus verification, and a standing completion bar.
+- `assets/program.template.md`: create or restructure `program.md`
+- `assets/task.template.md`: create task packages
+- `assets/memory.template.md`: create or restructure `memory.md`
+- `references/audit-checklist.md`: audit or repair a plan
+- `scripts/validate_plan.py <project-root>`: check structure, links, statuses, memory, placeholders, and unresolved markers
+- `examples/csv-export/`: minimal filled example that should pass validation

@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan Skill"
-  short_description: "Plan entrypoint with preferences"
-  default_prompt: "Use $plan-skill to create or continue a program.md plan entrypoint with preferences, tradeoffs, task packages, verification, and memory.md writeback."
+  short_description: "Plan ideas through verified execution"
+  default_prompt: "Use $plan-skill to refine an idea into program.md, then create a verifiable implementation plan with task packages."

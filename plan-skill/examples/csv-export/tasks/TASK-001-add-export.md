@@ -126,7 +126,7 @@ Answer all four questions before moving this package to `待验收` or `完成`.
 |---|---|---|
 | RT-1 | If the deliverable were actually broken, would the evidence above still pass? | 待任务收尾时作答 |
 | RT-2 | What was NOT verified? | 待任务收尾时作答 |
-| RT-3 | Does the result solve the original problem in ../program.md#1-问题定义? | 待任务收尾时作答 |
+| RT-3 | Does the result solve the original problem in ../program.md#1-problem-definition? | 待任务收尾时作答 |
 | RT-4 | Single most likely post-delivery failure path? | 待任务收尾时作答 |
 
 ## Completion Writeback

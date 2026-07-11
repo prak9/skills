@@ -1,54 +1,54 @@
 # Memory: demo-cli CSV 导出
 
-- 最后更新：2026-07-11
-- 对应 Program：program.md
+- Last updated: 2026-07-11
+- Program: program.md
 
-## 1. 重要发现
+## 1. Important Findings
 
-| ID | 状态 | 发现 | 影响 | 证据 | 来源 | 日期 |
+| ID | Status | Finding | Impact | Evidence | Source | Date |
 |---|---|---|---|---|---|---|
-| F-001 | 有效 | 查询出口返回 dict 迭代器，列名来自首行 keys | exporter 直接消费迭代器，无需改查询层 | src/query.py 阅读 + REPL 验证 | TASK-001 | 2026-07-11 |
+| F-001 | 有效 | The query path returns an iterator of dict rows; headers can come from the first row's keys. | The exporter can consume the iterator directly without changing the query layer. | `src/query.py` read + REPL check | TASK-001 | 2026-07-11 |
 
-## 2. 知识库沉淀
+## 2. Knowledge Base
 
-| ID | 类别 | 知识 | 适用场景 | 反例/边界 | 证据 |
+| ID | Category | Knowledge | Applies when | Boundary / counterexample | Evidence |
 |---|---|---|---|---|---|
-| K-001 | 实现 | csv.writer 需 newline='' 打开文件，否则 Windows 下多空行 | 所有 CSV 写出 | 仅文本模式适用 | tests/test_export.py |
+| K-001 | implementation | Open CSV output files with `newline=''`; otherwise Windows can produce extra blank lines. | CSV file writing | Text mode only | `tests/test_export.py` |
 
-## 3. 变更记录（Changelog）
+## 3. Changelog
 
-| ID | 时间 | 类型 | 范围 | 变更摘要 | 原因/触发 | 证据 | 影响 |
+| ID | Time | Type | Scope | Summary | Trigger | Evidence | Impact |
 |---|---|---|---|---|---|---|---|
-| CHG-001 | 2026-07-11 | code | src/exporter.py | 新增 exporter 模块 | NODE-001 | commit abc123 | 下游可导出 |
+| CHG-001 | 2026-07-11 | code | `src/exporter.py` | Added the exporter module. | NODE-001 | commit abc123 | Downstream flows can export CSV. |
 
-## 4. 运行日志
+## 4. Run Logs
 
-| ID | 时间 | 范围 | 类型 | 动作 | 结果 | 证据 | 后续 | 提炼 |
+| ID | Time | Scope | Type | Action | Result | Evidence | Next | Distillation |
 |---|---|---|---|---|---|---|---|---|
-| RUN-001 | 2026-07-11 | TASK-001 N-001 | test | pytest tests/test_export.py 含转义用例 | passed | ci run 118 | N-002 | K-001 |
+| RUN-001 | 2026-07-11 | TASK-001 N-001 | test | Ran `pytest tests/test_export.py` with escaping cases. | passed | ci run 118 | N-002 | K-001 |
 
-## 5. 历史执行记录总结
+## 5. History Summaries
 
-暂无（首个任务包进行中）。
+None yet; the first task package is still in progress.
 
-## 6. 失败与回炉记录
+## 6. Failures And Rework
 
-暂无。
+None.
 
-## 7. 开放知识缺口
+## 7. Open Knowledge Gaps
 
-| ID | 状态 | 问题 | 为什么重要 | 验证方式 | 关联计划节点 |
+| ID | Status | Question | Why it matters | Validation method | Related plan node |
 |---|---|---|---|---|---|
-| Q-001 | 待验证 | 超大结果集导出的内存占用 | 报表可能查全量 | 100 万行基准测试 | NODE-001 |
+| Q-001 | 待验证 | Memory use for very large result exports | Reports may query full datasets | 1M-row benchmark | NODE-001 |
 
 ## 8. Preference Learning
 
-暂无。
+None.
 
-## 9. 提炼与整理（Reflection & Curation）
+## 9. Reflection And Curation
 
-触发时机：任务包关闭或 `待提炼` 达 5 条。当前无积压：RUN-001 已提炼为 K-001。
+Trigger when a task package closes or `待提炼` reaches 5. No backlog now: RUN-001 was distilled into K-001.
 
-## 10. 更新规则
+## 10. Update Rules
 
-按 plan-skill memory 模板规则维护：增量条目、证据指针、已废弃不删除。
+Follow plan-skill memory rules: add entries incrementally, keep evidence pointers, and mark superseded entries instead of deleting them.

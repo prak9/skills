@@ -31,9 +31,9 @@
 
 **Dependencies:** <Task numbers or NODE IDs this depends on, or `None`>
 
-**Context/Refs:** <CTX/REF IDs from `../program.md#2-上下文与-references`, or `None`>
+**Context/Refs:** <CTX/REF IDs from `../program.md#2-context-and-references`, or `None`>
 
-**Preference refs:** <PREF IDs from `../program.md#3-preferences--tradeoffs`, or `None`>
+**Preference refs:** <PREF IDs from `../program.md#3-preferences-and-tradeoffs`, or `None`>
 
 **Locked constraints:** <constraints this task must not change without escalation, or `None`>
 
@@ -72,7 +72,7 @@ Node rules:
 
 ## Current Loop Attempt
 
-Use this section when `Plan mode` is `Loop`. Keep only the current/latest attempt here. Move completed attempt summaries to `../memory.md#4-运行日志`.
+Use this section when `Plan mode` is `Loop`. Keep only the current/latest attempt here. Move completed attempt summaries to `../memory.md#4-run-logs`.
 
 | Iteration | Loop step | Node | Attempt | Verification result | Reflection | Plan delta | Next |
 |---|---|---|---|---|---|---|---|
@@ -80,7 +80,7 @@ Use this section when `Plan mode` is `Loop`. Keep only the current/latest attemp
 
 ## Latest Execution Snapshot
 
-Keep this section to the latest execution state only. Write chronological run logs to `../memory.md#4-运行日志` and reference their IDs here.
+Keep this section to the latest execution state only. Write chronological run logs to `../memory.md#4-run-logs` and reference their IDs here.
 
 | Field | Value |
 |---|---|
@@ -144,7 +144,7 @@ Answer all four questions before moving this package to `待验收` or `完成`.
 |---|---|---|
 | RT-1 | If the deliverable were actually broken, would the evidence above still pass? If yes, the evidence proves nothing — replace it with a check that can fail. | <answer> |
 | RT-2 | What was NOT verified? (inputs, error paths, concurrency, scale, platforms) | <explicit list, or why nothing material is missing> |
-| RT-3 | Re-read the original problem in `../program.md#1-问题定义` — the original text, not this task's restatement. Does the result solve it? | <yes with reason / gap found> |
+| RT-3 | Re-read the original problem in `../program.md#1-problem-definition` — the original text, not this task's restatement. Does the result solve it? | <yes with reason / gap found> |
 | RT-4 | What is the single most likely post-delivery failure path? Rule it out now, or record it as a known risk in `../memory.md`. | <what was done> |
 
 ## Completion Writeback
@@ -159,20 +159,20 @@ When this task package is done, update `../program.md`:
 - fill evidence location
 - update current status and next step
 - update decisions or hypothesis results if this task changed them
-- update `program.md#2-上下文与-references` if new context, entry points, refs, or owners were discovered
-- update `program.md#3-preferences--tradeoffs` if execution reveals a better tradeoff, wrong assumption, or changed preference
+- update `program.md#2-context-and-references` if new context, entry points, refs, or owners were discovered
+- update `program.md#3-preferences-and-tradeoffs` if execution reveals a better tradeoff, wrong assumption, or changed preference
 - do not append changelog, run-log, or historical status sections to `program.md`
 
 Also update `../memory.md`:
 
-- add important findings to `memory.md#1-重要发现`
-- add reusable knowledge to `memory.md#2-知识库沉淀`
-- add changelog entries to `memory.md#3-变更记录changelog`
-- add run-log entries to `memory.md#4-运行日志`
-- add task outcome summary to `memory.md#5-历史执行记录总结`
-- add failed-attempt lessons to `memory.md#6-失败与回炉记录`
+- add important findings to `memory.md#1-important-findings`
+- add reusable knowledge to `memory.md#2-knowledge-base`
+- add changelog entries to `memory.md#3-changelog`
+- add run-log entries to `memory.md#4-run-logs`
+- add task outcome summary to `memory.md#5-history-summaries`
+- add failed-attempt lessons to `memory.md#6-failures-and-rework`
 - add preference learning to `memory.md#8-preference-learning`
-- run the reflection pass (`memory.md` 提炼与整理): distill this task's `待提炼` run logs into K/R/PL/F entries, or mark them `不需要`
+- run the reflection pass (`memory.md#9-reflection-and-curation`): distill this task's `待提炼` run logs into K/R/PL/F entries, or mark them `不需要`
 - if no memory writeback is needed, record that decision in this task's completion summary
 
 Completion summary:

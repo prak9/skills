@@ -3,6 +3,7 @@
 Check a plan for these failures:
 
 - `program.md` lacks measurable goals, final acceptance criteria, or task-package status.
+- `program.md` lacks a Concept Refinement section, or starts from a raw idea without a confirmed brief or explicit `None` reason.
 - `program.md` lacks preferences/tradeoffs for a non-trivial plan, or fails to mark locked constraints and negotiable space.
 - `program.md` contains CHANGELOG, run-log, historical status, or old Loop-attempt sections instead of only latest state.
 - context and references are missing, stale, or lack source/freshness information.
