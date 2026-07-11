@@ -91,7 +91,7 @@ Keep this section to the latest execution state only. Write chronological run lo
 | Latest action | <what changed or was checked> |
 | Latest result | `passed / failed / partial / blocked` |
 | Evidence | <test output, log, screenshot, commit, report, or manual note> |
-| Memory refs | `RUN-NNN / CHG-NNN / H-NNN / None` |
+| Memory refs | `RUN-NNN / CHG-NNN / HIST-NNN / None` |
 | Next | <next node, fix, split, or escalation> |
 
 ## Escalation
@@ -155,6 +155,6 @@ Completion summary:
 
 - Final result: <observable result>
 - Key evidence: <V-NNN or E-NNN>
-- Memory writeback: `CHG-NNN / RUN-NNN / F-NNN / K-NNN / H-NNN / R-NNN / 不需要：<原因>`
+- Memory writeback: `CHG-NNN / RUN-NNN / F-NNN / K-NNN / HIST-NNN / R-NNN / 不需要：<原因>`
 - Remaining work: <new task package or None>
 - Completed: `YYYY-MM-DD`

@@ -44,7 +44,7 @@ Summarize task-package and checkpoint history. Do not duplicate raw logs; link t
 
 | ID | 时间 | 范围 | 结果 | 关键证据 | 经验/后续影响 |
 |---|---|---|---|---|---|
-| H-001 | `YYYY-MM-DD` | <TASK-NNN、NODE-NNN 或 Checkpoint> | `完成 / 阻塞 / 已取消 / 部分完成` | <RUN-NNN、CHG-NNN、测试或提交> | <未来需要知道的总结> |
+| HIST-001 | `YYYY-MM-DD` | <TASK-NNN、NODE-NNN 或 Checkpoint> | `完成 / 阻塞 / 已取消 / 部分完成` | <RUN-NNN、CHG-NNN、测试或提交> | <未来需要知道的总结> |
 
 ## 6. 失败与回炉记录
 
@@ -81,7 +81,7 @@ Capture what execution taught about preferences, tradeoffs, locked constraints, 
 1. Reflect：逐条审阅 `待提炼` 的 RUN/R 条目，从成功和失败中提取经验。
 2. Curate：新增或修订带 ID 的 K/R/PL/F 条目；不重写本文件其他内容。
 3. 回标来源：RUN 条目的 `提炼` 列填入产出条目的 ID，或 `不需要`。
-4. Compact：已提炼的整段执行历史可压缩为一条 H-NNN 总结；被替代的条目标 `已废弃`，不删除。
+4. Compact：已提炼的整段执行历史可压缩为一条 HIST-NNN 总结；被替代的条目标 `已废弃`，不删除。
 
 反模式：
 
@@ -97,4 +97,4 @@ Capture what execution taught about preferences, tradeoffs, locked constraints, 
 - 历史执行总结写结论和影响，不复制完整运行日志。
 - 失败记录要写明已排除方案，避免后续重复试错。
 - 如果发现已过期，标记为 `已废弃`，不要静默删除。
-- 每个完成、阻塞或取消的任务包，至少评估一次是否需要写入本文件的 CHG/RUN/F/K/H/R/PL 区域；若不需要，在任务包完成回写中说明“不需要”。
+- 每个完成、阻塞或取消的任务包，至少评估一次是否需要写入本文件的 CHG/RUN/F/K/HIST/R/PL 区域；若不需要，在任务包完成回写中说明“不需要”。

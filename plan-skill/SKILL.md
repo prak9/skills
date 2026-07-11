@@ -187,7 +187,7 @@ Treat `memory.md` as an evolving playbook (ACE-style), never a rewrite target:
 - Reflect when a task package closes or pending entries reach 5: extract lessons from successes and failures into K/R/PL/F entries, then mark the source RUN entries with the produced IDs.
 - Curate by delta only: add or revise individual ID'd entries; never rewrite the whole file. Merge duplicates by keeping the surviving ID and marking the other `已废弃` with a pointer.
 - Against brevity bias: a distilled entry must keep concrete trigger conditions, applicable scope, counterexamples, and an evidence pointer. A lesson with no applicable scenario does not enter the playbook.
-- Against context collapse: compaction may only turn already-distilled RUN spans into one H summary; superseded entries are marked `已废弃`, not deleted.
+- Against context collapse: compaction may only turn already-distilled RUN spans into one HIST summary; superseded entries are marked `已废弃`, not deleted.
 
 ## Breakdown Algorithm
 
@@ -248,6 +248,8 @@ Use one vocabulary across `program.md` and task packages:
 待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消
 ```
 
+`探索中` is additionally valid for the program-level 总状态 only.
+
 Rules:
 
 - A task package is `完成` only when its task package acceptance criteria pass and `program.md` has been updated.
@@ -306,29 +308,7 @@ Do not mark a task package complete because code was written. Mark it complete o
 
 ### 4. Audit Or Repair A Plan
 
-Check for these failures:
-
-- `program.md` lacks measurable goals, final acceptance criteria, or task-package status.
-- `program.md` lacks preferences/tradeoffs for a non-trivial plan, or fails to mark locked constraints and negotiable space.
-- `program.md` contains CHANGELOG, run-log, historical status, or old Loop-attempt sections instead of only latest state.
-- context and references are missing, stale, or lack source/freshness information.
-- dependency graph, node-status table, checkpoints, or parallelization assumptions are missing.
-- Loop mode is enabled but no finite loop budget, verifier, reflect trigger, or stop condition exists.
-- `memory.md` is missing, stale, or lacks findings, CHANGELOG entries, run logs, or history summaries for completed or failed task packages.
-- run logs pile up as `待提炼` with no reflection pass turning them into K/R/PL/F entries.
-- implementation plan lacks overview, architecture decisions, phased task list, risks, or open questions.
-- Implementation work exists but no task package records its verification method or evidence.
-- Task packages contain broad backlog lists instead of atomic executable nodes.
-- task packages are horizontal layers instead of verifiable vertical slices.
-- task package size is L/XL without a reason.
-- Status fields are stale or disagree between `program.md` and task files.
-- Exploration questions have no validation method or stop condition.
-- A hypothesis or exploration entry was closed by producing an artifact instead of a verdict (`支持 / 推翻 / 不确定`) with evidence.
-- Exploration implementation exists without atomic steps, verification, evidence pointer, or promotion rule to task package / memory.
-- Task packages make tradeoff-sensitive changes without preference refs or escalation rules for locked constraints.
-- Decisions are hidden in chat, commit messages, or code comments instead of `program.md`.
-- "完成" means code landed rather than acceptance evidence passed.
-- A task package reached `待验收` or `完成` without answered Pre-completion Red Team questions.
+Walk through `references/audit-checklist.md` and record every failure found.
 
 Repair by restoring the three-layer authority: entrypoint and latest plan state in `program.md`; durable findings, CHANGELOG, run logs, and history in `memory.md`; active task execution state in `tasks/TASK-*.md`.
 
@@ -359,38 +339,7 @@ Avoid vague nodes such as "improve UI", "clean up backend", or "write tests". Re
 
 ## Task Package Contract
 
-Start each task package with this contract shape:
-
-```markdown
-## Task [N]: [Short descriptive title]
-
-**Description:** One paragraph explaining what this task accomplishes.
-
-**Acceptance criteria:**
-- [ ] [Specific, testable condition]
-
-**Verification:**
-- [ ] Tests pass: `<command>`
-- [ ] Build succeeds: `<command>`
-- [ ] Manual check: <scenario>
-
-**Dependencies:** [Task numbers or NODE IDs, or "None"]
-
-**Context/Refs:** [CTX/REF/OWN IDs from `program.md`, or "None"]
-
-**Preference refs:** [PREF IDs from `program.md`, or "None"]
-
-**Locked constraints:** [what must not change without escalation, or "None"]
-
-**Negotiable space:** [what the agent may optimize or propose alternatives for, or "None"]
-
-**Files likely touched:**
-- `<path>`
-
-**Estimated scope:** [Small: 1-2 files | Medium: 3-5 files | Large: 5+ files]
-```
-
-Then add the atomic implementation plan, verification matrix, checkpoint, current Loop attempt, latest execution snapshot, escalation, rollback, pre-completion red team, and completion writeback sections.
+Start each task package from `assets/task.template.md` — it is the single source of truth for the contract shape. The contract at the top defines description, acceptance criteria, verification, dependencies, context/preference refs, locked constraints, negotiable space, files likely touched, and estimated scope; the sections below it cover the atomic implementation plan, verification matrix, checkpoint, current Loop attempt, latest execution snapshot, escalation, rollback, pre-completion red team, and completion writeback.
 
 For Loop mode, update only the current Loop attempt in the task package. Move completed attempt summaries to `memory.md#运行日志`.
 
@@ -405,10 +354,12 @@ For Loop mode, update only the current Loop attempt in the task package. Move co
 
 ## Resources
 
+- Use `references/audit-checklist.md` when auditing or repairing a plan.
 - Use `assets/program.template.md` when creating or restructuring `program.md`.
 - Use `assets/memory.template.md` when creating or restructuring `memory.md`.
 - Use `assets/task.template.md` when creating a task package.
 - Use `scripts/validate_plan.py <project-root>` to check required sections, task links, status consistency, memory structure, placeholders, and unresolved markers.
+- See `examples/csv-export/` for a minimal filled-in three-file plan that passes validation cleanly; copy its shape instead of reasoning from the templates alone.
 
 ## Source
 

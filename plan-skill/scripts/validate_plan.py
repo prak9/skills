@@ -94,8 +94,6 @@ VALID_STATUSES = {
 
 VALID_SIZES = {"XS", "S", "M", "L", "XL", "Small", "Medium", "Large"}
 
-LOOP_STEPS = {"Goal", "Plan", "Act", "Verify", "Reflect", "Iterate", "Pass", "Blocked"}
-
 UNRESOLVED_PATTERNS = [
     r"\[待确认\]",
     r"\[待验证\]",
@@ -120,14 +118,25 @@ def read_text(path: Path) -> str:
         raise RuntimeError(f"文件不是 UTF-8：{path}") from exc
 
 
+def has_required(text: str, item: str) -> bool:
+    """Match item as a markdown heading or a bold field label, not arbitrary prose."""
+    escaped = re.escape(item)
+    pattern = rf"^(?:#{{1,6}}\s[^\n]*{escaped}|(?:[-*+]\s+)?\*\*{escaped})"
+    return bool(re.search(pattern, text, flags=re.MULTILINE))
+
+
+def check_required_items(path: Path, text: str, required: list[str], errors: list[str]) -> None:
+    for item in required:
+        if not has_required(text, item):
+            errors.append(f"{path} 缺少必要章节或字段：{item}")
+
+
 def check_required(path: Path, required: list[str], errors: list[str]) -> str:
     if not path.exists():
         errors.append(f"缺少文件：{path}")
         return ""
     text = read_text(path)
-    for item in required:
-        if item not in text:
-            errors.append(f"{path} 缺少必要章节或字段：{item}")
+    check_required_items(path, text, required, errors)
     return text
 
 
@@ -264,10 +273,6 @@ def size_values(text: str) -> list[str]:
     return sorted(value for value in values if value in VALID_SIZES)
 
 
-def loop_steps(text: str) -> list[str]:
-    return sorted(set(re.findall(r"\b(?:Goal|Plan|Act|Verify|Reflect|Iterate|Pass|Blocked)\b", text)))
-
-
 def check_task_link(root: Path, link: str, errors: list[str]) -> Path | None:
     task_path = (root / link).resolve()
     try:
@@ -305,12 +310,10 @@ def main() -> int:
         find_placeholders(program_path, program_text, warnings)
         check_completed_rows(program_path, program_text, errors)
         find_program_history_sections(program_path, program_text, warnings)
-        if "Node Status" not in program_text:
-            warnings.append("program.md 应维护 Node Status 表")
-        if "Plan Dependency Graph" not in program_text:
-            warnings.append("program.md 应维护计划依赖图")
-        if "Loop Contract" in program_text and "Loop State" in program_text and not loop_steps(program_text):
-            warnings.append("program.md 未发现 Loop 步骤，例如 Plan/Act/Verify/Reflect/Iterate")
+        if re.search(r"^-\s*计划模式[：:].*Loop", program_text, flags=re.MULTILINE) and not re.search(
+            r"\bL-\d{3}\b", program_text
+        ):
+            warnings.append("program.md 计划模式为 Loop，但未发现 Loop 轮次编号，例如 L-001")
         if not status_values(program_text):
             warnings.append("program.md 未发现规范状态值")
         if not size_values(program_text):
@@ -323,8 +326,8 @@ def main() -> int:
             warnings.append("program.md 未发现偏好 ID，例如 PREF-001")
     if memory_text:
         find_placeholders(memory_path, memory_text, warnings)
-        if not re.search(r"\b(?:F|K|CHG|RUN|H|R|Q|PL)-\d{3}\b", memory_text):
-            warnings.append("memory.md 未发现记忆条目编号，例如 F-001/K-001/CHG-001/RUN-001/H-001/PL-001")
+        if not re.search(r"\b(?:F|K|CHG|RUN|HIST|R|Q|PL)-\d{3}\b", memory_text):
+            warnings.append("memory.md 未发现记忆条目编号，例如 F-001/K-001/CHG-001/RUN-001/HIST-001/PL-001")
         pending = len(re.findall(r"\|\s*`?待提炼`?\s*\|", memory_text))
         if pending >= 5:
             warnings.append(f"memory.md 有 {pending} 条运行日志待提炼，应执行提炼与整理（Reflection & Curation）")
@@ -368,7 +371,8 @@ def main() -> int:
             warnings.append(f"{task_path} 未发现验证项编号，例如 V-001")
         if "CP-001" not in task_text:
             warnings.append(f"{task_path} 未发现 Checkpoint 编号，例如 CP-001")
-        if "Current Loop Attempt" in task_text and not re.search(r"\bL-\d{3}\b", task_text):
+        is_loop = bool(re.search(r"^-\s*Plan mode[：:].*Loop", task_text, flags=re.MULTILINE))
+        if is_loop and not re.search(r"\bL-\d{3}\b", task_text):
             warnings.append(f"{task_path} 未发现 Loop 轮次编号，例如 L-001")
         if not node_ids(task_text):
             warnings.append(f"{task_path} 未发现对应计划节点 ID，例如 NODE-001")
