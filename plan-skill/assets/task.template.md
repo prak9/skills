@@ -3,6 +3,8 @@
 > A task package for one plan node. The top section defines the task contract; the atomic plan below breaks it into executable nodes with status, verification, and evidence.
 
 - Status: `待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消`
+- Plan mode: `Linear / Loop`
+- Loop budget: `<max attempts or not applicable>`
 - Program: `../program.md`
 - Plan node: `NODE-NNN`
 - Owner: `<person, role, or AI>`
@@ -58,6 +60,14 @@ Node rules:
 |---|---|---|---|
 | CP-001 | `N-001` | <tests, build, end-to-end flow, or manual acceptance> | `Yes / No` |
 
+## Loop Iteration Log
+
+Use this section when `Plan mode` is `Loop`. For linear tasks, keep one row with `Not applicable`.
+
+| Iteration | Loop step | Node | Attempt | Verification result | Reflection | Plan delta | Next |
+|---|---|---|---|---|---|---|---|
+| L-001 | `Plan / Act / Verify / Reflect / Iterate / Pass` | `N-001` | <what was tried> | <test/build/manual result> | <why it passed/failed and what was learned> | <what changes next round> | <continue, split, block, escalate, or complete> |
+
 ## Execution Log
 
 ### E-001: <record title>
@@ -94,6 +104,7 @@ When this task package is done, update `../program.md`:
 
 - update `Plan Dependency Graph` if node state changed
 - update `Node Status` for `NODE-NNN`
+- update `Loop State` if this task ran in Loop mode
 - update `Task List` checkbox for this node
 - fill evidence location
 - update current status and next step

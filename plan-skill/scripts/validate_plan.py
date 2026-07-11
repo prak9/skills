@@ -24,6 +24,8 @@ PROGRAM_REQUIRED = [
     "Architecture Decisions",
     "Plan Dependency Graph",
     "Node Status",
+    "Loop Contract",
+    "Loop State",
     "Task List",
     "Checkpoints",
     "Parallelization Opportunities",
@@ -44,6 +46,7 @@ TASK_REQUIRED = [
     "Atomic Implementation Plan",
     "Verification Matrix",
     "Checkpoint",
+    "Loop Iteration Log",
     "Execution Log",
     "Escalation",
     "Risks and Rollback",
@@ -62,6 +65,8 @@ VALID_STATUSES = {
 }
 
 VALID_SIZES = {"XS", "S", "M", "L", "XL", "Small", "Medium", "Large"}
+
+LOOP_STEPS = {"Goal", "Plan", "Act", "Verify", "Reflect", "Iterate", "Pass", "Blocked"}
 
 UNRESOLVED_PATTERNS = [
     r"\[待确认\]",
@@ -131,8 +136,12 @@ def size_values(text: str) -> list[str]:
     values = set(re.findall(r"`([^`]+)`", text))
     for cell in re.findall(r"(?<=\|)([^|\n]+)(?=\|)", text):
         values.add(cell.strip().strip("`"))
-    values.update(re.findall(r"\b(?:XS|S|M|L|XL|Small|Medium|Large)\b", text))
+    values.update(re.findall(r"\b(?:Small|Medium|Large)\b", text))
     return sorted(value for value in values if value in VALID_SIZES)
+
+
+def loop_steps(text: str) -> list[str]:
+    return sorted(set(re.findall(r"\b(?:Goal|Plan|Act|Verify|Reflect|Iterate|Pass|Blocked)\b", text)))
 
 
 def check_task_link(root: Path, link: str, errors: list[str]) -> Path | None:
@@ -170,6 +179,8 @@ def main() -> int:
             warnings.append("program.md 应维护 Node Status 表")
         if "Plan Dependency Graph" not in program_text:
             warnings.append("program.md 应维护计划依赖图")
+        if "Loop Contract" in program_text and "Loop State" in program_text and not loop_steps(program_text):
+            warnings.append("program.md 未发现 Loop 步骤，例如 Plan/Act/Verify/Reflect/Iterate")
         if not status_values(program_text):
             warnings.append("program.md 未发现规范状态值")
         if not size_values(program_text):
@@ -206,6 +217,8 @@ def main() -> int:
             warnings.append(f"{task_path} 未发现验证项编号，例如 V-001")
         if "CP-001" not in task_text:
             warnings.append(f"{task_path} 未发现 Checkpoint 编号，例如 CP-001")
+        if "Loop Iteration Log" in task_text and not re.search(r"\bL-\d{3}\b", task_text):
+            warnings.append(f"{task_path} 未发现 Loop 轮次编号，例如 L-001")
         if not node_ids(task_text):
             warnings.append(f"{task_path} 未发现对应计划节点 ID，例如 NODE-001")
         if not status_values(task_text):

@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: Use this skill to create, refine, audit, or continue an AI-executable project plan with program.md as the single source of truth and tasks/TASK-*.md as task packages. Trigger when the user asks for a plan skill, planning-and-task-breakdown, implementation plan, project control plan, task-package decomposition, dependency ordering, vertical slicing, scope estimation, parallelizable work, execution status tracking, acceptance criteria, measurable goals, constraints, hypothesis validation, checkpoints, or cross-session AI coding handoff.
+description: Use this skill to create, refine, audit, or continue an AI-executable project plan with program.md as the single source of truth and tasks/TASK-*.md as task packages. Trigger when the user asks for a plan skill, planning-and-task-breakdown, implementation plan, Loop-mode plan, project control plan, task-package decomposition, dependency ordering, vertical slicing, scope estimation, parallelizable work, execution status tracking, acceptance criteria, measurable goals, constraints, hypothesis validation, checkpoints, iterative ACT/VERIFY/REFLECT cycles, or cross-session AI coding handoff.
 ---
 
 # Plan Skill
@@ -35,6 +35,7 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 - exploration questions and hypothesis-validation plan
 - an implementation plan section with overview, architecture decisions, phased task list, checkpoints, risks, and open questions
 - a plan dependency graph and node-status table where each node maps to one task package
+- a Loop contract and Loop state table when execution should iterate through `ACT -> VERIFY -> REFLECT -> ITERATE`
 - current plan status, active node, and next checkpoint
 
 Each task package must define:
@@ -42,6 +43,7 @@ Each task package must define:
 - a `Task N` contract with description, acceptance criteria, verification, dependencies, likely files touched, and estimated scope
 - atomic implementation nodes with clear status
 - exact verification method for each node
+- Loop iteration records when attempts need multiple verify-reflect-iterate cycles
 - evidence records for completed or failed checks
 - blockers, decisions, and rollback notes
 - required `program.md` status updates when the package moves state
@@ -56,6 +58,45 @@ When the user asks for planning or task breakdown, enter read-only planning mode
 - Do not write implementation code during planning. Only create or update planning artifacts unless the user explicitly asks to execute.
 
 Planning is complete only when the plan can drive implementation without relying on chat memory.
+
+## Loop Mode
+
+Use Loop mode when a plan is expected to converge through repeated attempts, not one pass:
+
+- unclear implementation path but clear success criteria
+- high-risk hypothesis needs proof before full buildout
+- verification may fail and should produce structured reflection
+- model/agent work must preserve failed attempts as learning
+- task package is a repair, optimization, eval, research, migration, or integration effort
+
+Loop mode is:
+
+```text
+GOAL -> PLAN -> ACT -> VERIFY -> PASS
+                   |
+                   v
+                REFLECT -> ITERATE -> PLAN
+```
+
+`program.md` owns the project-level Loop contract:
+
+- loop objective
+- success criteria
+- failure signals
+- iteration budget
+- reflect trigger
+- stop/escalation condition
+- current Loop state and next action
+
+Task packages own the attempt-level Loop log:
+
+- what was tried
+- what verification said
+- why it failed or passed
+- what changed in the next plan
+- whether the package should continue, split, block, or escalate
+
+Do not use Loop mode to hide indecision. Every loop must have a finite budget and a verifier. If the same failure repeats without new information, stop and mark blocked or escalate.
 
 ## Breakdown Algorithm
 
@@ -132,9 +173,10 @@ Rules:
 3. Map dependency order and identify high-risk assumptions.
 4. Split into vertical task packages where each plan node has a verifiable result.
 5. Write the implementation plan in `program.md`: overview, architecture decisions, dependency graph, node-status table, phased task list, checkpoints, risks, and open questions.
-6. Create or update `program.md` from `assets/program.template.md`.
-7. Create task files from `assets/task.template.md` only for task packages that are ready to execute or need precise scoping now.
-8. Run `scripts/validate_plan.py <project-root>` when possible.
+6. Decide whether the plan is `Linear` or `Loop`. If Loop, define budget, verifier, reflect trigger, and stop condition.
+7. Create or update `program.md` from `assets/program.template.md`.
+8. Create task files from `assets/task.template.md` only for task packages that are ready to execute or need precise scoping now.
+9. Run `scripts/validate_plan.py <project-root>` when possible.
 
 ### 2. Continue A Plan
 
@@ -171,6 +213,7 @@ Check for these failures:
 
 - `program.md` lacks measurable goals, final acceptance criteria, or task-package status.
 - dependency graph, node-status table, checkpoints, or parallelization assumptions are missing.
+- Loop mode is enabled but no finite loop budget, verifier, reflect trigger, or stop condition exists.
 - implementation plan lacks overview, architecture decisions, phased task list, risks, or open questions.
 - Implementation work exists but no task package records its verification method or evidence.
 - Task packages contain broad backlog lists instead of atomic executable nodes.
@@ -234,6 +277,8 @@ Start each task package with this contract shape:
 ```
 
 Then add the atomic implementation plan, verification matrix, checkpoint, execution log, escalation, rollback, and completion writeback sections.
+
+For Loop mode, also fill the Loop iteration log after every attempt. The log is not a journal; each row must change the next action or explain why the task is blocked.
 
 ## Updating Rules
 

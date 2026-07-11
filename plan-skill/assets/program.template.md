@@ -4,6 +4,9 @@
 > 任务执行细节写入 `tasks/TASK-*.md`；本文件维护总状态和每个任务包的状态。
 
 - 总状态：`待开始 / 探索中 / 进行中 / 阻塞 / 待验收 / 完成 / 已取消`
+- 计划模式：`Linear / Loop`
+- Loop 状态：`Goal / Plan / Act / Verify / Reflect / Iterate / Pass / Blocked / 不适用`
+- Loop 轮次：`0/<最大轮次或不适用>`
 - 当前任务包：`tasks/TASK-NNN-<slug>.md / 无`
 - 当前计划节点：`NODE-NNN / 无`
 - 下一计划节点：`NODE-NNN / 决策点 / 无`
@@ -121,6 +124,34 @@ NODE-001 Foundation (<status>)
 |---|---|---|---|---|---|---|---|---|---|
 | NODE-001 | Phase 1: Foundation | `待开始` | `Small / Medium` | `tasks/TASK-001-short-slug.md` | <可观察结果> | `无` | <A-NNN、V-NNN 或命令> | <证据位置> | `YYYY-MM-DD` |
 
+### Loop Contract
+
+用于需要多轮收敛的计划。线性计划也保留本节，写 `不适用`。
+
+```text
+GOAL -> PLAN -> ACT -> VERIFY -> PASS
+                   |
+                   v
+                REFLECT -> ITERATE -> PLAN
+```
+
+| 字段 | 内容 |
+|---|---|
+| Loop 目标 | <本轮循环要收敛到什么结果；线性计划写不适用> |
+| 成功标准 | <PASS 的可验证条件> |
+| 失败信号 | <什么结果算 FAIL，需要 Reflect> |
+| 验证器 | <测试、构建、人工场景、指标或审查方式> |
+| 最大轮次 | `<数字；线性计划写不适用>` |
+| Reflect 触发 | <验证失败、风险升高、范围漂移、证据不足等> |
+| Iterate 规则 | <每轮允许调整什么，不允许改什么> |
+| 停止/升级条件 | <预算耗尽、重复失败、触碰硬约束等> |
+
+### Loop State
+
+| 轮次 | 当前节点 | Loop 步骤 | 本轮假设/计划变化 | 验证入口 | 结果 | 决策 | 下一步 |
+|---|---|---|---|---|---|---|---|
+| L-001 | `NODE-001` | `Plan / Act / Verify / Reflect / Iterate / Pass` | <变化> | <命令或验收> | `待验证 / 通过 / 失败 / 阻塞` | <继续、回炉、拆分、升级> | <下一步> |
+
 ### Task List
 
 #### Phase 1: Foundation
@@ -185,6 +216,7 @@ NODE-001 Foundation (<status>)
 ## 9. 更新协议
 
 - 新增、阻塞、待验收、完成或取消计划节点/任务包时，必须更新第 7 节的 Plan Dependency Graph、Node Status 和 Task List。
+- Loop 模式下，每次 ACT/VERIFY/REFLECT/ITERATE 后必须更新 Loop State；PASS 后同步更新 Node Status。
 - 目标、度量、验收标准、硬约束或总体策略变化时，必须新增或更新第 2-5 节。
 - 假设验证完成时，必须更新第 6 节，并把影响反映到相关任务包。
 - 任务包内部原子节点状态只写在对应 `tasks/TASK-*.md`；本文件只写计划节点/任务包级状态。
