@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan Skill"
+  short_description: "Task breakdown with checkpoints and status"
+  default_prompt: "Use $plan-skill to break this spec into ordered task packages with dependencies, acceptance criteria, checkpoints, and verification."

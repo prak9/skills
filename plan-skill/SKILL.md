@@ -1,0 +1,254 @@
+---
+name: plan-skill
+description: Use this skill to create, refine, audit, or continue an AI-executable project plan with program.md as the single source of truth and tasks/TASK-*.md as task packages. Trigger when the user asks for a plan skill, planning-and-task-breakdown, implementation plan, project control plan, task-package decomposition, dependency ordering, vertical slicing, scope estimation, parallelizable work, execution status tracking, acceptance criteria, measurable goals, constraints, hypothesis validation, checkpoints, or cross-session AI coding handoff.
+---
+
+# Plan Skill
+
+Use this skill to turn an ambiguous project or ongoing implementation into a verifiable execution plan. The plan has two layers:
+
+```text
+program.md                 # Total plan: problem, goals, metrics, acceptance, constraints, strategy, decisions, hypotheses, task-package status.
+tasks/TASK-NNN-<slug>.md   # Task package: one plan node decomposed into atomic implementation nodes with status and verification.
+```
+
+Do not create `codemap.md` by default. If implementation mapping is needed, keep it inside the relevant task package unless it becomes large enough to justify a separate file.
+
+If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, generate them only as derived exports from `program.md` and `tasks/TASK-*.md`. They are not authoritative.
+
+## Authority Model
+
+- `program.md` is the source of truth for the whole plan and the status of every task package.
+- Each `tasks/TASK-*.md` is the source of truth for its own atomic implementation plan, execution notes, evidence, and verification state.
+- Code, tests, logs, and runtime evidence are facts. Markdown records intent, plan, status, and evidence pointers.
+- When chat decisions matter beyond the current reply, write them into `program.md` or the active task package before treating them as durable.
+- Never silently reconcile conflicts. Mark drift, name the conflicting sources, and choose the authority to update.
+
+## Core Shape
+
+`program.md` must define:
+
+- the problem being solved and why it matters
+- goals, metrics, and final acceptance criteria
+- constraints, non-goals, risk boundaries, and escalation rules
+- overall strategy and important decisions
+- exploration questions and hypothesis-validation plan
+- an implementation plan section with overview, architecture decisions, phased task list, checkpoints, risks, and open questions
+- a plan dependency graph and node-status table where each node maps to one task package
+- current plan status, active node, and next checkpoint
+
+Each task package must define:
+
+- a `Task N` contract with description, acceptance criteria, verification, dependencies, likely files touched, and estimated scope
+- atomic implementation nodes with clear status
+- exact verification method for each node
+- evidence records for completed or failed checks
+- blockers, decisions, and rollback notes
+- required `program.md` status updates when the package moves state
+
+## Planning Discipline
+
+When the user asks for planning or task breakdown, enter read-only planning mode:
+
+- Read specs, existing docs, code entry points, tests, configuration, and recent changes.
+- Identify existing patterns, ownership boundaries, and dependency chains.
+- Note risks, unknowns, and decisions needed.
+- Do not write implementation code during planning. Only create or update planning artifacts unless the user explicitly asks to execute.
+
+Planning is complete only when the plan can drive implementation without relying on chat memory.
+
+## Breakdown Algorithm
+
+### 1. Map Dependencies
+
+Build foundations before dependents. Typical chains look like:
+
+```text
+schema/data -> models/types -> service/API contract -> endpoint/client -> UI/workflow -> e2e verification
+```
+
+Record dependency order in `program.md` as both:
+
+- a graph/list that shows node dependencies
+- a node-status table that tracks status, task-package link, phase, dependency, verification, and evidence
+
+If a task package depends on another package or shared contract, name it explicitly.
+
+### 2. Prefer Vertical Slices
+
+Default to vertical slices that deliver one working, testable path. Avoid horizontal plans such as "build all schema, then all APIs, then all UI" unless the architecture forces it.
+
+Good task package: "User can create a task" with data shape, API, UI path, and verification for that single flow.
+
+Weak task package: "Implement backend and frontend" with no single user-visible result.
+
+### 3. Size Tasks
+
+Use this sizing guide:
+
+| Size | Files | Scope | Rule |
+|---|---:|---|---|
+| XS | 1 | Single function/config/doc change | Fine as an atomic node |
+| S | 1-2 | One component, endpoint, or small behavior | Good task package if independently verifiable |
+| M | 3-5 | One vertical feature slice | Ideal upper bound |
+| L | 5-8 | Multi-component feature | Split unless tightly coupled |
+| XL | 8+ | Too large | Must split |
+
+Use `Small`, `Medium`, and `Large` in task-package contracts; `XS/S/M/L/XL` may be used internally for finer sizing.
+
+Split further when the title contains "and", acceptance criteria exceed three bullets, the work crosses independent subsystems, or one focused session is unlikely to finish implementation plus verification.
+
+### 4. Order Checkpoints
+
+Arrange task packages so:
+
+- dependencies are satisfied bottom-up
+- every task package leaves the system in a working state
+- high-risk or assumption-validating work happens early
+- checkpoints appear after every 2-3 task packages or at risk boundaries
+- parallelizable work is called out only after shared contracts are defined
+
+## Status Vocabulary
+
+Use one vocabulary across `program.md` and task packages:
+
+```text
+待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消
+```
+
+Rules:
+
+- A task package is `完成` only when its task package acceptance criteria pass and `program.md` has been updated.
+- A task package is `待验收` when implementation and verification evidence are ready but human acceptance is required.
+- A task package is `阻塞` only when the next action depends on missing information, permission, external state, or a failed prerequisite.
+- Atomic nodes use the same statuses and must name the next verification action when not complete.
+
+## Workflow
+
+### 1. Create Or Refresh The Plan
+
+1. Enter read-only planning mode and gather context.
+2. Restate the problem, desired outcome, constraints, and unknowns in one concise checkpoint before large edits if the goal is ambiguous.
+3. Map dependency order and identify high-risk assumptions.
+4. Split into vertical task packages where each plan node has a verifiable result.
+5. Write the implementation plan in `program.md`: overview, architecture decisions, dependency graph, node-status table, phased task list, checkpoints, risks, and open questions.
+6. Create or update `program.md` from `assets/program.template.md`.
+7. Create task files from `assets/task.template.md` only for task packages that are ready to execute or need precise scoping now.
+8. Run `scripts/validate_plan.py <project-root>` when possible.
+
+### 2. Continue A Plan
+
+At session start, read in order:
+
+1. `program.md`
+2. the active task package listed in `program.md`
+3. evidence referenced by that task package
+4. relevant code, tests, and recent commits
+
+Then report:
+
+- current plan status and active task package
+- next atomic node to execute
+- stale or missing evidence
+- blockers and decisions needed
+- what will be updated if the next step succeeds
+
+### 3. Execute A Task Package
+
+Work from the task package, not from memory.
+
+1. Pick the next atomic node with status `待开始`, `进行中`, or `阻塞` after unblocking.
+2. Execute the smallest useful implementation step.
+3. Run the node's verification method.
+4. Update the node status, evidence pointer, and next action.
+5. If the task package status changes, update the task-package status table in `program.md`.
+
+Do not mark a task package complete because code was written. Mark it complete only when verification evidence satisfies its acceptance criteria.
+
+### 4. Audit Or Repair A Plan
+
+Check for these failures:
+
+- `program.md` lacks measurable goals, final acceptance criteria, or task-package status.
+- dependency graph, node-status table, checkpoints, or parallelization assumptions are missing.
+- implementation plan lacks overview, architecture decisions, phased task list, risks, or open questions.
+- Implementation work exists but no task package records its verification method or evidence.
+- Task packages contain broad backlog lists instead of atomic executable nodes.
+- task packages are horizontal layers instead of verifiable vertical slices.
+- task package size is L/XL without a reason.
+- Status fields are stale or disagree between `program.md` and task files.
+- Exploration questions have no validation method or stop condition.
+- Decisions are hidden in chat, commit messages, or code comments instead of `program.md`.
+- "完成" means code landed rather than acceptance evidence passed.
+
+Repair by restoring the two-layer authority: plan state in `program.md`; task execution detail in `tasks/TASK-*.md`.
+
+## Task Package Sizing
+
+A task package should be:
+
+- large enough to let the AI autonomously design, implement, test, and fix within a bounded area
+- small enough that failure can be localized, retried, or rolled back
+- tied to one observable plan node in `program.md`
+- closed by evidence, not by effort
+
+Split a package when two parts can be accepted independently, have different blockers, touch unrelated risk areas, or require different human decisions.
+
+## Atomic Node Rules
+
+Every atomic node inside a task package must include:
+
+- status
+- concrete implementation action
+- dependency on earlier node, or `无`
+- expected touched area
+- verification method or command
+- evidence location once run
+- next action if verification fails
+
+Avoid vague nodes such as "improve UI", "clean up backend", or "write tests". Rewrite them as observable actions with checks.
+
+## Task Package Contract
+
+Start each task package with this contract shape:
+
+```markdown
+## Task [N]: [Short descriptive title]
+
+**Description:** One paragraph explaining what this task accomplishes.
+
+**Acceptance criteria:**
+- [ ] [Specific, testable condition]
+
+**Verification:**
+- [ ] Tests pass: `<command>`
+- [ ] Build succeeds: `<command>`
+- [ ] Manual check: <scenario>
+
+**Dependencies:** [Task numbers or NODE IDs, or "None"]
+
+**Files likely touched:**
+- `<path>`
+
+**Estimated scope:** [Small: 1-2 files | Medium: 3-5 files | Large: 5+ files]
+```
+
+Then add the atomic implementation plan, verification matrix, checkpoint, execution log, escalation, rollback, and completion writeback sections.
+
+## Updating Rules
+
+- Update `program.md` whenever a task package is created, blocked, ready for acceptance, completed, or cancelled.
+- Update the task package whenever an atomic node starts, finishes, fails verification, or changes scope.
+- Record evidence as concise pointers to tests, logs, screenshots, commits, reports, or manual acceptance notes.
+- Use ISO dates: `YYYY-MM-DD`.
+- Mark uncertainty explicitly with `[待确认]`, `[待验证]`, or `[待决策]`; include the next validation or decision step.
+
+## Resources
+
+- Use `assets/program.template.md` when creating or restructuring `program.md`.
+- Use `assets/task.template.md` when creating a task package.
+- Use `scripts/validate_plan.py <project-root>` to check required sections, task links, status consistency, placeholders, and unresolved markers.
+
+## Source
+
+Absorbs the planning-and-task-breakdown method: read-only planning first, dependency graph, vertical slicing, task sizing, checkpoints, parallelization notes, and per-task acceptance plus verification.
