@@ -37,7 +37,7 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 - goals, metrics, and final acceptance criteria
 - constraints, non-goals, risk boundaries, and escalation rules
 - overall strategy and important decisions
-- exploration questions and hypothesis-validation plan
+- exploration questions, hypothesis-validation plan, and concrete exploratory implementation plan when validation requires a spike, prototype, script, or experiment
 - an implementation plan section with overview, architecture decisions, phased task list, checkpoints, risks, and open questions
 - a plan dependency graph and node-status table where each node maps to one task package
 - a Loop contract and Loop state table when execution should iterate through `ACT -> VERIFY -> REFLECT -> ITERATE`
@@ -232,12 +232,13 @@ Rules:
 2. Build or update the `program.md` context/ref index.
 3. Restate the problem, desired outcome, constraints, and unknowns in one concise checkpoint before large edits if the goal is ambiguous.
 4. Map dependency order and identify high-risk assumptions.
-5. Split into vertical task packages where each plan node has a verifiable result.
-6. Write the implementation plan in `program.md`: entrypoint links, overview, architecture decisions, dependency graph, node-status table, phased task list, checkpoints, risks, and open questions. Keep it to latest state only.
-7. Decide whether the plan is `Linear` or `Loop`. If Loop, define budget, verifier, reflect trigger, and stop condition.
-8. Create or update `program.md` from `assets/program.template.md`.
-9. Create task files from `assets/task.template.md` only for task packages that are ready to execute or need precise scoping now.
-10. Run `scripts/validate_plan.py <project-root>` when possible.
+5. For high-risk assumptions, write a concrete exploratory implementation plan in the exploration section before committing to full task packages.
+6. Split into vertical task packages where each plan node has a verifiable result.
+7. Write the implementation plan in `program.md`: entrypoint links, overview, architecture decisions, dependency graph, node-status table, phased task list, checkpoints, risks, and open questions. Keep it to latest state only.
+8. Decide whether the plan is `Linear` or `Loop`. If Loop, define budget, verifier, reflect trigger, and stop condition.
+9. Create or update `program.md` from `assets/program.template.md`.
+10. Create task files from `assets/task.template.md` only for task packages that are ready to execute or need precise scoping now.
+11. Run `scripts/validate_plan.py <project-root>` when possible.
 
 ### 2. Continue A Plan
 
@@ -288,6 +289,7 @@ Check for these failures:
 - task package size is L/XL without a reason.
 - Status fields are stale or disagree between `program.md` and task files.
 - Exploration questions have no validation method or stop condition.
+- Exploration implementation exists without atomic steps, verification, evidence pointer, or promotion rule to task package / memory.
 - Decisions are hidden in chat, commit messages, or code comments instead of `program.md`.
 - "完成" means code landed rather than acceptance evidence passed.
 
