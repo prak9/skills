@@ -1,6 +1,6 @@
 # TASK-NNN: <Short descriptive title>
 
-> A task package for one plan node. The top section defines the task contract; the atomic plan below breaks it into executable nodes with status, verification, and evidence.
+> A task package for one plan node. The top section defines the task contract; the atomic plan below breaks it into executable nodes with current status, verification, and latest evidence pointers. Historical run logs and changelog entries belong in `../memory.md`.
 
 - Status: `待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消`
 - Plan mode: `Linear / Loop`
@@ -63,25 +63,29 @@ Node rules:
 |---|---|---|---|
 | CP-001 | `N-001` | <tests, build, end-to-end flow, or manual acceptance> | `Yes / No` |
 
-## Loop Iteration Log
+## Current Loop Attempt
 
-Use this section when `Plan mode` is `Loop`. For linear tasks, keep one row with `Not applicable`.
+Use this section when `Plan mode` is `Loop`. Keep only the current/latest attempt here. Move completed attempt summaries to `../memory.md#4-运行日志`.
 
 | Iteration | Loop step | Node | Attempt | Verification result | Reflection | Plan delta | Next |
 |---|---|---|---|---|---|---|---|
 | L-001 | `Plan / Act / Verify / Reflect / Iterate / Pass` | `N-001` | <what was tried> | <test/build/manual result> | <why it passed/failed and what was learned> | <what changes next round> | <continue, split, block, escalate, or complete> |
 
-## Execution Log
+## Latest Execution Snapshot
 
-### E-001: <record title>
+Keep this section to the latest execution state only. Write chronological run logs to `../memory.md#4-运行日志` and reference their IDs here.
 
-- Time: `YYYY-MM-DD`
-- Node: `N-001`
-- Type: `implementation / test / research / decision / blocker / rollback / manual acceptance`
-- Action: <what changed or was checked>
-- Result: `passed / failed / partial / blocked`
-- Evidence: <test output, log, screenshot, commit, report, or manual note>
-- Next: <next node, fix, split, or escalation>
+| Field | Value |
+|---|---|
+| Snapshot ID | `E-001` |
+| Time | `YYYY-MM-DD` |
+| Node | `N-001` |
+| Type | `implementation / test / research / decision / blocker / rollback / manual acceptance` |
+| Latest action | <what changed or was checked> |
+| Latest result | `passed / failed / partial / blocked` |
+| Evidence | <test output, log, screenshot, commit, report, or manual note> |
+| Memory refs | `RUN-NNN / CHG-NNN / H-NNN / None` |
+| Next | <next node, fix, split, or escalation> |
 
 ## Escalation
 
@@ -109,24 +113,27 @@ When this task package is done, update `../program.md`:
 - update `Node Status` for `NODE-NNN`
 - update `Loop State` if this task ran in Loop mode
 - update `Task List` checkbox for this node
-- update `Memory Sync` when durable findings or execution summaries were written
+- update `Memory Sync` when changelog entries, run logs, durable findings, or execution summaries were written
 - fill evidence location
 - update current status and next step
 - update decisions or hypothesis results if this task changed them
 - update `program.md#2-上下文与-references` if new context, entry points, refs, or owners were discovered
+- do not append changelog, run-log, or historical status sections to `program.md`
 
 Also update `../memory.md`:
 
 - add important findings to `memory.md#1-重要发现`
 - add reusable knowledge to `memory.md#2-知识库沉淀`
-- add task outcome summary to `memory.md#3-历史执行记录总结`
-- add failed-attempt lessons to `memory.md#4-失败与回炉记录`
+- add changelog entries to `memory.md#3-变更记录changelog`
+- add run-log entries to `memory.md#4-运行日志`
+- add task outcome summary to `memory.md#5-历史执行记录总结`
+- add failed-attempt lessons to `memory.md#6-失败与回炉记录`
 - if no memory writeback is needed, record that decision in this task's completion summary
 
 Completion summary:
 
 - Final result: <observable result>
 - Key evidence: <V-NNN or E-NNN>
-- Memory writeback: `已写入 / 不需要：<原因>`
+- Memory writeback: `CHG-NNN / RUN-NNN / F-NNN / K-NNN / H-NNN / R-NNN / 不需要：<原因>`
 - Remaining work: <new task package or None>
 - Completed: `YYYY-MM-DD`

@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan Skill"
-  short_description: "Executable plans with memory and refs"
-  default_prompt: "Use $plan-skill to create or continue a program.md plan with task packages, context refs, verification, and memory.md writeback."
+  short_description: "Plan entrypoint with memory logs"
+  default_prompt: "Use $plan-skill to create or continue a program.md plan entrypoint with task packages, current status, verification, and memory.md changelog/run-log writeback."

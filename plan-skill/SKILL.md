@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: Use this skill to create, refine, audit, or continue an AI-executable project plan with program.md as the single source of truth, tasks/TASK-*.md as task packages, and memory.md as durable findings/history memory. Trigger when the user asks for a plan skill, planning-and-task-breakdown, implementation plan, Loop-mode plan, project control plan, task-package decomposition, dependency ordering, vertical slicing, scope estimation, parallelizable work, execution status tracking, acceptance criteria, measurable goals, constraints, hypothesis validation, checkpoints, iterative ACT/VERIFY/REFLECT cycles, important findings, knowledge-base capture, execution-history summaries, or cross-session AI coding handoff.
+description: Use this skill to create, refine, audit, or continue an AI-executable project plan with program.md as the current-state source of truth, tasks/TASK-*.md as task packages, and memory.md as durable findings/history memory. Trigger when the user asks for a plan skill, planning-and-task-breakdown, implementation plan, Loop-mode plan, project control plan, task-package decomposition, dependency ordering, vertical slicing, scope estimation, parallelizable work, execution status tracking, acceptance criteria, measurable goals, constraints, hypothesis validation, checkpoints, iterative ACT/VERIFY/REFLECT cycles, important findings, knowledge-base capture, CHANGELOG, run logs, execution-history summaries, or cross-session AI coding handoff.
 ---
 
 # Plan Skill
@@ -8,9 +8,9 @@ description: Use this skill to create, refine, audit, or continue an AI-executab
 Use this skill to turn an ambiguous project or ongoing implementation into a verifiable execution plan. The plan has three layers:
 
 ```text
-program.md                 # Total plan: problem, goals, metrics, acceptance, constraints, strategy, decisions, hypotheses, task-package status.
-memory.md                  # Durable memory: important findings, reusable knowledge, execution-history summaries, lessons, and evidence pointers.
-tasks/TASK-NNN-<slug>.md   # Task package: one plan node decomposed into atomic implementation nodes with status and verification.
+program.md                 # Main entrypoint and current state only: latest plan, node status, blockers, next step, links.
+memory.md                  # Durable memory: findings, reusable knowledge, CHANGELOG, run logs, history summaries, lessons, evidence pointers.
+tasks/TASK-NNN-<slug>.md   # Active task package: one plan node decomposed into atomic implementation nodes with status and verification.
 ```
 
 Do not create `codemap.md` by default. If implementation mapping is needed, keep it inside the relevant task package unless it becomes large enough to justify a separate file.
@@ -19,9 +19,9 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 
 ## Authority Model
 
-- `program.md` is the source of truth for the whole plan and the status of every task package.
-- `memory.md` is the source of truth for durable findings, reusable knowledge, historical execution summaries, lessons learned, and evidence pointers that should survive task closure.
-- Each `tasks/TASK-*.md` is the source of truth for its own atomic implementation plan, execution notes, evidence, and verification state.
+- `program.md` is the main entrypoint for the project plan and the source of truth for the current plan plus the latest status of every task package. It must link to relevant task packages and memory entries, but it must not accumulate CHANGELOG entries, run logs, historical status transitions, or old Loop attempts.
+- `memory.md` is the source of truth for durable findings, reusable knowledge, CHANGELOG entries, run-log summaries, historical execution summaries, lessons learned, and evidence pointers that should survive task closure.
+- Each `tasks/TASK-*.md` is the source of truth for its own active atomic implementation plan, current attempt state, latest evidence pointer, and verification state.
 - Code, tests, logs, and runtime evidence are facts. Markdown records intent, plan, status, and evidence pointers.
 - When chat decisions matter beyond the current reply, write them into `program.md` or the active task package before treating them as durable.
 - When a discovery matters beyond the current task, write it into `memory.md` before treating it as durable knowledge.
@@ -32,6 +32,7 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 `program.md` must define:
 
 - the problem being solved and why it matters
+- entrypoint links to the active task package, current memory file, latest evidence pointers, and next checkpoint
 - the context and references the plan depends on, including specs, code entry points, external docs, evidence, and owners
 - goals, metrics, and final acceptance criteria
 - constraints, non-goals, risk boundaries, and escalation rules
@@ -41,11 +42,14 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 - a plan dependency graph and node-status table where each node maps to one task package
 - a Loop contract and Loop state table when execution should iterate through `ACT -> VERIFY -> REFLECT -> ITERATE`
 - current plan status, active node, and next checkpoint
+- only the latest state. Historical changes, run logs, previous Loop attempts, and old status transitions belong in `memory.md`
 
 `memory.md` must define:
 
 - important findings and knowledge items with evidence pointers
 - reusable implementation, testing, product, or operational lessons
+- CHANGELOG entries for meaningful plan, implementation, interface, or decision changes
+- run-log summaries for execution, verification, rollout, rollback, and manual acceptance events
 - historical execution summaries by task package or milestone
 - failed attempts worth preserving and why they failed
 - open knowledge gaps that need future validation
@@ -57,10 +61,10 @@ Each task package must define:
 - a `Task N` contract with description, acceptance criteria, verification, dependencies, likely files touched, and estimated scope
 - atomic implementation nodes with clear status
 - exact verification method for each node
-- Loop iteration records when attempts need multiple verify-reflect-iterate cycles
-- evidence records for completed or failed checks
+- current Loop attempt state when attempts need verify-reflect-iterate cycles
+- latest evidence pointers for completed or failed checks
 - blockers, decisions, and rollback notes
-- memory writeback requirements for findings and execution summary
+- memory writeback requirements for findings, CHANGELOG entries, run logs, and execution summaries
 - required `program.md` status updates when the package moves state
 
 ## Planning Discipline
@@ -116,14 +120,16 @@ GOAL -> PLAN -> ACT -> VERIFY -> PASS
 - current Loop state and next action
 - what findings or failed attempts must be promoted to `memory.md`
 
-Task packages own the attempt-level Loop log:
+Task packages own the current attempt state:
 
 - what was tried
 - what verification said
 - why it failed or passed
 - what changed in the next plan
 - whether the package should continue, split, block, or escalate
-- which lessons or execution summaries were written to `memory.md`
+- which lessons, CHANGELOG entries, run logs, or execution summaries were written to `memory.md`
+
+Completed Loop attempts should be summarized in `memory.md`; keep only the latest active attempt in `program.md` and the task package.
 
 Do not use Loop mode to hide indecision. Every loop must have a finite budget and a verifier. If the same failure repeats without new information, stop and mark blocked or escalate.
 
@@ -134,17 +140,20 @@ Use `memory.md` to preserve knowledge that should outlive one task package. Keep
 Write to `memory.md` when:
 
 - a task reveals an important implementation fact, invariant, hidden dependency, or system behavior
+- a meaningful plan, interface, behavior, dependency, or decision change would otherwise become a CHANGELOG entry
+- an execution, verification, rollout, rollback, or manual acceptance event would otherwise become a run log
 - verification fails in a way that teaches a reusable lesson
 - a loop iteration changes the plan because of evidence
 - a task package completes, blocks, or is cancelled and future agents need the history
 - a decision's evidence is longer-lived than the decision record in `program.md`
 
 Do not write ordinary progress chatter. A memory entry should change future planning or execution.
+Do not append CHANGELOG, run-log, or historical status sections to `program.md`; update its latest state in place and link to the relevant memory IDs when needed.
 
 Use this promotion rule:
 
 ```text
-raw evidence/log -> task execution log -> memory.md summary -> program.md status/decision if plan-level
+raw evidence/log -> memory.md run log or summary -> task/program latest evidence pointer -> program.md current status if plan-level
 ```
 
 `memory.md` is not a replacement for evidence. It stores the distilled claim plus the pointer to the evidence.
@@ -224,7 +233,7 @@ Rules:
 3. Restate the problem, desired outcome, constraints, and unknowns in one concise checkpoint before large edits if the goal is ambiguous.
 4. Map dependency order and identify high-risk assumptions.
 5. Split into vertical task packages where each plan node has a verifiable result.
-6. Write the implementation plan in `program.md`: overview, architecture decisions, dependency graph, node-status table, phased task list, checkpoints, risks, and open questions.
+6. Write the implementation plan in `program.md`: entrypoint links, overview, architecture decisions, dependency graph, node-status table, phased task list, checkpoints, risks, and open questions. Keep it to latest state only.
 7. Decide whether the plan is `Linear` or `Loop`. If Loop, define budget, verifier, reflect trigger, and stop condition.
 8. Create or update `program.md` from `assets/program.template.md`.
 9. Create task files from `assets/task.template.md` only for task packages that are ready to execute or need precise scoping now.
@@ -240,7 +249,7 @@ At session start, read in order:
 4. evidence referenced by that task package
 5. relevant code, tests, and recent commits
 
-Then report:
+Then report from the `program.md` entrypoint:
 
 - current plan status and active task package
 - relevant memory findings and whether any appear stale
@@ -256,9 +265,9 @@ Work from the task package, not from memory.
 1. Pick the next atomic node with status `待开始`, `进行中`, or `阻塞` after unblocking.
 2. Execute the smallest useful implementation step.
 3. Run the node's verification method.
-4. Update the node status, evidence pointer, and next action.
-5. Promote durable findings and execution summary deltas to `memory.md`.
-6. If the task package status changes, update the task-package status table in `program.md`.
+4. Update the node status, latest evidence pointer, and next action.
+5. Write CHANGELOG entries, run-log summaries, durable findings, and execution-history deltas to `memory.md`.
+6. If the task package status changes, update only the latest task-package status table in `program.md`.
 
 Do not mark a task package complete because code was written. Mark it complete only when verification evidence satisfies its acceptance criteria.
 
@@ -267,10 +276,11 @@ Do not mark a task package complete because code was written. Mark it complete o
 Check for these failures:
 
 - `program.md` lacks measurable goals, final acceptance criteria, or task-package status.
+- `program.md` contains CHANGELOG, run-log, historical status, or old Loop-attempt sections instead of only latest state.
 - context and references are missing, stale, or lack source/freshness information.
 - dependency graph, node-status table, checkpoints, or parallelization assumptions are missing.
 - Loop mode is enabled but no finite loop budget, verifier, reflect trigger, or stop condition exists.
-- `memory.md` is missing, stale, or lacks findings/history summaries for completed or failed task packages.
+- `memory.md` is missing, stale, or lacks findings, CHANGELOG entries, run logs, or history summaries for completed or failed task packages.
 - implementation plan lacks overview, architecture decisions, phased task list, risks, or open questions.
 - Implementation work exists but no task package records its verification method or evidence.
 - Task packages contain broad backlog lists instead of atomic executable nodes.
@@ -281,7 +291,7 @@ Check for these failures:
 - Decisions are hidden in chat, commit messages, or code comments instead of `program.md`.
 - "完成" means code landed rather than acceptance evidence passed.
 
-Repair by restoring the three-layer authority: plan state in `program.md`; durable findings and history in `memory.md`; task execution detail in `tasks/TASK-*.md`.
+Repair by restoring the three-layer authority: entrypoint and latest plan state in `program.md`; durable findings, CHANGELOG, run logs, and history in `memory.md`; active task execution state in `tasks/TASK-*.md`.
 
 ## Task Package Sizing
 
@@ -335,15 +345,15 @@ Start each task package with this contract shape:
 **Estimated scope:** [Small: 1-2 files | Medium: 3-5 files | Large: 5+ files]
 ```
 
-Then add the atomic implementation plan, verification matrix, checkpoint, execution log, escalation, rollback, and completion writeback sections.
+Then add the atomic implementation plan, verification matrix, checkpoint, current Loop attempt, latest execution snapshot, escalation, rollback, and completion writeback sections.
 
-For Loop mode, also fill the Loop iteration log after every attempt. The log is not a journal; each row must change the next action or explain why the task is blocked.
+For Loop mode, update only the current Loop attempt in the task package. Move completed attempt summaries to `memory.md#运行日志`.
 
 ## Updating Rules
 
-- Update `program.md` whenever a task package is created, blocked, ready for acceptance, completed, or cancelled.
-- Update `memory.md` whenever a durable finding appears, a loop teaches a reusable lesson, or a task package completes/blocks/cancels.
-- Update the task package whenever an atomic node starts, finishes, fails verification, or changes scope.
+- Update `program.md` whenever a task package is created, blocked, ready for acceptance, completed, or cancelled; overwrite latest state instead of appending history.
+- Update `memory.md` whenever a durable finding appears, a CHANGELOG-worthy change happens, a run-log event occurs, a loop teaches a reusable lesson, or a task package completes/blocks/cancels.
+- Update the task package whenever an atomic node starts, finishes, fails verification, or changes scope; keep only latest execution state and point to memory IDs for history.
 - Record evidence as concise pointers to tests, logs, screenshots, commits, reports, or manual acceptance notes.
 - Use ISO dates: `YYYY-MM-DD`.
 - Mark uncertainty explicitly with `[待确认]`, `[待验证]`, or `[待决策]`; include the next validation or decision step.

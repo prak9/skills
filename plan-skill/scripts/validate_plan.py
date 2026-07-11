@@ -53,8 +53,8 @@ TASK_REQUIRED = [
     "Atomic Implementation Plan",
     "Verification Matrix",
     "Checkpoint",
-    "Loop Iteration Log",
-    "Execution Log",
+    "Current Loop Attempt",
+    "Latest Execution Snapshot",
     "Escalation",
     "Risks and Rollback",
     "Completion Writeback",
@@ -63,6 +63,8 @@ TASK_REQUIRED = [
 MEMORY_REQUIRED = [
     "重要发现",
     "知识库沉淀",
+    "变更记录",
+    "运行日志",
     "历史执行记录总结",
     "失败与回炉记录",
     "开放知识缺口",
@@ -94,6 +96,12 @@ UNRESOLVED_PATTERNS = [
     r"\bDECISION REQUIRED\b",
 ]
 
+PROGRAM_HISTORY_PATTERNS = [
+    r"^#{1,6}\s*(?:CHANGELOG|Changelog|变更记录)",
+    r"^#{1,6}\s*(?:Run Log|运行日志|Execution Log)",
+    r"^#{1,6}\s*历史执行记录总结",
+]
+
 
 def read_text(path: Path) -> str:
     try:
@@ -122,6 +130,12 @@ def find_unresolved(path: Path, text: str, warnings: list[str]) -> None:
     placeholders = len(re.findall(r"<[^>\n]{1,120}>", text))
     if placeholders:
         warnings.append(f"{path} 仍含 {placeholders} 个模板占位符")
+
+
+def find_program_history_sections(path: Path, text: str, warnings: list[str]) -> None:
+    for pattern in PROGRAM_HISTORY_PATTERNS:
+        if re.search(pattern, text, flags=re.IGNORECASE | re.MULTILINE):
+            warnings.append(f"{path} 含历史记录章节，应迁移到 memory.md：{pattern}")
 
 
 def current_task_from_program(text: str) -> str | None:
@@ -203,6 +217,7 @@ def main() -> int:
 
     if program_text:
         find_unresolved(program_path, program_text, warnings)
+        find_program_history_sections(program_path, program_text, warnings)
         if "Node Status" not in program_text:
             warnings.append("program.md 应维护 Node Status 表")
         if "Plan Dependency Graph" not in program_text:
@@ -219,8 +234,8 @@ def main() -> int:
             warnings.append("program.md 未发现上下文或引用 ID，例如 CTX-001/REF-001")
     if memory_text:
         find_unresolved(memory_path, memory_text, warnings)
-        if not re.search(r"\b(?:F|K|H|R|Q)-\d{3}\b", memory_text):
-            warnings.append("memory.md 未发现记忆条目编号，例如 F-001/K-001/H-001")
+        if not re.search(r"\b(?:F|K|CHG|RUN|H|R|Q)-\d{3}\b", memory_text):
+            warnings.append("memory.md 未发现记忆条目编号，例如 F-001/K-001/CHG-001/RUN-001/H-001")
 
     task_links = task_links_from_program(program_text) if program_text else []
     current_task = current_task_from_program(program_text) if program_text else None
@@ -251,7 +266,7 @@ def main() -> int:
             warnings.append(f"{task_path} 未发现验证项编号，例如 V-001")
         if "CP-001" not in task_text:
             warnings.append(f"{task_path} 未发现 Checkpoint 编号，例如 CP-001")
-        if "Loop Iteration Log" in task_text and not re.search(r"\bL-\d{3}\b", task_text):
+        if "Current Loop Attempt" in task_text and not re.search(r"\bL-\d{3}\b", task_text):
             warnings.append(f"{task_path} 未发现 Loop 轮次编号，例如 L-001")
         if not node_ids(task_text):
             warnings.append(f"{task_path} 未发现对应计划节点 ID，例如 NODE-001")

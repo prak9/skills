@@ -1,7 +1,7 @@
 # Memory: <项目名称>
 
-> Durable project memory. Store important findings, reusable knowledge, failed-attempt lessons, and historical execution summaries here.
-> `program.md` remains the source of truth for the current plan and node status. Task packages remain the source of truth for detailed execution logs.
+> Durable project memory. Store important findings, reusable knowledge, CHANGELOG entries, run-log summaries, failed-attempt lessons, and historical execution summaries here.
+> `program.md` remains the source of truth for current plan and latest node status only. Task packages keep active execution state only.
 
 - 最后更新：`YYYY-MM-DD`
 - 对应 Program：`program.md`
@@ -22,15 +22,31 @@ Reusable knowledge that future agents should apply.
 |---|---|---|---|---|---|
 | K-001 | `实现 / 测试 / 架构 / 产品 / 运维 / 数据 / 流程` | <可复用知识> | <何时使用> | <何时不适用> | <证据链接或任务包> |
 
-## 3. 历史执行记录总结
+## 3. 变更记录（Changelog）
+
+Meaningful changes to plan, implementation, interfaces, dependencies, acceptance criteria, or decisions. Do not create a separate CHANGELOG file unless explicitly requested.
+
+| ID | 时间 | 类型 | 范围 | 变更摘要 | 原因/触发 | 证据 | 影响 |
+|---|---|---|---|---|---|---|---|
+| CHG-001 | `YYYY-MM-DD` | `plan / code / test / docs / decision / dependency / release` | <NODE-NNN、TASK-NNN、模块或接口> | <发生了什么变化> | <为什么改> | <提交、任务包、测试、评审或记录> | <对后续计划/使用者的影响> |
+
+## 4. 运行日志
+
+Runtime logs are distilled records of execution, verification, rollout, rollback, manual acceptance, or Loop attempts. Link raw terminal output, CI logs, screenshots, or artifacts instead of pasting large logs.
+
+| ID | 时间 | 范围 | 类型 | 动作 | 结果 | 证据 | 后续 |
+|---|---|---|---|---|---|---|---|
+| RUN-001 | `YYYY-MM-DD` | <TASK-NNN、NODE-NNN、L-NNN 或命令> | `implementation / test / build / verify / rollout / rollback / manual acceptance / loop` | <做了什么> | `passed / failed / partial / blocked` | <日志、命令输出、CI、截图、报告或任务包> | <下一步或无> |
+
+## 5. 历史执行记录总结
 
 Summarize task-package and checkpoint history. Do not duplicate raw logs; link to them.
 
 | ID | 时间 | 范围 | 结果 | 关键证据 | 经验/后续影响 |
 |---|---|---|---|---|---|
-| H-001 | `YYYY-MM-DD` | <TASK-NNN、NODE-NNN 或 Checkpoint> | `完成 / 阻塞 / 已取消 / 部分完成` | <证据位置> | <未来需要知道的总结> |
+| H-001 | `YYYY-MM-DD` | <TASK-NNN、NODE-NNN 或 Checkpoint> | `完成 / 阻塞 / 已取消 / 部分完成` | <RUN-NNN、CHG-NNN、测试或提交> | <未来需要知道的总结> |
 
-## 4. 失败与回炉记录
+## 6. 失败与回炉记录
 
 Preserve failures that reduce future search space.
 
@@ -38,7 +54,7 @@ Preserve failures that reduce future search space.
 |---|---|---|---|---|---|
 | R-001 | `YYYY-MM-DD` | <失败现象或回炉内容> | <已验证或待验证根因> | <不再重复的方案> | <未来执行规则> |
 
-## 5. 开放知识缺口
+## 7. 开放知识缺口
 
 Track unknowns that are not current blockers but matter later.
 
@@ -46,10 +62,12 @@ Track unknowns that are not current blockers but matter later.
 |---|---|---|---|---|---|
 | Q-001 | `待验证` | <未知问题> | <影响> | <验证方式> | `NODE-NNN / 无` |
 
-## 6. 更新规则
+## 8. 更新规则
 
 - 重要发现必须有证据指针，不能只写印象。
-- 历史执行总结写结论和影响，不复制完整执行日志。
+- CHANGELOG 只记录有后续影响的变更，不记录普通编辑流水账。
+- 运行日志写摘要和证据指针，不复制完整终端输出或大段 CI 日志。
+- 历史执行总结写结论和影响，不复制完整运行日志。
 - 失败记录要写明已排除方案，避免后续重复试错。
 - 如果发现已过期，标记为 `已废弃`，不要静默删除。
-- 每个完成、阻塞或取消的任务包，至少评估一次是否需要写入本文件；若不需要，在任务包完成回写中说明“不需要”。
+- 每个完成、阻塞或取消的任务包，至少评估一次是否需要写入本文件的 CHG/RUN/F/K/H/R 区域；若不需要，在任务包完成回写中说明“不需要”。
