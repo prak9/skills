@@ -77,6 +77,7 @@ MEMORY_REQUIRED = [
     "失败与回炉记录",
     "开放知识缺口",
     "Preference Learning",
+    "提炼与整理",
     "更新规则",
 ]
 
@@ -324,6 +325,9 @@ def main() -> int:
         find_placeholders(memory_path, memory_text, warnings)
         if not re.search(r"\b(?:F|K|CHG|RUN|H|R|Q|PL)-\d{3}\b", memory_text):
             warnings.append("memory.md 未发现记忆条目编号，例如 F-001/K-001/CHG-001/RUN-001/H-001/PL-001")
+        pending = len(re.findall(r"\|\s*`?待提炼`?\s*\|", memory_text))
+        if pending >= 5:
+            warnings.append(f"memory.md 有 {pending} 条运行日志待提炼，应执行提炼与整理（Reflection & Curation）")
 
     task_links = task_links_from_program(program_text) if program_text else []
     current_task = current_task_from_program(program_text) if program_text else None

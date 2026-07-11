@@ -34,9 +34,9 @@ Meaningful changes to plan, implementation, interfaces, dependencies, acceptance
 
 Runtime logs are distilled records of execution, verification, rollout, rollback, manual acceptance, or Loop attempts. Link raw terminal output, CI logs, screenshots, or artifacts instead of pasting large logs.
 
-| ID | 时间 | 范围 | 类型 | 动作 | 结果 | 证据 | 后续 |
-|---|---|---|---|---|---|---|---|
-| RUN-001 | `YYYY-MM-DD` | <TASK-NNN、NODE-NNN、L-NNN 或命令> | `implementation / test / build / verify / rollout / rollback / manual acceptance / loop` | <做了什么> | `passed / failed / partial / blocked` | <日志、命令输出、CI、截图、报告或任务包> | <下一步或无> |
+| ID | 时间 | 范围 | 类型 | 动作 | 结果 | 证据 | 后续 | 提炼 |
+|---|---|---|---|---|---|---|---|---|
+| RUN-001 | `YYYY-MM-DD` | <TASK-NNN、NODE-NNN、L-NNN 或命令> | `implementation / test / build / verify / rollout / rollback / manual acceptance / loop` | <做了什么> | `passed / failed / partial / blocked` | <日志、命令输出、CI、截图、报告或任务包> | <下一步或无> | `待提炼 / 不需要 / 产出的 K-R-PL-F ID` |
 
 ## 5. 历史执行记录总结
 
@@ -70,7 +70,25 @@ Capture what execution taught about preferences, tradeoffs, locked constraints, 
 |---|---|---|---|---|---|
 | PL-001 | <what we now know matters> | <old assumption or blank> | <RUN-NNN、CHG-NNN、TASK-NNN 或 review> | `strategic / tactical` | `yes / no / later` |
 
-## 9. 更新规则
+## 9. 提炼与整理（Reflection & Curation）
+
+本文件是不断演化的操作手册（ACE 式），不是重写对象。执行写痕迹（RUN），反思提经验（K/R/PL/F），整理只做带 ID 的增量修订。
+
+触发时机：任务包完成/阻塞/取消时，或 `待提炼` 的运行日志达到 5 条时。
+
+程序：
+
+1. Reflect：逐条审阅 `待提炼` 的 RUN/R 条目，从成功和失败中提取经验。
+2. Curate：新增或修订带 ID 的 K/R/PL/F 条目；不重写本文件其他内容。
+3. 回标来源：RUN 条目的 `提炼` 列填入产出条目的 ID，或 `不需要`。
+4. Compact：已提炼的整段执行历史可压缩为一条 H-NNN 总结；被替代的条目标 `已废弃`，不删除。
+
+反模式：
+
+- 简短偏置（brevity bias）：把具体经验压成空泛原则。提炼产出的条目必须保留触发条件、适用场景、反例/边界和证据指针；写不出适用场景的经验不入库。
+- 上下文坍缩（context collapse）：靠重写全文来"整理"。只允许按 ID 增改单条；合并重复条目时保留幸存 ID，被并入条目标 `已废弃` 并指向幸存条目。
+
+## 10. 更新规则
 
 - 重要发现必须有证据指针，不能只写印象。
 - Preference Learning 只记录会改变未来计划或任务执行方式的偏好学习。

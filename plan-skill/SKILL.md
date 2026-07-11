@@ -55,6 +55,7 @@ If downstream tooling explicitly expects `tasks/plan.md` or `tasks/todo.md`, gen
 - historical execution summaries by task package or milestone
 - failed attempts worth preserving and why they failed
 - open knowledge gaps that need future validation
+- a reflection-and-curation pass that periodically distills run logs into reusable entries
 
 Context and references are not memory. `program.md` stores the current context index and reference pointers needed to understand the plan; `memory.md` stores distilled findings and historical learning extracted from execution.
 
@@ -177,6 +178,16 @@ raw evidence/log -> memory.md run log or summary -> task/program latest evidence
 ```
 
 `memory.md` is not a replacement for evidence. It stores the distilled claim plus the pointer to the evidence.
+
+### Reflection & Curation
+
+Treat `memory.md` as an evolving playbook (ACE-style), never a rewrite target:
+
+- Execution writes traces: every run-log entry gets a `提炼` state — `待提炼` or `不需要`.
+- Reflect when a task package closes or pending entries reach 5: extract lessons from successes and failures into K/R/PL/F entries, then mark the source RUN entries with the produced IDs.
+- Curate by delta only: add or revise individual ID'd entries; never rewrite the whole file. Merge duplicates by keeping the surviving ID and marking the other `已废弃` with a pointer.
+- Against brevity bias: a distilled entry must keep concrete trigger conditions, applicable scope, counterexamples, and an evidence pointer. A lesson with no applicable scenario does not enter the playbook.
+- Against context collapse: compaction may only turn already-distilled RUN spans into one H summary; superseded entries are marked `已废弃`, not deleted.
 
 ## Breakdown Algorithm
 
@@ -304,6 +315,7 @@ Check for these failures:
 - dependency graph, node-status table, checkpoints, or parallelization assumptions are missing.
 - Loop mode is enabled but no finite loop budget, verifier, reflect trigger, or stop condition exists.
 - `memory.md` is missing, stale, or lacks findings, CHANGELOG entries, run logs, or history summaries for completed or failed task packages.
+- run logs pile up as `待提炼` with no reflection pass turning them into K/R/PL/F entries.
 - implementation plan lacks overview, architecture decisions, phased task list, risks, or open questions.
 - Implementation work exists but no task package records its verification method or evidence.
 - Task packages contain broad backlog lists instead of atomic executable nodes.

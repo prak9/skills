@@ -148,6 +148,7 @@ Also update `../memory.md`:
 - add task outcome summary to `memory.md#5-历史执行记录总结`
 - add failed-attempt lessons to `memory.md#6-失败与回炉记录`
 - add preference learning to `memory.md#8-preference-learning`
+- run the reflection pass (`memory.md` 提炼与整理): distill this task's `待提炼` run logs into K/R/PL/F entries, or mark them `不需要`
 - if no memory writeback is needed, record that decision in this task's completion summary
 
 Completion summary:
