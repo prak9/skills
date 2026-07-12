@@ -2,6 +2,7 @@
 
 > Current-state source of truth for the work. Keep only the concept brief, context, goals, constraints, strategy, decisions, hypotheses, implementation plan, task-package status, blockers, and next action here.
 > Task execution state lives in `tasks/TASK-*.md`.
+> Latest final task outputs live in `tasks/output/TASK-*/` and are ignored by git by default.
 > Durable findings, changelog entries, run logs, lessons, and history summaries live in `memory.md`.
 
 - Overall status: `待开始 / 探索中 / 进行中 / 阻塞 / 待验收 / 完成 / 已取消`
@@ -11,6 +12,7 @@
 - Loop iteration: `0/<max iterations or Not applicable>`
 - Memory: `memory.md`
 - Active task package: `tasks/TASK-NNN-<slug>.md / None`
+- Task output root: `tasks/output/` (gitignored)
 - Active plan node: `NODE-NNN / None`
 - Next plan node: `NODE-NNN / Decision point / None`
 - Latest evidence: `<V-NNN, RUN-NNN, CHG-NNN, commit, CI run, or report>`
@@ -220,9 +222,9 @@ NODE-001 Foundation (<status>)
 
 ### Node Status
 
-| Node | Phase | Status | Size | Task package | Goal | Dependencies | Acceptance / Verification | Evidence | Updated |
-|---|---|---|---|---|---|---|---|---|---|
-| NODE-001 | Phase 1: Foundation | `待开始` | `Small / Medium` | `tasks/TASK-001-short-slug.md` | <observable result> | `None` | <A-NNN, V-NNN, or command> | <evidence location> | `YYYY-MM-DD` |
+| Node | Phase | Status | Size | Task package | Output snapshot | Goal | Dependencies | Acceptance / Verification | Evidence | Updated |
+|---|---|---|---|---|---|---|---|---|---|---|
+| NODE-001 | Phase 1: Foundation | `待开始` | `Small / Medium` | `tasks/TASK-001-short-slug.md` | `tasks/output/TASK-001-short-slug/` | <observable result> | `None` | <A-NNN, V-NNN, or command> | <evidence location> | `YYYY-MM-DD` |
 
 ### Loop Contract
 
@@ -330,6 +332,7 @@ Keep only the latest state here. Status changes, changelog entries, and run logs
 
 - When an idea is refined or materially changed, update Section 0 and the context/ref index.
 - When a plan node or task package is created, blocked, ready for acceptance, completed, or cancelled, update Plan Dependency Graph, Node Status, and Task List.
+- When a task produces final artifacts, update its Output snapshot pointer and keep only the latest final state in `tasks/output/TASK-NNN-<slug>/`.
 - In Loop mode, update the current Loop State after every ACT/VERIFY/REFLECT/ITERATE. After PASS, update Node Status. Historical loop attempts go to `memory.md#4-run-logs`.
 - When new context, code entrypoints, evidence, or external references are found, update Section 2.
 - When preferences, tradeoffs, locked constraints, or negotiable space change, update Section 3. Preference learning from execution goes to `memory.md#8-preference-learning`.
@@ -339,4 +342,5 @@ Keep only the latest state here. Status changes, changelog entries, and run logs
 - Atomic node state lives only in `tasks/TASK-*.md`; this file records plan-node and task-package status.
 - Do not add CHANGELOG, run logs, historical status transitions, or completed Loop attempts to this file.
 - A `完成` row must have an evidence location; never mark work done because it was merely implemented.
+- Keep `tasks/output/` gitignored by default. Do not rely on committed generated artifacts unless the user explicitly asks for that.
 - If downstream tooling requires `tasks/plan.md` or `tasks/todo.md`, generate them only from this file and task packages. They are not authoritative.

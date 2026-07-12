@@ -5,6 +5,7 @@
 - Plan mode: `Linear`
 - Memory: memory.md
 - Active task package: `tasks/TASK-001-add-export.md`
+- Task output root: `tasks/output/` (gitignored)
 - Active plan node: `NODE-001`
 - Latest evidence: RUN-001
 - Next checkpoint: CP-001
@@ -183,9 +184,9 @@ NODE-001 CSV export（进行中）
 
 ### Node Status
 
-| Node | Phase | Status | Size | Task package | Goal | Dependencies | Acceptance / Verification | Evidence | Updated |
-|---|---|---|---|---|---|---|---|---|---|
-| NODE-001 | Phase 1 | `进行中` | `Small` | `tasks/TASK-001-add-export.md` | CSV export works | None | A-001 | RUN-001 | 2026-07-11 |
+| Node | Phase | Status | Size | Task package | Output snapshot | Goal | Dependencies | Acceptance / Verification | Evidence | Updated |
+|---|---|---|---|---|---|---|---|---|---|---|
+| NODE-001 | Phase 1 | `进行中` | `Small` | `tasks/TASK-001-add-export.md` | `tasks/output/TASK-001-add-export/` | CSV export works | None | A-001 | RUN-001 | 2026-07-11 |
 
 ### Loop Contract
 

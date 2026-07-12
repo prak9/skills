@@ -58,6 +58,7 @@ TASK_REQUIRED = [
     "Negotiable space",
     "Files likely touched",
     "Estimated scope",
+    "Output Artifacts",
     "Atomic Implementation Plan",
     "Verification Matrix",
     "Checkpoint",
@@ -85,6 +86,7 @@ TASK_REQUIRED_LITE = [
     "Description",
     "Acceptance criteria",
     "Verification",
+    "Output Artifacts",
     "Atomic Implementation Plan",
     "Standing Checklist",
     "Pre-completion Red Team",
@@ -116,6 +118,7 @@ VALID_STATUSES = {
 }
 
 VALID_SIZES = {"XS", "S", "M", "L", "XL", "Small", "Medium", "Large"}
+TASK_OUTPUT_ROOT = "tasks/output/"
 
 UNRESOLVED_PATTERNS = [
     r"\[待确认\]",
@@ -339,9 +342,28 @@ def check_task_link(root: Path, link: str, errors: list[str]) -> Path | None:
     return task_path
 
 
+def task_output_path(task_path: Path) -> str:
+    return f"{TASK_OUTPUT_ROOT}{task_path.stem}/"
+
+
+def tasks_output_ignored(root: Path) -> bool:
+    gitignore = root / ".gitignore"
+    if not gitignore.exists():
+        return False
+    for raw_line in read_text(gitignore).splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or line.startswith("!"):
+            continue
+        if line.endswith("/**"):
+            line = line[:-3]
+        if line.rstrip("/") in {"tasks/output", "/tasks/output", "**/tasks/output"}:
+            return True
+    return False
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Validate plan-skill program.md and tasks/TASK-*.md structure, links, and status records."
+        description="Validate plan-skill program.md, tasks/TASK-*.md, output artifact pointers, links, and status records."
     )
     parser.add_argument("root", nargs="?", default=".", help="Project root, default: current directory")
     parser.add_argument("--json", action="store_true", help="Output JSON")
@@ -424,6 +446,8 @@ def main() -> int:
         ]
 
     node_statuses = program_node_statuses(program_text) if program_text else {}
+    if task_entries and not tasks_output_ignored(root):
+        warnings.append("tasks/output/ is not ignored by .gitignore; add `/tasks/output/` or `tasks/output/`")
 
     for link, task_path in task_entries:
         checked_paths.append(task_path)
@@ -434,6 +458,11 @@ def main() -> int:
         find_placeholders(task_path, task_text, warnings)
         check_completed_rows(task_path, task_text, errors)
         check_standing_checklist_completion(task_path, task_text, errors)
+        expected_output = task_output_path(task_path)
+        if expected_output not in task_text:
+            errors.append(
+                f"{task_path} must point Output Artifacts to `{expected_output}`"
+            )
         program_status = node_statuses.get(link)
         package_status = task_status(task_text)
         if program_status and package_status and program_status != package_status:

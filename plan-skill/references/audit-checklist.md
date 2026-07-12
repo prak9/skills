@@ -15,6 +15,9 @@ Check a plan for these failures:
 - Implementation work exists but no task package records its verification method or evidence.
 - Task packages contain broad backlog lists instead of atomic executable nodes.
 - task packages are horizontal layers instead of verifiable vertical slices.
+- A task package lacks an `Output Artifacts` section pointing to `tasks/output/TASK-NNN-<slug>/`.
+- `tasks/output/` is missing from git ignore rules, or generated task outputs are being prepared for commit without explicit user instruction.
+- `tasks/output/TASK-*/` is used as a historical archive instead of a latest final output snapshot that overwrites stale files.
 - task package size is L/XL without a reason.
 - Status fields are stale or disagree between `program.md` and task files.
 - Exploration questions have no validation method or stop condition.

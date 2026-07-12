@@ -1,0 +1,4 @@
+interface:
+  display_name: "Iterate Trading Strategy"
+  short_description: "Disciplined fixed-evaluator strategy iteration"
+  default_prompt: "Use $iterate-trading-strategy to improve this trading strategy with a fixed evaluator and anti-overfitting gates."

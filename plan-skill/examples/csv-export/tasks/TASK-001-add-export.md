@@ -6,6 +6,7 @@
 - Plan node: NODE-001
 - Context refs: CTX-001 / REF-001
 - Preference refs: PREF-001
+- Output artifacts: `tasks/output/TASK-001-add-export/`
 - Owner: AI
 - Created: 2026-07-11
 - Updated: 2026-07-11
@@ -41,6 +42,18 @@
 - tests/test_export.py
 
 **Estimated scope:** `Small`
+
+## Output Artifacts
+
+Use `tasks/output/TASK-001-add-export/` for this task's latest final output snapshot.
+
+- Git rule: `tasks/output/` is ignored by git.
+- Update rule: overwrite or replace files when outputs change; do not append historical versions here.
+- History rule: chronological run logs stay in `../memory.md`.
+
+| Artifact | Path | Source command / step | Status | Updated | Notes |
+|---|---|---|---|---|---|
+| sample export | `tasks/output/TASK-001-add-export/out.csv` | `demo query --csv out.csv` manual check | not produced | 2026-07-11 | Produce after N-002 CLI flag lands |
 
 ## Atomic Implementation Plan
 
@@ -101,6 +114,8 @@ Stop and ask first when:
 ### Per Task
 
 - [ ] Acceptance criteria are met and tied to evidence: 待 N-002 完成后确认。
+- [ ] Output artifacts are current in `tasks/output/TASK-001-add-export/`: 待 N-002 后生成最终 out.csv。
+- [x] `tasks/output/` is gitignored。
 - [x] Runtime behavior was verified, not only compiled or typechecked: RUN-001 覆盖 exporter 转义行为。
 - [x] New behavior is covered by tests that fail without the change and pass with it: RUN-001。
 - [ ] Existing tests still pass; no regression signal is ignored: 待 N-002 后跑全量 pytest。
@@ -135,4 +150,5 @@ When this task package is done, update ../program.md node status and evidence, a
 
 - Memory writeback: RUN-001 / F-001 已写入；完成时补 CHG 与 H 条目并跑提炼
 - Final result: 待完成
+- Output artifacts: `tasks/output/TASK-001-add-export/` 待 N-002 后刷新
 - Completed: 待完成

@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: Use this skill to turn a raw idea, vague project, existing spec, or ongoing implementation into a controlled plan-and-execution loop. It refines ideas into program.md, creates or repairs AI-executable plans, decomposes work into tasks/TASK-*.md packages, tracks verification and checkpoints, and preserves durable findings in memory.md. Trigger when the user asks to refine an idea, ideate, stress-test a plan, create an implementation plan, break down tasks, run Loop-mode execution, manage project control, clarify preferences/tradeoffs, order dependencies, slice work vertically, define acceptance criteria, track evidence, write run logs/CHANGELOG/history, or hand off coding work across sessions.
+description: Use this skill to turn a raw idea, vague project, existing spec, or ongoing implementation into a controlled plan-and-execution loop. It refines ideas into program.md, creates or repairs AI-executable plans, decomposes work into tasks/TASK-*.md packages, keeps latest per-task output snapshots under gitignored tasks/output/TASK-*/ directories, tracks verification and checkpoints, and preserves durable findings in memory.md. Trigger when the user asks to refine an idea, ideate, stress-test a plan, create an implementation plan, break down tasks, run Loop-mode execution, manage project control, clarify preferences/tradeoffs, order dependencies, slice work vertically, define acceptance criteria, track evidence, write run logs/CHANGELOG/history, or hand off coding work across sessions.
 ---
 
 # Plan Skill
@@ -11,16 +11,20 @@ Use this skill to move from idea to verified implementation without losing state
 program.md                 # Current state: concept brief, plan, status, blockers, next step, links.
 memory.md                  # Durable history: findings, lessons, changelog, run logs, summaries.
 tasks/TASK-NNN-<slug>.md   # Executable task packages with atomic nodes, verification, and evidence.
+tasks/output/TASK-NNN-<slug>/  # Latest final output snapshot for that task package; gitignored.
 ```
 
 Do not create `codemap.md` by default. Keep implementation maps inside the relevant task package unless they become large enough to deserve a separate file.
 
 If downstream tooling requires `tasks/plan.md` or `tasks/todo.md`, generate them only from `program.md` and `tasks/TASK-*.md`. They are exports, not sources of truth.
 
+Task output artifacts live under `tasks/output/TASK-NNN-<slug>/`, matching the task package filename without `.md`. This directory records the latest final output state for that task only. If outputs change across attempts, overwrite or replace the previous files so the directory shows the current final state; do not append timestamped versions or chronological history there. Keep `tasks/output/` ignored by git by default.
+
 ## Operating Model
 
 - `program.md` owns the refined concept, current plan, task-package status, blockers, checkpoints, and next action. It must stay current-state only.
 - `tasks/TASK-*.md` owns task execution state: atomic nodes, latest attempt, verification, evidence, blockers, rollback, and completion writeback.
+- `tasks/output/TASK-*/` owns the latest final task output artifacts, such as generated reports, screenshots, exports, review bundles, or acceptance files. It is not a run log and should not accumulate old versions.
 - `memory.md` owns durable knowledge: findings, reusable lessons, changelog entries, run logs, failed attempts, and history summaries.
 - Code, tests, logs, screenshots, CI, and runtime output are facts. Markdown records intent, status, decisions, and evidence pointers.
 - Chat is not durable. Write decisions that matter into `program.md` or the active task package. Write reusable discoveries into `memory.md`.
@@ -85,6 +89,7 @@ When creating or refreshing a plan, stay in read-only planning mode unless the u
 - Read specs, docs, code entry points, tests, configuration, and recent changes.
 - Identify existing patterns, ownership boundaries, dependencies, risks, unknowns, and decisions needed.
 - Build or update `program.md` from `assets/program.template.md`.
+- Ensure the project git ignore rules exclude `tasks/output/` before creating task output artifacts.
 - Planning is complete only when implementation can continue from the artifacts without relying on chat memory.
 
 `program.md` must include:
@@ -166,6 +171,7 @@ Start each task package from `assets/task.template.md`.
 Each task package must define:
 
 - Task contract: description, acceptance criteria, verification, dependencies, context/preference refs, locked constraints, negotiable space, likely files, and estimated scope
+- Output Artifacts: the per-task directory `tasks/output/TASK-NNN-<slug>/`, its current contents, source command, status, and overwrite rule
 - Atomic Implementation Plan with status, action, dependency, touched area, verification, evidence, and failure action
 - Verification Matrix and Checkpoint
 - Current Loop Attempt when needed
@@ -176,6 +182,8 @@ Each task package must define:
 - Completion Writeback to `program.md` and `memory.md`
 
 Work from the task package, not from memory. Execute the smallest useful node, run its verifier, record evidence, then update status and write durable findings as needed.
+
+When a task produces artifacts, write only the latest final version to `tasks/output/TASK-NNN-<slug>/`. Use `memory.md` for historical run summaries and the task package for evidence pointers; do not use `tasks/output/` as a chronological archive.
 
 ## Loop Mode
 
@@ -215,7 +223,7 @@ Do not write ordinary progress chatter. A memory entry should change future plan
 Promotion rule:
 
 ```text
-raw evidence/log -> memory.md run log or summary -> task/program evidence pointer -> program.md current status if plan-level
+raw evidence/log -> tasks/output/TASK-* latest artifact when it is a deliverable -> memory.md run log or summary -> task/program evidence pointer -> program.md current status if plan-level
 ```
 
 Treat `memory.md` as an evolving playbook:
@@ -276,7 +284,8 @@ Do not mark a task package complete because code was written. Completion require
 4. Create/update `program.md`, preferences, dependency graph, risks, checkpoints, and open questions.
 5. Decide `Lite` or `Full`, and `Linear` or `Loop`.
 6. Create task packages only for nodes ready to execute or needing precise scoping now.
-7. Run `scripts/validate_plan.py <project-root>` when possible.
+7. Ensure `.gitignore` excludes `/tasks/output/` or `tasks/output/`.
+8. Run `scripts/validate_plan.py <project-root>` when possible.
 
 ### Continue A Plan
 
@@ -296,8 +305,9 @@ Then report current status, relevant memory, next node, stale evidence, blockers
 2. Execute the smallest useful step.
 3. Run the node's verifier.
 4. Update status, evidence, and next action.
-5. Write durable findings, changelog entries, run logs, and history deltas to `memory.md`.
-6. If package status changes, update the latest status table in `program.md`.
+5. If the task has output artifacts, refresh `tasks/output/TASK-NNN-<slug>/` by overwriting stale files with the latest final state.
+6. Write durable findings, changelog entries, run logs, and history deltas to `memory.md`.
+7. If package status changes, update the latest status table in `program.md`.
 
 ### Audit Or Repair A Plan
 

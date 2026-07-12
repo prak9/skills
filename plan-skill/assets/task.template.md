@@ -9,6 +9,7 @@
 - Plan node: `NODE-NNN`
 - Context refs: `CTX-NNN / REF-NNN / REF-EXT-NNN / OWN-NNN`
 - Preference refs: `PREF-NNN / None`
+- Output artifacts: `tasks/output/TASK-NNN-<slug>/`
 - Owner: `<person, role, or AI>`
 - Created: `YYYY-MM-DD`
 - Updated: `YYYY-MM-DD`
@@ -45,6 +46,18 @@
 - `<tests/path/to/test.ts>`
 
 **Estimated scope:** `Small: 1-2 files / Medium: 3-5 files / Large: 5+ files`
+
+## Output Artifacts
+
+Use `tasks/output/TASK-NNN-<slug>/` for this task's latest final output snapshot. The directory name must match this task package filename without `.md`.
+
+- Git rule: keep `tasks/output/` ignored by git unless the user explicitly asks to commit generated artifacts.
+- Update rule: overwrite or replace files when outputs change; do not append timestamped versions or historical attempts here.
+- History rule: write chronological run logs and stale output notes to `../memory.md`, not to this directory.
+
+| Artifact | Path | Source command / step | Status | Updated | Notes |
+|---|---|---|---|---|---|
+| <artifact name> | `tasks/output/TASK-NNN-<slug>/<file>` | <command or manual step> | `current / not produced / N/A` | `YYYY-MM-DD` | <what this proves or why absent> |
 
 ## Atomic Implementation Plan
 
@@ -119,6 +132,8 @@ Complete applicable items before moving this package to `待验收` or `完成`.
 ### Per Task
 
 - [ ] Acceptance criteria are met and tied to evidence.
+- [ ] Output artifacts are current in `tasks/output/TASK-NNN-<slug>/`, or `N/A: <reason>`.
+- [ ] `tasks/output/` is gitignored, or `N/A: <reason>`.
 - [ ] Runtime behavior was verified, not only compiled or typechecked.
 - [ ] New behavior is covered by tests that fail without the change and pass with it, or `N/A: <reason>`.
 - [ ] Existing tests still pass; no regression signal is ignored.
@@ -158,6 +173,7 @@ When this task package is done, update `../program.md`:
 - update `Memory Sync` when changelog entries, run logs, durable findings, or execution summaries were written
 - fill evidence location
 - update current status and next step
+- update output artifact pointers when `tasks/output/TASK-NNN-<slug>/` changed
 - update decisions or hypothesis results if this task changed them
 - update `program.md#2-context-and-references` if new context, entry points, refs, or owners were discovered
 - update `program.md#3-preferences-and-tradeoffs` if execution reveals a better tradeoff, wrong assumption, or changed preference
@@ -178,6 +194,7 @@ Also update `../memory.md`:
 Completion summary:
 
 - Final result: <observable result>
+- Output artifacts: `tasks/output/TASK-NNN-<slug>/` current as of `YYYY-MM-DD`, or `N/A: <reason>`
 - Key evidence: <V-NNN or E-NNN>
 - Memory writeback: `CHG-NNN / RUN-NNN / F-NNN / K-NNN / HIST-NNN / R-NNN / 不需要：<原因>`
 - Remaining work: <new task package or None>
