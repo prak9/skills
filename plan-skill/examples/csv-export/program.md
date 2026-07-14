@@ -3,16 +3,19 @@
 - Overall status: `进行中`
 - Profile: `Full`
 - Plan mode: `Linear`
+- Loop state: `Not applicable`
+- Loop iteration: `Not applicable`
 - Memory: memory.md
 - Active task package: `tasks/TASK-001-add-export.md`
 - Task output root: `tasks/output/` (gitignored)
 - Active plan node: `NODE-001`
+- Next plan node: `None`
 - Latest evidence: RUN-001
 - Next checkpoint: CP-001
 - Owner / TL: x
 - Last updated: 2026-07-11
 
-## 0. Concept Refinement
+## Concept Refinement
 
 Refine raw ideas into sharp, actionable concepts worth building through structured divergent and convergent thinking.
 
@@ -38,7 +41,7 @@ The request was already a clear implementation need, so no divergent ideation se
 | Not doing | Excel export |
 | Open questions | Memory usage for very large result sets |
 
-## 1. Problem Definition
+## Problem Definition
 
 ### Background
 
@@ -56,7 +59,7 @@ The report workflow launches this month and depends on export.
 
 - Excel export
 
-## 2. Context And References
+## Context And References
 
 ### Key Context
 
@@ -82,7 +85,7 @@ The report workflow launches this month and depends on export.
 |---|---|---|---|---|
 | OWN-001 | x | Final acceptance | Acceptance criteria changes | This file |
 
-## 3. Preferences And Tradeoffs
+## Preferences And Tradeoffs
 
 ### Preferences
 
@@ -102,7 +105,7 @@ The report workflow launches this month and depends on export.
 |---|---|---|---|
 | Dependencies | No new third-party dependency | Output column order | Ask before adding a dependency |
 
-## 4. Goals And Metrics
+## Goals And Metrics
 
 ### Goals
 
@@ -114,9 +117,9 @@ The report workflow launches this month and depends on export.
 
 | ID | Acceptance criterion | Verification method | Pass condition | Owner |
 |---|---|---|---|---|
-| A-001 | `demo query --csv out.csv` writes valid CSV | pytest tests/test_export.py | All tests pass | x |
+| A-001 | `demo query --csv out.csv` writes valid CSV | pytest tests/test_export.py tests/test_cli.py | Exporter and CLI tests pass | x |
 
-## 5. Constraints
+## Constraints
 
 ### Hard Constraints
 
@@ -130,7 +133,7 @@ The report workflow launches this month and depends on export.
 |---|---|
 | Reversible local change | AI may proceed and record evidence |
 
-## 6. Strategy
+## Strategy
 
 ### Strategy Summary
 
@@ -150,23 +153,23 @@ query output -> exporter module -> CLI flag -> e2e test
 
 - Each task package needs independent acceptance evidence.
 
-## 7. Decisions
+## Decisions
 
 | ID | Status | Decision | Reason / Evidence | Impact | Date |
 |---|---|---|---|---|---|
 | D-001 | approved | Use the standard-library `csv` module | PREF-001 | NODE-001 | 2026-07-11 |
 
-## 8. Exploration And Hypothesis Validation
+## Exploration And Hypothesis Validation
 
-| ID | Status | Hypothesis / Unknown | Validation method | Deadline task | Pass / fail action |
-|---|---|---|---|---|---|
-| H-001 | supported | Query output returns iterable rows | Read src/query.py and verify in REPL | TASK-001 | Confirmed; implement directly |
+| ID | Status | Hypothesis / Unknown | Validation method | Deadline task | Pass / fail action | Evidence |
+|---|---|---|---|---|---|---|
+| H-001 | supported | Query output returns iterable rows | Read src/query.py and verify in REPL | TASK-001 | Confirmed; implement directly | F-001 / `src/query.py` REPL check |
 
 ### Exploration Plan
 
 None. The assumption was closed through code reading; evidence is in memory.md F-001.
 
-## 9. Implementation Plan
+## Implementation Plan
 
 ### Overview
 
@@ -184,9 +187,15 @@ NODE-001 CSV export（进行中）
 
 ### Node Status
 
-| Node | Phase | Status | Size | Task package | Output snapshot | Goal | Dependencies | Acceptance / Verification | Evidence | Updated |
-|---|---|---|---|---|---|---|---|---|---|---|
-| NODE-001 | Phase 1 | `进行中` | `Small` | `tasks/TASK-001-add-export.md` | `tasks/output/TASK-001-add-export/` | CSV export works | None | A-001 | RUN-001 | 2026-07-11 |
+| Node | Status | Task package | Evidence |
+|---|---|---|---|
+| NODE-001 | `进行中` | `tasks/TASK-001-add-export.md` | RUN-001 |
+
+### Node Details
+
+| Node | Size | Dependencies | Acceptance | Updated |
+|---|---|---|---|---|
+| NODE-001 | `Medium` | None | A-001 | 2026-07-11 |
 
 ### Loop Contract
 
@@ -201,6 +210,9 @@ Not applicable.
 | Type | Status | Source | memory.md location | Updated |
 |---|---|---|---|---|
 | Finding | written | TASK-001 | memory.md#1-important-findings | 2026-07-11 |
+| Changelog | written | CHG-001 | memory.md#3-changelog | 2026-07-11 |
+| Run log | written | RUN-001 | memory.md#4-run-logs | 2026-07-11 |
+| History summary | pending | TASK-001 | memory.md#5-history-summaries | 2026-07-11 |
 
 ### Task List
 
@@ -228,12 +240,14 @@ None.
 
 None.
 
-## 10. Current Status
+## Current Status
 
 - Current blocker: None
+- Current risk: Large exports may require a later streaming benchmark; it does not block the MVP.
 - Next step: N-002 CLI flag
+- Next human decision: Review the exported sample at CP-001.
 - Pending memory write: None
 
-## 11. Update Protocol
+## Update Protocol
 
-Follow plan-skill update rules: task package status changes update Section 9; history and findings go to memory.md.
+Follow plan-skill update rules: task package status changes update Implementation Plan; history and findings go to memory.md.

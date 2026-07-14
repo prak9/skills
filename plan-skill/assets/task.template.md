@@ -1,6 +1,7 @@
 # TASK-NNN: <Short descriptive title>
 
 > A task package for one plan node. The top section defines the task contract; the atomic plan below breaks it into executable nodes with current status, verification, and latest evidence pointers. Historical run logs and changelog entries belong in `../memory.md`.
+> Replace every choice list below with exactly one concrete value before validation.
 
 - Status: `待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消`
 - Plan mode: `Linear / Loop`
@@ -32,9 +33,9 @@
 
 **Dependencies:** <Task numbers or NODE IDs this depends on, or `None`>
 
-**Context/Refs:** <CTX/REF IDs from `../program.md#2-context-and-references`, or `None`>
+**Context/Refs:** <CTX/REF IDs from `../program.md#context-and-references`, or `None`>
 
-**Preference refs:** <PREF IDs from `../program.md#3-preferences-and-tradeoffs`, or `None`>
+**Preference refs:** <PREF IDs from `../program.md#preferences-and-tradeoffs`, or `None`>
 
 **Locked constraints:** <constraints this task must not change without escalation, or `None`>
 
@@ -61,9 +62,12 @@ Use `tasks/output/TASK-NNN-<slug>/` for this task's latest final output snapshot
 
 ## Atomic Implementation Plan
 
-| Node | Status | Depends on | Action | Likely touched | Verification | Evidence | If verification fails |
-|---|---|---|---|---|---|---|---|
-| N-001 | `待开始` | `None` | <specific implementation action> | `<path or module>` | `<command, check, or manual scenario>` | <fill after running> | <retry, split, block, or escalate> |
+| Node | Status | Depends on | Action | Verification | Evidence |
+|---|---|---|---|---|---|
+| N-001 | `待开始` | `None` | <specific implementation action> | `<command, check, or manual scenario>` | <fill after running> |
+
+- N-001 likely touched: `<path or module>`
+- N-001 failure action: <retry, split, block, or escalate>
 
 Node rules:
 
@@ -159,7 +163,7 @@ Answer all four questions before moving this package to `待验收` or `完成`.
 |---|---|---|
 | RT-1 | If the deliverable were actually broken, would the evidence above still pass? If yes, the evidence proves nothing — replace it with a check that can fail. | <answer> |
 | RT-2 | What was NOT verified? (inputs, error paths, concurrency, scale, platforms) | <explicit list, or why nothing material is missing> |
-| RT-3 | Re-read the original problem in `../program.md#1-problem-definition` — the original text, not this task's restatement. Does the result solve it? | <yes with reason / gap found> |
+| RT-3 | Re-read the original problem in `../program.md#problem-definition` — the original text, not this task's restatement. Does the result solve it? | <yes with reason / gap found> |
 | RT-4 | What is the single most likely post-delivery failure path? Rule it out now, or record it as a known risk in `../memory.md`. | <what was done> |
 
 ## Completion Writeback
@@ -175,8 +179,8 @@ When this task package is done, update `../program.md`:
 - update current status and next step
 - update output artifact pointers when `tasks/output/TASK-NNN-<slug>/` changed
 - update decisions or hypothesis results if this task changed them
-- update `program.md#2-context-and-references` if new context, entry points, refs, or owners were discovered
-- update `program.md#3-preferences-and-tradeoffs` if execution reveals a better tradeoff, wrong assumption, or changed preference
+- update `program.md#context-and-references` if new context, entry points, refs, or owners were discovered
+- update `program.md#preferences-and-tradeoffs` if execution reveals a better tradeoff, wrong assumption, or changed preference
 - do not append changelog, run-log, or historical status sections to `program.md`
 
 Also update `../memory.md`:
@@ -196,6 +200,6 @@ Completion summary:
 - Final result: <observable result>
 - Output artifacts: `tasks/output/TASK-NNN-<slug>/` current as of `YYYY-MM-DD`, or `N/A: <reason>`
 - Key evidence: <V-NNN or E-NNN>
-- Memory writeback: `CHG-NNN / RUN-NNN / F-NNN / K-NNN / HIST-NNN / R-NNN / 不需要：<原因>`
+- Memory writeback: `CHG-NNN / RUN-NNN / F-NNN / K-NNN / HIST-NNN / R-NNN / N/A: <reason>`
 - Remaining work: <new task package or None>
 - Completed: `YYYY-MM-DD`

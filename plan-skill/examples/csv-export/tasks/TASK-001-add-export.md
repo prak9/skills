@@ -39,9 +39,11 @@
 **Files likely touched:**
 
 - src/exporter.py
+- src/cli.py
 - tests/test_export.py
+- tests/test_cli.py
 
-**Estimated scope:** `Small`
+**Estimated scope:** `Medium`
 
 ## Output Artifacts
 
@@ -57,10 +59,13 @@ Use `tasks/output/TASK-001-add-export/` for this task's latest final output snap
 
 ## Atomic Implementation Plan
 
-| Node | Status | Depends on | Action | Likely touched | Verification | Evidence | If verification fails |
-|---|---|---|---|---|---|---|---|
-| N-001 | `完成` | None | 写 exporter 模块与转义用例 | src/exporter.py | pytest tests/test_export.py | RUN-001 | 修转义逻辑后重跑 |
-| N-002 | `待开始` | N-001 | CLI 加 --csv 参数 | src/cli.py | pytest tests/test_cli.py | 待运行 | 回退参数解析 |
+| Node | Status | Depends on | Action | Verification | Evidence |
+|---|---|---|---|---|---|
+| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 |
+| N-002 | `待开始` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | 待运行 |
+
+- N-001 likely touched / failure action: `src/exporter.py`; 修转义逻辑后重跑。
+- N-002 likely touched / failure action: `src/cli.py`; 回退参数解析。
 
 ## Verification Matrix
 
@@ -141,7 +146,7 @@ Answer all four questions before moving this package to `待验收` or `完成`.
 |---|---|---|
 | RT-1 | If the deliverable were actually broken, would the evidence above still pass? | 待任务收尾时作答 |
 | RT-2 | What was NOT verified? | 待任务收尾时作答 |
-| RT-3 | Does the result solve the original problem in ../program.md#1-problem-definition? | 待任务收尾时作答 |
+| RT-3 | Does the result solve the original problem in ../program.md#problem-definition? | 待任务收尾时作答 |
 | RT-4 | Single most likely post-delivery failure path? | 待任务收尾时作答 |
 
 ## Completion Writeback

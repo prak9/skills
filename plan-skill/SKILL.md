@@ -5,13 +5,13 @@ description: Use this skill to turn a raw idea, vague project, existing spec, or
 
 # Plan Skill
 
-Use this skill to move from idea to verified implementation without losing state. It has three authoritative artifacts:
+Use this skill to move from idea to verified implementation without losing state. It has three authoritative state documents plus one non-authoritative output area:
 
 ```text
 program.md                 # Current state: concept brief, plan, status, blockers, next step, links.
 memory.md                  # Durable history: findings, lessons, changelog, run logs, summaries.
 tasks/TASK-NNN-<slug>.md   # Executable task packages with atomic nodes, verification, and evidence.
-tasks/output/TASK-NNN-<slug>/  # Latest final output snapshot for that task package; gitignored.
+tasks/output/TASK-NNN-<slug>/  # Non-authoritative latest output snapshot; gitignored.
 ```
 
 Do not create `codemap.md` by default. Keep implementation maps inside the relevant task package unless they become large enough to deserve a separate file.
@@ -19,6 +19,29 @@ Do not create `codemap.md` by default. Keep implementation maps inside the relev
 If downstream tooling requires `tasks/plan.md` or `tasks/todo.md`, generate them only from `program.md` and `tasks/TASK-*.md`. They are exports, not sources of truth.
 
 Task output artifacts live under `tasks/output/TASK-NNN-<slug>/`, matching the task package filename without `.md`. This directory records the latest final output state for that task only. If outputs change across attempts, overwrite or replace the previous files so the directory shows the current final state; do not append timestamped versions or chronological history there. Keep `tasks/output/` ignored by git by default.
+
+## Fast Path
+
+Use the lightest control surface that preserves useful state:
+
+1. Skip plan artifacts for a truly one-step, single-session change unless the user asks for a durable plan.
+2. Otherwise start with Lite. Choose Full immediately only for Loop mode, more than three task packages, multiple sessions, risky/irreversible work, or handoff-heavy execution.
+3. Initialize the linked files instead of copying and repairing placeholders by hand:
+
+   ```bash
+   python3 <plan-skill>/scripts/init_plan.py <project-root> --title "<work title>"
+   # Add --profile full only when a Full trigger applies.
+   ```
+
+4. If a Lite plan later crosses a Full trigger, preview and apply the in-place upgrade instead of rebuilding the files:
+
+   ```bash
+   python3 <plan-skill>/scripts/upgrade_plan.py <project-root> --dry-run
+   python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
+   ```
+
+5. Fill the current task package only. Create later task packages just in time when their dependencies and acceptance criteria are clear.
+6. During drafting, run `scripts/validate_plan.py <project-root>` to separate structural errors from expected placeholder warnings. Before execution, handoff, or completion, remove the remaining placeholders and run `--strict`.
 
 ## Operating Model
 
@@ -32,55 +55,20 @@ Task output artifacts live under `tasks/output/TASK-NNN-<slug>/`, matching the t
 
 ## Profiles
 
-Declare `- Profile: Lite / Full` in `program.md`; `scripts/validate_plan.py` defaults to `Full`.
+Declare exactly one value in `program.md`: `- Profile: Lite` or `- Profile: Full`. Prefer Lite when uncertain; the validator keeps the legacy `Full` default only when the field is absent.
 
-- `Full`: Use for multi-session, multi-package, Loop-mode, high-risk, or handoff-heavy work.
-- `Lite`: Use for one or two focused sessions. `program.md` needs Concept Refinement, Problem Definition, Acceptance Criteria, Node Status, and Current Status. Each task package needs the Task contract, Atomic Implementation Plan, Standing Checklist, Pre-completion Red Team, and Completion Writeback. `memory.md` is optional until the first durable finding.
+- `Lite`: Default for one or two focused sessions and up to three task packages. `memory.md` is optional until the first durable finding.
+- `Full`: Use when any Fast Path Full trigger applies. It adds durable context, preferences, decisions, Loop state, checkpoints, and memory synchronization.
 - Semantic rules apply in both profiles: `完成`/`待验收` requires evidence; statuses must agree across files; hypotheses close only with a verdict and evidence.
-- Upgrade Lite to Full once the plan grows beyond about three task packages, spans multiple sessions, or needs Loop mode.
+- Upgrade Lite to Full when a Full trigger appears; do not populate Full-only sections speculatively.
 
 ## Stage 0: Concept Refinement
 
-Use this stage when the input is still a raw idea, multiple directions are plausible, target users are unclear, success criteria are missing, or the user asks to ideate, refine, or stress-test a plan.
+Use this stage only when the input is a raw idea, multiple directions are plausible, target users or success criteria are unclear, or the user asks to ideate or stress-test the concept. Read `references/concept-refinement.md` before running it.
 
-Skip it when the user already provides a clear spec, accepted direction, or existing plan.
+Skip divergent refinement when the user already provides a clear spec, accepted direction, or existing plan. Record `None: <source/reason>` in the brief instead of manufacturing alternatives.
 
-Goal: refine raw ideas into sharp, actionable concepts worth building through structured divergent and convergent thinking.
-
-```text
-Idea -> Concept brief -> Plan -> Task packages -> Execute -> Verify -> Memory
-```
-
-### Understand And Expand
-
-- Restate the idea as a concise "How might we..." problem statement.
-- Ask at most 3-5 sharpening questions. Target user and success criteria are required.
-- If inside a codebase, read relevant specs, entry points, tests, and prior docs before generating options.
-- Generate 5-8 considered variations using only useful lenses: inversion, simplification, audience shift, constraint removal, adjacent combination, 10x scale, or expert-domain obviousness.
-
-### Evaluate And Converge
-
-After the user reacts, cluster promising options into 2-3 distinct directions. Stress-test each on:
-
-- user value: who benefits, how much, and whether the idea is a painkiller or a vitamin
-- feasibility: technical/resource cost and hardest unknown
-- differentiation: why it wins or why users would switch
-
-For each direction, name what must be true, what could kill the idea, and what is intentionally ignored for now. Be direct when an idea is weak.
-
-### Sharpen And Ship The Brief
-
-Write the confirmed one-page brief into `program.md#0-concept-refinement`. Do not create a separate idea document by default.
-
-Map the brief into the plan:
-
-- Problem Statement -> `program.md#1-problem-definition`
-- Target User / Success Criteria -> `program.md#4-goals-and-metrics`
-- Recommended Direction -> `program.md#6-strategy`
-- Key Assumptions -> `program.md#8-exploration-and-hypothesis-validation`
-- MVP Scope -> initial `program.md#9-implementation-plan` nodes
-- Not Doing -> `program.md#1-problem-definition` Non-goals
-- Open Questions -> `program.md#9-implementation-plan` Open Questions
+Stage 0 must end with a confirmed one-page brief in `program.md#concept-refinement`, mapped into the problem, goals, strategy, hypotheses, MVP nodes, non-goals, and open questions. Do not create a separate idea document by default.
 
 ## Planning Rules
 
@@ -88,11 +76,11 @@ When creating or refreshing a plan, stay in read-only planning mode unless the u
 
 - Read specs, docs, code entry points, tests, configuration, and recent changes.
 - Identify existing patterns, ownership boundaries, dependencies, risks, unknowns, and decisions needed.
-- Build or update `program.md` from `assets/program.template.md`.
+- Initialize new artifacts with `scripts/init_plan.py`; use `scripts/upgrade_plan.py` when Lite crosses a Full trigger; use the matching detailed templates directly only when repairing or restructuring an existing plan.
 - Ensure the project git ignore rules exclude `tasks/output/` before creating task output artifacts.
 - Planning is complete only when implementation can continue from the artifacts without relying on chat memory.
 
-`program.md` must include:
+Full `program.md` must include the following. Lite keeps only the matching Lite-template fields until a Full trigger appears:
 
 - Concept Refinement, or `None` when the work starts from a clear spec
 - problem, goals, final acceptance criteria, constraints, non-goals, and escalation rules
@@ -120,7 +108,7 @@ Use these labels:
 - `locked constraint`: must not change without escalation
 - `negotiable space`: agent may optimize or propose alternatives
 
-If execution reveals a better tradeoff or a wrong assumption, update `program.md#3-preferences-and-tradeoffs` and record durable learning in `memory.md`.
+If execution reveals a better tradeoff or a wrong assumption, update `program.md#preferences-and-tradeoffs` and record durable learning in `memory.md`.
 
 ## Decomposition Rules
 
@@ -166,14 +154,14 @@ Split further when the title contains "and", acceptance criteria exceed three bu
 
 ## Task Packages
 
-Start each task package from `assets/task.template.md`.
+Create new task packages through `scripts/init_plan.py` or by copying the matching compact starter. Use `assets/task.template.md` only to repair or expand a detailed Full package.
 
-Each task package must define:
+Each Full task package must define the following. Lite uses its smaller contract and adds Full-only sections only after upgrading:
 
 - Task contract: description, acceptance criteria, verification, dependencies, context/preference refs, locked constraints, negotiable space, likely files, and estimated scope
 - Output Artifacts: the per-task directory `tasks/output/TASK-NNN-<slug>/`, its current contents, source command, status, and overwrite rule
 - Atomic Implementation Plan with status, action, dependency, touched area, verification, evidence, and failure action
-- Verification Matrix and Checkpoint
+- Verification Matrix and Checkpoint; keep planned checks in the atomic plan and add `V-*` rows before `待验收` or `完成`
 - Current Loop Attempt when needed
 - Latest Execution Snapshot
 - Escalation, Risks and Rollback
@@ -226,7 +214,7 @@ Promotion rule:
 raw evidence/log -> tasks/output/TASK-* latest artifact when it is a deliverable -> memory.md run log or summary -> task/program evidence pointer -> program.md current status if plan-level
 ```
 
-Treat `memory.md` as an evolving playbook:
+Treat `memory.md` as an evolving playbook. In a compact starter, materialize a named category only when its first evidence-backed entry appears:
 
 - every run-log entry gets a distillation state: `待提炼` or `不需要`
 - reflect when a task package closes or pending entries reach 5
@@ -234,67 +222,33 @@ Treat `memory.md` as an evolving playbook:
 - revise by delta; do not rewrite the whole memory file
 - mark superseded entries `已废弃` with a pointer instead of deleting them
 
-## Status Vocabulary
+## Status And Completion
 
-Use one status vocabulary across `program.md` and task packages:
+Use `待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消` consistently; `探索中` is additionally valid at program level. Never equate written code with completion.
 
-```text
-待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消
-```
-
-`探索中` is additionally valid for the program-level overall status.
-
-Rules:
-
-- `完成` only when acceptance criteria pass, evidence is recorded, and required writeback is done.
-- `待验收` when implementation and verification evidence are ready but human acceptance is required.
-- `阻塞` only when the next action depends on missing information, permission, external state, or a failed prerequisite.
-- Atomic nodes use the same statuses and must name the next verification action when incomplete.
-
-## Standing Completion Bar
-
-Before moving a task package to `待验收` or `完成`, complete its Standing Checklist. Every applicable item must be checked; every non-applicable item needs `N/A: <reason>`.
-
-Per task:
-
-- acceptance criteria are met and tied to evidence
-- runtime behavior was verified, not only compiled or typechecked
-- new behavior is covered by tests that would fail without the change, or a reason is recorded
-- existing tests, build/typecheck, lint, and formatting pass or are explicitly scoped out
-- relevant edge cases and error paths are handled or recorded as known risk
-- changes stay scoped; no unrelated refactors, duplicated business logic, dead code, debug output, or commented-out blocks remain
-
-Per feature or risky change:
-
-- integration points are covered: migrations, config, feature flags, public contracts, and backward compatibility
-- public interfaces, APIs, user-facing behavior, and durable architecture decisions are documented when changed
-- security implications are reviewed for untrusted input, auth, and data handling
-- observability and rollback are defined for new critical paths or risky changes
-- human review happens before merge, deploy, or acceptance when required
-
-Do not mark a task package complete because code was written. Completion requires acceptance evidence, completed Standing Checklist, answered Pre-completion Red Team, and writeback.
+Read `references/status-and-completion.md` before setting `阻塞`, `待验收`, or `完成`, or when auditing status/evidence drift. It defines transition rules, the Standing Checklist contract, red-team requirements, and completion evidence.
 
 ## Workflow
 
 ### Create Or Refresh A Plan
 
 1. Classify input: raw idea, refined idea/spec, existing plan, or active execution.
-2. If raw idea, refine it first and write the confirmed brief into `program.md#0-concept-refinement`.
+2. If raw idea, refine it first and write the confirmed brief into `program.md#concept-refinement`.
 3. Gather context in read-only planning mode.
-4. Create/update `program.md`, preferences, dependency graph, risks, checkpoints, and open questions.
-5. Decide `Lite` or `Full`, and `Linear` or `Loop`.
+4. Decide `Lite` or `Full`, and `Linear` or `Loop`.
+5. For new work, run `scripts/init_plan.py`; for existing work, update the matching artifacts in place.
 6. Create task packages only for nodes ready to execute or needing precise scoping now.
 7. Ensure `.gitignore` excludes `/tasks/output/` or `tasks/output/`.
-8. Run `scripts/validate_plan.py <project-root>` when possible.
+8. Run `scripts/validate_plan.py --strict <project-root>` before execution, handoff, or completion.
 
 ### Continue A Plan
 
 At session start, read in order:
 
 1. `program.md`
-2. `memory.md`
-3. the active task package listed in `program.md`
-4. evidence referenced by that task package
+2. `memory.md` when the program points to one
+3. the active task package when one is listed
+4. evidence referenced by the active task package
 5. relevant code, tests, and recent commits
 
 Then report current status, relevant memory, next node, stale evidence, blockers, decisions needed, and what will be updated if the next step succeeds.
@@ -306,7 +260,7 @@ Then report current status, relevant memory, next node, stale evidence, blockers
 3. Run the node's verifier.
 4. Update status, evidence, and next action.
 5. If the task has output artifacts, refresh `tasks/output/TASK-NNN-<slug>/` by overwriting stale files with the latest final state.
-6. Write durable findings, changelog entries, run logs, and history deltas to `memory.md`.
+6. Write durable findings, changelog entries, run logs, and history deltas to `memory.md` when present or when a Lite durable finding requires creating it.
 7. If package status changes, update the latest status table in `program.md`.
 
 ### Audit Or Repair A Plan
@@ -319,9 +273,18 @@ Use `references/audit-checklist.md`. Repair by restoring the three-layer authori
 
 ## Resources
 
-- `assets/program.template.md`: create or restructure `program.md`
-- `assets/task.template.md`: create task packages
+- `assets/program.template.md`: repair or restructure a detailed Full `program.md`
+- `assets/task.template.md`: repair or restructure a detailed Full task package
+- `assets/program-full-starter.template.md`, `assets/task-full-starter.template.md`, `assets/memory-starter.template.md`: compact Full initializer assets
+- `assets/program-lite.template.md`: create a focused Lite `program.md`
+- `assets/task-lite.template.md`: create a focused Lite task package
 - `assets/memory.template.md`: create or restructure `memory.md`
+- `references/concept-refinement.md`: read only for raw-idea ideation, convergence, and one-page brief mapping
+- `references/status-and-completion.md`: read before blocked, acceptance, or completion transitions and related audits
 - `references/audit-checklist.md`: audit or repair a plan
-- `scripts/validate_plan.py <project-root>`: check structure, links, statuses, memory, placeholders, and unresolved markers
-- `examples/csv-export/`: minimal filled example that should pass validation
+- `scripts/init_plan.py <project-root> --title <title> [--profile full]`: safely create a Lite-by-default `program.md`, linked `TASK-001`, git ignore rule, and Full `memory.md` when requested; never overwrite existing plan files
+- `scripts/upgrade_plan.py <project-root> [--dry-run]`: validate and safely upgrade Lite to Full while preserving current program, task, and memory content
+- `scripts/validate_plan.py --strict <project-root>`: check structure, links, IDs, statuses, state transitions, completion semantics, Loop contracts, Git output rules, memory, Markdown table shape, encoding, placeholders, and unresolved markers; add `--json` for stable status/count/error fields
+- `tests/`: standard-library regression tests for valid plans, known false-PASS cases, and Markdown parsing boundaries
+- `examples/csv-export/`: filled Full/Linear example and integration fixture
+- `examples/lite-change/`: filled Lite/Linear example; both examples must pass strict validation

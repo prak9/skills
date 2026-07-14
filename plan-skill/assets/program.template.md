@@ -4,6 +4,7 @@
 > Task execution state lives in `tasks/TASK-*.md`.
 > Latest final task outputs live in `tasks/output/TASK-*/` and are ignored by git by default.
 > Durable findings, changelog entries, run logs, lessons, and history summaries live in `memory.md`.
+> Replace every choice list below with exactly one concrete value before validation.
 
 - Overall status: `待开始 / 探索中 / 进行中 / 阻塞 / 待验收 / 完成 / 已取消`
 - Profile: `Full / Lite`
@@ -20,7 +21,7 @@
 - Owner / TL: `<name or role>`
 - Last updated: `YYYY-MM-DD`
 
-## 0. Concept Refinement
+## Concept Refinement
 
 Refine raw ideas into sharp, actionable concepts worth building through structured divergent and convergent thinking.
 
@@ -46,7 +47,7 @@ If the work starts from an already-clear spec, write `None` in fields that do no
 | Not doing | <clear exclusions and why> |
 | Open questions | <questions that must be answered before or during planning> |
 
-## 1. Problem Definition
+## Problem Definition
 
 ### Background
 
@@ -64,7 +65,7 @@ If the work starts from an already-clear spec, write `None` in fields that do no
 
 - <Explicitly out of scope for this round>
 
-## 2. Context And References
+## Context And References
 
 Keep only summaries and pointers needed to understand or execute the current plan. Durable findings, historical changes, and run logs belong in `memory.md`.
 
@@ -92,7 +93,7 @@ Keep only summaries and pointers needed to understand or execute the current pla
 |---|---|---|---|---|
 | OWN-001 | <Owner, Reviewer, Domain Expert> | <scope> | <decision point or risk> | <record location> |
 
-## 3. Preferences And Tradeoffs
+## Preferences And Tradeoffs
 
 Use this layer to define what matters before decomposing work.
 
@@ -118,7 +119,7 @@ Preference -> Goal -> Plan -> Task -> Verify -> Memory
 |---|---|---|---|
 | <critical area> | <must not change without approval> | <agent may optimize or propose alternatives> | <when to ask before changing> |
 
-## 4. Goals And Metrics
+## Goals And Metrics
 
 ### Goals
 
@@ -132,7 +133,7 @@ Preference -> Goal -> Plan -> Task -> Verify -> Memory
 |---|---|---|---|---|
 | A-001 | <end-to-end observable result> | <test, demo, log, manual acceptance> | <clear condition> | <role> |
 
-## 5. Constraints
+## Constraints
 
 ### Hard Constraints
 
@@ -148,7 +149,7 @@ Preference -> Goal -> Plan -> Task -> Verify -> Memory
 | Cross-module, unvalidated key assumption, or long-term commitment | Show at task-package checkpoint |
 | Could violate a hard constraint, cause irreversible loss, or change goals/acceptance criteria | Stop and ask first |
 
-## 6. Strategy
+## Strategy
 
 ### Strategy Summary
 
@@ -170,7 +171,7 @@ Preference -> Goal -> Plan -> Task -> Verify -> Memory
 - <principle, such as every task package needs independent acceptance evidence>
 - <principle, such as checkpoint every 2-3 task packages>
 
-## 7. Decisions
+## Decisions
 
 Record only decisions that affect later task packages. Put ordinary implementation details in the relevant task package.
 
@@ -178,13 +179,13 @@ Record only decisions that affect later task packages. Put ordinary implementati
 |---|---|---|---|---|---|
 | D-001 | `proposed / approved / replaced / deprecated` | <decision> | <evidence or tradeoff> | <impact> | `YYYY-MM-DD` |
 
-## 8. Exploration And Hypothesis Validation
+## Exploration And Hypothesis Validation
 
-Use this section for spikes, prototypes, scripts, data checks, or technical feasibility validation. Exploration must be minimal and serve only to validate a hypothesis. If the result becomes delivery scope, promote it into Section 9 and a task package.
+Use this section for spikes, prototypes, scripts, data checks, or technical feasibility validation. Exploration must be minimal and serve only to validate a hypothesis. If the result becomes delivery scope, promote it into Implementation Plan and a task package.
 
-| ID | Status | Hypothesis / Unknown | Validation method | Deadline task | Pass / fail action |
-|---|---|---|---|---|---|
-| H-001 | `[待验证]` | <hypothesis or unknown> | <experiment, code read, prototype, user confirmation> | `TASK-NNN` | <action> |
+| ID | Status | Hypothesis / Unknown | Validation method | Deadline task | Pass / fail action | Evidence |
+|---|---|---|---|---|---|---|
+| H-001 | `[待验证]` | <hypothesis or unknown> | <experiment, code read, prototype, user confirmation> | `TASK-NNN` | <action> | <required when closed with supported / disproven / uncertain> |
 
 ### Exploration Plan
 
@@ -199,7 +200,7 @@ Rules:
 - When an exploration conclusion changes implementation, update Decisions, Implementation Plan, and the related task package.
 - Close hypotheses only with a verdict: `supported / disproven / uncertain` plus evidence. Producing an artifact is not the same as closing a hypothesis.
 
-## 9. Implementation Plan
+## Implementation Plan
 
 Every plan node must map to one task package. Each task package then breaks into atomic implementation nodes. This section tracks the dependency graph, node status, phased task list, checkpoints, risks, and open questions.
 
@@ -222,9 +223,15 @@ NODE-001 Foundation (<status>)
 
 ### Node Status
 
-| Node | Phase | Status | Size | Task package | Output snapshot | Goal | Dependencies | Acceptance / Verification | Evidence | Updated |
-|---|---|---|---|---|---|---|---|---|---|---|
-| NODE-001 | Phase 1: Foundation | `待开始` | `Small / Medium` | `tasks/TASK-001-short-slug.md` | `tasks/output/TASK-001-short-slug/` | <observable result> | `None` | <A-NNN, V-NNN, or command> | <evidence location> | `YYYY-MM-DD` |
+| Node | Status | Task package | Evidence |
+|---|---|---|---|
+| NODE-001 | `待开始` | `tasks/TASK-001-short-slug.md` | <evidence location> |
+
+### Node Details
+
+| Node | Phase | Size | Dependencies | Acceptance | Updated |
+|---|---|---|---|---|---|
+| NODE-001 | Foundation | `Small / Medium` | `None` | <A-NNN, V-NNN, or command> | `YYYY-MM-DD` |
 
 ### Loop Contract
 
@@ -318,7 +325,7 @@ GOAL -> PLAN -> ACT -> VERIFY -> PASS
 
 - `[待决策]` <question, options, and recommended default>
 
-## 10. Current Status
+## Current Status
 
 Keep only the latest state here. Status changes, changelog entries, and run logs belong in `memory.md`.
 
@@ -328,17 +335,17 @@ Keep only the latest state here. Status changes, changelog entries, and run logs
 - Next human decision: <None, or decision point>
 - Pending memory write: <None, or source for changelog/run log/finding/history summary>
 
-## 11. Update Protocol
+## Update Protocol
 
-- When an idea is refined or materially changed, update Section 0 and the context/ref index.
+- When an idea is refined or materially changed, update Concept Refinement and the context/ref index.
 - When a plan node or task package is created, blocked, ready for acceptance, completed, or cancelled, update Plan Dependency Graph, Node Status, and Task List.
-- When a task produces final artifacts, update its Output snapshot pointer and keep only the latest final state in `tasks/output/TASK-NNN-<slug>/`.
+- When a task produces final artifacts, update its task-package output pointer and keep only the latest final state in `tasks/output/TASK-NNN-<slug>/`.
 - In Loop mode, update the current Loop State after every ACT/VERIFY/REFLECT/ITERATE. After PASS, update Node Status. Historical loop attempts go to `memory.md#4-run-logs`.
-- When new context, code entrypoints, evidence, or external references are found, update Section 2.
-- When preferences, tradeoffs, locked constraints, or negotiable space change, update Section 3. Preference learning from execution goes to `memory.md#8-preference-learning`.
+- When new context, code entrypoints, evidence, or external references are found, update Context And References.
+- When preferences, tradeoffs, locked constraints, or negotiable space change, update Preferences And Tradeoffs. Preference learning from execution goes to `memory.md#8-preference-learning`.
 - When a changelog-worthy change, run log, important finding, failed lesson, reusable knowledge, or task-package history summary appears, update `memory.md` and Memory Sync.
-- When goals, metrics, acceptance criteria, hard constraints, or strategy change, update Sections 4-7.
-- When hypothesis validation or exploration completes, update Section 8 and reflect the impact in Decisions, Implementation Plan, and related task packages.
+- When goals, metrics, acceptance criteria, hard constraints, strategy, or decisions change, update their named sections.
+- When hypothesis validation or exploration completes, update Exploration And Hypothesis Validation and reflect the impact in Decisions, Implementation Plan, and related task packages.
 - Atomic node state lives only in `tasks/TASK-*.md`; this file records plan-node and task-package status.
 - Do not add CHANGELOG, run logs, historical status transitions, or completed Loop attempts to this file.
 - A `完成` row must have an evidence location; never mark work done because it was merely implemented.

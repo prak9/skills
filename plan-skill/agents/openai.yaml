@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan Skill"
   short_description: "Plan ideas through verified execution"
-  default_prompt: "Use $plan-skill to refine an idea into program.md, then create a verifiable implementation plan with task packages."
+  default_prompt: "Use $plan-skill to choose the lightest sufficient profile, initialize a linked plan, execute verifiable task packages, and run strict validation."

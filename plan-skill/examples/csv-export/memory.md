@@ -19,7 +19,7 @@
 
 | ID | Time | Type | Scope | Summary | Trigger | Evidence | Impact |
 |---|---|---|---|---|---|---|---|
-| CHG-001 | 2026-07-11 | code | `src/exporter.py` | Added the exporter module. | NODE-001 | commit abc123 | Downstream flows can export CSV. |
+| CHG-001 | 2026-07-11 | code | `src/exporter.py` | Added the exporter module. | NODE-001 | commit abc123 | CSV serialization is available; the user-facing CLI flow still depends on N-002. |
 
 ## 4. Run Logs
 
