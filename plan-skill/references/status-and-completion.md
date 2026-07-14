@@ -33,7 +33,8 @@ Per task:
 - add a regression test that fails without the change, or record why it is not applicable
 - run relevant tests, build/typecheck, lint, and formatting, or record scoped exclusions
 - handle edge cases and error paths, or record them as known risks
-- keep the diff scoped and remove unrelated refactors, duplicated logic, dead code, debug output, and commented-out blocks
+- keep the diff scoped and remove unrelated refactors, unjustified duplicated logic, dead code, debug output, and commented-out blocks; do not abstract small similarity without concrete pressure
+- declare `Abstraction impact`; complete the Abstraction Gate for `new`, `modify`, or `remove`, and give a concrete N/A reason for `none` or `reuse`
 
 For a feature or risky change:
 

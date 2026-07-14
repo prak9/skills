@@ -139,6 +139,19 @@ VALID_SIZES = {"XS", "S", "M", "L", "XL", "Small", "Medium", "Large"}
 VALID_PLAN_MODES = {"Linear", "Loop"}
 VALID_PROGRAM_STATUSES = VALID_STATUSES
 VALID_TASK_STATUSES = VALID_STATUSES - {"探索中"}
+VALID_ABSTRACTION_IMPACTS = {"none", "reuse", "new", "modify", "remove"}
+STRUCTURAL_ABSTRACTION_IMPACTS = {"new", "modify", "remove"}
+ABSTRACTION_GATE_FIELDS = (
+    "Concrete pressure / current consumers",
+    "Existing pattern / direct alternative",
+    "Boundary / owned invariant",
+    "Explicit non-responsibilities",
+    "Expected variation",
+    "Concept count / indirection",
+    "Coupling / interface impact",
+    "Contract verification",
+    "Rollback / deletion trigger",
+)
 TASK_OUTPUT_ROOT = "tasks/output/"
 
 UNRESOLVED_PATTERNS = [
@@ -278,6 +291,60 @@ def check_standing_checklist_completion(path: Path, text: str, errors: list[str]
             errors.append(
                 f"{path} Standing Checklist has an N/A item without a concrete reason: {line}"
             )
+
+
+def check_abstraction_gate(
+    path: Path,
+    text: str,
+    status: str | None,
+    errors: list[str],
+    warnings: list[str],
+) -> None:
+    """Require a declared impact and proof for structural abstraction changes."""
+    raw_impact = metadata_value(text, "Abstraction impact")
+    if raw_impact is None:
+        message = (
+            f"{path} must declare Abstraction impact as one of "
+            "`none / reuse / new / modify / remove`"
+        )
+        (errors if status in {"待验收", "完成"} else warnings).append(message)
+        return
+    if re.fullmatch(r"<[^>\n]+>", raw_impact):
+        if status in {"待验收", "完成"}:
+            errors.append(f"{path} must resolve Abstraction impact before `{status}`")
+        return
+
+    impact = raw_impact.lower()
+    if impact not in VALID_ABSTRACTION_IMPACTS:
+        choices = " / ".join(sorted(VALID_ABSTRACTION_IMPACTS))
+        errors.append(
+            f"{path} Abstraction impact must be exactly one of `{choices}`, got `{raw_impact}`"
+        )
+        return
+
+    section = markdown_heading_section(text, "Abstraction Gate")
+    if section is None:
+        errors.append(f"{path} declares Abstraction impact `{impact}` but has no Abstraction Gate")
+        return
+
+    if impact not in STRUCTURAL_ABSTRACTION_IMPACTS:
+        not_applicable = re.search(r"(?im)^\s*N/A\s*:\s*(.+?)\s*$", section)
+        if not_applicable is None or not is_concrete(not_applicable.group(1)):
+            errors.append(
+                f"{path} Abstraction impact `{impact}` requires `N/A: <concrete reason>` "
+                "in Abstraction Gate"
+            )
+        if table_as_mapping(section):
+            errors.append(
+                f"{path} Abstraction impact `{impact}` must replace the unused gate table "
+                "with the concise N/A reason"
+            )
+        return
+
+    gate = table_as_mapping(section)
+    missing = [field for field in ABSTRACTION_GATE_FIELDS if not is_concrete(gate.get(field))]
+    if missing:
+        errors.append(f"{path} Abstraction Gate is incomplete: " + ", ".join(missing))
 
 
 def check_task_completion_contract(
@@ -955,7 +1022,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Validate plan-skill program.md, tasks/TASK-*.md, output artifact "
-            "pointers, links, and status records."
+            "pointers, abstraction gates, links, and status records."
         )
     )
     parser.add_argument(
@@ -1190,6 +1257,13 @@ def main() -> int:
             VALID_PLAN_MODES,
             "Plan mode",
             errors,
+        )
+        check_abstraction_gate(
+            task_path,
+            task_text,
+            package_status,
+            errors,
+            warnings,
         )
         check_standing_checklist_completion(task_path, task_text, errors)
         check_task_completion_contract(

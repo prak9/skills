@@ -30,6 +30,9 @@ Check a plan for these failures:
 - A hypothesis or exploration entry was closed by producing an artifact instead of a verdict (`支持 / 推翻 / 不确定`) with evidence.
 - Exploration implementation exists without atomic steps, verification, evidence pointer, or promotion rule to task package / memory.
 - Task packages make tradeoff-sensitive changes without preference refs or escalation rules for locked constraints.
+- A task package omits `Abstraction impact`, uses an unsupported value, or declares `none`/`reuse` without a concrete reason.
+- A `new`/`modify`/`remove` shared abstraction lacks current pressure and consumers, a direct alternative, a narrow invariant, non-responsibilities, expected variation, a concept/indirection test, interface impact, contract verification, or a rollback/deletion trigger.
+- Small or unstable similarity was treated as sufficient reason to create a shared abstraction, or the new layer hides complexity without reducing total concepts or change cost.
 - Decisions are hidden in chat, commit messages, or code comments instead of `program.md`.
 - "完成" means code landed rather than acceptance evidence passed.
 - A task package lacks a Standing Checklist.

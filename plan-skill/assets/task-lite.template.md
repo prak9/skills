@@ -6,6 +6,7 @@
 - Plan mode: `Linear`
 - Program: `../program.md`
 - Plan node: `NODE-NNN`
+- Abstraction impact: `<none / reuse / new / modify / remove — choose one>`
 - Output artifacts: `tasks/output/TASK-NNN-<slug>/`
 - Owner: `<person, role, or AI>`
 - Updated: `YYYY-MM-DD`
@@ -35,6 +36,22 @@
 - `<path>`
 
 **Estimated scope:** `Small / Medium — choose one`
+
+## Abstraction Gate
+
+For `none` or `reuse`, replace the table with `N/A: <concrete reason>`. For `new`, `modify`, or `remove`, complete every field.
+
+| Field | Content |
+|---|---|
+| Concrete pressure / current consumers | pending |
+| Existing pattern / direct alternative | pending |
+| Boundary / owned invariant | pending |
+| Explicit non-responsibilities | pending |
+| Expected variation | pending |
+| Concept count / indirection | pending |
+| Coupling / interface impact | pending |
+| Contract verification | pending |
+| Rollback / deletion trigger | pending |
 
 ## Output Artifacts
 

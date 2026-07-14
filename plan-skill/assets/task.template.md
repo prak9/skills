@@ -10,6 +10,7 @@
 - Plan node: `NODE-NNN`
 - Context refs: `CTX-NNN / REF-NNN / REF-EXT-NNN / OWN-NNN`
 - Preference refs: `PREF-NNN / None`
+- Abstraction impact: `<none / reuse / new / modify / remove — choose one>`
 - Output artifacts: `tasks/output/TASK-NNN-<slug>/`
 - Owner: `<person, role, or AI>`
 - Created: `YYYY-MM-DD`
@@ -47,6 +48,22 @@
 - `<tests/path/to/test.ts>`
 
 **Estimated scope:** `Small: 1-2 files / Medium: 3-5 files / Large: 5+ files`
+
+## Abstraction Gate
+
+For `none` or `reuse`, replace the table with `N/A: <concrete reason>`. For `new`, `modify`, or `remove`, complete every field after reading `references/abstraction-quality.md` from the active plan-skill.
+
+| Field | Content |
+|---|---|
+| Concrete pressure / current consumers | <present pressure and real callers> |
+| Existing pattern / direct alternative | <repository pattern inspected and simplest direct option> |
+| Boundary / owned invariant | <single responsibility or invariant owned> |
+| Explicit non-responsibilities | <nearby concerns kept outside> |
+| Expected variation | <evidence-backed variable and stable parts> |
+| Concept count / indirection | <what disappears and why total cognitive load falls> |
+| Coupling / interface impact | <callers, dependencies, public surface, compatibility, ownership> |
+| Contract verification | <consumer-facing check that can falsify the boundary> |
+| Rollback / deletion trigger | <revert path and evidence for inlining/replacement/deletion> |
 
 ## Output Artifacts
 
@@ -143,7 +160,7 @@ Complete applicable items before moving this package to `待验收` or `完成`.
 - [ ] Existing tests still pass; no regression signal is ignored.
 - [ ] Relevant edge cases and error paths are handled or recorded as known risk.
 - [ ] Changes are scoped to this task; no unrelated refactors are included.
-- [ ] No duplicated business logic, dead code, debug output, or commented-out blocks were left behind.
+- [ ] No unjustified duplicated business logic, dead code, debug output, or commented-out blocks remain; small similarity was not abstracted without concrete pressure.
 - [ ] Linting and formatting pass, or `N/A: <reason>`.
 
 ### Per Feature / Risky Change

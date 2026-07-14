@@ -154,11 +154,11 @@ Split further when the title contains "and", acceptance criteria exceed three bu
 
 ## Task Packages
 
-Create new task packages through `scripts/init_plan.py` or by copying the matching compact starter. Use `assets/task.template.md` only to repair or expand a detailed Full package.
+Create new task packages through `scripts/init_plan.py` or by copying the matching compact starter. Use `assets/task.template.md` only to repair or expand a detailed Full package. Declare `Abstraction impact`; for `new`, `modify`, or `remove`, read `references/abstraction-quality.md` and complete its gate before execution.
 
 Each Full task package must define the following. Lite uses its smaller contract and adds Full-only sections only after upgrading:
 
-- Task contract: description, acceptance criteria, verification, dependencies, context/preference refs, locked constraints, negotiable space, likely files, and estimated scope
+- Task contract: description, acceptance criteria, verification, dependencies, context/preference refs, locked constraints, negotiable space, abstraction impact, likely files, and estimated scope
 - Output Artifacts: the per-task directory `tasks/output/TASK-NNN-<slug>/`, its current contents, source command, status, and overwrite rule
 - Atomic Implementation Plan with status, action, dependency, touched area, verification, evidence, and failure action
 - Verification Matrix and Checkpoint; keep planned checks in the atomic plan and add `V-*` rows before `待验收` or `完成`
@@ -281,10 +281,10 @@ Use `references/audit-checklist.md`. Repair by restoring the three-layer authori
 - `assets/memory.template.md`: create or restructure `memory.md`
 - `references/concept-refinement.md`: read only for raw-idea ideation, convergence, and one-page brief mapping
 - `references/status-and-completion.md`: read before blocked, acceptance, or completion transitions and related audits
+- `references/abstraction-quality.md`: read before introducing, changing, or removing a shared software abstraction
 - `references/audit-checklist.md`: audit or repair a plan
 - `scripts/init_plan.py <project-root> --title <title> [--profile full]`: safely create a Lite-by-default `program.md`, linked `TASK-001`, git ignore rule, and Full `memory.md` when requested; never overwrite existing plan files
 - `scripts/upgrade_plan.py <project-root> [--dry-run]`: validate and safely upgrade Lite to Full while preserving current program, task, and memory content
-- `scripts/validate_plan.py --strict <project-root>`: check structure, links, IDs, statuses, state transitions, completion semantics, Loop contracts, Git output rules, memory, Markdown table shape, encoding, placeholders, and unresolved markers; add `--json` for stable status/count/error fields
+- `scripts/validate_plan.py --strict <project-root>`: check structure, links, IDs, statuses, state transitions, completion semantics, abstraction gates, Loop contracts, Git output rules, memory, Markdown table shape, encoding, placeholders, and unresolved markers; add `--json` for stable status/count/error fields
 - `tests/`: standard-library regression tests for valid plans, known false-PASS cases, and Markdown parsing boundaries
-- `examples/csv-export/`: filled Full/Linear example and integration fixture
-- `examples/lite-change/`: filled Lite/Linear example; both examples must pass strict validation
+- `examples/csv-export/`, `examples/lite-change/`: filled Full/Lite Linear examples and strict-validation fixtures

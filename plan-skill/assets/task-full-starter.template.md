@@ -9,6 +9,7 @@
 - Plan node: `NODE-001`
 - Context refs: `None`
 - Preference refs: `None`
+- Abstraction impact: `<none / reuse / new / modify / remove — choose one>`
 - Output artifacts: `tasks/output/TASK-001-short-slug/`
 - Owner: `<owner>`
 - Created: `YYYY-MM-DD`
@@ -42,6 +43,22 @@
 - None identified; inspect before editing.
 
 **Estimated scope:** `Small`
+
+## Abstraction Gate
+
+For `none` or `reuse`, replace the table with `N/A: <concrete reason>`. For `new`, `modify`, or `remove`, complete every field.
+
+| Field | Content |
+|---|---|
+| Concrete pressure / current consumers | pending |
+| Existing pattern / direct alternative | pending |
+| Boundary / owned invariant | pending |
+| Explicit non-responsibilities | pending |
+| Expected variation | pending |
+| Concept count / indirection | pending |
+| Coupling / interface impact | pending |
+| Contract verification | pending |
+| Rollback / deletion trigger | pending |
 
 ## Output Artifacts
 

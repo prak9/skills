@@ -4,6 +4,7 @@
 - Plan mode: `Linear`
 - Program: `../program.md`
 - Plan node: `NODE-001`
+- Abstraction impact: `none`
 - Output artifacts: `tasks/output/TASK-001-validate-timeout/`
 - Owner: AI
 - Updated: 2026-07-13
@@ -34,6 +35,10 @@
 - `tests/test_cli.py`
 
 **Estimated scope:** `Small`
+
+## Abstraction Gate
+
+N/A: The change adds boundary validation in the existing CLI path without changing a shared abstraction.
 
 ## Output Artifacts
 

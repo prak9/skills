@@ -6,6 +6,7 @@
 - Plan node: NODE-001
 - Context refs: CTX-001 / REF-001
 - Preference refs: PREF-001
+- Abstraction impact: `new`
 - Output artifacts: `tasks/output/TASK-001-add-export/`
 - Owner: AI
 - Created: 2026-07-11
@@ -44,6 +45,20 @@
 - tests/test_cli.py
 
 **Estimated scope:** `Medium`
+
+## Abstraction Gate
+
+| Field | Content |
+|---|---|
+| Concrete pressure / current consumers | CLI export and the reporting flow both need one RFC 4180 encoding boundary; current callers are `src/cli.py` and report-file consumers. |
+| Existing pattern / direct alternative | Inspected the query-output boundary in `src/query.py`; direct CLI serialization is simpler initially but would duplicate quoting rules across output paths. |
+| Boundary / owned invariant | `exporter` owns converting tabular query results into RFC 4180-compliant CSV bytes. |
+| Explicit non-responsibilities | It does not parse queries, choose columns, open report applications, or own CLI argument handling. |
+| Expected variation | Output destinations may vary; CSV escaping and column ordering must remain stable. |
+| Concept count / indirection | One exporter removes per-caller quoting branches and keeps one serialization concept; the CLI retains only argument and file-path handling. |
+| Coupling / interface impact | Adds one internal module consumed by the CLI; no third-party dependency or public API change. |
+| Contract verification | Exporter tests cover commas, quotes, and newlines; CLI tests verify the same bytes reach the requested file. |
+| Rollback / deletion trigger | Revert the exporter/CLI commits; inline it if only one caller remains and delegation no longer removes branching. |
 
 ## Output Artifacts
 

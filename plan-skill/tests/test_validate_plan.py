@@ -290,6 +290,74 @@ class ValidatePlanTests(unittest.TestCase):
         self.assertTrue(result["ok"], result)
         self.assertEqual([], result["errors"])
 
+    def test_structural_abstraction_requires_complete_gate(self) -> None:
+        self.replace(
+            "tasks/TASK-001-add-export.md",
+            "| Concept count / indirection | One exporter removes per-caller quoting branches and keeps one serialization concept; the CLI retains only argument and file-path handling. |",
+            "| Concept count / indirection | pending |",
+        )
+
+        self.assert_rejected("Abstraction Gate is incomplete", "Concept count / indirection")
+
+    def test_none_abstraction_requires_concrete_reason(self) -> None:
+        self.replace(
+            "tasks/TASK-001-add-export.md",
+            "- Abstraction impact: `new`",
+            "- Abstraction impact: `none`",
+        )
+
+        self.assert_rejected("Abstraction impact `none`", "N/A: <concrete reason>")
+
+    def test_none_abstraction_rejects_leftover_gate_table(self) -> None:
+        self.replace(
+            "tasks/TASK-001-add-export.md",
+            "- Abstraction impact: `new`",
+            "- Abstraction impact: `none`",
+        )
+        self.replace(
+            "tasks/TASK-001-add-export.md",
+            "## Abstraction Gate\n\n| Field | Content |",
+            "## Abstraction Gate\n\nN/A: This task changes no shared abstraction.\n\n| Field | Content |",
+        )
+
+        self.assert_rejected("must replace the unused gate table")
+
+    def test_missing_abstraction_impact_warns_until_strict_validation(self) -> None:
+        self.replace(
+            "tasks/TASK-001-add-export.md",
+            "- Abstraction impact: `new`\n",
+            "",
+        )
+
+        normal_process, normal_result = self.run_validator()
+        strict_process, strict_result = self.run_validator("--strict")
+
+        self.assertEqual(0, normal_process.returncode, normal_process.stdout)
+        self.assertTrue(normal_result["ok"], normal_result)
+        self.assertIn("must declare Abstraction impact", "\n".join(normal_result["warnings"]))
+        self.assertNotEqual(0, strict_process.returncode, strict_process.stdout)
+        self.assertFalse(strict_result["ok"], strict_result)
+
+    def test_modify_and_remove_abstractions_accept_complete_gate(self) -> None:
+        for previous, impact in (("new", "modify"), ("modify", "remove")):
+            self.replace(
+                "tasks/TASK-001-add-export.md",
+                f"- Abstraction impact: `{previous}`",
+                f"- Abstraction impact: `{impact}`",
+            )
+            process, result = self.run_validator()
+            self.assertEqual(0, process.returncode, process.stdout)
+            self.assertTrue(result["ok"], result)
+
+    def test_unknown_abstraction_impact_is_rejected(self) -> None:
+        self.replace(
+            "tasks/TASK-001-add-export.md",
+            "- Abstraction impact: `new`",
+            "- Abstraction impact: `maybe`",
+        )
+
+        self.assert_rejected("Abstraction impact must be exactly one of", "maybe")
+
     def test_program_waiting_acceptance_rejects_in_progress_node(self) -> None:
         self.replace("program.md", "- Overall status: `进行中`", "- Overall status: `待验收`")
 
