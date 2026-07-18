@@ -1,6 +1,6 @@
 ---
 name: judgment-craft
-description: "The cognitive operating system for judgment in the AI era — what computation/knowledge cannot replace. Integrates four disciplines: grasp the 1-2 decisive variables (the crux), build clarity and trained intuition, fight vagueness with structure and falsification, and express uncertain judgments through survivable, reversible bets bounded by externalities and institutional safeguards. Use when distilling a thesis or decision, separating signal from noise, fighting analysis paralysis or wishful thinking, deciding what to think for yourself versus hand to AI, sizing a consequential bet, distinguishing a small model-friendly world from a large adaptive world, separating process quality from outcome luck, or providing the judgment discipline behind analysis skills such as alpha-research."
+description: "The cognitive operating system for judgment in the AI era — what computation/knowledge cannot replace. Integrates crux-finding, trained intuition, falsification, survivable risk-taking, and second-level investment judgment. Use when distilling a thesis or decision, separating signal from noise, fighting analysis paralysis or wishful thinking, sizing a consequential bet, distinguishing model-friendly from adaptive worlds, separating process quality from outcome luck, identifying a correct non-consensus unpriced investment edge, choosing contrarian versus trend-confirming logic, or providing the judgment discipline behind analysis skills such as alpha-research."
 ---
 
 # Judgment Craft (judgment in the AI era)
@@ -75,6 +75,8 @@ A one-liner that **skipped** the complexity is not insight — it's stage 1 wear
 
 Read `references/risk-bearing-judgment.md` before sizing a meaningful bet, using expected value outside a repeatable domain, making an irreversible commitment, or imposing downside on non-participants.
 
+For investments, read `references/investment-judgment.md` before claiming variant perception, classifying an asset as mean-reverting versus paradigm-shifting, using reflexivity to justify valuation, or translating conviction into a position. It applies the same crux, falsification, optionality, and survival disciplines to consensus and price.
+
 ---
 
 ## How the four chain together
@@ -89,16 +91,17 @@ Pillar 1 chooses the direction; Pillar 2 earns the intuition; Pillar 3 makes the
 - **Don't outsource the thinking to AI.** AI summaries can filter and accelerate, but the cognition itself must be built by reading the primary source yourself and **betting to validate**. Use AI for breadth; build judgment by depth + skin in the game.
 - **Before you bet, write the falsification trigger:** "what data, if it appears, makes me admit I'm wrong?" — *then* commit. Expose the judgment to being disproven; that is the only way it improves.
 - **Classify the decision world and cap exposure:** state `small / large / mixed`, maximum loss, reversible first step, who bears the downside, and what evidence earns a larger commitment.
+- **For an investment, prove the edge:** state consensus, what price embeds, your divergent view, why it is more accurate, when the edge expires, and the evidence that earns an add or forces an exit.
 - **When a decision churns, suspect vagueness:** structure it (goal / constraints / payoffs) before deciding, instead of looping.
 - **Hedge wishful thinking** by writing the strongest bear/opposing case before concluding.
 
 ## Relationship to other skills
 
 - `alpha-research` depends on this skill: the key-driver step and the five-lens synthesis must **lead with the crux** (Pillar 1), and the staged-decision **falsification trigger is written before committing** (Pillar 3).
-- `second-level-thinking` applies Pillar 4 to edge half-life, observation positions, survivable sizing, reflexive markets, and process-versus-outcome review.
+- Its investment adapter owns variant perception: asset classification, consensus-versus-price, edge half-life, reflexivity, observation positions, survivable sizing, and process-versus-outcome review.
 - Pillar 3 is the *soul* of a buy-side memo's **"thesis breakpoint / falsification trigger."**
 - Complements **`research-craft`** (how to run good research): judgment-craft is *how to think and decide*; research-craft is *how to investigate*.
 
 ## Source
 
-Distilled from《深刻的简单》《顶级洞察力的形成》(Pillar 1);《好运框架·决策本质》《纳瓦尔:判断力淬炼为直觉》(Pillar 2);《模糊,是最贵的成本》《如何做个正确的独立思考者》《认知飞轮》(Pillar 3); and the supplied analysis of Nate Silver's risk-culture framework (Pillar 4). Core thesis: in the AI era, judgment means choosing the decisive variables and expressing them through bets that preserve survival, learning, and legitimate choice.
+Distilled from《深刻的简单》《顶级洞察力的形成》(Pillar 1);《好运框架·决策本质》《纳瓦尔:判断力淬炼为直觉》(Pillar 2);《模糊,是最贵的成本》《如何做个正确的独立思考者》《认知飞轮》(Pillar 3); the supplied analysis of Nate Silver's risk-culture framework (Pillar 4); and Howard Marks, George Soros, and the Davis double-play for the investment adapter. Core thesis: judgment means choosing the decisive variables and expressing them through bets that preserve survival, learning, and legitimate choice.

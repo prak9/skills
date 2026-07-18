@@ -140,6 +140,8 @@ Always include Bull / Base / Bear scenarios with assumptions, probability, reven
 
 Actively argue against the conclusion. Identify where the thesis can be wrong, what consensus may be too optimistic about, what risks are not priced, which metrics would break the thesis, and what conditions require downgrade or removal from the watchlist.
 
+Apply the investment adapter in `judgment-craft`: classify the asset as mean-reverting, paradigm-shifting, or mixed; state consensus and what price embeds; then require a divergent view that is more accurate, unpriced, executable, and bounded by an explicit edge half-life and falsifier.
+
 Cover fundamental, valuation, competition, cycle, regulation, technology substitution, management execution, accounting quality, liquidity, FX, and macro risks when relevant.
 
 ### 9. Track Catalysts And Monitoring Dashboard
@@ -264,6 +266,15 @@ Use this default structure:
 - Include Bull / Base / Bear scenarios and reverse thesis testing.
 - Make all unverifiable data and missing inputs explicit.
 - Keep the memo decision-useful, professional, and concise enough for buy-side discussion.
+
+## Default Delivery
+
+After validation, archive the finished memo to the exact Notion page or database named `Invest` unless the user names another destination or opts out.
+
+- Title it `[YYYY-MM-DD] [TICKER] — Buy-Side Memo`; preserve the as-of date, decision, crux, scenarios, citations, and falsifiers.
+- Write only when authenticated Notion access is available and exactly one `Invest` target is resolved. Do not guess among multiple matches.
+- Do not claim success without a returned Notion page URL or page ID. Include that link in the final response.
+- If Notion is unavailable, unauthenticated, or ambiguous, do not block the research: return the complete Markdown and state `Notion archive pending`.
 
 ## Detailed Reference
 

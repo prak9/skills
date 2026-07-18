@@ -229,6 +229,15 @@ Use this format for company analysis:
 - Distinguish structural growth from cyclical rebound or one-time order timing.
 - State uncertainty, missing data, and falsification conditions clearly.
 
+## Default Delivery
+
+After validation, archive the finished analysis to the exact Notion page or database named `Invest` unless the user names another destination or opts out.
+
+- Title it `[YYYY-MM-DD] [TICKER] — Bayesian Growth Valuation`; preserve the as-of date, probability table, implied-growth comparison, decision, citations, and falsifiers.
+- Write only when authenticated Notion access is available and exactly one `Invest` target is resolved. Do not guess among multiple matches.
+- Do not claim success without a returned Notion page URL or page ID. Include that link in the final response.
+- If Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
+
 ## Source Reference
 
 The original Chinese framework is stored in `references/original-framework.md`. Read it when you need to preserve the exact wording or rebuild the model structure.

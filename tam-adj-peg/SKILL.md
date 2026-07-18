@@ -215,6 +215,15 @@ TAM-Adj-PEG = Forward PE / (EPS CAGR x TAM Runway Factor x Quality Factor)
 - 适合的仓位类型：
 ```
 
+## Default Delivery
+
+After validation, archive the finished analysis to the exact Notion page or database named `Invest` unless the user names another destination or opts out.
+
+- Title it `[YYYY-MM-DD] [TICKER] — TAM-Adj-PEG`; preserve the as-of date, inputs, factor derivation, decision, citations, and falsifiers.
+- Write only when authenticated Notion access is available and exactly one `Invest` target is resolved. Do not guess among multiple matches.
+- Do not claim success without a returned Notion page URL or page ID. Include that link in the final response.
+- If Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
+
 ## Detailed Reference
 
 Read `references/original-framework.md` when a task needs the full Chinese framework text, all scoring tables, or the original explanation of TAM-Adj-PEG logic.

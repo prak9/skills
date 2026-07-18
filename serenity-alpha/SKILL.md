@@ -202,3 +202,12 @@ When analyzing a news item, use this structure:
 - Distinguish first-order beneficiaries from distant second- or third-order stories.
 - Use current sourced data for market caps, financials, prices, and recent filings.
 - State uncertainty and falsification conditions clearly.
+
+## Default Delivery
+
+After validation, archive the finished alpha note to the exact Notion page or database named `Invest` unless the user names another destination or opts out.
+
+- Title it `[YYYY-MM-DD] [PRIMARY TICKER OR THEME] — Alpha Note`; preserve the as-of date, demand chain, primary candidate, decision, citations, and falsifiers.
+- Write only when authenticated Notion access is available and exactly one `Invest` target is resolved. Do not guess among multiple matches.
+- Do not claim success without a returned Notion page URL or page ID. Include that link in the final response.
+- If Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
