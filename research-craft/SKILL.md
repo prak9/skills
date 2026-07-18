@@ -1,69 +1,172 @@
 ---
 name: research-craft
-description: Apply deliberate research craft — the trainable stack of sub-skills behind good research (after Hamming, Schulman, Shannon, Feynman, Karpathy, Ng, Sutton, Olah). Pick your own problems by reasoning backward from a desired outcome; train taste by predicting results before running; upgrade inputs (read primary sources and old/cross-field work, not threads); write everything down in a log and publish; tighten the experimental loop with tooling and overfit-one-batch; stare at raw outputs and failures; wander across subfields and tune baselines until they hurt; keep an open door. Use when doing or planning research, choosing a research problem or direction, designing or debugging experiments/evals/models, building a research log, deciding what to read, or trying to improve research quality and speed.
+description: "Run rigorous, instrumented research as a controlled learning loop: choose consequential problems, form falsifiable hypotheses, design trustworthy evaluators, build reproducible harnesses, inspect raw evidence, keep durable experiment memory, and accept changes only through explicit gates. Use when planning or conducting research, choosing a direction, reading literature, designing experiments or evals, debugging models, iterating experimental code or quantitative/trading strategies, building agent harnesses or self-improvement loops, managing research logs, controlling overfitting and reward hacking, or improving research quality and speed."
 ---
 
 # Research Craft
 
-Research ability is not a gift; it is a **stack of smaller skills, almost every one of which can be deliberately trained**. Most people reverse-engineer the job from papers and threads and learn to *look* like a researcher rather than *be* one. The single governing idea: **research speed is the speed at which you discover you are wrong** — so optimize every habit for faster, cheaper error discovery.
+Treat research as a system for changing beliefs with evidence, not as idea generation or repeated execution.
 
-Use this when you are doing research yourself, or guiding/assisting someone's research. Apply the relevant moves; don't recite the list.
+```text
+important question
+  -> falsifiable hypothesis and prediction
+  -> explicit research contract
+  -> cheapest informative probe
+  -> raw evidence and fixed evaluation
+  -> accept / reject / revise
+  -> durable memory and next bet
+```
 
-## 1. Pick your own problems
+The governing principle is: **research speed is the speed at which you discover you are wrong without corrupting the evidence.** Optimize the whole loop for informative failure, reproducibility, and cumulative learning.
 
-- **Run Hamming's question** on the work: what are the important problems here, and why am I *not* working on them? An absorbed problem hands you a conclusion without the reasoning — you won't see the pivot coming and you're racing people who started earlier with more compute.
-- **Reason backward, not forward** (Schulman): instead of scanning the literature for things to improve, choose an outcome you genuinely want to exist and derive the experiments that would produce it. Backward-from-a-goal manufactures originality; it drags you into territory no survey covers.
-- **Train taste like a muscle, not a gift**: predict the result of every experiment *before* running it; cover a paper's results and guess the numbers from the method alone; record which current releases will matter in two years and check your hit rate. Forecast → correction, repeated, is how the model in your head gets trained.
+## Route the work
 
-## 2. Upgrade your inputs
+Choose the lightest mode that protects the claim:
 
-- Shared reading lists produce shared, worthless-because-simultaneous conclusions. **Diversify the diet beyond the trending feed.**
-- **Old material is underpriced** — the field reruns its past on a delay (MoE 1991, LSTM 1997, backprop 1986). A short deep classic (e.g. Sutton's *Bitter Lesson*) often predicts the field better than a survey ten times its length.
-- **Shrink-then-grow** (Shannon): reduce a problem until it's nearly trivial, solve the small version, then reintroduce difficulty one piece at a time.
-- **Range beats pure depth**: borrow across fields (interpretability ← neuroscience; eval design ← mechanism design; architecture sense ← how GPUs move memory). Honest statistics is rare and high-value.
-- **Read the paper, not the thread.** The appendix is where the bodies are buried; the limitations section is usually the most honest paragraph.
+- **Exploration:** map an unfamiliar problem, inspect raw material, compare explanations, and identify the next discriminating observation. Keep hypotheses provisional.
+- **Controlled experiment:** compare a candidate against a baseline under a fixed protocol and explicit acceptance gates.
+- **Artifact iteration:** edit code, prompts, rules, or configuration through a bounded propose-evaluate-accept loop. Freeze the evaluator before optimizing the candidate.
+- **Agent or self-improving harness:** read `references/harness-engineering.md` before designing runtime control flow, persistent memory, context construction, subagents, permissions, or self-edits.
+- **Quantitative or trading strategy:** read `references/quant-strategy-iteration.md` before changing a strategy, backtest, scorer, data split, promotion gate, or distributed experiment wrapper.
 
-## 3. Write everything down
+Do not force exploratory work into fake precision. Increase control as soon as the work makes a comparative, causal, performance, safety, or deployment claim.
 
-- Writing finds the gaps your head papers over (Graham): the untested assumption, the step that doesn't follow, the two claims that contradict. If it won't go cleanly onto the page, it isn't finished.
-- **Don't fool yourself** (Feynman) — you're the easiest target. Record disconfirming evidence *on the spot* (Darwin), because memory deletes inconvenient results faster than convenient ones.
-- **Keep a log per experiment: hypothesis · setup · expectation · result · updated belief.** Rereading last month's entries is the most honest review you'll get.
-- **Publish some of it** (Olah & Carter, *research debt*): a clear explanation is a real contribution, and a body of public writing is the strongest, unfakeable credential for how you think.
+## 1. Choose the question backward from the outcome
 
-## 4. Tighten the loop
+- State the outcome that should exist if the research succeeds; reason backward to the evidence and experiments needed to produce it.
+- Ask Hamming's question: what is the important problem, and why are you not working on it?
+- Name the one or two decisive unknowns. Avoid absorbing a fashionable problem without its reasoning chain.
+- Define the decision the result will change. If no plausible result changes a decision, narrow or stop the work.
+- Predict the result before reading the answer or running the experiment. Record the prediction so hindsight cannot rewrite it.
 
-- The edge is **volume** (Radford): more runs/day, more wrong ideas discarded/week, a reality-model that updates faster.
-- **Tooling is a first-class research activity**: launch a run in one command, plot in one more, reproduce any run from its config, compare two runs in seconds. 
-- **Overfit a single batch before training at scale** (Karpathy): ~30 seconds, half your bugs gone. Shrink everything until it's cheap, get it right, then spend compute.
-- **Engineering = research at the frontier.** Whoever can build the harness, eval, and data pipeline is the one whose hypotheses actually get tested; everyone else waits in the queue.
+## 2. Write the research contract
 
-## 5. Stare at the outputs
+Before a consequential run or edit, record the minimum contract:
 
-- A descending loss curve is reassurance, not analysis. Experiments emit far more than you read — transcripts, failure cases, the strange tail.
-- **Look at the raw data by hand** *before* writing training code (Karpathy): most ML bugs live in the data and fail silently — no crash, just a mediocre model and a wrong theory.
-- **Error analysis** (Ng): pull ~100 failures, read all of them, sort into piles, attack the biggest pile. Works on models and on evals — a benchmark whose transcripts you've never read is one you don't understand. One transcript of genuinely strange behavior teaches more than the next decimal of accuracy.
+```text
+Objective and decision:
+Hypothesis and mechanism:
+Prediction and plausible rival:
+Baseline or current champion:
+Editable surface:
+Frozen evaluator and data:
+Splits / holdouts / sample floor:
+Primary metric and guardrails:
+Artifacts and ledger location:
+Acceptance, rejection, and stop rules:
+Human or permission checkpoints:
+```
 
-## 6. Wander on purpose
+Match strictness to risk. A disposable probe may need only a hypothesis, expected observation, and note. A claim that can move capital, production, safety controls, or a benchmark needs the full contract.
 
-- Your first subfield is an accident of timing — pay tuition in several (interp, evals, RL, systems) before deciding where your specific weirdness is an unfair advantage.
-- **Run the disposable version of every idea first; let most die young.**
-- **Tune baselines until it hurts** — the graveyard is full of gains that evaporate against a properly tuned baseline. **Ablate** until you know which single component carries the result (usually not the one in the title).
-- **Breadth is insurance**: subfields saturate, usually right after they peak on social media; the people who keep producing already know the neighboring territory.
+Separate two kinds of work:
 
-## 7. Find your people
+- **Candidate work** changes the idea being tested while the evaluator stays fixed.
+- **Harness work** repairs data, scoring, orchestration, validation, or reproducibility. Label it explicitly, test it against replay anchors, then refreeze the protocol before comparing candidates.
 
-- **Keep the open door** (Hamming): closed-door people get more done in a year; open-door people do the work that matters, because interruptions carry information about what the world needs. Your open door is your inbox.
-- **Generosity compounds**: replicate and publish what you find, release your tools, explain hard things plainly. Returns arrive sideways, months later, as a collaboration / citation / role.
-- **Float half-formed ideas in public** — being wrong on the timeline is far cheaper than being wrong in print. A collaborator who kills a bad idea before you sink three months into it is worth more than compute, and can't be bought, only earned.
+Never optimize the candidate and redefine success in the same round.
 
-## 8. The long game
+## 3. Upgrade inputs and inspect reality first
 
-Luck favors the prepared mind (Pasteur); knowledge and productivity compound like interest (Hamming). The daily edges — what you read, what you record, how fast your loop runs, who you argue with — look trivial in isolation and produce careers that look like luck from outside. **Start compounding earlier than feels necessary.**
+- Read primary sources, original data, code, traces, and appendices before relying on summaries.
+- Diversify beyond the current feed; use old and cross-field work to escape synchronized conclusions.
+- Inspect raw samples by hand before building abstractions. Silent data or labeling errors often produce plausible but false theories.
+- Shrink the problem until it is cheap: one batch, one trace, one symbol, one regime, one failing case, or one minimal reproduction.
+- Tune the strongest honest baseline before claiming improvement.
 
-## Quick self-audit
+## 4. Build only the harness the claim requires
 
-When stuck or starting, ask: Am I working *my* problem or an absorbed one? Did I predict before I ran? Am I reading primary sources? Is it in the log? Have I looked at 100 actual failures? Is my baseline honestly tuned? Can I launch+compare a run in seconds? Am I floating this idea where someone can kill it cheaply?
+Make evidence easy to produce and hard to counterfeit:
 
-## Source
+- Launch a run reproducibly from a recorded command and configuration.
+- Snapshot data range, seed, dependencies, candidate ID, evaluator version, and output paths when they affect the result.
+- Store authoritative artifacts, not only optimistic console summaries.
+- Validate expected task counts, rows, keys, files, and failed cells before scoring.
+- Preserve interruption-safe state in files: contract, run status, traces, diffs, decisions, and rejected attempts.
+- Keep safety, permissions, secrets, holdouts, and the evaluator outside any self-editing surface.
 
-Distilled from Vivek (@itsreallyvivek), "how to be good at research" (2026-06-10). Full Chinese translation: `references/how-to-be-good-at-research-zh.md`.
+Prefer inspectable files and deterministic rules over hidden memory or a large opaque framework.
+
+## 5. Run one informative loop at a time
+
+1. **Baseline:** reproduce the current champion and verify the harness.
+2. **Diagnose:** inspect raw failures and identify one concrete weakness or uncertainty.
+3. **Propose:** state one mechanism-level hypothesis and its expected observation.
+4. **Probe:** make the smallest meaningful change or run the cheapest discriminating experiment.
+5. **Observe:** collect the same metrics and inspect representative successes, failures, and tails.
+6. **Compare:** evaluate against the baseline, holdout, guardrails, and replay anchors.
+7. **Decide:** accept, reject, or revise using the predeclared rules; do not rescue a miss by changing the story after seeing results.
+8. **Compress:** remove redundant rules, update the ledger, and state the next constraint or experiment.
+
+Change one meaningful variable or rule family per round when attribution matters. Let most ideas die cheaply.
+
+## 6. Gate claims, not just scores
+
+Require the gates relevant to the claim:
+
+- **Protocol integrity:** evaluator, data, split, costs, seed, and objective remained fixed during candidate comparison.
+- **Baseline strength:** the candidate beats a tuned, reproducible baseline rather than a weak straw man.
+- **Held-out confirmation:** validation or truth data vetoes promotion; repeated exposure is contamination, not free evidence.
+- **Sample and uncertainty:** the effective sample supports the claimed precision; show ranges or sensitivity when it does not.
+- **Raw-evidence check:** inspect actual failures, traces, trades, or outputs instead of trusting an aggregate alone.
+- **Replay and regression:** preserve known useful behavior and unrelated passing cases.
+- **Mechanism and simplicity:** prefer smooth, legible, causal or economic explanations over fragmented exceptions.
+- **Anti-Goodhart:** check whether the candidate learned the judge, leakage, artifact format, or benchmark quirks instead of the objective.
+- **Operational validity:** account for execution friction, capacity, latency, permissions, maintainability, and downstream ownership.
+
+If a required gate fails, reject the claim even when the headline metric improves.
+
+## 7. Turn every run into durable learning
+
+Use the project's existing research log or control documents. Do not create a competing ledger when one already exists. Record failures immediately because memory preferentially keeps convenient evidence.
+
+```text
+run_id / date:
+question and hypothesis:
+prediction:
+protocol and changed surface:
+result and raw evidence:
+baseline / holdout / guardrails:
+decision: accept | reject | revise
+failure attribution:
+belief update:
+reusable finding and next constraint:
+```
+
+Maintain three separations:
+
+- Keep observations separate from interpretations.
+- Grade process quality separately from outcome luck.
+- Keep current context separate from durable memory; promote a lesson only when evidence justifies it.
+
+## 8. Scale and publish after learning survives
+
+- Spend more compute, data, capital, or autonomy only after the small version works and the protocol survives replay.
+- Ablate until the component carrying the result is known.
+- Re-run the strongest disconfirming test before promotion.
+- Explain the work clearly enough that another person can reproduce the setup, understand negative results, and challenge the inference.
+- Wander into adjacent fields when the current framing stalls; breadth is insurance against a saturated local optimum.
+- Expose provisional ideas to trusted critics early enough that they can kill weak work cheaply.
+- Publish useful tools, replications, and explanations when permissions allow; clear writing exposes research debt and attracts better criticism.
+
+## Decision-first handoff
+
+End substantial work with:
+
+```text
+Decision and confidence:
+Crux / decisive evidence:
+Protocol and baseline:
+Accepted and rejected changes:
+Held-out, sample, replay, and artifact status:
+Known failure modes and limits:
+Durable findings written:
+Next cheapest discriminating experiment:
+Required human checkpoint:
+```
+
+Do not call work successful when artifacts are missing, the evaluator moved, a holdout was tuned against, or the result cannot change a decision.
+
+## Sources
+
+The general craft draws from Hamming, Schulman, Shannon, Feynman, Karpathy, Ng, Sutton, Olah, and the full Chinese source in `references/how-to-be-good-at-research-zh.md`. The harness adapter distills Lilian Weng's harness-engineering framework. The quantitative adapter combines fixed-evaluator auto-research with observable failure learning and anti-overfitting trading practice.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Research Craft"
+  short_description: "Run rigorous, eval-driven research loops"
+  default_prompt: "Use $research-craft to turn this problem into a falsifiable, instrumented research loop with durable evidence."

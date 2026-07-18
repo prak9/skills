@@ -1,4 +1,0 @@
-interface:
-  display_name: "Lil'Log"
-  short_description: "Harness engineering for self-improvement loops"
-  default_prompt: "Use $lil-log to design a self-improving agent harness with evals, memory, permissions, and iteration gates."
