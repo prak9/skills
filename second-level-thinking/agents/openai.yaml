@@ -1,0 +1,4 @@
+interface:
+  display_name: "Second-Level Thinking"
+  short_description: "Find unpriced edges and size positions survivably"
+  default_prompt: "Use $second-level-thinking to classify the asset, identify an unpriced expectation gap, estimate edge half-life, and size a falsifiable position that preserves survival."
