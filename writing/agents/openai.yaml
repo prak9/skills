@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing"
+  short_description: "写作、改写、翻译与审阅：清楚、准确、具体、简洁、有说服力"
+  default_prompt: "使用 $writing 写出逻辑清楚、用语准确且具体可信的中文。"
