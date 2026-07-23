@@ -14,6 +14,7 @@ Use one controlled vocabulary across `program.md` and task packages:
 
 ## Status Transitions
 
+- Do not enter `进行中`, `待验证`, `待验收`, or `完成` while `Execution readiness` is `Blocked`.
 - Set `完成` only after acceptance criteria pass, evidence is recorded, and required writeback is done.
 - Set a program to `待验收` only when every node is `待验收`, `完成`, or `已取消`; at least one node awaits acceptance; and latest evidence, next checkpoint, and next human decision are concrete.
 - Set a task to `待验收` only when implementation, verification, checklists, red-team answers, evidence, and writeback are ready, but human acceptance remains.

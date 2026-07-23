@@ -34,3 +34,5 @@ Write the confirmed one-page brief into `program.md#concept-refinement` and map 
 - MVP Scope -> initial `program.md#implementation-plan` nodes
 - Not Doing -> `program.md#problem-definition` Non-goals
 - Open Questions -> `program.md#optional-state` or the relevant implementation subsection
+
+After convergence, apply `references/pre-execution-grill.md` when the concept still depends on material research judgment, evidence quality, a baseline, operational constraints, or a falsifiable hypothesis. A confirmed direction is not execution-ready until that gate is `Ready` or concretely `Not required`.

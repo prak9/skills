@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: Use this skill to turn a raw idea, vague project, existing spec, or ongoing implementation into a controlled plan-and-execution loop. It refines ideas into program.md, creates or repairs AI-executable plans, decomposes work into tasks/TASK-*.md packages, keeps latest per-task output snapshots under gitignored tasks/output/TASK-*/ directories, tracks verification and checkpoints, and preserves durable findings in memory.md. Trigger when the user asks to refine an idea, ideate, stress-test a plan, create an implementation plan, break down tasks, run Loop-mode execution, manage project control, clarify preferences/tradeoffs, order dependencies, slice work vertically, define acceptance criteria, track evidence, write run logs/CHANGELOG/history, or hand off coding work across sessions.
+description: Use this skill to turn a raw idea, vague project, existing spec, or ongoing implementation into a controlled plan-and-execution loop. It refines ideas into program.md, runs a pre-execution Grill-me/readiness gate for research or uncertainty-heavy work, creates or repairs AI-executable plans, decomposes work into tasks/TASK-*.md packages, keeps latest per-task output snapshots under gitignored tasks/output/TASK-*/ directories, tracks verification and checkpoints, and preserves durable findings in memory.md. Trigger when the user asks to refine an idea, ideate, stress-test a plan, expose hidden assumptions or failure conditions before execution, create an implementation plan, break down tasks, run Loop-mode execution, manage project control, clarify preferences/tradeoffs, order dependencies, slice work vertically, define acceptance criteria, track evidence, write run logs/CHANGELOG/history, or hand off coding work across sessions.
 ---
 
 # Plan Skill
@@ -8,7 +8,7 @@ description: Use this skill to turn a raw idea, vague project, existing spec, or
 Use this skill to move from idea to verified implementation without losing state. It has three authoritative state documents plus one non-authoritative output area:
 
 ```text
-program.md                 # Current state: concept brief, plan, status, blockers, next step, links.
+program.md                 # Current state: concept brief, readiness gate, plan, status, blockers, next step, links.
 memory.md                  # Durable history: findings, lessons, changelog, run logs, summaries.
 tasks/TASK-NNN-<slug>.md   # Executable task packages with atomic nodes, verification, and evidence.
 tasks/output/TASK-NNN-<slug>/  # Non-authoritative latest output snapshot; gitignored.
@@ -40,8 +40,9 @@ Use the lightest control surface that preserves useful state:
    python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
    ```
 
-5. Fill the current task package only. Create later task packages just in time when their dependencies and acceptance criteria are clear.
-6. During drafting, run `scripts/validate_plan.py <project-root>` to separate structural errors from expected placeholder warnings. Before execution, handoff, or completion, remove the remaining placeholders and run `--strict`.
+5. Before filling or executing task nodes, apply the readiness gate below; keep the initializer-created package at `待开始` until it is `Ready` or `Not required`.
+6. Fill the current task package only after the gate clears. Create later task packages just in time when their dependencies and acceptance criteria are clear.
+7. During drafting, run `scripts/validate_plan.py <project-root>` to separate structural errors from expected placeholder warnings. Before execution, handoff, or completion, remove the remaining placeholders and run `--strict`.
 
 ## Operating Model
 
@@ -70,12 +71,17 @@ Skip divergent refinement when the user already provides a clear spec, accepted 
 
 Stage 0 must end with a confirmed one-page brief in `program.md#concept-refinement`, mapped into the problem, goals, strategy, hypotheses, MVP nodes, non-goals, and open questions. Do not create a separate idea document by default.
 
+## Pre-Execution Readiness Gate
+
+Read `references/pre-execution-grill.md` when work is research, optimization, evaluation, strategy, data/model work, uncertainty-heavy Loop work, or can cheaply generate polished but low-information output. Research discoverable facts first, then ask the user one decisive judgment question at a time. Keep execution `Blocked` until the readiness map is concrete; use `Not required` only with a concrete reason for a clear, directly verifiable spec.
+
 ## Planning Rules
 
 When creating or refreshing a plan, stay in read-only planning mode unless the user explicitly asks to execute:
 
 - Read specs, docs, code entry points, tests, configuration, and recent changes.
 - Identify existing patterns, ownership boundaries, dependencies, risks, unknowns, and decisions needed.
+- Resolve `program.md#execution-readiness-gate` before starting implementation; make the cheapest informative check the first relevant node.
 - Initialize new artifacts with `scripts/init_plan.py`; use `scripts/upgrade_plan.py` when Lite crosses a Full trigger; use the matching detailed templates directly only when repairing or restructuring an existing plan.
 - Ensure the project git ignore rules exclude `tasks/output/` before creating task output artifacts.
 - Planning is complete only when implementation can continue from the artifacts without relying on chat memory.
@@ -83,6 +89,7 @@ When creating or refreshing a plan, stay in read-only planning mode unless the u
 Full `program.md` must include the following. Lite keeps only the matching Lite-template fields until a Full trigger appears:
 
 - Concept Refinement, or `None` when the work starts from a clear spec
+- Execution Readiness Gate: decision, hypothesis, baseline, evidence quality, real constraints, pass/fail conditions, cheapest informative check, false-positive loop, and retained human judgment
 - problem, goals, final acceptance criteria, constraints, non-goals, and escalation rules
 - context/reference index with source, purpose, and freshness
 - preferences/tradeoffs, locked constraints, and negotiable space
@@ -194,6 +201,7 @@ GOAL -> PLAN -> ACT -> VERIFY -> PASS
 `program.md` owns the project-level Loop contract and latest Loop state. Task packages own the current attempt. Completed attempts are summarized in `memory.md`.
 
 Do not use Loop mode to hide indecision. If the same failure repeats without new information, stop and mark blocked or escalate.
+Every iteration must change belief or retire a stated uncertainty; producing another report, chart, or local metric without new information is not progress.
 
 ## Memory Discipline
 
@@ -237,9 +245,10 @@ Read `references/status-and-completion.md` before setting `阻塞`, `待验收`,
 3. Gather context in read-only planning mode.
 4. Decide `Lite` or `Full`, and `Linear` or `Loop`.
 5. For new work, run `scripts/init_plan.py`; for existing work, update the matching artifacts in place.
-6. Create task packages only for nodes ready to execute or needing precise scoping now.
-7. Ensure `.gitignore` excludes `/tasks/output/` or `tasks/output/`.
-8. Run `scripts/validate_plan.py --strict <project-root>` before execution, handoff, or completion.
+6. Apply and record the pre-execution readiness gate; keep the starter task dormant while blocked.
+7. After the gate clears, fill task packages only for nodes ready to execute or needing precise scoping now.
+8. Ensure `.gitignore` excludes `/tasks/output/` or `tasks/output/`.
+9. Run `scripts/validate_plan.py --strict <project-root>` before execution, handoff, or completion.
 
 ### Continue A Plan
 
@@ -280,11 +289,12 @@ Use `references/audit-checklist.md`. Repair by restoring the three-layer authori
 - `assets/task-lite.template.md`: create a focused Lite task package
 - `assets/memory.template.md`: create or restructure `memory.md`
 - `references/concept-refinement.md`: read only for raw-idea ideation, convergence, and one-page brief mapping
+- `references/pre-execution-grill.md`: read before research, experiments, optimization, evaluation, uncertainty-heavy Loops, or other work where fast execution can create false confidence
 - `references/status-and-completion.md`: read before blocked, acceptance, or completion transitions and related audits
 - `references/abstraction-quality.md`: read before introducing, changing, or removing a shared software abstraction
 - `references/audit-checklist.md`: audit or repair a plan
 - `scripts/init_plan.py <project-root> --title <title> [--profile full]`: safely create a Lite-by-default `program.md`, linked `TASK-001`, git ignore rule, and Full `memory.md` when requested; never overwrite existing plan files
 - `scripts/upgrade_plan.py <project-root> [--dry-run]`: validate and safely upgrade Lite to Full while preserving current program, task, and memory content
-- `scripts/validate_plan.py --strict <project-root>`: check structure, links, IDs, statuses, state transitions, completion semantics, abstraction gates, Loop contracts, Git output rules, memory, Markdown table shape, encoding, placeholders, and unresolved markers; add `--json` for stable status/count/error fields
+- `scripts/validate_plan.py --strict <project-root>`: check structure, links, IDs, statuses, state transitions, execution readiness, completion semantics, abstraction gates, Loop contracts, Git output rules, memory, Markdown table shape, encoding, placeholders, and unresolved markers; add `--json` for stable status/count/error fields
 - `tests/`: standard-library regression tests for valid plans, known false-PASS cases, and Markdown parsing boundaries
 - `examples/csv-export/`, `examples/lite-change/`: filled Full/Lite Linear examples and strict-validation fixtures

@@ -194,6 +194,73 @@ class ValidatePlanTests(unittest.TestCase):
 
         self.assert_rejected("Overall status", "task package Status")
 
+    def test_blocked_readiness_prevents_execution(self) -> None:
+        self.replace(
+            "program.md",
+            "- Execution readiness: `Not required`",
+            "- Execution readiness: `Blocked`",
+        )
+
+        self.assert_rejected(
+            "Execution readiness is `Blocked`",
+            "resolve the gate before execution",
+        )
+
+    def test_not_required_readiness_needs_a_concrete_reason(self) -> None:
+        self.replace(
+            "program.md",
+            "N/A: The accepted request specifies the observable CLI behavior, RFC 4180 baseline, dependency constraint, and executable test path; the open large-export question is explicitly outside the MVP.",
+            "N/A: pending",
+        )
+
+        self.assert_rejected(
+            "Execution readiness `Not required`",
+            "concrete reason",
+        )
+
+    def test_ready_readiness_requires_the_complete_map(self) -> None:
+        self.replace(
+            "program.md",
+            "- Execution readiness: `Not required`",
+            "- Execution readiness: `Ready`",
+        )
+
+        self.assert_rejected(
+            "Execution Readiness Gate is incomplete",
+            "Claim / hypothesis",
+            "False-positive loop",
+            "Human judgment retained",
+        )
+
+    def test_complete_ready_readiness_map_passes(self) -> None:
+        self.replace(
+            "program.md",
+            "- Execution readiness: `Not required`",
+            "- Execution readiness: `Ready`",
+        )
+        self.replace(
+            "program.md",
+            "N/A: The accepted request specifies the observable CLI behavior, RFC 4180 baseline, dependency constraint, and executable test path; the open large-export question is explicitly outside the MVP.",
+            """| Field | Content |
+|---|---|
+| Decision this work informs | Whether to ship CSV export in the report workflow |
+| Claim / hypothesis | Standard-library CSV output can satisfy the report consumer without a dependency |
+| Baseline / counterfactual | Current terminal-only output and RFC 4180 compliance |
+| Evidence / data quality | Current query rows, RFC 4180, and escaping fixtures cover known field shapes |
+| Real constraints | Python 3.10 compatibility, no dependency, and bounded MVP scope |
+| Pass condition | Exporter, CLI, and manual report-open checks pass |
+| Falsifier / stop condition | Report consumer rejects valid RFC 4180 output or row shape is not tabular |
+| Cheapest informative check | Verify iterable row keys and one escaping fixture before CLI integration |
+| False-positive loop | Generating a polished sample file without testing escaping or the report consumer |
+| Human judgment retained | Workflow owner decides whether the exported shape is operationally useful |""",
+        )
+
+        process, result = self.run_validator()
+
+        self.assertEqual(0, process.returncode, process.stdout)
+        self.assertTrue(result["ok"], result)
+        self.assertEqual([], result["errors"])
+
     def test_orphan_task_package_is_rejected(self) -> None:
         orphan = self.root / "tasks" / "TASK-002-orphan.md"
         orphan.write_text("# malformed orphan\n- Status: `完成`\n", encoding="utf-8")

@@ -6,11 +6,14 @@ Check a plan for these failures:
 - Future task packages were created before their dependencies, scope, and acceptance criteria were ready.
 - `program.md` lacks measurable goals, final acceptance criteria, or task-package status.
 - `program.md` lacks a Concept Refinement section, or starts from a raw idea without a confirmed brief or explicit `None` reason.
+- `Execution readiness` is `Ready` with an incomplete readiness map, `Not required` without a concrete reason, or `Blocked` while implementation is active.
+- A high-uncertainty plan skipped the Grill, asked the user for facts the agent could research, or failed to retain an explicit human/domain judgment.
 - `program.md` lacks preferences/tradeoffs for a non-trivial plan, or fails to mark locked constraints and negotiable space.
 - `program.md` contains CHANGELOG, run-log, historical status, or old Loop-attempt sections instead of only latest state.
 - context and references are missing, stale, or lack source/freshness information.
 - dependency graph, node-status table, checkpoints, or parallelization assumptions are missing (Full profile).
 - Loop mode is enabled but no finite loop budget, verifier, reflect trigger, or stop condition exists.
+- Loop iterations produce more reports, charts, metrics, or local optimizations without changing belief or retiring a stated uncertainty.
 - `memory.md` is missing (Full profile), stale, or lacks findings, CHANGELOG entries, run logs, or history summaries for completed or failed task packages.
 - run logs pile up as `待提炼` with no reflection pass turning them into K/R/PL/F entries.
 - implementation plan lacks overview, architecture decisions, phased task list, risks, or open questions.

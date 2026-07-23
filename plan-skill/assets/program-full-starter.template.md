@@ -5,6 +5,7 @@
 - Overall status: `待开始`
 - Profile: `Full`
 - Plan mode: `Linear`
+- Execution readiness: `Blocked`
 - Loop state: `Not applicable`
 - Loop iteration: `Not applicable`
 - Memory: `memory.md`
@@ -27,6 +28,23 @@
 | Success criteria | <observable outcome> |
 | Direction | <chosen approach and why> |
 | Non-goals | <what this round excludes> |
+
+## Execution Readiness Gate
+
+Keep `Blocked` while material judgment is unresolved. Set `Ready` only after every field is concrete. For a clear directly verifiable spec, set `Not required` and replace the table with `N/A: <concrete reason>`.
+
+| Field | Content |
+|---|---|
+| Decision this work informs | <what action changes after pass or fail> |
+| Claim / hypothesis | <falsifiable statement> |
+| Baseline / counterfactual | <comparison or null> |
+| Evidence / data quality | <source, generation, freshness, leakage, gaps> |
+| Real constraints | <cost, capacity, time, scale, safety, compatibility> |
+| Pass condition | <pre-registered decision threshold> |
+| Falsifier / stop condition | <evidence that kills, pauses, or redirects> |
+| Cheapest informative check | <smallest belief-changing test> |
+| False-positive loop | <tempting output that adds no information> |
+| Human judgment retained | <domain decision AI must not silently make> |
 
 ## Problem Definition
 

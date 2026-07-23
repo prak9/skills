@@ -9,6 +9,7 @@
 - Overall status: `待开始 / 探索中 / 进行中 / 阻塞 / 待验收 / 完成 / 已取消`
 - Profile: `Full / Lite`
 - Plan mode: `Linear / Loop`
+- Execution readiness: `Blocked / Ready / Not required`
 - Loop state: `Goal / Plan / Act / Verify / Reflect / Iterate / Pass / Blocked / Not applicable`
 - Loop iteration: `0/<max iterations or Not applicable>`
 - Memory: `memory.md`
@@ -46,6 +47,23 @@ If the work starts from an already-clear spec, write `None` in fields that do no
 | MVP scope | <smallest version that tests the core assumption> |
 | Not doing | <clear exclusions and why> |
 | Open questions | <questions that must be answered before or during planning> |
+
+## Execution Readiness Gate
+
+Use this before execution when the work has material research, data, model, benchmark, operational, or domain-judgment uncertainty. Keep `Blocked` while any decisive field is unresolved. For a clear directly verifiable spec, set `Not required` and replace the table with `N/A: <concrete reason>`.
+
+| Field | Content |
+|---|---|
+| Decision this work informs | <what action changes after pass or fail> |
+| Claim / hypothesis | <falsifiable statement, not a desired artifact> |
+| Baseline / counterfactual | <comparison that separates signal from noise> |
+| Evidence / data quality | <source, data-generating process, freshness, leakage, gaps> |
+| Real constraints | <cost, capacity, time, scale, safety, compatibility, operations> |
+| Pass condition | <pre-registered threshold tied to the decision> |
+| Falsifier / stop condition | <evidence that kills, pauses, or redirects the idea> |
+| Cheapest informative check | <smallest test that can change belief before full execution> |
+| False-positive loop | <tempting busywork or polished output that adds no information> |
+| Human judgment retained | <taste/domain decision AI must not silently make> |
 
 ## Problem Definition
 
@@ -338,6 +356,7 @@ Keep only the latest state here. Status changes, changelog entries, and run logs
 ## Update Protocol
 
 - When an idea is refined or materially changed, update Concept Refinement and the context/ref index.
+- When the claim, baseline, evidence quality, constraints, pass/fail conditions, or retained human judgment changes, revisit Execution Readiness Gate before further execution.
 - When a plan node or task package is created, blocked, ready for acceptance, completed, or cancelled, update Plan Dependency Graph, Node Status, and Task List.
 - When a task produces final artifacts, update its task-package output pointer and keep only the latest final state in `tasks/output/TASK-NNN-<slug>/`.
 - In Loop mode, update the current Loop State after every ACT/VERIFY/REFLECT/ITERATE. After PASS, update Node Status. Historical loop attempts go to `memory.md#4-run-logs`.

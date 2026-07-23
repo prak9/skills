@@ -128,6 +128,23 @@ def upgrade_program(text: str, today: str, change_id: str) -> str:
             raise UpgradeError("program.md is missing Latest evidence")
         text = insert_after_line(text, latest_line, f"- Next checkpoint: `{checkpoint}`")
     text = re.sub(r"^- Owner:", "- Owner / TL:", text, count=1, flags=re.MULTILINE)
+    if metadata_value(text, "Execution readiness") is None:
+        plan_mode_line = next(
+            (line for line in text.splitlines() if line.startswith("- Plan mode:")),
+            None,
+        )
+        if plan_mode_line is None:
+            raise UpgradeError("program.md is missing Plan mode")
+        text = insert_after_line(
+            text,
+            plan_mode_line,
+            "- Execution readiness: `Not required`",
+        )
+    if markdown_heading_section(text, "Execution Readiness Gate") is None:
+        readiness_block = """## Execution Readiness Gate
+
+N/A: This legacy Lite plan predates the readiness gate; its accepted scope, observable verifier, and current execution state are preserved during profile upgrade."""
+        text = insert_before(text, h2_line(text, "Problem Definition"), readiness_block)
 
     context_block = """## Context And References
 
@@ -400,8 +417,6 @@ def main() -> int:
             raise UpgradeError("plan is already Full")
         if profile != "Lite":
             raise UpgradeError(f"plan Profile must be Lite, got {profile!r}")
-        validate_project(root)
-
         task_paths = sorted((root / "tasks").glob("TASK-*.md"))
         if not task_paths:
             raise UpgradeError("Lite plan has no task packages")

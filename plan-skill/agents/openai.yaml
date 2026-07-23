@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan Skill"
-  short_description: "Plan verified work with abstraction gates"
-  default_prompt: "Use $plan-skill to choose the lightest sufficient profile, initialize a linked plan, declare abstraction impact, execute verifiable task packages, and run strict validation."
+  short_description: "Grill assumptions, then plan verified execution"
+  default_prompt: "Use $plan-skill to expose hidden assumptions and failure conditions, pass the execution-readiness gate, and run a verified plan."

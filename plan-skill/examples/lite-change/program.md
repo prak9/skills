@@ -3,6 +3,7 @@
 - Overall status: `进行中`
 - Profile: `Lite`
 - Plan mode: `Linear`
+- Execution readiness: `Not required`
 - Memory: `None`
 - Active task package: `tasks/TASK-001-validate-timeout.md`
 - Task output root: `tasks/output/` (gitignored)
@@ -23,6 +24,10 @@ None: the accepted request already specifies the input, behavior, and error mess
 | Success criteria | Invalid values exit 2 with a clear message; positive values still work |
 | Direction | Validate at the argument boundary |
 | Non-goals | Changing request retry behavior |
+
+## Execution Readiness Gate
+
+N/A: The accepted issue defines the exact invalid inputs, exit code, message, positive control, and focused regression command.
 
 ## Problem Definition
 

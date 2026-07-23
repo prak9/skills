@@ -3,6 +3,7 @@
 - Overall status: `进行中`
 - Profile: `Full`
 - Plan mode: `Linear`
+- Execution readiness: `Not required`
 - Loop state: `Not applicable`
 - Loop iteration: `Not applicable`
 - Memory: memory.md
@@ -40,6 +41,10 @@ The request was already a clear implementation need, so no divergent ideation se
 | MVP scope | exporter module, CLI flag, escaping tests, and one e2e check |
 | Not doing | Excel export |
 | Open questions | Memory usage for very large result sets |
+
+## Execution Readiness Gate
+
+N/A: The accepted request specifies the observable CLI behavior, RFC 4180 baseline, dependency constraint, and executable test path; the open large-export question is explicitly outside the MVP.
 
 ## Problem Definition
 

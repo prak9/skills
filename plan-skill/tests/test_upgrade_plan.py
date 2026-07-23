@@ -96,6 +96,8 @@ class UpgradePlanTests(unittest.TestCase):
         task = task_path.read_text(encoding="utf-8")
         upgraded_memory = (self.root / "memory.md").read_text(encoding="utf-8")
         self.assertIn("- Profile: `Full`", program)
+        self.assertIn("- Execution readiness: `Blocked`", program)
+        self.assertIn("## Execution Readiness Gate", program)
         self.assertIsNone(re.search(r"(?m)^##\s+\d+\.", program))
         self.assertIn("UNIQUE LITE PROBLEM", program)
         self.assertIn("## Context And References", program)
@@ -117,6 +119,10 @@ class UpgradePlanTests(unittest.TestCase):
         memory_path = self.root / "memory.md"
         self.assertTrue(memory_path.is_file())
         self.assertIn("CHG-001", memory_path.read_text(encoding="utf-8"))
+        self.assertIn(
+            "## Execution Readiness Gate",
+            (self.root / "program.md").read_text(encoding="utf-8"),
+        )
         generated = [
             self.root / "program.md",
             self.root / "tasks" / "TASK-001-upgrade-test.md",
@@ -126,10 +132,33 @@ class UpgradePlanTests(unittest.TestCase):
             len(re.findall(r"<[^>\n]+>", path.read_text(encoding="utf-8")))
             for path in generated
         )
-        self.assertLessEqual(placeholder_count, 45)
+        self.assertLessEqual(placeholder_count, 60)
         result = self.validate()
         self.assertEqual("Full", result["profile"])
         self.assertEqual([], result["errors"])
+
+    def test_upgrade_adds_readiness_gate_to_legacy_lite_plan(self) -> None:
+        program_path = self.root / "program.md"
+        program = program_path.read_text(encoding="utf-8")
+        program = program.replace("- Execution readiness: `Blocked`\n", "")
+        program = re.sub(
+            r"\n## Execution Readiness Gate\n.*?(?=\n## Problem Definition)",
+            "",
+            program,
+            flags=re.DOTALL,
+        )
+        program_path.write_text(program, encoding="utf-8")
+
+        process = self.run_upgrader()
+
+        self.assertEqual(0, process.returncode, process.stdout + process.stderr)
+        upgraded = program_path.read_text(encoding="utf-8")
+        self.assertIn("- Execution readiness: `Not required`", upgraded)
+        self.assertIn(
+            "This legacy Lite plan predates the readiness gate",
+            upgraded,
+        )
+        self.assertEqual([], self.validate()["errors"])
 
     def test_upgrade_accepts_lite_plan_without_active_task(self) -> None:
         program_path = self.root / "program.md"

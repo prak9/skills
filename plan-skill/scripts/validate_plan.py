@@ -32,6 +32,7 @@ from plan_markdown import (
 
 PROGRAM_REQUIRED = [
     "Concept Refinement",
+    "Execution Readiness Gate",
     "Problem Definition",
     "Context And References",
     "Preferences And Tradeoffs",
@@ -85,6 +86,7 @@ TASK_REQUIRED = [
 # in the program.md header; default is Full. Semantic checks apply to both profiles.
 PROGRAM_REQUIRED_LITE = [
     "Concept Refinement",
+    "Execution Readiness Gate",
     "Problem Definition",
     "Acceptance Criteria",
     "Node Status",
@@ -141,6 +143,19 @@ VALID_PROGRAM_STATUSES = VALID_STATUSES
 VALID_TASK_STATUSES = VALID_STATUSES - {"探索中"}
 VALID_ABSTRACTION_IMPACTS = {"none", "reuse", "new", "modify", "remove"}
 STRUCTURAL_ABSTRACTION_IMPACTS = {"new", "modify", "remove"}
+VALID_EXECUTION_READINESS = {"Blocked", "Ready", "Not required"}
+EXECUTION_READINESS_GATE_FIELDS = (
+    "Decision this work informs",
+    "Claim / hypothesis",
+    "Baseline / counterfactual",
+    "Evidence / data quality",
+    "Real constraints",
+    "Pass condition",
+    "Falsifier / stop condition",
+    "Cheapest informative check",
+    "False-positive loop",
+    "Human judgment retained",
+)
 ABSTRACTION_GATE_FIELDS = (
     "Concrete pressure / current consumers",
     "Existing pattern / direct alternative",
@@ -345,6 +360,67 @@ def check_abstraction_gate(
     missing = [field for field in ABSTRACTION_GATE_FIELDS if not is_concrete(gate.get(field))]
     if missing:
         errors.append(f"{path} Abstraction Gate is incomplete: " + ", ".join(missing))
+
+
+def check_execution_readiness_gate(
+    path: Path,
+    text: str,
+    program_status: str | None,
+    errors: list[str],
+) -> None:
+    """Block execution until uncertainty-heavy work has a concrete readiness map."""
+    readiness = metadata_value(text, "Execution readiness")
+    if readiness is None:
+        errors.append(
+            f"{path} is missing top-level field: Execution readiness "
+            "(`Blocked / Ready / Not required`)"
+        )
+        return
+    if readiness not in VALID_EXECUTION_READINESS:
+        choices = " / ".join(sorted(VALID_EXECUTION_READINESS))
+        errors.append(
+            f"{path} Execution readiness must be exactly one of "
+            f"`{choices}`, got `{readiness}`"
+        )
+        return
+
+    section = markdown_heading_section(text, "Execution Readiness Gate")
+    if section is None:
+        errors.append(f"{path} has no Execution Readiness Gate")
+        return
+
+    if readiness == "Not required":
+        not_applicable = re.search(r"(?im)^\s*N/A\s*:\s*(.+?)\s*$", section)
+        if not_applicable is None or not is_concrete(not_applicable.group(1)):
+            errors.append(
+                f"{path} Execution readiness `Not required` needs "
+                "`N/A: <concrete reason>`"
+            )
+        if table_as_mapping(section):
+            errors.append(
+                f"{path} Execution readiness `Not required` must replace the gate table "
+                "with the concise N/A reason"
+            )
+        return
+
+    if readiness == "Blocked":
+        if program_status in {"进行中", "待验证", "待验收", "完成"}:
+            errors.append(
+                f"{path} Execution readiness is `Blocked`, but Overall status "
+                f"is `{program_status}`; resolve the gate before execution"
+            )
+        return
+
+    gate = table_as_mapping(section)
+    missing = [
+        field
+        for field in EXECUTION_READINESS_GATE_FIELDS
+        if not is_concrete(gate.get(field))
+    ]
+    if missing:
+        errors.append(
+            f"{path} Execution Readiness Gate is incomplete: " + ", ".join(missing)
+        )
 
 
 def check_task_completion_contract(
@@ -1022,7 +1098,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Validate plan-skill program.md, tasks/TASK-*.md, output artifact "
-            "pointers, abstraction gates, links, and status records."
+            "pointers, execution-readiness and abstraction gates, links, and status records."
         )
     )
     parser.add_argument(
@@ -1072,6 +1148,12 @@ def main() -> int:
             ("Plan mode", "计划模式"),
             VALID_PLAN_MODES,
             "Plan mode",
+            errors,
+        )
+        check_execution_readiness_gate(
+            program_path,
+            program_text,
+            program_status,
             errors,
         )
 
