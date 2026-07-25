@@ -2,62 +2,34 @@
 
 - Overall status: `进行中`
 - Profile: `Lite`
-- Plan mode: `Linear`
-- Execution readiness: `Not required`
-- Memory: `None`
-- Active task package: `tasks/TASK-001-validate-timeout.md`
-- Task output root: `tasks/output/` (gitignored)
 - Active plan node: `NODE-001`
 - Latest evidence: `None`
-- Owner: AI
-- Last updated: 2026-07-13
+- Current blocker: `None`
+- Next step: `NODE-001`
+- Next checkpoint: `None`
+- Next human decision: `None`
+- Owner: `AI`
+- Last updated: `2026-07-13`
 
-## Concept Refinement
+## Outcome
 
-None: the accepted request already specifies the input, behavior, and error message.
+- Problem: The CLI accepts non-positive timeout values and fails later with an unclear error.
+- Success: Invalid values exit 2 with a clear message; positive values still reach the request path.
+- Non-goals: Changing request retry behavior.
 
-| Field | Content |
-|---|---|
-| Source | Accepted CLI validation issue |
-| Problem statement | Reject non-positive timeout values before starting a request |
-| Target user | CLI operators |
-| Success criteria | Invalid values exit 2 with a clear message; positive values still work |
-| Direction | Validate at the argument boundary |
-| Non-goals | Changing request retry behavior |
+## Constraints
 
-## Execution Readiness Gate
+- Locked: Do not change retry or request semantics.
+- Negotiable: Validation helper placement.
 
-N/A: The accepted issue defines the exact invalid inputs, exit code, message, positive control, and focused regression command.
+## Acceptance
 
-## Problem Definition
-
-The CLI currently accepts zero or negative timeout values and fails later with an unclear runtime error. This change validates only that boundary and does not alter request behavior.
-
-## Goals And Metrics
-
-### Acceptance Criteria
-
-| ID | Acceptance criterion | Verification method | Pass condition |
+| ID | Condition | Verification | Pass condition |
 |---|---|---|---|
 | A-001 | Reject zero and negative timeout values | `pytest tests/test_cli.py -k timeout` | Invalid cases exit 2; positive case passes |
 
-## Implementation Plan
+## Plan
 
-### Node Status
-
-| Node | Status | Task package | Evidence |
-|---|---|---|---|
-| NODE-001 | `进行中` | `tasks/TASK-001-validate-timeout.md` | None |
-
-### Node Details
-
-| Node | Size | Dependencies | Acceptance | Updated |
+| Node | Status | Action | Verification | Evidence |
 |---|---|---|---|---|
-| NODE-001 | `Small` | `None` | `A-001` | 2026-07-13 |
-
-## Current Status
-
-- Current blocker: None
-- Next step: TASK-001 N-001
-- Next human decision: None
-- Pending memory write: None; no durable finding yet
+| NODE-001 | `进行中` | Add boundary validation and regression cases | `pytest tests/test_cli.py -k timeout` | None |

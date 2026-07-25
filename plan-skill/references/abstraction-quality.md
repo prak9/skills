@@ -1,18 +1,14 @@
 # Abstraction Quality Gate
 
-Use this contract when a task introduces, modifies, or removes a shared software abstraction. A shared abstraction includes a cross-module interface, service boundary, reusable domain object, base class, provider/factory, shared utility, protocol, or durable data contract. A local helper with one narrow caller is not automatically a shared abstraction.
+Use this contract only when a task introduces, modifies, or removes a shared software abstraction. A shared abstraction includes a cross-module interface, service boundary, reusable domain object, base class, provider/factory, shared utility, protocol, or durable data contract. A local helper with one narrow caller is not automatically shared.
 
 ## Declare The Impact
 
-Set exactly one task-package value:
+Add `Abstraction impact: new / modify / remove` and an `Abstraction Gate` section to the task package. Do not add the field or gate for ordinary direct code or unchanged reuse.
 
-- `none`: no shared abstraction is involved
-- `reuse`: use an existing abstraction without changing its contract
 - `new`: introduce a shared abstraction or extension point
-- `modify`: change the responsibility, boundary, or contract of an existing abstraction
+- `modify`: change an existing abstraction's responsibility, boundary, or contract
 - `remove`: delete or inline an existing abstraction
-
-For `none` or `reuse`, write `N/A: <concrete reason>` under `Abstraction Gate`. For `new`, `modify`, or `remove`, complete every gate field before execution.
 
 ## Gate Fields
 
@@ -43,4 +39,4 @@ Before acceptance, ask:
 2. Is the variation real and current, or speculative?
 3. Did the abstraction reduce total concepts and change cost for its consumers?
 
-The validator checks declarations and evidence fields. It cannot judge semantic cohesion or predict future change; verify those through code review, real consumers, and contract tests.
+The validator checks the gate when it is declared. It cannot judge semantic cohesion or predict future change; verify those through code review, real consumers, and contract tests.

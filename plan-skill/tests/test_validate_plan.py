@@ -176,7 +176,8 @@ class ValidatePlanTests(unittest.TestCase):
         self.assertEqual([], result["warnings"])
         program = (LITE_EXAMPLE / "program.md").read_text(encoding="utf-8")
         self.assertIsNone(re.search(r"(?m)^##\s+\d+\.", program))
-        self.assertIn("| Node | Status | Task package | Evidence |", program)
+        self.assertIn("| Node | Status | Action | Verification | Evidence |", program)
+        self.assertFalse((LITE_EXAMPLE / "tasks").exists())
 
     def test_unresolved_profile_choice_is_rejected(self) -> None:
         self.replace("program.md", "- Profile: `Full`", "- Profile: `Lite / Full`")

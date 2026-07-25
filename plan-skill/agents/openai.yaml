@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan Skill"
-  short_description: "Grill assumptions, then plan verified execution"
-  default_prompt: "Use $plan-skill to expose hidden assumptions and failure conditions, pass the execution-readiness gate, and run a verified plan."
+  short_description: "Choose the lightest durable verified plan"
+  default_prompt: "Use $plan-skill to choose the lightest sufficient planning surface, load only relevant guidance, and preserve verifiable state."

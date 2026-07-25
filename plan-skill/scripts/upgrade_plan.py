@@ -12,7 +12,9 @@ import tempfile
 from datetime import date
 from pathlib import Path
 
+from init_plan import render_full_program, render_memory, render_task, slugify
 from plan_markdown import (
+    bullet_field,
     iter_table_rows,
     markdown_heading_section,
     metadata_value,
@@ -21,7 +23,6 @@ from plan_markdown import (
 
 
 SKILL_ROOT = Path(__file__).resolve().parents[1]
-ASSETS = SKILL_ROOT / "assets"
 VALIDATOR = SKILL_ROOT / "scripts" / "validate_plan.py"
 
 
@@ -51,6 +52,55 @@ def h2_line(text: str, title: str) -> str:
     if match is None:
         raise UpgradeError(f"cannot find H2 section: {title}")
     return match.group(0)
+
+
+def replace_h2_body(text: str, title: str, body: str) -> str:
+    heading = h2_line(text, title)
+    pattern = rf"{re.escape(heading)}\n.*?(?=\n##\s+|\Z)"
+    replacement = f"{heading}\n\n{body.strip()}"
+    updated, count = re.subn(pattern, replacement, text, count=1, flags=re.DOTALL)
+    if count != 1:
+        raise UpgradeError(f"cannot replace H2 section: {title}")
+    return updated
+
+
+def inline_node_records(text: str) -> list[dict[str, str]]:
+    section = markdown_heading_section(text, "Plan")
+    records: list[dict[str, str]] = []
+    for header, cells in iter_table_rows(section or ""):
+        normalized = [norm_cell(cell).lower() for cell in header]
+        lookup = {name: index for index, name in enumerate(normalized)}
+        required = ("node", "status", "action", "verification", "evidence")
+        if any(name not in lookup for name in required):
+            continue
+        if max(lookup[name] for name in required) >= len(cells):
+            continue
+        node = norm_cell(cells[lookup["node"]])
+        if not re.fullmatch(r"NODE-\d{3}", node):
+            continue
+        records.append(
+            {
+                name: norm_cell(cells[lookup[name]])
+                for name in required
+            }
+        )
+    if not records:
+        raise UpgradeError("Lite program has no upgradeable Plan rows")
+    return records
+
+
+def acceptance_record(text: str) -> dict[str, str]:
+    section = markdown_heading_section(text, "Acceptance")
+    for header, cells in iter_table_rows(section or ""):
+        normalized = [norm_cell(cell).lower() for cell in header]
+        lookup = {name: index for index, name in enumerate(normalized)}
+        required = ("id", "condition", "verification", "pass condition")
+        if any(name not in lookup for name in required):
+            continue
+        if max(lookup[name] for name in required) >= len(cells):
+            continue
+        return {name: norm_cell(cells[lookup[name]]) for name in required}
+    raise UpgradeError("Lite program has no upgradeable Acceptance row")
 
 
 def validate_project(root: Path) -> dict:
@@ -92,6 +142,184 @@ def node_records(program_text: str) -> list[tuple[str, str, str]]:
     if not records:
         raise UpgradeError("Lite program has no upgradeable Node Status rows")
     return records
+
+
+def next_decision_id(text: str) -> str:
+    numbers = [int(value) for value in re.findall(r"\bD-(\d{3})\b", text)]
+    return f"D-{max(numbers, default=0) + 1:03d}"
+
+
+def upgrade_lean_memory(text: str | None, title: str, today: str) -> tuple[str, str]:
+    if text is None:
+        text = render_memory(title, today)
+    if markdown_heading_section(text, "Decisions") is None:
+        return upgrade_memory(text, title, today)
+    decision_id = next_decision_id(text)
+    entry = (
+        f"{decision_id}: Upgraded Lite to Full because durable task packages were needed. "
+        f"Evidence: profile migration on {today}."
+    )
+    decisions = markdown_heading_section(text, "Decisions") or ""
+    if decisions.strip() == "None yet.":
+        new_decisions = entry
+    else:
+        new_decisions = f"{decisions.strip()}\n\n{entry}"
+    return replace_h2_body(text, "Decisions", new_decisions), decision_id
+
+
+def upgrade_inline_lite(
+    text: str,
+    memory_text: str | None,
+    today: str,
+) -> tuple[str, dict[Path, str], str, str]:
+    title_match = re.search(r"^#\s+Program:\s*(.+?)\s*$", text, re.MULTILINE)
+    if title_match is None:
+        raise UpgradeError("program.md has no project title")
+    title = title_match.group(1)
+    owner = metadata_value(text, "Owner") or "AI"
+    nodes = inline_node_records(text)
+    acceptance = acceptance_record(text)
+    outcome = markdown_heading_section(text, "Outcome")
+    constraints = markdown_heading_section(text, "Constraints")
+    problem = bullet_field(outcome, "Problem") or "<observable problem>"
+    success = bullet_field(outcome, "Success") or "<observable result>"
+    non_goals = bullet_field(outcome, "Non-goals") or "None"
+    locked = bullet_field(constraints, "Locked") or "None"
+    negotiable = bullet_field(constraints, "Negotiable") or "Implementation details"
+    project_slug = slugify(title)
+
+    task_specs: list[tuple[dict[str, str], str]] = []
+    for index, node in enumerate(nodes, start=1):
+        task_specs.append((node, f"TASK-{index:03d}-{project_slug}"))
+
+    first_stem = task_specs[0][1]
+    program = render_full_program(title, first_stem, owner, today)
+    program = program.replace(
+        "- Overall status: `待开始`",
+        f"- Overall status: `{metadata_value(text, 'Overall status') or '待开始'}`",
+        1,
+    )
+    program = program.replace(
+        "- Execution readiness: `Blocked`",
+        "- Execution readiness: `Not required`",
+        1,
+    )
+    program = replace_h2_body(
+        program,
+        "Outcome",
+        f"- Problem: {problem}\n- Success: {success}\n- Non-goals: {non_goals}",
+    )
+    program = replace_h2_body(
+        program,
+        "Execution Readiness Gate",
+        "N/A: The Lite plan already has a directly verifiable outcome, acceptance check, and executable node.",
+    )
+    program = replace_h2_body(
+        program,
+        "Constraints And Decisions",
+        (
+            f"- Locked constraints: {locked}\n"
+            f"- Negotiable space: {negotiable}\n"
+            "- Decisions: The accepted Lite direction is preserved."
+        ),
+    )
+    acceptance_body = (
+        "| ID | Condition | Verification | Pass condition |\n"
+        "|---|---|---|---|\n"
+        f"| {acceptance['id']} | {acceptance['condition']} | "
+        f"{acceptance['verification']} | {acceptance['pass condition']} |"
+    )
+    program = replace_h2_body(program, "Acceptance", acceptance_body)
+    program = program.replace(
+        "<acceptance evidence>",
+        f"{acceptance['verification']} => {acceptance['pass condition']}",
+        1,
+    )
+    node_rows = [
+        "| Node | Task package | Dependencies | Acceptance |",
+        "|---|---|---|---|",
+    ]
+    for node, task_stem in task_specs:
+        node_rows.append(
+            f"| {node['node']} | `tasks/{task_stem}.md` | None | {acceptance['id']} |"
+        )
+    program = replace_h2_body(program, "Node Index", "\n".join(node_rows))
+    active_node = metadata_value(text, "Active plan node")
+    active_stem = next(
+        (task_stem for node, task_stem in task_specs if node["node"] == active_node),
+        None,
+    )
+    if active_stem is None:
+        program = re.sub(
+            r"^- Active task package:.*$",
+            "- Active task package: `None`",
+            program,
+            count=1,
+            flags=re.MULTILINE,
+        )
+    else:
+        program = re.sub(
+            r"^- Active task package:.*$",
+            f"- Active task package: `tasks/{active_stem}.md`",
+            program,
+            count=1,
+            flags=re.MULTILINE,
+        )
+    latest_evidence = metadata_value(text, "Latest evidence") or "None"
+    program = re.sub(
+        r"^- Latest evidence:.*$",
+        f"- Latest evidence: `{latest_evidence}`",
+        program,
+        count=1,
+        flags=re.MULTILINE,
+    )
+    current_blocker = metadata_value(text, "Current blocker") or "None"
+    program = re.sub(
+        r"^- Current blocker:.*$",
+        f"- Current blocker: `{current_blocker}`",
+        program,
+        count=1,
+        flags=re.MULTILINE,
+    )
+
+    tasks: dict[Path, str] = {}
+    for node, task_stem in task_specs:
+        task = render_task("full", title, task_stem, owner, today)
+        task = task.replace("- Status: `待开始`", f"- Status: `{node['status']}`", 1)
+        task = task.replace("- Plan node: `NODE-001`", f"- Plan node: `{node['node']}`", 1)
+        task = task.replace(
+            "<Observable result this task delivers.>",
+            success,
+            1,
+        )
+        task = task.replace(
+            "- [ ] <specific testable condition>",
+            f"- [ ] {acceptance['condition']}",
+            1,
+        )
+        task = task.replace(
+            "- [ ] <command or scenario with a clear pass condition>",
+            f"- [ ] {acceptance['verification']} => {acceptance['pass condition']}",
+            1,
+        )
+        task = task.replace(
+            "**Locked constraints:** None beyond accepted scope.",
+            f"**Locked constraints:** {locked}",
+            1,
+        )
+        task = task.replace(
+            "**Negotiable space:** Implementation details within acceptance criteria.",
+            f"**Negotiable space:** {negotiable}",
+            1,
+        )
+        task = task.replace("<smallest useful action>", node["action"], 1)
+        task = task.replace("<command or scenario>", node["verification"], 1)
+        task = task.replace("| N-001 | `待开始` |", f"| N-001 | `{node['status']}` |", 1)
+        task = task.replace("| None |", f"| {node['evidence']} |", 1)
+        tasks[Path(f"{task_stem}.md")] = task
+
+    memory, decision_id = upgrade_lean_memory(memory_text, title, today)
+    return program, tasks, memory, decision_id
 
 
 def upgrade_program(text: str, today: str, change_id: str) -> str:
@@ -337,8 +565,16 @@ def next_change_id(text: str) -> str:
 
 def upgrade_memory(text: str | None, title: str, today: str) -> tuple[str, str]:
     if text is None:
-        text = (ASSETS / "memory-starter.template.md").read_text(encoding="utf-8")
-        text = text.replace("<Project Name>", title).replace("YYYY-MM-DD", today)
+        text = render_memory(title, today)
+    if markdown_heading_section(text, "Decisions") is not None:
+        decision_id = next_decision_id(text)
+        decisions = markdown_heading_section(text, "Decisions") or ""
+        entry = (
+            f"{decision_id}: Upgraded Lite to Full because durable task packages were "
+            f"needed. Evidence: profile migration on {today}."
+        )
+        body = entry if decisions.strip() == "None yet." else f"{decisions.strip()}\n\n{entry}"
+        return replace_h2_body(text, "Decisions", body), decision_id
     change_id = next_change_id(text)
     note = (
         f"Upgrade {change_id} ({today}): changed Profile from Lite to Full; "
@@ -367,8 +603,12 @@ def validate_candidate(
 def apply_atomically(changes: dict[Path, str]) -> None:
     temporary: dict[Path, Path] = {}
     originals: dict[Path, str | None] = {}
+    created_directories: list[Path] = []
     try:
         for path, content in changes.items():
+            if not path.parent.exists():
+                path.parent.mkdir(parents=True)
+                created_directories.append(path.parent)
             temp_path = path.with_name(path.name + ".plan-skill-upgrade.tmp")
             if temp_path.exists():
                 raise UpgradeError(f"temporary upgrade file already exists: {temp_path}")
@@ -384,6 +624,11 @@ def apply_atomically(changes: dict[Path, str]) -> None:
                     path.unlink()
             else:
                 path.write_text(original, encoding="utf-8")
+        for directory in reversed(created_directories):
+            try:
+                directory.rmdir()
+            except OSError:
+                pass
         raise
     finally:
         for temp_path in temporary.values():
@@ -417,9 +662,8 @@ def main() -> int:
             raise UpgradeError("plan is already Full")
         if profile != "Lite":
             raise UpgradeError(f"plan Profile must be Lite, got {profile!r}")
+        validate_project(root)
         task_paths = sorted((root / "tasks").glob("TASK-*.md"))
-        if not task_paths:
-            raise UpgradeError("Lite plan has no task packages")
         title_match = re.search(r"^#\s+Program:\s*(.+?)\s*$", program_text, re.MULTILINE)
         if title_match is None:
             raise UpgradeError("program.md has no project title")
@@ -427,18 +671,30 @@ def main() -> int:
         today = date.today().isoformat()
         memory_path = root / "memory.md"
         memory_text = memory_path.read_text(encoding="utf-8") if memory_path.exists() else None
-        upgraded_memory, change_id = upgrade_memory(memory_text, title, today)
-        upgraded_program = upgrade_program(program_text, today, change_id)
-        upgraded_tasks = {
-            path: upgrade_task(path.read_text(encoding="utf-8"), today, change_id)
-            for path in task_paths
-        }
         gitignore_path = root / ".gitignore"
         gitignore = (
             gitignore_path.read_text(encoding="utf-8")
             if gitignore_path.exists()
-            else "/tasks/output/\n"
+            else ""
         )
+        if task_paths:
+            upgraded_memory, change_id = upgrade_memory(memory_text, title, today)
+            upgraded_program = upgrade_program(program_text, today, change_id)
+            upgraded_tasks = {
+                path: upgrade_task(path.read_text(encoding="utf-8"), today, change_id)
+                for path in task_paths
+            }
+        else:
+            (
+                upgraded_program,
+                generated_tasks,
+                upgraded_memory,
+                change_id,
+            ) = upgrade_inline_lite(program_text, memory_text, today)
+            upgraded_tasks = {
+                root / "tasks" / relative.name: content
+                for relative, content in generated_tasks.items()
+            }
         validate_candidate(upgraded_program, upgraded_tasks, upgraded_memory, gitignore)
 
         if args.dry_run:
@@ -455,7 +711,7 @@ def main() -> int:
         return 1
 
     print(f"Upgraded Lite plan to Full at {root}")
-    print(f"Preserved {len(upgraded_tasks)} task package(s); recorded {change_id} in memory.md")
+    print(f"Prepared {len(upgraded_tasks)} task package(s); recorded {change_id} in memory.md")
     print("Next: fill Full-only <...> fields and run strict validation.")
     return 0
 

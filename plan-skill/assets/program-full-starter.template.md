@@ -1,6 +1,6 @@
 # Program: <Project Name>
 
-> Compact Full starter. Expand a section only when the work produces relevant state.
+> Durable current state. Task packages own task status and execution evidence.
 
 - Overall status: `待开始`
 - Profile: `Full`
@@ -10,156 +10,67 @@
 - Loop iteration: `Not applicable`
 - Memory: `memory.md`
 - Active task package: `tasks/TASK-001-short-slug.md`
-- Task output root: `tasks/output/` (gitignored)
-- Active plan node: `NODE-001`
-- Next plan node: `None`
 - Latest evidence: `None`
+- Current blocker: `None`
+- Next step: `TASK-001 / N-001`
 - Next checkpoint: `CP-001`
 - Owner / TL: `<owner>`
 - Last updated: `YYYY-MM-DD`
 
-## Concept Refinement
+## Outcome
 
-| Field | Content |
-|---|---|
-| Source | <request, issue, spec, or code context> |
-| Problem statement | <one-sentence problem> |
-| Target user | <specific user or system actor> |
-| Success criteria | <observable outcome> |
-| Direction | <chosen approach and why> |
-| Non-goals | <what this round excludes> |
+- Problem: <observable problem>
+- Success: <observable result>
+- Non-goals: <scope intentionally excluded>
 
 ## Execution Readiness Gate
 
-Keep `Blocked` while material judgment is unresolved. Set `Ready` only after every field is concrete. For a clear directly verifiable spec, set `Not required` and replace the table with `N/A: <concrete reason>`.
+Keep `Blocked` only while a missing judgment or evidence gap could change scope, method, risk, or whether to proceed. Use `Not required` with a concrete reason for a directly verifiable specification.
 
 | Field | Content |
 |---|---|
-| Decision this work informs | <what action changes after pass or fail> |
-| Claim / hypothesis | <falsifiable statement> |
-| Baseline / counterfactual | <comparison or null> |
-| Evidence / data quality | <source, generation, freshness, leakage, gaps> |
-| Real constraints | <cost, capacity, time, scale, safety, compatibility> |
-| Pass condition | <pre-registered decision threshold> |
-| Falsifier / stop condition | <evidence that kills, pauses, or redirects> |
-| Cheapest informative check | <smallest belief-changing test> |
-| False-positive loop | <tempting output that adds no information> |
-| Human judgment retained | <domain decision AI must not silently make> |
+| Decision this work informs | <decision changed by pass or fail> |
+| Key uncertainty / hypothesis | <material uncertainty or falsifiable claim> |
+| Pass / fail evidence | <evidence that permits or stops execution> |
+| Cheapest informative check | <smallest belief-changing check> |
 
-## Problem Definition
+## Context
 
-<Current problem, why it matters, constraints, and non-goals.>
+None yet. Add only references that change execution.
 
-## Context And References
+## Constraints And Decisions
 
-None yet. Add `CTX-*`, `REF-*`, or `OWN-*` entries only when they change execution.
+- Locked constraints: <must not change without escalation, or None>
+- Negotiable space: <implementation choices the agent may make>
+- Decisions: None yet.
 
-## Preferences And Tradeoffs
+## Acceptance
 
-- Preferences: None yet; add `PREF-*` only when a tradeoff matters.
-- Tradeoffs: None yet.
-- Locked constraints: None identified beyond accepted scope.
-- Negotiable space: implementation details within acceptance criteria.
-- Escalation rule: ask before changing scope or acceptance criteria.
-
-## Goals And Metrics
-
-### Acceptance Criteria
-
-| ID | Acceptance criterion | Verification method | Pass condition | Owner |
-|---|---|---|---|---|
-| A-001 | <observable result> | <test, command, or review> | <clear condition> | AI |
-
-## Constraints
-
-- None identified beyond accepted scope and non-goals.
-
-## Strategy
-
-<Smallest vertical path to the acceptance criterion.>
-
-### Dependency And Slicing Strategy
-
-```text
-NODE-001 -> acceptance
-```
-
-## Decisions
-
-None yet. Add a stable ID only when a decision constrains future work.
-
-## Exploration And Hypothesis Validation
-
-None identified. Add a hypothesis only with a validation method and pass/fail action.
-
-## Implementation Plan
-
-### Overview
-
-<What the current vertical slice delivers.>
-
-### Architecture Decisions
-
-- None yet.
-
-### Plan Dependency Graph
-
-```text
-NODE-001 First vertical slice (待开始)
-```
-
-### Node Status
-
-| Node | Status | Task package | Evidence |
+| ID | Condition | Verification | Pass condition |
 |---|---|---|---|
-| NODE-001 | `待开始` | `tasks/TASK-001-short-slug.md` | None |
+| A-001 | <observable condition> | <command or review> | <clear result> |
 
-### Node Details
+## Node Index
 
-| Node | Size | Dependencies | Acceptance | Updated |
-|---|---|---|---|---|
-| NODE-001 | `Small` | `None` | `A-001` | `YYYY-MM-DD` |
-
-### Loop Contract
-
-Not applicable (Linear).
-
-### Loop State
-
-Not applicable.
-
-### Memory Sync
-
-| Type | Status | Source | memory.md location | Updated |
-|---|---|---|---|---|
-| Finding / run / change | pending | TASK-001 | memory.md | YYYY-MM-DD |
-
-### Task List
-
-- [ ] NODE-001 / `tasks/TASK-001-short-slug.md`: first vertical slice
-
-### Checkpoints
-
-| Checkpoint | Position | Verification requirements | Human review |
+| Node | Task package | Dependencies | Acceptance |
 |---|---|---|---|
-| CP-001 | After NODE-001 | <tests and acceptance evidence> | yes |
+| NODE-001 | `tasks/TASK-001-short-slug.md` | None | A-001 |
 
-## Optional State
+## Loop Contract
 
-- Parallelization: None until shared contracts are clear.
-- Risks: None identified.
-- Open questions: None.
+Not applicable (Linear). For Loop mode, replace this section using `references/loop-contract.md`.
+
+## Loop State
+
+Not applicable (Linear). For Loop mode, replace this section using `references/loop-contract.md`.
+
+## Checkpoints
+
+| Checkpoint | After | Requirement | Human review |
+|---|---|---|---|
+| CP-001 | NODE-001 | <acceptance evidence> | yes |
 
 ## Current Status
 
-- Current blocker: None
-- Current risk: None
-- Next step: TASK-001 / N-001
 - Next human decision: None
 - Pending memory write: None
-
-## Update Protocol
-
-- Keep current state here; write history and durable findings to `memory.md`.
-- Keep atomic execution state in the task package.
-- Run strict validation before execution, handoff, or completion.

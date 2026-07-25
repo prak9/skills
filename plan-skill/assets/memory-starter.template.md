@@ -1,28 +1,23 @@
 # Memory: <Project Name>
 
-> Compact durable memory. Expand sections only when evidence creates a useful entry.
+> Durable facts only. Add an entry when it changes future planning or execution.
 
 - Last updated: `YYYY-MM-DD`
 - Program: `program.md`
 
-## Durable State
+## Decisions
 
 None yet.
 
-Add only the category that evidence requires: Important Findings (`F-*`), Knowledge Base (`K-*`), History Summaries (`HIST-*`), Failures And Rework (`R-*`), Open Knowledge Gaps (`Q-*`), or Preference Learning (`PL-*`).
-
-## Changelog
+## Findings
 
 None yet.
 
-## Run Logs
+## Runs
 
-None yet.
-
-## Reflection And Curation
-
-Reflect when a task closes or five run logs remain `待提炼`.
+None yet. Record only Loop, migration, rollout, rollback, or otherwise consequential runs.
 
 ## Update Rules
 
-- Add only evidence-backed entries that change future execution; use stable F/K/CHG/RUN/HIST/R/Q/PL IDs and preserve superseded entries by pointer.
+- Use stable `D-*`, `F-*`, and `RUN-*` IDs with evidence.
+- Mark superseded entries with a pointer; do not duplicate ordinary progress or Git history.

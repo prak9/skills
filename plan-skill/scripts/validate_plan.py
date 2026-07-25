@@ -57,6 +57,19 @@ PROGRAM_REQUIRED = [
     "Update Protocol",
 ]
 
+PROGRAM_REQUIRED_LEAN_FULL = [
+    "Outcome",
+    "Execution Readiness Gate",
+    "Context",
+    "Constraints And Decisions",
+    "Acceptance",
+    "Node Index",
+    "Loop Contract",
+    "Loop State",
+    "Checkpoints",
+    "Current Status",
+]
+
 TASK_REQUIRED = [
     "Task ",
     "Description",
@@ -82,9 +95,14 @@ TASK_REQUIRED = [
     "Completion Writeback",
 ]
 
-# Lite profile: for work of one or two focused sessions. Declared via `- Profile: Lite`
-# in the program.md header; default is Full. Semantic checks apply to both profiles.
 PROGRAM_REQUIRED_LITE = [
+    "Outcome",
+    "Constraints",
+    "Acceptance",
+    "Plan",
+]
+
+PROGRAM_REQUIRED_LEGACY_LITE = [
     "Concept Refinement",
     "Execution Readiness Gate",
     "Problem Definition",
@@ -105,6 +123,20 @@ TASK_REQUIRED_LITE = [
     "Completion Writeback",
 ]
 
+TASK_REQUIRED_LEAN = [
+    "Task",
+    "Description",
+    "Acceptance criteria",
+    "Verification",
+    "Dependencies",
+    "Locked constraints",
+    "Negotiable space",
+    "Files likely touched",
+    "Atomic Plan",
+    "Risks And Escalation",
+    "Completion Review",
+]
+
 MEMORY_REQUIRED = [
     ("Important Findings", "重要发现"),
     ("Knowledge Base", "知识库沉淀"),
@@ -116,6 +148,13 @@ MEMORY_REQUIRED = [
     "Preference Learning",
     ("Reflection And Curation", "提炼与整理"),
     ("Update Rules", "更新规则"),
+]
+
+MEMORY_REQUIRED_LEAN = [
+    "Decisions",
+    "Findings",
+    "Runs",
+    "Update Rules",
 ]
 
 MEMORY_REQUIRED_COMPACT = [
@@ -155,6 +194,12 @@ EXECUTION_READINESS_GATE_FIELDS = (
     "Cheapest informative check",
     "False-positive loop",
     "Human judgment retained",
+)
+LEAN_EXECUTION_READINESS_GATE_FIELDS = (
+    "Decision this work informs",
+    "Key uncertainty / hypothesis",
+    "Pass / fail evidence",
+    "Cheapest informative check",
 )
 ABSTRACTION_GATE_FIELDS = (
     "Concrete pressure / current consumers",
@@ -412,9 +457,14 @@ def check_execution_readiness_gate(
         return
 
     gate = table_as_mapping(section)
+    required_fields = (
+        LEAN_EXECUTION_READINESS_GATE_FIELDS
+        if "Key uncertainty / hypothesis" in gate
+        else EXECUTION_READINESS_GATE_FIELDS
+    )
     missing = [
         field
-        for field in EXECUTION_READINESS_GATE_FIELDS
+        for field in required_fields
         if not is_concrete(gate.get(field))
     ]
     if missing:
@@ -433,6 +483,7 @@ def check_task_completion_contract(
     if status not in {"待验收", "完成"}:
         return
 
+    lean = markdown_heading_section(text, "Completion Review") is not None
     for title in ("Acceptance criteria", "Verification"):
         section = bold_field_section(text, title)
         if not checklist_items(section):
@@ -444,7 +495,8 @@ def check_task_completion_contract(
                 f"{len(unchecked)} unchecked items"
             )
 
-    atomic_rows = section_status_rows(markdown_heading_section(text, "Atomic Implementation Plan"))
+    atomic_heading = "Atomic Plan" if lean else "Atomic Implementation Plan"
+    atomic_rows = section_status_rows(markdown_heading_section(text, atomic_heading))
     atomic_nodes = [row for row in atomic_rows if re.fullmatch(r"N-\d{3}", row[0])]
     if not atomic_nodes:
         errors.append(
@@ -455,6 +507,21 @@ def check_task_completion_contract(
             errors.append(
                 f"{path} status is `{status}`, but atomic node `{row_id}` is `{row_status}`"
             )
+
+    if lean:
+        review = markdown_heading_section(text, "Completion Review")
+        required_fields = ["Final result", "Evidence", "Unverified / residual risk"]
+        if status == "完成":
+            required_fields.append("Completed")
+        incomplete_fields = [
+            label for label in required_fields if not is_concrete(bullet_field(review, label))
+        ]
+        if incomplete_fields:
+            errors.append(
+                f"{path} status is `{status}`, but Completion Review is incomplete: "
+                + ", ".join(incomplete_fields)
+            )
+        return
 
     verification_rows = section_status_rows(markdown_heading_section(text, "Verification Matrix"))
     verification_items = [row for row in verification_rows if re.fullmatch(r"V-\d{3}", row[0])]
@@ -490,6 +557,8 @@ def check_task_completion_contract(
         )
 
     writeback = markdown_heading_section(text, "Completion Writeback")
+    if writeback is None:
+        writeback = markdown_heading_section(text, "Completion Review")
     required_fields = ["Memory writeback", "Final result", "Output artifacts"]
     if status == "完成":
         required_fields.append("Completed")
@@ -513,10 +582,12 @@ def check_completion_memory_refs(
     if status not in {"待验收", "完成"}:
         return
     writeback = markdown_heading_section(text, "Completion Writeback")
+    if writeback is None:
+        writeback = markdown_heading_section(text, "Completion Review")
     value = bullet_field(writeback, "Memory writeback")
     if value is None or re.match(r"^(?:不需要|N/A)\s*[:：]", value, flags=re.IGNORECASE):
         return
-    references = sorted(set(re.findall(r"\b(?:F|K|CHG|RUN|HIST|R|Q|PL)-\d{3}\b", value)))
+    references = sorted(set(re.findall(r"\b(?:D|F|K|CHG|RUN|HIST|R|Q|PL)-\d{3}\b", value)))
     if not references:
         errors.append(
             f"{path} Completion Writeback Memory writeback has no memory IDs or N/A reason"
@@ -562,6 +633,8 @@ def check_program_completion_contract(
     current_status = markdown_heading_section(text, "Current Status")
     for label in ("Current blocker", "Next step", "Next human decision", "Pending memory write"):
         value = bullet_field(current_status, label)
+        if value is None:
+            value = metadata_value(text, label)
         if value is not None and value not in {"None", "无"}:
             errors.append(
                 f"{path} Overall status is `完成`, but Current Status {label} is `{value}`"
@@ -603,7 +676,10 @@ def check_program_waiting_acceptance_contract(
                 f"{path} Overall status is `待验收`, but {label} is not concrete"
             )
     current_status = markdown_heading_section(text, "Current Status")
-    if not is_concrete(bullet_field(current_status, "Next human decision")):
+    next_human_decision = bullet_field(current_status, "Next human decision")
+    if next_human_decision is None:
+        next_human_decision = metadata_value(text, "Next human decision")
+    if not is_concrete(next_human_decision):
         errors.append(
             f"{path} Overall status is `待验收`, but Current Status "
             "Next human decision is not concrete"
@@ -624,11 +700,44 @@ def check_program_blocked_contract(
             f"{path} Overall status is `阻塞`, but no Node Status row is `阻塞`"
         )
     current_status = markdown_heading_section(text, "Current Status")
-    if not is_concrete(bullet_field(current_status, "Current blocker")):
+    blocker = bullet_field(current_status, "Current blocker")
+    if blocker is None:
+        blocker = metadata_value(text, "Current blocker")
+    if not is_concrete(blocker):
         errors.append(
             f"{path} Overall status is `阻塞`, but Current Status Current blocker "
             "is not concrete"
         )
+
+
+def check_lite_plan(
+    path: Path,
+    text: str,
+    errors: list[str],
+) -> dict[str, str]:
+    section = markdown_heading_section(text, "Plan")
+    statuses: dict[str, str] = {}
+    for header, cells in iter_table_rows(section or ""):
+        normalized = [norm_cell(cell).lower() for cell in header]
+        lookup = {name: index for index, name in enumerate(normalized)}
+        node_idx = lookup.get("node")
+        status_idx = lookup.get("status")
+        if node_idx is None or status_idx is None:
+            continue
+        if max(node_idx, status_idx) >= len(cells):
+            continue
+        node = norm_cell(cells[node_idx])
+        status = norm_cell(cells[status_idx])
+        if not re.fullmatch(r"NODE-\d{3}", node):
+            continue
+        if node in statuses:
+            errors.append(f"{path} Plan contains duplicate node `{node}`")
+        if status not in VALID_TASK_STATUSES:
+            errors.append(f"{path} Plan node `{node}` has invalid status `{status}`")
+        statuses[node] = status
+    if not statuses:
+        errors.append(f"{path} Plan has no valid NODE-NNN row")
+    return statuses
 
 
 def check_unique_section_ids(
@@ -656,7 +765,7 @@ def check_unique_section_ids(
 
 
 def check_unique_memory_ids(path: Path, text: str, errors: list[str]) -> None:
-    pattern = r"(?:F|K|CHG|RUN|HIST|R|Q|PL)-\d{3}"
+    pattern = r"(?:D|F|K|CHG|RUN|HIST|R|Q|PL)-\d{3}"
     seen: set[str] = set()
     duplicates: set[str] = set()
     for _, cells in iter_table_rows(text):
@@ -739,13 +848,15 @@ def check_program_node_graph(
     errors: list[str],
 ) -> tuple[dict[str, str], dict[str, str]]:
     section = markdown_heading_section(text, "Node Status")
+    if section is None:
+        section = markdown_heading_section(text, "Node Index")
     node_records: dict[str, tuple[str, str, list[str]]] = {}
     link_to_node: dict[str, str] = {}
     if section is None:
         return {}, {}
 
     detail_dependencies: dict[str, list[str]] = {}
-    details = markdown_heading_section(text, "Node Details")
+    details = markdown_heading_section(text, "Node Details") or section
     for header, cells in iter_table_rows(details or ""):
         normalized = [norm_cell(cell).lower() for cell in header]
         lookup = {name: index for index, name in enumerate(normalized)}
@@ -769,15 +880,18 @@ def check_program_node_graph(
         status_idx = lookup.get("status", lookup.get("状态"))
         task_idx = lookup.get("task package", lookup.get("任务包"))
         dependencies_idx = lookup.get("dependencies", lookup.get("依赖"))
-        if node_idx is None or status_idx is None or task_idx is None:
+        if node_idx is None or task_idx is None:
             continue
-        if max(node_idx, status_idx, task_idx) >= len(cells):
+        indexes = [node_idx, task_idx]
+        if status_idx is not None:
+            indexes.append(status_idx)
+        if max(indexes) >= len(cells):
             continue
         node = norm_cell(cells[node_idx])
         if not re.fullmatch(r"NODE-\d{3}", node):
             continue
-        status = norm_cell(cells[status_idx])
-        if status not in VALID_TASK_STATUSES:
+        status = norm_cell(cells[status_idx]) if status_idx is not None else ""
+        if status and status not in VALID_TASK_STATUSES:
             errors.append(f"{path} Node Status row `{node}` has invalid status `{status}`")
         task_match = re.search(r"tasks/TASK-\d{3}[-A-Za-z0-9_]*\.md", cells[task_idx])
         if task_match is None:
@@ -1128,11 +1242,22 @@ def main() -> int:
         program_text = ""
     profile = detect_profile(program_text, program_path, errors)
     lite = profile == "Lite"
+    lean_lite = lite and markdown_heading_section(program_text, "Plan") is not None
+    lean_full = not lite and markdown_heading_section(program_text, "Node Index") is not None
     program_status: str | None = None
     program_mode: str | None = None
     if program_text:
+        required_program = (
+            PROGRAM_REQUIRED_LITE
+            if lean_lite
+            else PROGRAM_REQUIRED_LEAN_FULL
+            if lean_full
+            else PROGRAM_REQUIRED_LEGACY_LITE
+            if lite
+            else PROGRAM_REQUIRED
+        )
         check_required_items(
-            program_path, program_text, PROGRAM_REQUIRED_LITE if lite else PROGRAM_REQUIRED, errors
+            program_path, program_text, required_program, errors
         )
         program_status = parse_enum_metadata(
             program_path,
@@ -1142,30 +1267,35 @@ def main() -> int:
             "Overall status",
             errors,
         )
-        program_mode = parse_enum_metadata(
-            program_path,
-            program_text,
-            ("Plan mode", "计划模式"),
-            VALID_PLAN_MODES,
-            "Plan mode",
-            errors,
-        )
-        check_execution_readiness_gate(
-            program_path,
-            program_text,
-            program_status,
-            errors,
-        )
+        if lean_lite:
+            program_mode = "Linear"
+        else:
+            program_mode = parse_enum_metadata(
+                program_path,
+                program_text,
+                ("Plan mode", "计划模式"),
+                VALID_PLAN_MODES,
+                "Plan mode",
+                errors,
+            )
+        if not lite:
+            check_execution_readiness_gate(
+                program_path,
+                program_text,
+                program_status,
+                errors,
+            )
 
     memory_text = ""
     if memory_path.exists():
         memory_text = read_text_for_validation(memory_path, errors)
         if memory_text:
-            memory_required = (
-                MEMORY_REQUIRED_COMPACT
-                if markdown_heading_section(memory_text, "Durable State") is not None
-                else MEMORY_REQUIRED
-            )
+            if markdown_heading_section(memory_text, "Decisions") is not None:
+                memory_required = MEMORY_REQUIRED_LEAN
+            elif markdown_heading_section(memory_text, "Durable State") is not None:
+                memory_required = MEMORY_REQUIRED_COMPACT
+            else:
+                memory_required = MEMORY_REQUIRED
             check_required_items(memory_path, memory_text, memory_required, errors)
     elif not lite:
         errors.append(f"Missing file: {memory_path}")
@@ -1182,7 +1312,7 @@ def main() -> int:
         find_program_history_sections(program_path, program_text, warnings)
         if not node_ids(program_text):
             warnings.append("program.md has no plan node ID, e.g. NODE-001")
-        if not lite:
+        if not lite and not lean_full:
             if not size_values(program_text):
                 warnings.append("program.md has no task-package size value, e.g. `S` or `M`")
             context_is_explicitly_empty = section_declares_none(
@@ -1198,10 +1328,10 @@ def main() -> int:
         find_placeholders(memory_path, memory_text, warnings)
         check_table_shapes(memory_path, memory_text, errors)
         check_unique_memory_ids(memory_path, memory_text, errors)
-        if not re.search(r"\b(?:F|K|CHG|RUN|HIST|R|Q|PL)-\d{3}\b", memory_text):
+        if not re.search(r"\b(?:D|F|K|CHG|RUN|HIST|R|Q|PL)-\d{3}\b", memory_text):
             warnings.append(
                 "memory.md has no memory entry ID, e.g. "
-                "F-001/K-001/CHG-001/RUN-001/HIST-001/PL-001"
+                "D-001/F-001/RUN-001"
             )
         pending = len(re.findall(r"\|\s*`?待提炼`?\s*\|", memory_text))
         if pending >= 5:
@@ -1235,20 +1365,30 @@ def main() -> int:
         if task_path is not None:
             task_entries.append((link, task_path))
 
-    node_statuses, task_node_mapping = (
-        check_program_node_graph(program_path, program_text, errors)
-        if program_text
-        else ({}, {})
-    )
+    if lean_lite:
+        node_statuses = check_lite_plan(program_path, program_text, errors)
+        task_node_mapping: dict[str, str] = {}
+    else:
+        node_statuses, task_node_mapping = (
+            check_program_node_graph(program_path, program_text, errors)
+            if program_text
+            else ({}, {})
+        )
     active_node = metadata_value(program_text, "Active plan node") if program_text else None
     if current_task:
         expected_active_node = task_node_mapping.get(current_task)
-        if expected_active_node is not None and active_node != expected_active_node:
+        if (
+            expected_active_node is not None
+            and active_node is not None
+            and active_node != expected_active_node
+        ):
             errors.append(
                 f"{program_path} Active plan node `{active_node}` does not match "
                 f"Active task package `{current_task}` mapped to `{expected_active_node}`"
             )
-    elif active_node not in {None, "None", "无"}:
+    elif lean_lite and active_node not in node_statuses:
+        errors.append(f"{program_path} Active plan node `{active_node}` is not present in Plan")
+    elif not lean_lite and active_node not in {None, "None", "无"}:
         errors.append(
             f"{program_path} Active plan node is `{active_node}`, but Active task package is `None`"
         )
@@ -1259,43 +1399,13 @@ def main() -> int:
         task_node_mapping,
         errors,
     )
-    check_program_completion_contract(
-        program_path,
-        program_text,
-        program_status,
-        node_statuses,
-        errors,
-    )
-    check_program_waiting_acceptance_contract(
-        program_path,
-        program_text,
-        program_status,
-        node_statuses,
-        errors,
-    )
-    check_program_blocked_contract(
-        program_path,
-        program_text,
-        program_status,
-        node_statuses,
-        errors,
-    )
     if lite and len(task_entries) > 3:
         errors.append(
             f"{program_path} Profile `Lite` has {len(task_entries)} task packages; "
             "upgrade to `Full`"
         )
-    if task_entries and not tasks_output_ignored(root):
-        errors.append(
-            "tasks/output/ is not ignored; add `/tasks/output/` or `tasks/output/` "
-            "to git ignore rules"
-        )
-    tracked_outputs = tracked_task_outputs(root)
-    if tracked_outputs:
-        errors.append(
-            "tasks/output/ contains files tracked by git: " + ", ".join(tracked_outputs)
-        )
-
+    package_statuses: dict[str, str] = {}
+    has_output_contract = False
     for link, task_path in task_entries:
         checked_paths.append(task_path)
         task_text = read_text_for_validation(task_path, errors)
@@ -1303,10 +1413,12 @@ def main() -> int:
             continue
         check_task_identity(task_path, task_text, errors)
         check_table_shapes(task_path, task_text, errors)
+        lean_task = markdown_heading_section(task_text, "Completion Review") is not None
+        atomic_heading = "Atomic Plan" if lean_task else "Atomic Implementation Plan"
         check_unique_section_ids(
             task_path,
             task_text,
-            "Atomic Implementation Plan",
+            atomic_heading,
             r"N-\d{3}",
             "atomic node",
             errors,
@@ -1319,9 +1431,14 @@ def main() -> int:
             "verification",
             errors,
         )
-        check_required_items(
-            task_path, task_text, TASK_REQUIRED_LITE if lite else TASK_REQUIRED, errors
+        required_task = (
+            TASK_REQUIRED_LEAN
+            if lean_task
+            else TASK_REQUIRED_LITE
+            if lite
+            else TASK_REQUIRED
         )
+        check_required_items(task_path, task_text, required_task, errors)
         find_placeholders(task_path, task_text, warnings)
         check_completed_rows(task_path, task_text, errors)
         package_status = parse_enum_metadata(
@@ -1332,6 +1449,8 @@ def main() -> int:
             "task package Status",
             errors,
         )
+        if package_status is not None:
+            package_statuses[link] = package_status
         package_mode = parse_enum_metadata(
             task_path,
             task_text,
@@ -1340,19 +1459,20 @@ def main() -> int:
             "Plan mode",
             errors,
         )
-        check_abstraction_gate(
-            task_path,
-            task_text,
-            package_status,
-            errors,
-            warnings,
-        )
+        if not lean_task or metadata_value(task_text, "Abstraction impact") is not None:
+            check_abstraction_gate(
+                task_path,
+                task_text,
+                package_status,
+                errors,
+                warnings,
+            )
         check_standing_checklist_completion(task_path, task_text, errors)
         check_task_completion_contract(
             task_path,
             task_text,
             package_status,
-            require_verification_matrix=not lite,
+            require_verification_matrix=not lite and not lean_task,
             errors=errors,
         )
         check_completion_memory_refs(
@@ -1373,15 +1493,17 @@ def main() -> int:
         expected_output = task_output_path(task_path)
         output_value = metadata_value(task_text, "Output artifacts")
         output_section = markdown_heading_section(task_text, "Output Artifacts")
-        if (
-            output_value != expected_output
-            or output_section is None
-            or expected_output not in output_section
-        ):
-            errors.append(
-                f"{task_path} must point its top-level field and Output Artifacts section "
-                f"to `{expected_output}`"
-            )
+        if output_value is not None or output_section is not None:
+            has_output_contract = True
+            if (
+                output_value != expected_output
+                or output_section is None
+                or expected_output not in output_section
+            ):
+                errors.append(
+                    f"{task_path} must point its top-level field and Output Artifacts section "
+                    f"to `{expected_output}`"
+                )
         node_status = node_statuses.get(link)
         task_plan_node = metadata_value(task_text, "Plan node")
         expected_plan_node = task_node_mapping.get(link)
@@ -1390,9 +1512,9 @@ def main() -> int:
                 f"{task_path} Plan node mismatch: program.md maps it to `{expected_plan_node}`, "
                 f"task package records `{task_plan_node}`"
             )
-        if node_status is None:
+        if expected_plan_node is None:
             errors.append(f"{program_path} Node Status is missing a valid row for `{link}`")
-        elif package_status is not None and node_status != package_status:
+        elif node_status is not None and package_status is not None and node_status != package_status:
             errors.append(
                 f"Status mismatch: program.md Node Status records {link} as `{node_status}`, "
                 f"but task package Status is `{package_status}`"
@@ -1406,7 +1528,7 @@ def main() -> int:
             warnings.append(f"{task_path} has no atomic node ID, e.g. N-001")
         if not node_ids(task_text):
             warnings.append(f"{task_path} has no related plan node ID, e.g. NODE-001")
-        if lite:
+        if lite or lean_task:
             continue
         if package_status in {"待验证", "待验收", "完成"} and "V-001" not in task_text:
             warnings.append(f"{task_path} has no verification item ID, e.g. V-001")
@@ -1431,6 +1553,43 @@ def main() -> int:
             warnings.append(f"{task_path} has no estimated size, e.g. `S` or `M`")
         if any(size in {"L", "XL", "Large"} for size in sizes):
             warnings.append(f"{task_path} size is L/XL/Large; confirm whether it should be split")
+
+    effective_statuses = (
+        node_statuses
+        if lean_lite or node_statuses
+        else package_statuses
+    )
+    check_program_completion_contract(
+        program_path,
+        program_text,
+        program_status,
+        effective_statuses,
+        errors,
+    )
+    check_program_waiting_acceptance_contract(
+        program_path,
+        program_text,
+        program_status,
+        effective_statuses,
+        errors,
+    )
+    check_program_blocked_contract(
+        program_path,
+        program_text,
+        program_status,
+        effective_statuses,
+        errors,
+    )
+    if has_output_contract and not tasks_output_ignored(root):
+        errors.append(
+            "tasks/output/ is not ignored; add `/tasks/output/` or `tasks/output/` "
+            "to git ignore rules"
+        )
+    tracked_outputs = tracked_task_outputs(root)
+    if tracked_outputs:
+        errors.append(
+            "tasks/output/ contains files tracked by git: " + ", ".join(tracked_outputs)
+        )
 
     ok = not errors and (not args.strict or not warnings)
     result = {

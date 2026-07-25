@@ -1,38 +1,38 @@
 # Concept Refinement
 
-Refine a raw idea into a confirmed concept before decomposing implementation work.
+Use this guide only when a raw idea has several materially different directions. Stop once one direction is concrete enough to plan.
 
 ```text
-Idea -> Concept brief -> Plan -> Task packages -> Execute -> Verify -> Memory
+Idea -> Confirmed brief -> Lite or Full plan
 ```
 
 ## Understand And Expand
 
-- Restate the idea as a concise "How might we..." problem statement.
-- Ask at most 3-5 sharpening questions. Target user and success criteria are required.
+- Restate the idea as an observable problem for a named user or operator.
 - Inside a codebase, read relevant specs, entry points, tests, and prior docs before generating options.
-- Generate 5-8 considered variations using only useful lenses: inversion, simplification, audience shift, constraint removal, adjacent combination, 10x scale, or expert-domain obviousness.
+- Ask only questions whose answers could change the direction, scope, or success criterion.
+- Generate distinct options only while meaningful alternatives remain. Useful lenses include simplification, inversion, audience shift, constraint removal, and adjacent combination.
 
 ## Evaluate And Converge
 
-After the user reacts, cluster promising options into 2-3 distinct directions. Stress-test each on:
+Compare the viable directions on:
 
 - user value: who benefits, how much, and whether the idea is a painkiller or a vitamin
 - feasibility: technical/resource cost and hardest unknown
 - differentiation: why it wins or why users would switch
 
-For each direction, name what must be true, what could kill the idea, and what is intentionally ignored for now. Be direct when an idea is weak.
+For each serious direction, name what must be true, what could kill it, and what is intentionally ignored. Recommend one direction when the evidence supports it; do not preserve rejected alternatives as plan state.
 
 ## Sharpen And Ship The Brief
 
-Write the confirmed one-page brief into `program.md#concept-refinement` and map it into the plan:
+The confirmed brief needs only:
 
-- Problem Statement -> `program.md#problem-definition`
-- Target User / Success Criteria -> `program.md#goals-and-metrics`
-- Recommended Direction -> `program.md#strategy`
-- Key Assumptions -> `program.md#exploration-and-hypothesis-validation`
-- MVP Scope -> initial `program.md#implementation-plan` nodes
-- Not Doing -> `program.md#problem-definition` Non-goals
-- Open Questions -> `program.md#optional-state` or the relevant implementation subsection
+- observable problem and target user
+- observable success
+- chosen direction and why
+- locked constraints and non-goals
+- assumptions or open questions that can still change execution
 
-After convergence, apply `references/pre-execution-grill.md` when the concept still depends on material research judgment, evidence quality, a baseline, operational constraints, or a falsifiable hypothesis. A confirmed direction is not execution-ready until that gate is `Ready` or concretely `Not required`.
+For Lite, map these directly into `Outcome`, `Constraints`, `Acceptance`, and `Plan`. For Full, use `Outcome`, `Context`, `Constraints And Decisions`, `Acceptance`, and `Node Index`.
+
+After convergence, read `pre-execution-grill.md` only if a remaining uncertainty could change scope, method, risk, or whether to proceed.

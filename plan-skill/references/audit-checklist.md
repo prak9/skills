@@ -1,45 +1,37 @@
 # Audit Checklist
 
-Check a plan for these failures:
+Audit the plan by checking authority, usefulness, and evidence rather than template volume.
 
-- Full was selected for a one-step or single-session change with no Loop, handoff, high-risk, or multi-package need.
-- Future task packages were created before their dependencies, scope, and acceptance criteria were ready.
-- `program.md` lacks measurable goals, final acceptance criteria, or task-package status.
-- `program.md` lacks a Concept Refinement section, or starts from a raw idea without a confirmed brief or explicit `None` reason.
-- `Execution readiness` is `Ready` with an incomplete readiness map, `Not required` without a concrete reason, or `Blocked` while implementation is active.
-- A high-uncertainty plan skipped the Grill, asked the user for facts the agent could research, or failed to retain an explicit human/domain judgment.
-- `program.md` lacks preferences/tradeoffs for a non-trivial plan, or fails to mark locked constraints and negotiable space.
-- `program.md` contains CHANGELOG, run-log, historical status, or old Loop-attempt sections instead of only latest state.
-- context and references are missing, stale, or lack source/freshness information.
-- dependency graph, node-status table, checkpoints, or parallelization assumptions are missing (Full profile).
-- Loop mode is enabled but no finite loop budget, verifier, reflect trigger, or stop condition exists.
-- Loop iterations produce more reports, charts, metrics, or local optimizations without changing belief or retiring a stated uncertainty.
-- `memory.md` is missing (Full profile), stale, or lacks findings, CHANGELOG entries, run logs, or history summaries for completed or failed task packages.
-- run logs pile up as `待提炼` with no reflection pass turning them into K/R/PL/F entries.
-- implementation plan lacks overview, architecture decisions, phased task list, risks, or open questions.
-- Implementation work exists but no task package records its verification method or evidence.
-- Task packages contain broad backlog lists instead of atomic executable nodes.
-- task packages are horizontal layers instead of verifiable vertical slices.
-- A task package lacks an `Output Artifacts` section pointing to `tasks/output/TASK-NNN-<slug>/`.
-- `tasks/output/` is missing from git ignore rules, or generated task outputs are being prepared for commit without explicit user instruction.
-- `tasks/output/TASK-*/` is used as a historical archive instead of a latest final output snapshot that overwrites stale files.
-- task package size is L/XL without a reason.
-- Status fields are stale or disagree between `program.md` and task files.
-- Program status is `待验收` while a node is still active/blocked, no node awaits acceptance, or latest evidence, next checkpoint, or next human decision is absent.
-- Program status is `阻塞` without a blocked node and a concrete Current Status blocker.
-- A primary table ID is duplicated, or a `TASK-NNN-*.md` filename ID disagrees with its H1 ID.
-- A Markdown table row has a different column count from its header because a pipe was not escaped or an inline-code span was left open.
-- Exploration questions have no validation method or stop condition.
-- A hypothesis or exploration entry was closed by producing an artifact instead of a verdict (`支持 / 推翻 / 不确定`) with evidence.
-- Exploration implementation exists without atomic steps, verification, evidence pointer, or promotion rule to task package / memory.
-- Task packages make tradeoff-sensitive changes without preference refs or escalation rules for locked constraints.
-- A task package omits `Abstraction impact`, uses an unsupported value, or declares `none`/`reuse` without a concrete reason.
-- A `new`/`modify`/`remove` shared abstraction lacks current pressure and consumers, a direct alternative, a narrow invariant, non-responsibilities, expected variation, a concept/indirection test, interface impact, contract verification, or a rollback/deletion trigger.
-- Small or unstable similarity was treated as sufficient reason to create a shared abstraction, or the new layer hides complexity without reducing total concepts or change cost.
-- Decisions are hidden in chat, commit messages, or code comments instead of `program.md`.
-- "完成" means code landed rather than acceptance evidence passed.
-- A task package lacks a Standing Checklist.
-- A task package reached `待验收` or `完成` while applicable Standing Checklist items are unchecked or marked N/A without reasons.
-- A task package reached `待验收` or `完成` without answered Pre-completion Red Team questions.
-- A Lite-profile plan grew past ~3 task packages, multiple sessions, or Loop mode without upgrading to Full.
-- `scripts/validate_plan.py --strict <project-root>` fails, reports warnings, emits an unstructured traceback for invalid input, or omits a task package from its `checked` list.
+## Surface
+
+- Inline work did not create durable artifacts without a reason.
+- Lite remains a single `program.md`; upgrade it when handoff, multiple sessions, Loop mode, risk, or independently owned task packages appear.
+- Full creates task packages just in time rather than pre-populating a backlog.
+
+## Authority
+
+- Lite has one source for node status and evidence.
+- New Full plans keep task status only in task packages; `program.md` is an index and project-level summary.
+- Legacy duplicated status and task-list views agree until migrated.
+- No generated view is maintained by hand when it can be derived.
+
+## Readiness And Scope
+
+- A raw idea was refined only when directions were genuinely open.
+- The readiness gate was used because a material uncertainty could flip the decision, not merely because of the task category.
+- Locked constraints, negotiable implementation space, acceptance evidence, and the next useful action are concrete.
+- Loop mode has a finite budget, verifier, reflect trigger, and stop condition.
+
+## Execution And Evidence
+
+- Each node is independently useful or proves a material assumption.
+- Completed or acceptance-ready work has evidence that would fail if the result were broken.
+- A blocked item names its unblock condition.
+- Outputs are created and gitignored only when the task produces deliverable artifacts.
+- Memory contains only decisions, findings, and consequential runs that change future work.
+
+## Validation
+
+- `scripts/validate_plan.py --strict <project-root>` passes.
+- Every checked task is referenced, IDs are unique, Markdown tables are valid, and no unresolved placeholder remains.
+- Existing legacy plans remain readable; migration is explicit and previewed.

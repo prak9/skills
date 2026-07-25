@@ -1,48 +1,33 @@
 # Status And Completion Contract
 
-Read this file before setting a program or task to `阻塞`, `待验收`, or `完成`, and when auditing contradictory status or evidence.
+Read this file before setting `阻塞`, `待验收`, or `完成`, or when status and evidence disagree.
 
 ## Status Vocabulary
 
-Use one controlled vocabulary across `program.md` and task packages:
+Use `待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消`. `探索中` is also valid for a program.
 
-```text
-待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消
-```
-
-`探索中` is additionally valid for the program-level overall status.
+In new Full plans, each task package owns its status. `program.md` links task packages and derives project state from them; it does not repeat task status. Legacy duplicated status fields remain valid only while they agree.
 
 ## Status Transitions
 
-- Do not enter `进行中`, `待验证`, `待验收`, or `完成` while `Execution readiness` is `Blocked`.
-- Set `完成` only after acceptance criteria pass, evidence is recorded, and required writeback is done.
-- Set a program to `待验收` only when every node is `待验收`, `完成`, or `已取消`; at least one node awaits acceptance; and latest evidence, next checkpoint, and next human decision are concrete.
-- Set a task to `待验收` only when implementation, verification, checklists, red-team answers, evidence, and writeback are ready, but human acceptance remains.
-- Set a program to `阻塞` only when at least one node is `阻塞` and Current Status names the blocker and unblock condition.
-- Use `阻塞` only for missing information, permission, external state, or a failed prerequisite.
-- Give every incomplete atomic node a concrete next verification action.
-- Keep primary table IDs unique, and keep each `TASK-NNN-*.md` filename ID identical to its H1 ID.
+- `阻塞`: name the missing information, permission, prerequisite, or external state and the exact unblock action.
+- `待验证`: implementation exists but the declared verifier has not passed.
+- `待验收`: verification evidence is complete and only an explicit human decision remains.
+- `完成`: acceptance conditions passed, evidence is recorded, no active node remains, and required durable writeback is done.
+- `已取消`: record the reason and any consequence for dependent work.
+
+Do not move execution forward while a required readiness gate is `Blocked`.
 
 ## Completion Bar
 
-Complete the Standing Checklist before moving a task to `待验收` or `完成`. Check every applicable item; record `N/A: <reason>` for each non-applicable item.
+For every task:
 
-Per task:
+- acceptance criteria are checked and tied to evidence;
+- relevant runtime behavior or an explicit scoped alternative was verified;
+- atomic nodes are terminal;
+- the completion review states the observable result, evidence, unverified behavior or residual risk, remaining work, and completion date;
+- consequential decisions or findings are written once to `memory.md`.
 
-- tie acceptance criteria to evidence
-- verify runtime behavior, not only compilation or typechecking
-- add a regression test that fails without the change, or record why it is not applicable
-- run relevant tests, build/typecheck, lint, and formatting, or record scoped exclusions
-- handle edge cases and error paths, or record them as known risks
-- keep the diff scoped and remove unrelated refactors, unjustified duplicated logic, dead code, debug output, and commented-out blocks; do not abstract small similarity without concrete pressure
-- declare `Abstraction impact`; complete the Abstraction Gate for `new`, `modify`, or `remove`, and give a concrete N/A reason for `none` or `reuse`
+For risky changes, also review applicable migration, compatibility, security, observability, rollback, and human-approval requirements. Add a deeper red-team checklist only when the risk warrants it; do not force an empty universal questionnaire.
 
-For a feature or risky change:
-
-- cover migrations, configuration, feature flags, public contracts, and backward compatibility
-- document changed interfaces, user behavior, and durable architecture decisions
-- review security implications for untrusted input, authorization, and data handling
-- define observability and rollback for new critical paths
-- require human review before merge, deployment, or acceptance when appropriate
-
-Do not treat written code as completion. Require acceptance evidence, a completed Standing Checklist, answered Pre-completion Red Team questions, and writeback.
+For a Lite plan, the Plan table and top-level status carry the same evidence contract without a task package.

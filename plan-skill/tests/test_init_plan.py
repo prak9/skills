@@ -38,7 +38,7 @@ class InitPlanTests(unittest.TestCase):
         self.assertEqual(0, process.returncode, process.stdout + process.stderr)
         return json.loads(process.stdout)
 
-    def test_default_lite_scaffold_is_linked_and_structurally_valid(self) -> None:
+    def test_default_lite_scaffold_is_single_file_and_structurally_valid(self) -> None:
         process = self.run_initializer(
             "--title",
             "Timeout Validation",
@@ -48,35 +48,19 @@ class InitPlanTests(unittest.TestCase):
 
         self.assertEqual(0, process.returncode, process.stdout + process.stderr)
         program = (self.root / "program.md").read_text(encoding="utf-8")
-        task = (
-            self.root / "tasks" / "TASK-001-timeout-validation.md"
-        ).read_text(encoding="utf-8")
         self.assertIn("# Program: Timeout Validation", program)
         self.assertIn("- Profile: `Lite`", program)
-        self.assertIn("- Execution readiness: `Blocked`", program)
-        self.assertIn("## Concept Refinement", program)
-        self.assertIn("## Execution Readiness Gate", program)
+        self.assertIn("## Outcome", program)
+        self.assertIn("## Acceptance", program)
+        self.assertIn("## Plan", program)
         self.assertNotRegex(program, r"(?m)^##\s+\d+\.")
         self.assertIn("- Overall status: `待开始`", program)
-        self.assertIn("- Memory: `None`", program)
-        self.assertIn(
-            "- Active task package: `tasks/TASK-001-timeout-validation.md`",
-            program,
-        )
         self.assertIn("- Owner: `Platform Team`", program)
-        self.assertIn("# TASK-001: Timeout Validation", task)
-        self.assertIn(
-            "| Node | Status | Task package | Evidence |",
-            program,
-        )
-        self.assertIn(
-            "| Node | Size | Dependencies | Acceptance | Updated |",
-            program,
-        )
-        self.assertNotIn("| Acceptance / Verification |", program)
-        self.assertIn("tasks/output/TASK-001-timeout-validation/", task)
+        self.assertIn("| Node | Status | Action | Verification | Evidence |", program)
+        self.assertLessEqual(len(program.splitlines()), 45)
+        self.assertFalse((self.root / "tasks").exists())
         self.assertFalse((self.root / "memory.md").exists())
-        self.assertIn("/tasks/output/", (self.root / ".gitignore").read_text())
+        self.assertFalse((self.root / ".gitignore").exists())
         self.assertIn("validate_plan.py", process.stdout)
         self.assertIn("--strict", process.stdout)
         result = self.validate_generated_plan()
@@ -101,34 +85,27 @@ class InitPlanTests(unittest.TestCase):
         self.assertIn("- Execution readiness: `Blocked`", program)
         self.assertIn("## Execution Readiness Gate", program)
         self.assertNotRegex(program, r"(?m)^##\s+\d+\.")
-        self.assertIn("## Optional State", program)
-        self.assertNotIn("### Key Context", program)
-        self.assertIn(
-            "| Node | Status | Task package | Evidence |",
-            program,
-        )
-        self.assertIn(
-            "| Node | Size | Dependencies | Acceptance | Updated |",
-            program,
-        )
+        self.assertIn("## Outcome", program)
+        self.assertIn("## Node Index", program)
+        self.assertIn("| Node | Task package | Dependencies | Acceptance |", program)
+        self.assertNotIn("## Task List", program)
+        self.assertNotIn("| Node | Status | Task package | Evidence |", program)
         self.assertNotIn("TASK-002", program)
         self.assertTrue(task.exists())
         task_text = task.read_text(encoding="utf-8")
-        self.assertIn(
-            "| Node | Status | Depends on | Action | Verification | Evidence |",
-            task_text,
-        )
-        self.assertIn("Add `V-001` rows before `待验收` or `完成`", task_text)
-        self.assertNotIn("| Check | Covers | Method/command |", task_text)
-        self.assertNotIn("| Field | Value |", task_text)
+        self.assertIn("| Node | Status | Action | Verification | Evidence |", task_text)
+        self.assertIn("## Completion Review", task_text)
+        self.assertNotIn("## Standing Checklist", task_text)
+        self.assertNotIn("## Pre-completion Red Team", task_text)
+        self.assertNotIn("## Output Artifacts", task_text)
         memory = self.root / "memory.md"
         self.assertTrue(memory.exists())
         memory_text = memory.read_text(encoding="utf-8")
-        self.assertIn("## Durable State", memory_text)
-        self.assertIn("## Changelog", memory_text)
-        self.assertIn("## Run Logs", memory_text)
+        self.assertIn("## Decisions", memory_text)
+        self.assertIn("## Findings", memory_text)
+        self.assertIn("## Runs", memory_text)
         self.assertNotRegex(memory_text, r"(?m)^##\s+\d+\.")
-        self.assertLessEqual(len(memory_text.splitlines()), 28)
+        self.assertLessEqual(len(memory_text.splitlines()), 24)
         generated_lines = sum(
             len(path.read_text(encoding="utf-8").splitlines())
             for path in (self.root / "program.md", task, memory)
@@ -137,8 +114,8 @@ class InitPlanTests(unittest.TestCase):
             len(re.findall(r"<[^>\n]+>", path.read_text(encoding="utf-8")))
             for path in (self.root / "program.md", task, memory)
         )
-        self.assertLessEqual(generated_lines, 335)
-        self.assertLessEqual(placeholder_count, 45)
+        self.assertLessEqual(generated_lines, 180)
+        self.assertLessEqual(placeholder_count, 20)
         result = self.validate_generated_plan()
         self.assertEqual("Full", result["profile"])
         self.assertEqual([], result["errors"])
@@ -156,19 +133,20 @@ class InitPlanTests(unittest.TestCase):
         self.assertIn("Refusing to overwrite", second.stderr)
         self.assertEqual("keep me\n", program_path.read_text(encoding="utf-8"))
 
-    def test_existing_gitignore_is_preserved_and_output_rule_is_idempotent(self) -> None:
+    def test_existing_gitignore_is_not_changed_by_full_scaffold(self) -> None:
         self.root.mkdir(parents=True)
         (self.root / ".gitignore").write_text("dist/\n", encoding="utf-8")
 
-        process = self.run_initializer("--title", "Preserve Ignore")
+        process = self.run_initializer("--profile", "full", "--title", "Preserve Ignore")
 
         self.assertEqual(0, process.returncode, process.stdout + process.stderr)
         lines = (self.root / ".gitignore").read_text(encoding="utf-8").splitlines()
-        self.assertIn("dist/", lines)
-        self.assertEqual(1, lines.count("/tasks/output/"))
+        self.assertEqual(["dist/"], lines)
 
     def test_slug_cannot_escape_tasks_directory(self) -> None:
         process = self.run_initializer(
+            "--profile",
+            "full",
             "--title",
             "Unsafe",
             "--slug",
@@ -179,16 +157,15 @@ class InitPlanTests(unittest.TestCase):
         self.assertIn("slug", process.stderr.lower())
         self.assertFalse(self.root.exists())
 
-    def test_non_file_gitignore_fails_without_creating_partial_plan(self) -> None:
+    def test_non_file_tasks_path_fails_without_creating_partial_plan(self) -> None:
         self.root.mkdir(parents=True)
-        (self.root / ".gitignore").mkdir()
+        (self.root / "tasks").write_text("not a directory\n", encoding="utf-8")
 
-        process = self.run_initializer("--title", "Atomic Init")
+        process = self.run_initializer("--profile", "full", "--title", "Atomic Init")
 
         self.assertNotEqual(0, process.returncode)
-        self.assertIn("non-file", process.stderr)
+        self.assertIn("not a directory", process.stderr)
         self.assertFalse((self.root / "program.md").exists())
-        self.assertFalse((self.root / "tasks").exists())
 
 
 if __name__ == "__main__":
