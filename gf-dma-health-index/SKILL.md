@@ -1,6 +1,6 @@
 ---
 name: gf-dma-health-index
-description: Score a stock's current valuation/trend health using the GF-DMA Health Index, combining fundamental growth speed, 20/50/100/200DMA trend speed, price-to-DMA divergence, ATR divergence, escape ratio, and estimate revisions. Use when the user provides a ticker or asks for GF-DMA scoring, valuation health, trend health, healthy momentum, overheated/escape risk, or whether a rising/falling stock is fundamentally supported.
+description: "Score a stock's valuation/trend health with GF-DMA, combining fundamental growth speed, 20/50/100/200DMA speed, price-to-DMA and ATR divergence, escape ratio, and estimate revisions. Use when the user explicitly asks for GF-DMA, DMA/ATR trend health, price-to-DMA divergence, escape risk, or whether a price trend is fundamentally supported. Do not trigger from a bare ticker or generic stock-analysis request."
 ---
 
 # GF-DMA Health Index
@@ -25,20 +25,7 @@ Collect the newest available data before scoring:
 - Fundamental data: latest quarterly revenue, EPS, gross margin or gross profit, next-quarter company guidance, consensus revenue/EPS estimates, and 30-day estimate revisions.
 - Preferred sources: company IR releases/presentations, earnings calls, Yahoo Finance historical prices/analysis, TradingView technicals/estimates, Barchart technical analysis, Seeking Alpha estimates, Koyfin, FactSet, Bloomberg, TIKR, or Visible Alpha.
 
-For U.S.-listed companies, SEC filings can improve the fundamental side of the score. `edgartools` is an optional helper for retrieving the latest 10-K, 10-Q, 8-K, XBRL financial statements, filing text, insider transactions, and ownership filings.
-
-If the environment does not already have it, install with `pip install edgartools` or `uv pip install edgartools`. The import package is `edgar`, not `edgartools`. SEC access requires an identity; set `EDGAR_IDENTITY="Name email@example.com"` in the environment or call `from edgar import set_identity; set_identity("name@example.com")` before requests.
-
-Minimal usage pattern:
-
-```python
-from edgar import Company
-
-company = Company("AAPL")
-financials = company.get_financials()
-income = financials.income_statement()
-filings = company.get_filings(form="8-K")
-```
+For U.S.-listed companies, SEC filings can improve the fundamental side of the score. Use current browser/SEC access first. Use `edgartools` only when it is already available; install packages or configure SEC identity only when the user explicitly authorizes the environment change and provides a real identity.
 
 Use SEC data for:
 
@@ -69,7 +56,8 @@ Where:
 
 Fallbacks:
 
-- If gross profit or EPS is missing: `G_f = 0.5G_Revenue + 0.5G_EPS`
+- If gross profit is missing but EPS is available: `G_f = 0.5G_Revenue + 0.5G_EPS`
+- If EPS is missing but gross profit is available: `G_f = 0.5G_Revenue + 0.5G_GrossProfit`
 - If only revenue guidance is available: `G_f = G_Revenue`
 
 ### 2. DMA Speed
@@ -210,7 +198,7 @@ When price is below key DMAs, explicitly state whether the lower price is a heal
 Calculate total score out of 100:
 
 ```text
-HealthScore = 40S_GrowthMatch + 25S_Divergence + 20S_Parallel + 15S_Revision
+HealthScore = 0.40S_GrowthMatch + 0.25S_Divergence + 0.20S_Parallel + 0.15S_Revision
 ```
 
 Module scoring:
@@ -291,14 +279,14 @@ Use this structure for every ticker:
 ...
 ```
 
-## Default Delivery
+## Optional Notion Delivery
 
-After validation, archive the finished scorecard to the exact Notion page or database named `Invest` unless the user names another destination or opts out.
+Archive the finished scorecard only when the user explicitly asks. Resolve the exact Notion page or database named by the user; do not assume `Invest`.
 
 - Title it `[YYYY-MM-DD] [TICKER] — GF-DMA Health`; preserve the as-of date, inputs, module scores, decision, citations, and triggers.
-- Write only when authenticated Notion access is available and exactly one `Invest` target is resolved. Do not guess among multiple matches.
+- Write only when authenticated Notion access is available and exactly one target is resolved. Do not guess among multiple matches.
 - Do not claim success without a returned Notion page URL or page ID. Include that link in the final response.
-- If Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
+- If archiving was requested but Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
 
 ## Detailed Reference
 

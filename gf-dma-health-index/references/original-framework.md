@@ -132,13 +132,19 @@ G_f = 0.35G_{Revenue}+0.25G_{Gross\ Profit}+0.30G_{EPS}+0.10G_{Revision}
 | (G_{EPS})           | 下一季度 EPS 指引 / 最新季度 EPS - 1 |
 | (G_{Revision})      | 过去 30 天一致预期上修幅度            |
 
-如果缺少毛利润或 EPS 数据，则使用简化版：
+如果缺少毛利润、但 EPS 可用，则使用：
 
 [
 G_f = 0.5G_{Revenue}+0.5G_{EPS}
 ]
 
-如果只拿得到营收指引，则使用最简版：
+如果缺少 EPS、但毛利润可用，则使用：
+
+[
+G_f = 0.5G_{Revenue}+0.5G_{Gross\ Profit}
+]
+
+如果只拿得到营收指引，则使用：
 
 [
 G_f = G_{Revenue}
@@ -345,7 +351,7 @@ RevisionScore
 总分 0-100。
 
 [
-HealthScore = 40S_{GrowthMatch}+25S_{Divergence}+20S_{Parallel}+15S_{Revision}
+HealthScore = 0.40S_{GrowthMatch}+0.25S_{Divergence}+0.20S_{Parallel}+0.15S_{Revision}
 ]
 
 权重：

@@ -1,6 +1,6 @@
 ---
 name: judgment-craft
-description: "The cognitive operating system for judgment in the AI era — what computation/knowledge cannot replace. Integrates crux-finding, four-quadrant perspective scanning, worldview switching, trained intuition, falsification, survivable risk-taking, and second-level investment judgment. Use when distilling a thesis or decision, separating signal from noise, checking whether a personal/career/relationship/business/system problem is framed too narrowly, combining subjective experience with observable behavior, culture, and external systems, fighting analysis paralysis or wishful thinking, sizing a consequential bet, distinguishing model-friendly from adaptive worlds, separating process quality from outcome luck, identifying a correct non-consensus unpriced investment edge, choosing contrarian versus trend-confirming logic, or providing the judgment discipline behind analysis skills such as alpha-research."
+description: "The cognitive operating system for judgment in the AI era — what computation/knowledge cannot replace. Integrates crux-finding, four-quadrant perspective scanning, worldview switching, trained intuition, falsification, survivable risk-taking, and second-level investment judgment. Use when distilling a thesis or decision, separating signal from noise, checking whether a personal/career/relationship/business/system problem is framed too narrowly, combining subjective experience with observable behavior, culture, and external systems, fighting analysis paralysis or wishful thinking, sizing a consequential bet, distinguishing model-friendly from adaptive worlds, separating process quality from outcome luck, identifying a correct non-consensus unpriced investment edge, choosing contrarian versus trend-confirming logic, or providing the judgment discipline behind buy-side and alpha analysis."
 ---
 
 # Judgment Craft (judgment in the AI era)
@@ -104,8 +104,8 @@ Pillar 1 chooses the direction; Pillar 2 earns the intuition; Pillar 3 makes the
 
 ## Relationship to other skills
 
-- `alpha-research` depends on this skill: the key-driver step and the five-lens synthesis must **lead with the crux** (Pillar 1), and the staged-decision **falsification trigger is written before committing** (Pillar 3).
-- Its investment adapter owns variant perception: asset classification, consensus-versus-price, edge half-life, reflexivity, observation positions, survivable sizing, and process-versus-outcome review.
+- Investment skills such as `buy-side-equity-research-memo` and `serenity-alpha` use this discipline: lead with the crux and write the falsification trigger before committing.
+- The investment adapter owns variant perception: asset classification, consensus-versus-price, edge half-life, reflexivity, observation positions, survivable sizing, and process-versus-outcome review.
 - Pillar 3 is the *soul* of a buy-side memo's **"thesis breakpoint / falsification trigger."**
 - Complements **`research-craft`** (how to run good research): judgment-craft is *how to think and decide*; research-craft is *how to investigate*.
 

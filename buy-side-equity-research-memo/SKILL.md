@@ -50,22 +50,7 @@ If a number cannot be verified, mark it as `未核验` and explain what source w
 
 For U.S.-listed companies, use SEC filings as the factual baseline for reported fundamentals and management disclosure when available. Prioritize latest `10-K`, `10-Q`, `8-K`, and, for foreign private issuers, `20-F` or `6-K`. Use XBRL financial statements when available.
 
-`edgartools` is a useful optional helper because it can retrieve filings, XBRL financial statements, filing text, insider transactions, ownership forms, and recent 8-K disclosures.
-
-If the environment does not already have it, install with `pip install edgartools` or `uv pip install edgartools`. The import package is `edgar`, not `edgartools`. SEC access requires an identity; set `EDGAR_IDENTITY="Name email@example.com"` in the environment or call `from edgar import set_identity; set_identity("name@example.com")` before requests.
-
-Minimal usage pattern:
-
-```python
-from edgar import Company
-
-company = Company("AAPL")
-filings = company.get_filings(form="10-K")
-financials = company.get_financials()
-income = financials.income_statement()
-balance = financials.balance_sheet()
-cashflow = financials.cashflow_statement()
-```
+Use current browser/SEC access first. `edgartools` is an optional helper only when it is already available; install packages or configure SEC identity only when the user explicitly authorizes the environment change and provides a real identity.
 
 Use SEC data to anchor:
 
@@ -267,12 +252,12 @@ Use this default structure:
 - Make all unverifiable data and missing inputs explicit.
 - Keep the memo decision-useful, professional, and concise enough for buy-side discussion.
 
-## Default Delivery
+## Default Notion Delivery
 
-After validation, archive the finished memo to the exact Notion page or database named `Invest` unless the user names another destination or opts out.
+Archive each finished memo to the Notion page or database named `Invest` unless the user names another destination or explicitly opts out.
 
 - Title it `[YYYY-MM-DD] [TICKER] — Buy-Side Memo`; preserve the as-of date, decision, crux, scenarios, citations, and falsifiers.
-- Write only when authenticated Notion access is available and exactly one `Invest` target is resolved. Do not guess among multiple matches.
+- Write only when authenticated Notion access is available and exactly one target is resolved. Do not guess among multiple matches.
 - Do not claim success without a returned Notion page URL or page ID. Include that link in the final response.
 - If Notion is unavailable, unauthenticated, or ambiguous, do not block the research: return the complete Markdown and state `Notion archive pending`.
 

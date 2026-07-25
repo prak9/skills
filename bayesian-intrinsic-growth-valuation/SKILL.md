@@ -1,6 +1,6 @@
 ---
 name: bayesian-intrinsic-growth-valuation
-description: Use a Bayesian intrinsic-growth valuation model to evaluate whether a company's market value sufficiently, excessively, or insufficiently prices its real 3-5 year growth. Use when the user asks for Bayesian valuation, intrinsic growth rate, implied growth, growth-hypothesis probabilities, FOMO versus fundamentals, or company analysis based on fundamentals, industry cycle, TAM, market share, margin, valuation multiples, and new information.
+description: "Use a Bayesian intrinsic-growth valuation model to compare a company's probable 3-5 year growth with growth implied by market value. Use when the user explicitly asks for Bayesian valuation, intrinsic versus implied growth, growth-hypothesis probabilities, posterior updates, or FOMO versus fundamentals. For a generic ticker or broad stock memo, use buy-side-equity-research-memo instead."
 ---
 
 # Bayesian Intrinsic Growth Valuation
@@ -28,21 +28,7 @@ Use whatever the user provides, and clearly mark missing variables that require 
 
 ### Optional SEC Data Assist
 
-For U.S.-listed companies, use SEC filings as the baseline evidence for reported historical fundamentals. `edgartools` can be used to fetch company filings, XBRL financial statements, filing text, insider transactions, ownership filings, and recent 8-K disclosures.
-
-If the environment does not already have it, install with `pip install edgartools` or `uv pip install edgartools`. The import package is `edgar`, not `edgartools`. SEC access requires an identity; set `EDGAR_IDENTITY="Name email@example.com"` in the environment or call `from edgar import set_identity; set_identity("name@example.com")` before requests.
-
-Minimal usage pattern:
-
-```python
-from edgar import Company
-
-company = Company("AAPL")
-financials = company.get_financials()
-income = financials.income_statement()
-balance = financials.balance_sheet()
-cashflow = financials.cashflow_statement()
-```
+For U.S.-listed companies, use SEC filings as the baseline evidence for reported historical fundamentals. Use current browser/SEC access first. Use `edgartools` only when it is already available; install packages or configure SEC identity only when the user explicitly authorizes the environment change and provides a real identity.
 
 Use SEC data to anchor:
 
@@ -229,14 +215,14 @@ Use this format for company analysis:
 - Distinguish structural growth from cyclical rebound or one-time order timing.
 - State uncertainty, missing data, and falsification conditions clearly.
 
-## Default Delivery
+## Optional Notion Delivery
 
-After validation, archive the finished analysis to the exact Notion page or database named `Invest` unless the user names another destination or opts out.
+Archive the finished analysis only when the user explicitly asks. Resolve the exact Notion page or database named by the user; do not assume `Invest`.
 
 - Title it `[YYYY-MM-DD] [TICKER] — Bayesian Growth Valuation`; preserve the as-of date, probability table, implied-growth comparison, decision, citations, and falsifiers.
-- Write only when authenticated Notion access is available and exactly one `Invest` target is resolved. Do not guess among multiple matches.
+- Write only when authenticated Notion access is available and exactly one target is resolved. Do not guess among multiple matches.
 - Do not claim success without a returned Notion page URL or page ID. Include that link in the final response.
-- If Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
+- If archiving was requested but Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
 
 ## Source Reference
 

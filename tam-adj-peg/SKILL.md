@@ -1,6 +1,6 @@
 ---
 name: tam-adj-peg
-description: Evaluate a stock's valuation using TAM-Adj-PEG, adjusting traditional PEG by growth runway and quality. Use when the user provides a ticker or asks whether a growth stock's valuation is cheap, expensive, TAM-supported, runway-supported, quality-adjusted, or suitable as core growth, high-beta growth, turnaround, option-like, or cyclical exposure.
+description: "Evaluate a stock with TAM-Adj-PEG by adjusting PEG for growth runway and business quality. Use when the user explicitly asks for TAM-Adj-PEG, TAM-supported valuation, runway-adjusted PEG, quality-adjusted growth valuation, or position-type framing based on those factors. Do not trigger from a bare ticker or generic stock-analysis request."
 ---
 
 # TAM-Adj-PEG
@@ -33,20 +33,7 @@ Collect the newest available data before scoring:
 - Business quality: competitive position, pricing power, customer concentration, technology iteration risk, cyclicality, and key milestones.
 - Preferred sources: company IR releases/presentations, earnings calls, SEC filings, consensus estimate providers, industry TAM reports, and reputable financial data sources.
 
-For U.S.-listed companies, use SEC filings as the baseline for reported fundamentals. `edgartools` is an optional helper for retrieving latest 10-K, 10-Q, 8-K, XBRL financial statements, filing text, insider transactions, and ownership filings.
-
-If the environment does not already have it, install with `pip install edgartools` or `uv pip install edgartools`. The import package is `edgar`, not `edgartools`. SEC access requires an identity; set `EDGAR_IDENTITY="Name email@example.com"` in the environment or call `from edgar import set_identity; set_identity("name@example.com")` before requests.
-
-Minimal usage pattern:
-
-```python
-from edgar import Company
-
-company = Company("AAPL")
-financials = company.get_financials()
-income = financials.income_statement()
-cashflow = financials.cashflow_statement()
-```
+For U.S.-listed companies, use SEC filings as the baseline for reported fundamentals. Use current browser/SEC access first. Use `edgartools` only when it is already available; install packages or configure SEC identity only when the user explicitly authorizes the environment change and provides a real identity.
 
 Use SEC data to support:
 
@@ -215,14 +202,14 @@ TAM-Adj-PEG = Forward PE / (EPS CAGR x TAM Runway Factor x Quality Factor)
 - 适合的仓位类型：
 ```
 
-## Default Delivery
+## Optional Notion Delivery
 
-After validation, archive the finished analysis to the exact Notion page or database named `Invest` unless the user names another destination or opts out.
+Archive the finished analysis only when the user explicitly asks. Resolve the exact Notion page or database named by the user; do not assume `Invest`.
 
 - Title it `[YYYY-MM-DD] [TICKER] — TAM-Adj-PEG`; preserve the as-of date, inputs, factor derivation, decision, citations, and falsifiers.
-- Write only when authenticated Notion access is available and exactly one `Invest` target is resolved. Do not guess among multiple matches.
+- Write only when authenticated Notion access is available and exactly one target is resolved. Do not guess among multiple matches.
 - Do not claim success without a returned Notion page URL or page ID. Include that link in the final response.
-- If Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
+- If archiving was requested but Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
 
 ## Detailed Reference
 

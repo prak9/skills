@@ -19,20 +19,7 @@ Treat outputs as research hypotheses, not investment advice. Verify current pric
 
 ## Optional SEC Data Assist
 
-For U.S.-listed companies, use SEC filings as the factual base for reported fundamentals and management disclosure when available. `edgartools` is a good optional helper for this step because it can retrieve company filings, XBRL financial statements, filing text, insider transactions, ownership forms, and recent 8-K disclosures.
-
-If the environment does not already have it, install with `pip install edgartools` or `uv pip install edgartools`. The import package is `edgar`, not `edgartools`. SEC access requires an identity; set `EDGAR_IDENTITY="Name email@example.com"` in the environment or call `from edgar import set_identity; set_identity("name@example.com")` before requests.
-
-Minimal usage pattern:
-
-```python
-from edgar import Company
-
-company = Company("AAPL")
-filings = company.get_filings(form="10-Q")
-financials = company.get_financials()
-income = financials.income_statement()
-```
+For U.S.-listed companies, use SEC filings as the factual base for reported fundamentals and management disclosure when available. Use current browser/SEC access first. Use `edgartools` only when it is already available; install packages or configure SEC identity only when the user explicitly authorizes the environment change and provides a real identity.
 
 Use it to support the analysis, not to replace the framework:
 
@@ -203,11 +190,11 @@ When analyzing a news item, use this structure:
 - Use current sourced data for market caps, financials, prices, and recent filings.
 - State uncertainty and falsification conditions clearly.
 
-## Default Delivery
+## Optional Notion Delivery
 
-After validation, archive the finished alpha note to the exact Notion page or database named `Invest` unless the user names another destination or opts out.
+Archive the finished alpha note only when the user explicitly asks. Resolve the exact Notion page or database named by the user; do not assume `Invest`.
 
 - Title it `[YYYY-MM-DD] [PRIMARY TICKER OR THEME] — Alpha Note`; preserve the as-of date, demand chain, primary candidate, decision, citations, and falsifiers.
-- Write only when authenticated Notion access is available and exactly one `Invest` target is resolved. Do not guess among multiple matches.
+- Write only when authenticated Notion access is available and exactly one target is resolved. Do not guess among multiple matches.
 - Do not claim success without a returned Notion page URL or page ID. Include that link in the final response.
-- If Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
+- If archiving was requested but Notion is unavailable, unauthenticated, or ambiguous, return the complete Markdown and state `Notion archive pending`.
