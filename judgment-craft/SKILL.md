@@ -1,6 +1,6 @@
 ---
 name: judgment-craft
-description: "The cognitive operating system for judgment in the AI era — what computation/knowledge cannot replace. Integrates crux-finding, trained intuition, falsification, survivable risk-taking, and second-level investment judgment. Use when distilling a thesis or decision, separating signal from noise, fighting analysis paralysis or wishful thinking, sizing a consequential bet, distinguishing model-friendly from adaptive worlds, separating process quality from outcome luck, identifying a correct non-consensus unpriced investment edge, choosing contrarian versus trend-confirming logic, or providing the judgment discipline behind analysis skills such as alpha-research."
+description: "The cognitive operating system for judgment in the AI era — what computation/knowledge cannot replace. Integrates crux-finding, four-quadrant perspective scanning, worldview switching, trained intuition, falsification, survivable risk-taking, and second-level investment judgment. Use when distilling a thesis or decision, separating signal from noise, checking whether a personal/career/relationship/business/system problem is framed too narrowly, combining subjective experience with observable behavior, culture, and external systems, fighting analysis paralysis or wishful thinking, sizing a consequential bet, distinguishing model-friendly from adaptive worlds, separating process quality from outcome luck, identifying a correct non-consensus unpriced investment edge, choosing contrarian versus trend-confirming logic, or providing the judgment discipline behind analysis skills such as alpha-research."
 ---
 
 # Judgment Craft (judgment in the AI era)
@@ -42,6 +42,12 @@ A one-liner that **skipped** the complexity is not insight — it's stage 1 wear
 3. **Name the crux explicitly:** "This thesis lives or dies on **X** (and maybe Y)." One or two, rarely three.
 4. **Pressure-test it:** if X resolves one way, does the conclusion follow *almost regardless of the other factors*? If yes, X is the real driver. If the answer still hinges on five other things, you haven't found it yet.
 5. **Deliberately demote the rest** — say which factors you are consciously treating as secondary, and why they don't swing the answer.
+
+### Scan for missing realities before compressing
+
+When a problem mixes personal experience, observable capability, shared culture, and external systems—or when opposing sides keep talking past one another—read `references/four-quadrant-lens.md` before naming the crux. Use its individual/collective × interior/exterior map to expose omitted variables and cross-quadrant feedback loops. Then return here and rank the variables by impact × uncertainty.
+
+The quadrant map is a coverage tool, not a voting system. Do not give all four boxes equal weight, and do not stop at an exhaustive list. Earned simplicity still requires identifying the one or two variables that can flip the decision.
 
 ### Insight training
 
@@ -88,6 +94,7 @@ Pillar 1 chooses the direction; Pillar 2 earns the intuition; Pillar 3 makes the
 ## How to use it
 
 - **Lead with the crux** (Pillar 1): name the 1-2 decisive variables; let everything else be supporting context, not a flat list of equally-weighted metrics.
+- **Scan before compressing when the frame may be narrow:** use `references/four-quadrant-lens.md` to check individual interior, individual exterior, collective interior, and collective exterior realities; trace their interactions, rotate worldview lenses, then identify the crux.
 - **Don't outsource the thinking to AI.** AI summaries can filter and accelerate, but the cognition itself must be built by reading the primary source yourself and **betting to validate**. Use AI for breadth; build judgment by depth + skin in the game.
 - **Before you bet, write the falsification trigger:** "what data, if it appears, makes me admit I'm wrong?" — *then* commit. Expose the judgment to being disproven; that is the only way it improves.
 - **Classify the decision world and cap exposure:** state `small / large / mixed`, maximum loss, reversible first step, who bears the downside, and what evidence earns a larger commitment.
@@ -104,4 +111,4 @@ Pillar 1 chooses the direction; Pillar 2 earns the intuition; Pillar 3 makes the
 
 ## Source
 
-Distilled from《深刻的简单》《顶级洞察力的形成》(Pillar 1);《好运框架·决策本质》《纳瓦尔:判断力淬炼为直觉》(Pillar 2);《模糊,是最贵的成本》《如何做个正确的独立思考者》《认知飞轮》(Pillar 3); the supplied analysis of Nate Silver's risk-culture framework (Pillar 4); and Howard Marks, George Soros, and the Davis double-play for the investment adapter. Core thesis: judgment means choosing the decisive variables and expressing them through bets that preserve survival, learning, and legitimate choice.
+Distilled from《深刻的简单》《顶级洞察力的形成》(Pillar 1); the user-supplied four-quadrant thinking article (Pillar 1 completeness adapter);《好运框架·决策本质》《纳瓦尔:判断力淬炼为直觉》(Pillar 2);《模糊,是最贵的成本》《如何做个正确的独立思考者》《认知飞轮》(Pillar 3); the supplied analysis of Nate Silver's risk-culture framework (Pillar 4); and Howard Marks, George Soros, and the Davis double-play for the investment adapter. Core thesis: judgment means seeing enough of reality to choose the decisive variables, then expressing them through bets that preserve survival, learning, and legitimate choice.
