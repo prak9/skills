@@ -56,6 +56,8 @@ Being right after the gap closes is not edge.
 
 Markets are adaptive mixed worlds. A backtest, accounting identity, or repeated KPI is only a small-world slice.
 
+When scenario probabilities materially affect entry or sizing, use the calibration and evidence-dependence discipline in `references/probabilistic-judgment.md`.
+
 - Keep diversification, liquidity, mandate, and risk limits as the robust baseline.
 - Size from gap risk, tail loss, leverage, correlation, liquidity, and thesis uncertainty—not conviction alone.
 - Use a small observation position only when it purchases named information. `1–2%` is an example, not a default; use less for high-tail or correlated exposure.

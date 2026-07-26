@@ -1,6 +1,6 @@
 ---
 name: judgment-craft
-description: "The cognitive operating system for judgment in the AI era — what computation/knowledge cannot replace. Integrates crux-finding, four-quadrant perspective scanning, worldview switching, trained intuition, falsification, survivable risk-taking, and second-level investment judgment. Use when distilling a thesis or decision, separating signal from noise, checking whether a personal/career/relationship/business/system problem is framed too narrowly, combining subjective experience with observable behavior, culture, and external systems, fighting analysis paralysis or wishful thinking, sizing a consequential bet, distinguishing model-friendly from adaptive worlds, separating process quality from outcome luck, identifying a correct non-consensus unpriced investment edge, choosing contrarian versus trend-confirming logic, or providing the judgment discipline behind buy-side and alpha analysis."
+description: "The cognitive operating system for judgment in the AI era — what computation/knowledge cannot replace. Integrates crux-finding, four-quadrant perspective scanning, worldview switching, trained intuition, falsification, probabilistic forecasting and calibration, survivable risk-taking, and second-level investment judgment. Use when distilling a thesis or decision, separating signal from noise, checking whether a personal/career/relationship/business/system problem is framed too narrowly, combining subjective experience with observable behavior, culture, and external systems, fighting analysis paralysis or wishful thinking, turning intuition into a resolvable probability or updating it with evidence, sizing a consequential bet, distinguishing model-friendly from adaptive worlds, separating process quality from outcome luck, identifying a correct non-consensus unpriced investment edge, choosing contrarian versus trend-confirming logic, or providing the judgment discipline behind buy-side and alpha analysis."
 ---
 
 # Judgment Craft (judgment in the AI era)
@@ -67,7 +67,10 @@ The quadrant map is a coverage tool, not a voting system. Do not give all four b
 
 - **Anxiety and churn are, at root, vagueness.** Write the trouble as structure — objective function / resource constraints / option payoffs. *"Defining the problem is half of solving it."* Much repetitive "thinking" is elegant procrastination.
 - **"A falsifiable wrong prediction is 100× more valuable than an unverifiable correct intuition."** The wrong-but-falsifiable one sends you back to check *which assumption broke* — a feedback loop. The vague-but-right one teaches nothing.
+- **A probability is useful only when it can resolve and change action.** Define the event, deadline, and source of truth; start from a base rate; update without double-counting evidence; and let the posterior alter the bet or its size.
 - **Independent thinking is grounded in evidence and logic**, not credulity — don't blindly trust others' words, your own eyes, sell-side research, or the algorithmic feed — and **hedge wishful thinking with the strongest opposing view.**
+
+Read `references/probabilistic-judgment.md` before quantifying intuition, making repeated forecasts, updating a belief from sequential evidence, evaluating calibration, or adding a confidence/meta-model to a prediction system.
 
 ---
 
@@ -97,6 +100,7 @@ Pillar 1 chooses the direction; Pillar 2 earns the intuition; Pillar 3 makes the
 - **Scan before compressing when the frame may be narrow:** use `references/four-quadrant-lens.md` to check individual interior, individual exterior, collective interior, and collective exterior realities; trace their interactions, rotate worldview lenses, then identify the crux.
 - **Don't outsource the thinking to AI.** AI summaries can filter and accelerate, but the cognition itself must be built by reading the primary source yourself and **betting to validate**. Use AI for breadth; build judgment by depth + skin in the game.
 - **Before you bet, write the falsification trigger:** "what data, if it appears, makes me admit I'm wrong?" — *then* commit. Expose the judgment to being disproven; that is the only way it improves.
+- **When probability matters, make it scoreable:** record the prior, dependent and independent evidence, posterior range, action threshold, and resolution rule before the outcome.
 - **Classify the decision world and cap exposure:** state `small / large / mixed`, maximum loss, reversible first step, who bears the downside, and what evidence earns a larger commitment.
 - **For an investment, prove the edge:** state consensus, what price embeds, your divergent view, why it is more accurate, when the edge expires, and the evidence that earns an add or forces an exit.
 - **When a decision churns, suspect vagueness:** structure it (goal / constraints / payoffs) before deciding, instead of looping.
