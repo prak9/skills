@@ -14,6 +14,7 @@ class SkillDocsTests(unittest.TestCase):
         abstraction_reference = PLAN_SKILL_ROOT / "references" / "abstraction-quality.md"
         readiness_reference = PLAN_SKILL_ROOT / "references" / "pre-execution-grill.md"
         loop_reference = PLAN_SKILL_ROOT / "references" / "loop-contract.md"
+        clean_reference = PLAN_SKILL_ROOT / "references" / "clean-contract.md"
         agent_config = (PLAN_SKILL_ROOT / "agents" / "openai.yaml").read_text(
             encoding="utf-8"
         )
@@ -23,6 +24,7 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("references/pre-execution-grill.md", skill)
         self.assertIn("references/abstraction-quality.md", skill)
         self.assertIn("references/loop-contract.md", skill)
+        self.assertIn("references/clean-contract.md", skill)
         self.assertNotIn("### Size Work", skill)
         self.assertNotIn("## Memory Discipline", skill)
         self.assertLessEqual(len(skill.splitlines()), 130)
@@ -52,6 +54,13 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("Max iterations", loop)
         self.assertIn("Current Loop Attempt", loop)
 
+        self.assertTrue(clean_reference.is_file())
+        clean = clean_reference.read_text(encoding="utf-8")
+        self.assertIn("# Clean Contract", clean)
+        self.assertIn("## Triggers", clean)
+        self.assertIn("## Preserve And Retire", clean)
+        self.assertIn("## Completion Bar", clean)
+
     def test_default_context_surfaces_have_explicit_budgets(self) -> None:
         skill = (PLAN_SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         lite = (PLAN_SKILL_ROOT / "assets" / "program-lite.template.md").read_text(
@@ -65,6 +74,20 @@ class SkillDocsTests(unittest.TestCase):
         self.assertLessEqual(len(skill.splitlines()), 130)
         self.assertLessEqual(len(lite.splitlines()), 45)
         self.assertLessEqual(markdown.count("tasks/output/"), 35)
+
+    def test_only_current_template_contracts_remain(self) -> None:
+        assets = PLAN_SKILL_ROOT / "assets"
+        templates = {path.name for path in assets.glob("*.template.md")}
+
+        self.assertEqual(
+            {
+                "program-lite.template.md",
+                "program-full-starter.template.md",
+                "task-full-starter.template.md",
+                "memory-starter.template.md",
+            },
+            templates,
+        )
 
 
 if __name__ == "__main__":

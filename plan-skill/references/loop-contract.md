@@ -54,5 +54,6 @@ Keep planned actions in `Atomic Plan`. Update only the current attempt here; pre
 - On start, increment `Loop iteration`, set program and task to `Act`, and keep the same `L-*` ID.
 - After verification, move to `Pass`, `Reflect`, or `Blocked`; cite raw evidence.
 - Continue only when the next attempt changes a belief, method, or falsifiable uncertainty.
+- During `Reflect`, set `Clean state` to `Due` when stale hypotheses, repeated state, or the Clean thresholds are reached; run Clean before handoff or a terminal transition.
 - Stop when success, the finite budget, a safety condition, or the escalation condition is reached.
 - Run strict validation before execution, handoff, and every terminal transition.

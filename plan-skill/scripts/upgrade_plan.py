@@ -356,6 +356,18 @@ def upgrade_program(text: str, today: str, change_id: str) -> str:
             raise UpgradeError("program.md is missing Latest evidence")
         text = insert_after_line(text, latest_line, f"- Next checkpoint: `{checkpoint}`")
     text = re.sub(r"^- Owner:", "- Owner / TL:", text, count=1, flags=re.MULTILINE)
+    if metadata_value(text, "Clean state") is None:
+        last_updated_line = next(
+            (line for line in text.splitlines() if line.startswith("- Last updated:")),
+            None,
+        )
+        if last_updated_line is None:
+            raise UpgradeError("program.md is missing Last updated")
+        text = insert_after_line(
+            text,
+            last_updated_line,
+            "- Clean state: `Not due`\n- Last clean: `Not run`",
+        )
     if metadata_value(text, "Execution readiness") is None:
         plan_mode_line = next(
             (line for line in text.splitlines() if line.startswith("- Plan mode:")),

@@ -6,7 +6,7 @@ Read this file before setting `阻塞`, `待验收`, or `完成`, or when status
 
 Use `待开始 / 进行中 / 阻塞 / 待验证 / 待验收 / 完成 / 已取消`. `探索中` is also valid for a program.
 
-In new Full plans, each task package owns its status. `program.md` links task packages and derives project state from them; it does not repeat task status. Legacy duplicated status fields remain valid only while they agree.
+In Full plans, each task package owns its status. `program.md` links task packages and derives project state from them; it does not repeat task status.
 
 ## Status Transitions
 

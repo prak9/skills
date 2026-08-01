@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, or audit/repair of existing plan artifacts. It can refine a raw idea, create a single-file Lite plan, expand work into Full task packages, preserve consequential decisions and findings, and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
+description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, or audit, cleanup, simplification, and repair of existing plan artifacts or memory. It can refine a raw idea, create a single-file Lite plan, expand work into Full task packages, periodically align durable docs, distill consequential memory, control complexity, and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
 ---
 
 # Plan Skill
@@ -58,6 +58,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - Execute the smallest useful node, run its verifier, record evidence, and update the authoritative status once.
 - Create later task packages just in time, after their dependencies and acceptance conditions are known.
 - A failed verifier changes the plan, retires an assumption, or triggers escalation; repeating output without new information is not progress.
+- When Clean becomes due, or before handoff, `待验收`, or `完成`, read `references/clean-contract.md` and compress stale or duplicated state before continuing.
 - Before `阻塞`, `待验收`, or `完成`, read `references/status-and-completion.md`.
 - For a shared abstraction change, read `references/abstraction-quality.md`.
 - To audit or repair existing plan state, read `references/audit-checklist.md`.
@@ -70,15 +71,14 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - Loop mode has a finite budget, verifier, reflect trigger, and stop/escalation condition.
 - Preserve user constraints and existing project conventions; escalate before changing scope or acceptance criteria.
 - Store historical facts only when they will change future execution; do not duplicate ordinary progress or Git history.
-- Keep legacy plans valid while migrating them deliberately; do not silently rewrite user-maintained state.
+- Clean may compress Markdown state but must preserve stable IDs, evidence links, and raw facts.
 
 ## Resources
 
 - `assets/program-lite.template.md`: single-file Lite contract; use through `init_plan.py`
 - `assets/program-full-starter.template.md`, `assets/task-full-starter.template.md`, `assets/memory-starter.template.md`: compact Full contracts; use through `init_plan.py`
-- `assets/program.template.md`, `assets/task.template.md`: legacy detailed repair references; do not use for new plans
-- `assets/memory.template.md`: optional detailed memory contract
 - `references/loop-contract.md`: exact Full/Loop program, task, and memory interface
+- `references/clean-contract.md`: periodic alignment, distillation, and complexity-control contract
 - `scripts/init_plan.py`: safe initialization without overwriting existing plan files
 - `scripts/upgrade_plan.py`: previewable Lite-to-Full migration
 - `scripts/validate_plan.py`: structural and semantic validation; add `--json` for machine-readable results

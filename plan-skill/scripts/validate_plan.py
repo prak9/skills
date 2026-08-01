@@ -183,6 +183,7 @@ VALID_TASK_STATUSES = VALID_STATUSES - {"探索中"}
 VALID_ABSTRACTION_IMPACTS = {"none", "reuse", "new", "modify", "remove"}
 STRUCTURAL_ABSTRACTION_IMPACTS = {"new", "modify", "remove"}
 VALID_EXECUTION_READINESS = {"Blocked", "Ready", "Not required"}
+VALID_CLEAN_STATES = {"Not due", "Due"}
 EXECUTION_READINESS_GATE_FIELDS = (
     "Decision this work informs",
     "Claim / hypothesis",
@@ -274,6 +275,7 @@ EVIDENCE_EMPTY = {
     "pending",
     "not produced",
     "not applicable",
+    "Not run",
     "待运行",
     "待补充",
     "待填",
@@ -328,6 +330,55 @@ def is_concrete(value: str | None) -> bool:
     if normalized.lower() in EVIDENCE_EMPTY_LOWER:
         return False
     return not PENDING_VALUE.search(normalized)
+
+
+def is_clean_record(value: str | None) -> bool:
+    if value is None:
+        return False
+    normalized = norm_cell(value).strip()
+    no_op = re.fullmatch(r"N/A\s*:\s*(.+)", normalized, flags=re.IGNORECASE)
+    if no_op is not None:
+        return is_concrete(no_op.group(1))
+    completed = re.fullmatch(r"\d{4}-\d{2}-\d{2}\s*/\s*(.+)", normalized)
+    return completed is not None and is_concrete(completed.group(1))
+
+
+def check_clean_contract(
+    path: Path,
+    text: str,
+    program_status: str | None,
+    errors: list[str],
+    warnings: list[str],
+) -> None:
+    """Validate the optional Clean contract without breaking legacy plans."""
+    state = metadata_value(text, "Clean state")
+    last_clean = metadata_value(text, "Last clean")
+    if state is None and last_clean is None:
+        return
+    if state is None or last_clean is None:
+        missing = "Clean state" if state is None else "Last clean"
+        errors.append(f"{path} Clean contract is incomplete: missing {missing}")
+        return
+    if state not in VALID_CLEAN_STATES:
+        choices = " / ".join(sorted(VALID_CLEAN_STATES))
+        errors.append(
+            f"{path} Clean state must be exactly one of `{choices}`, got `{state}`"
+        )
+        return
+    if state == "Due":
+        message = (
+            f"{path} Clean state is `Due`; run the Clean contract and set it to "
+            "`Not due`"
+        )
+        if program_status in {"待验收", "完成"}:
+            errors.append(f"{message} before Overall status is `{program_status}`")
+        else:
+            warnings.append(message)
+    if program_status in {"待验收", "完成"} and not is_clean_record(last_clean):
+        errors.append(
+            f"{path} Last clean must cite a date plus evidence, or "
+            f"`N/A: <concrete reason>`, before `{program_status}`"
+        )
 
 
 def check_standing_checklist_completion(path: Path, text: str, errors: list[str]) -> None:
@@ -1285,6 +1336,13 @@ def main() -> int:
                 program_status,
                 errors,
             )
+        check_clean_contract(
+            program_path,
+            program_text,
+            program_status,
+            errors,
+            warnings,
+        )
 
     memory_text = ""
     if memory_path.exists():
@@ -1337,7 +1395,7 @@ def main() -> int:
         if pending >= 5:
             warnings.append(
                 f"memory.md has {pending} run logs pending distillation; "
-                "run Reflection & Curation"
+                "set Clean state to `Due` and run Clean"
             )
 
     program_loop_maximum = check_program_loop_contract(

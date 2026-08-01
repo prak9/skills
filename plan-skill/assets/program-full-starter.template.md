@@ -16,6 +16,8 @@
 - Next checkpoint: `CP-001`
 - Owner / TL: `<owner>`
 - Last updated: `YYYY-MM-DD`
+- Clean state: `Not due`
+- Last clean: `Not run`
 
 ## Outcome
 

@@ -12,6 +12,8 @@
 - Next human decision: `None`
 - Owner: `<name or role>`
 - Last updated: `YYYY-MM-DD`
+- Clean state: `Not due`
+- Last clean: `Not run`
 
 ## Outcome
 

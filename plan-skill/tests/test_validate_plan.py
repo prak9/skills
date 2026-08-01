@@ -122,6 +122,17 @@ class ValidatePlanTests(unittest.TestCase):
             "| ID | Time | Scope | Result | Key evidence | Lesson / later impact |\n|---|---|---|---|---|---|\n| HIST-001 | 2026-07-11 | TASK-001 | 完成 | RUN-001 / RUN-002 | CSV export is verified end-to-end. |",
         )
 
+    def enable_clean(self, state: str = "Not due", last_clean: str = "RUN-001") -> None:
+        self.replace(
+            "program.md",
+            "- Last updated: 2026-07-11",
+            (
+                "- Last updated: 2026-07-11\n"
+                f"- Clean state: `{state}`\n"
+                f"- Last clean: `{last_clean}`"
+            ),
+        )
+
     def test_golden_example_passes(self) -> None:
         process, result = self.run_validator()
 
@@ -350,6 +361,54 @@ class ValidatePlanTests(unittest.TestCase):
         self.assertEqual([], result["errors"])
 
     def test_valid_completed_plan_passes(self) -> None:
+        self.mark_completed()
+
+        process, result = self.run_validator()
+
+        self.assertEqual(0, process.returncode, process.stdout)
+        self.assertTrue(result["ok"], result)
+        self.assertEqual([], result["errors"])
+
+    def test_clean_fields_must_be_declared_together(self) -> None:
+        self.replace(
+            "program.md",
+            "- Last updated: 2026-07-11",
+            "- Last updated: 2026-07-11\n- Clean state: `Not due`",
+        )
+
+        self.assert_rejected("Clean contract", "Last clean")
+
+    def test_terminal_plan_rejects_due_clean_state(self) -> None:
+        self.enable_clean(state="Due", last_clean="RUN-001")
+        self.mark_completed()
+
+        self.assert_rejected("Clean state is `Due`", "Overall status is `完成`")
+
+    def test_due_clean_state_warns_until_strict_validation(self) -> None:
+        self.enable_clean(state="Due", last_clean="RUN-001")
+
+        normal_process, normal_result = self.run_validator()
+        strict_process, strict_result = self.run_validator("--strict")
+
+        self.assertEqual(0, normal_process.returncode, normal_process.stdout)
+        self.assertIn("Clean state is `Due`", "\n".join(normal_result["warnings"]))
+        self.assertNotEqual(0, strict_process.returncode, strict_process.stdout)
+        self.assertFalse(strict_result["ok"], strict_result)
+
+    def test_terminal_plan_requires_a_concrete_last_clean(self) -> None:
+        self.enable_clean(last_clean="Not run")
+        self.mark_completed()
+
+        self.assert_rejected("Last clean", "before `完成`")
+
+    def test_terminal_plan_rejects_unstructured_last_clean_claim(self) -> None:
+        self.enable_clean(last_clean="looks clean")
+        self.mark_completed()
+
+        self.assert_rejected("Last clean", "date plus evidence")
+
+    def test_terminal_plan_accepts_completed_clean_contract(self) -> None:
+        self.enable_clean(last_clean="2026-07-11 / RUN-002")
         self.mark_completed()
 
         process, result = self.run_validator()
@@ -795,6 +854,21 @@ class ValidatePlanTests(unittest.TestCase):
         self.assertTrue(normal_result["warnings"])
         self.assertNotEqual(0, strict_process.returncode, strict_process.stdout)
         self.assertFalse(strict_result["ok"], strict_result)
+
+    def test_five_pending_runs_trigger_clean_warning(self) -> None:
+        row = "| RUN-001 | 2026-07-11 | TASK-001 N-001 | test | Ran `pytest tests/test_export.py` with escaping cases. | passed | ci run 118 | N-002 | K-001 |"
+        pending_rows = [
+            f"| RUN-{number:03d} | 2026-07-11 | TASK-001 | test | attempt {number} | passed | ci run {number} | next | 待提炼 |"
+            for number in range(2, 7)
+        ]
+        self.replace("memory.md", row, row + "\n" + "\n".join(pending_rows))
+
+        process, result = self.run_validator()
+
+        self.assertEqual(0, process.returncode, process.stdout)
+        warnings = "\n".join(result["warnings"])
+        self.assertIn("5 run logs pending distillation", warnings)
+        self.assertIn("set Clean state to `Due`", warnings)
 
     def test_output_pointer_must_be_correct_in_output_artifacts_section(self) -> None:
         self.replace(

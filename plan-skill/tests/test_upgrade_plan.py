@@ -86,6 +86,8 @@ class UpgradePlanTests(unittest.TestCase):
         upgraded_memory = (self.root / "memory.md").read_text(encoding="utf-8")
         self.assertIn("- Profile: `Full`", program)
         self.assertIn("- Execution readiness: `Not required`", program)
+        self.assertIn("- Clean state: `Not due`", program)
+        self.assertIn("- Last clean: `Not run`", program)
         self.assertIn("UNIQUE LITE PROBLEM", program)
         self.assertIn("UNIQUE LITE SUCCESS", program)
         self.assertIn("UNIQUE LITE SUCCESS", task)
@@ -185,6 +187,8 @@ class UpgradePlanExampleTests(unittest.TestCase):
                 encoding="utf-8"
             )
             self.assertIn("Reject zero and negative timeout values", program)
+            self.assertIn("- Clean state: `Not due`", program)
+            self.assertIn("- Last clean: `Not run`", program)
             self.assertIn("Do not change retry or request semantics", task)
             validation = subprocess.run(
                 [

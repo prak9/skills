@@ -12,7 +12,6 @@ Audit the plan by checking authority, usefulness, and evidence rather than templ
 
 - Lite has one source for node status and evidence.
 - New Full plans keep task status only in task packages; `program.md` is an index and project-level summary.
-- Legacy duplicated status and task-list views agree until migrated.
 - No generated view is maintained by hand when it can be derived.
 
 ## Readiness And Scope
@@ -30,8 +29,14 @@ Audit the plan by checking authority, usefulness, and evidence rather than templ
 - Outputs are created and gitignored only when the task produces deliverable artifacts.
 - Memory contains only decisions, findings, and consequential runs that change future work.
 
+## Clean And Complexity
+
+- `Clean state` becomes `Due` at handoff or terminal boundaries, after the fixed accumulation thresholds, or when durable state drifts.
+- Clean preserves stable IDs and raw evidence while retiring duplicate, stale, or superseded Markdown state with pointers.
+- Program, active task, memory, and referenced living docs agree on authority, constraints, decisions, and next action.
+- The pass reduces retrieval surface or records a concrete no-op reason; it does not add an unbounded cleanup log.
+
 ## Validation
 
 - `scripts/validate_plan.py --strict <project-root>` passes.
 - Every checked task is referenced, IDs are unique, Markdown tables are valid, and no unresolved placeholder remains.
-- Existing legacy plans remain readable; migration is explicit and previewed.
