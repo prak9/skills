@@ -1,0 +1,11 @@
+Workload: BuildGraph over 8 million edges, production-shaped input
+Wall time: 12.4 seconds
+CPU utilization: 760% on 8 cores
+Top individual symbol: 3.8%; no other symbol exceeds 3.5%
+Inclusive stacks: BuildGraph and its callees account for 71%
+malloc + free: 13% cumulative
+LLC-load-miss rate: 19%
+Branch-miss rate: 1.2%
+Context switches: low and stable as core count increases
+Flame graph: a wide per-edge loop repeatedly enters small graph-helper methods
+No allocation profile or representative microbenchmark has been collected yet

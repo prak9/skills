@@ -38,15 +38,16 @@ Never create a second hand-maintained view of state that can be derived from an 
 6. Read `references/preference-contract.md` when valid solutions differ materially, a preference must be inferred, or a requested method may conflict with its objective.
 7. Read `references/pre-execution-grill.md` only when unresolved judgment or evidence could change scope, method, risk, or whether to proceed.
 8. Read `references/foundation-contract.md` when an agent may act repeatedly or without line-by-line supervision, a change slice is broader than its verifier, or the work includes irreversible effects. Loop mode always reads it.
-9. For Loop, read `references/loop-contract.md` before drafting its program and task state.
-10. Initialize durable state:
+9. Read `references/executable-spec-contract.md` for parallel agent work, ports, rewrites, migrations, or any task whose correctness depends on preserving reference behavior.
+10. For Loop, read `references/loop-contract.md` before drafting its program and task state.
+11. Initialize durable state:
 
    ```bash
    python3 <plan-skill>/scripts/init_plan.py <project-root> --title "<work title>"
    # Use --profile full only when Full/Loop is already justified.
    ```
 
-11. Replace placeholders and run `scripts/validate_plan.py --strict <project-root>` before execution or handoff.
+12. Replace placeholders and run `scripts/validate_plan.py --strict <project-root>` before execution or handoff.
 
 For a Lite plan that grows into Full:
 
@@ -75,6 +76,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - Do not silently invent a material preference. Research discoverable facts, state consequential assumptions, and ask only when human judgment can change the plan.
 - Treat unknowns as continuously discoverable: use the four classes as search lenses, then route each discovered unknown into existing plan state instead of maintaining a parallel unknowns diary.
 - Prefer declarative objectives with explicit bounds; reserve imperative constraints for fragile, high-stakes, or deliberately standardized paths and surface a materially better option without overriding the lock.
+- For behavior-preserving work, treat reference code, translated tests, and differential evidence as specification sources; document intentional differences instead of hiding them behind a broad "equivalent" claim.
 - `完成` and `待验收` require acceptance evidence; written code is not completion.
 - The executor's self-report is never terminal evidence. Verification must be finer than the change slice and expose a path from acceptance condition to raw evidence.
 - A blocked item names the missing input, owner or external condition, and unblock action.
@@ -91,6 +93,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - `references/unknowns-contract.md`: four unknown classes plus pre-, during-, and post-implementation discovery and routing
 - `references/reflection-contract.md`: per-node wrong/right feedback and memory writeback contract
 - `references/foundation-contract.md`: closed-loop parts, maker/checker separation, granularity alignment, judgment descent, calibration, and comprehension-debt control
+- `references/executable-spec-contract.md`: layered specifications, reference behavior, differential verification, and independently owned agent work packets
 - `references/loop-contract.md`: exact Full/Loop program, task, and memory interface
 - `references/clean-contract.md`: periodic alignment, distillation, and complexity-control contract
 - `scripts/init_plan.py`: safe initialization without overwriting existing plan files

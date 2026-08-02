@@ -6,12 +6,28 @@ Use this file when you have profiling data — `perf annotate`, `perf c2c`,
 Find the matching pattern below, then read the linked file in `patterns/` for
 the full diagnosis and fix.
 
+Read `references/performance-foundations.md` first so the profile is interpreted
+against a representative workload and an explicit baseline.
+
+## Contents
+
+- Quick-match table
+- Broad structural signals
+- Compiler and SIMD patterns
+- Concurrency patterns
+- Known algorithms and library patterns
+
 ---
 
 ## Quick-match table
 
 | Signal in profile | Pattern | Detail file |
 |-------------------|---------|-------------|
+| No dominant leaf symbol, but a wide inclusive stack or top-level loop owns most time | Flat profile | `patterns/flat-profile.md` |
+| Allocator symbols or allocation counts are high; heap churn appears across many callers | Allocation reduction | `patterns/reduce-allocations.md` |
+| High LLC miss rate, memory bandwidth pressure, large RSS, or pointer-chasing stalls | Compact data layout | `patterns/compact-data-layout.md` |
+| Repeated small callees below a loop, or lock/validation/serialization cost multiplied per element | Bulk API | `patterns/bulk-api.md` |
+| A common path spends time computing data that is discarded, repeated, invariant, or representable by a simpler fast path | Avoid unnecessary work | `patterns/avoid-unnecessary-work.md` |
 | Accumulate instruction (`vaddss`, `vaddpd`, `vfmadd*`) dominates annotate; IPC ≪ 1; cache misses low | Serial accumulator | `patterns/parallel-accumulator.md` |
 | `other_assists.avx_to_sse` > 0 in `perf stat`; or first SSE instruction after AVX function carries extreme cycle count in annotate | Missing vzeroupper | `patterns/missing-vzeroupper.md` |
 | Scalar preamble (pointer subtraction + conditional branch) before an otherwise vectorizable loop; or two loop versions (one vectorized, one scalar) in annotate for a simple array function | Missing restrict | `patterns/missing-restrict.md` |
@@ -29,6 +45,20 @@ the full diagnosis and fix.
 ---
 
 ## Pattern descriptions
+
+### Broad structural signals
+
+A flat leaf profile is not proof that no opportunity exists. Read
+`patterns/flat-profile.md`, inspect inclusive stacks and top-level loops, and
+collect the sensor that matches the suspected cost: allocation profile, cache
+counters, lock contention, code-size evidence, or a representative microbenchmark.
+
+Allocator pressure routes to `patterns/reduce-allocations.md`; cache and memory
+pressure to `patterns/compact-data-layout.md`; multiplied per-element boundary
+cost to `patterns/bulk-api.md`; and repeated or needless work to
+`patterns/avoid-unnecessary-work.md`.
+
+---
 
 ### Missing restrict
 

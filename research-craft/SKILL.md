@@ -38,6 +38,7 @@ Do not force exploratory work into fake precision. Increase control as soon as t
 - Name the one or two decisive unknowns. Avoid absorbing a fashionable problem without its reasoning chain.
 - Define the decision the result will change. If no plausible result changes a decision, narrow or stop the work.
 - Predict the result before reading the answer or running the experiment. Record the prediction so hindsight cannot rewrite it.
+- When training problem-selection taste, keep a dated portfolio of plausible opportunities—including those not pursued—with a resolution horizon and source of truth. Use `judgment-craft` to decide which opportunities matter; use this skill to make their forecasts resolvable.
 
 ## 2. Write the research contract
 
@@ -142,6 +143,7 @@ Maintain three separations:
 - Keep observations separate from interpretations.
 - Grade process quality separately from outcome luck.
 - Keep current context separate from durable memory; promote a lesson only when evidence justifies it.
+- At the declared horizon, resolve the full opportunity portfolio and grade selection quality separately from execution quality and outcome luck. Preserve misses and unchosen winners so hindsight cannot turn one successful bet into proof of good taste.
 
 ## 8. Scale and publish after learning survives
 
@@ -174,4 +176,4 @@ Do not call work successful when artifacts are missing, the evaluator moved, a h
 
 ## Sources
 
-The general craft draws from Hamming, Schulman, Shannon, Feynman, Karpathy, Ng, Sutton, Olah, and the full Chinese source in `references/how-to-be-good-at-research-zh.md`. The harness adapter distills Lilian Weng's harness-engineering framework. The quantitative adapter combines fixed-evaluator auto-research with observable failure learning and anti-overfitting trading practice.
+The general craft draws from Hamming, Schulman, Shannon, Feynman, Karpathy, Ng, Sutton, Olah, the user-supplied Jeff Dean discussion of problem selection and retrospective calibration, and the full Chinese source in `references/how-to-be-good-at-research-zh.md`. The harness adapter distills Lilian Weng's harness-engineering framework. The quantitative adapter combines fixed-evaluator auto-research with observable failure learning and anti-overfitting trading practice.

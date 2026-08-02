@@ -7,7 +7,41 @@ right upfront than to retrofit later.
 
 Each item links to the full pattern file for rationale and code templates.
 
+## Contents
+
+- Before the checklist
+- Pointers and aliasing
+- Floating-point reductions and accumulators
+- SIMD code and runtime dispatch
+- Multithreaded code
+- Function hot/cold classification
+- CRC32C and known algorithms
+- Quick reference by language
+
 ---
+
+## Before the checklist
+
+Read `references/performance-foundations.md`. Decide whether this is setup,
+application hot-path, or widely reused library code; estimate the dominant cost
+at realistic cardinality; and choose the simplest faster design that does not
+add meaningful complexity. Prefer, in order:
+
+1. a better algorithm or less work;
+2. compact data and fewer allocations or copies;
+3. bulk APIs that amortize calls, locks, parsing, or serialization;
+4. compiler, code-size, concurrency, and SIMD tuning.
+
+Create a correctness-preserving baseline before a non-local optimization. A
+microbenchmark accelerates iteration but does not establish end-to-end impact.
+
+### Structural patterns
+
+- Repeated full scans or worse-than-necessary complexity → `patterns/algorithmic-work.md`
+- Per-item API, lock, validation, or serialization crossings → `patterns/bulk-api.md`
+- Repeated heap allocation, copying, or temporary construction → `patterns/reduce-allocations.md`
+- Pointer-heavy or over-general representation with poor locality → `patterns/compact-data-layout.md`
+- Repeated, eager, or general work on a common path → `patterns/avoid-unnecessary-work.md`
 
 ## Checklist
 

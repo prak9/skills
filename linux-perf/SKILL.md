@@ -87,6 +87,19 @@ Use this when the user wants to know *which functions* are consuming time, not j
 
 Read `references/flow-b.md` for the execution steps.
 
+### When the leaf profile is flat
+
+Do not stop because no individual symbol dominates. Confirm the workload and
+optimized build, then inspect inclusive stacks and loops near the top of the call
+graph. Group cumulative cost by mechanism. Use an allocation profiler when
+allocator activity is distributed across callers; use hardware counters for
+cache or branch pressure; use contention data for synchronization; and compare
+code size when instruction-cache pressure is plausible.
+
+Then invoke `performance-patterns` and read `patterns/flat-profile.md`. The
+profiling skill owns sensor selection and data collection; the pattern skill owns
+the structural diagnosis and fix. Change and remeasure one hypothesis at a time.
+
 ---
 
 ## Flow C: Cache-line contention with `perf c2c`
@@ -208,6 +221,7 @@ Detailed command syntax, flags, and output formats for each primitive. Read
 | `Top-N lines within a function` | Ranked source lines inside one function |
 | `Dual-profile comparison` | Run top-15 at 1 core and at N cores; produce delta table of rank/% changes to identify scaling bottleneck candidates |
 | `Annotate pattern scan` | Scan `perf annotate` output for a function and return a structured table of detected anti-patterns (scalar FP, narrow SIMD, serial accumulator, horizontal reduction, lock CAS, memory load pressure) with suggested resolution strategies |
+| `Flat-profile escalation` | Inspect inclusive stacks and top-level loops, group cumulative work, then choose allocation, cache, contention, or code-size evidence before proposing a structural fix |
 | `Branch probability measurement` | Measure per-branch taken-probabilities in hot functions using Intel PMU events; identify near-zero-probability branches as `[[gnu::cold]]` candidates |
 | `GCC static branch probability` | Parse GCC's compile-time profile_estimate dump to obtain static branch-probability estimates; works on any platform; use as a proxy when no workload is available, or compare against perf data to find divergences worth optimizing |
 
@@ -220,6 +234,11 @@ load `triggers/from-profile.md` to match the signal, then the appropriate
 
 | Resolution strategy | `performance-patterns` pattern file |
 |---------------------|-------------------------------------|
+| Flat or diffuse profile | `patterns/flat-profile.md` |
+| Repeated allocations and copies | `patterns/reduce-allocations.md` |
+| Per-item API or lock boundary | `patterns/bulk-api.md` |
+| Cache-unfriendly representation | `patterns/compact-data-layout.md` |
+| Repeated, eager, or over-general work | `patterns/avoid-unnecessary-work.md` |
 | Test-and-Test-and-Set (TTAS) | `patterns/ttas.md` |
 | SIMD vector width upconversion | `patterns/simd-upconversion.md` |
 | Parallel accumulator rewrite | `patterns/parallel-accumulator.md` |

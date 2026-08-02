@@ -72,9 +72,12 @@ Select dimensions according to the review contract. Start with API semantics and
 
 - Find unbounded loops, recursion, allocation, buffering, fan-out, and cache growth.
 - Check algorithmic complexity, N+1 I/O, repeated serialization, unnecessary copies, and blocking on async paths.
+- Before instruction-level tuning, check whether the change can remove work, improve asymptotic behavior, compact representation, reduce allocation, or amortize API and synchronization boundaries.
 - Evaluate performance against realistic cardinality and worst credible input, not toy fixtures.
 - Treat a cache as a consistency mechanism as well as an optimization; inspect invalidation and memory limits.
-- Demand measurement for optimization claims and avoid speculative micro-optimization findings.
+- Demand comparable baseline and candidate measurements for optimization claims. Require the workload shape, metric, correctness checks, and evidence boundary; a microbenchmark alone does not establish end-to-end impact.
+- Treat public API performance properties—batching, ownership, stability, synchronization, and representation constraints—as durable compatibility commitments rather than local implementation details.
+- Avoid speculative micro-optimization findings and library-specific replacements without evidence that they address a material cost.
 
 ## Maintainability and architecture
 

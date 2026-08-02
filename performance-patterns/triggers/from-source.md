@@ -5,8 +5,18 @@ Use this file when you are reading source code and do not (yet) have profiling
 data. Find the matching pattern below, then read the linked file in `patterns/`
 for the full diagnosis and fix.
 
-These patterns are worth fixing even without profiling confirmation — the code
-structure alone is a strong predictor of the performance problem.
+Treat source signals as hypotheses ranked by cost and scope. Apply an obvious,
+local, semantics-preserving improvement without a profile when its cost model is
+clear; require representative measurement before claiming a gain or accepting a
+complex, non-local tradeoff. Read `references/performance-foundations.md` first.
+
+## Contents
+
+- Quick-match table
+- Structural patterns
+- Compiler and SIMD patterns
+- Concurrency patterns
+- Known algorithms and library patterns
 
 ---
 
@@ -14,6 +24,11 @@ structure alone is a strong predictor of the performance problem.
 
 | Signal in source code | Pattern | Detail file |
 |-----------------------|---------|-------------|
+| Nested scans, repeated search, incremental graph/container construction, or avoidable superlinear work at realistic cardinality | Algorithmic work | `patterns/algorithmic-work.md` |
+| Loop calls an API that repeats locking, validation, parsing, RPC, or serialization for every element | Bulk API | `patterns/bulk-api.md` |
+| Allocation, container growth, copying, or temporary construction repeats in a hot loop | Allocation reduction | `patterns/reduce-allocations.md` |
+| Pointer-heavy nodes, nested maps, sparse general containers for dense IDs, or fields much wider than their domain | Compact data layout | `patterns/compact-data-layout.md` |
+| Common path repeats invariant computation, uses a general routine for a simple case, performs eager work, or logs/formats unconditionally | Avoid unnecessary work | `patterns/avoid-unnecessary-work.md` |
 | Single FP variable updated in a loop: `sum += a[i]*b[i]`, `acc = fma(...)`, running max/min | Serial accumulator | `patterns/parallel-accumulator.md` |
 | Inline asm or function uses `ymm`/`zmm0–15` registers with no `vzeroupper` before return or SSE call | Missing vzeroupper | `patterns/missing-vzeroupper.md` |
 | `_mm_*` intrinsics (SSE/128-bit) or plain scalar float loop, no `_mm256_*` / `_mm512_*` | Narrow SIMD | `patterns/simd-upconversion.md` |
@@ -31,6 +46,20 @@ structure alone is a strong predictor of the performance problem.
 ---
 
 ## Pattern descriptions
+
+### Structural patterns
+
+Before instruction-level tuning, check whether the code performs too much work.
+Repeated scans and incremental construction route to `patterns/algorithmic-work.md`;
+per-item boundaries route to `patterns/bulk-api.md`; allocation churn routes to
+`patterns/reduce-allocations.md`; cache-unfriendly representation routes to
+`patterns/compact-data-layout.md`; and repeated, eager, or overly general work
+routes to `patterns/avoid-unnecessary-work.md`.
+
+These patterns can co-apply. Rank them with realistic cardinality and verify one
+mechanism-level change at a time.
+
+---
 
 ### Missing vzeroupper
 

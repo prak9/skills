@@ -1,6 +1,6 @@
 ---
 name: judgment-craft
-description: "The cognitive operating system for judgment in the AI era. Integrates crux-finding, argument and concept audits, four-quadrant perspective scans, worldview switching, trained intuition, falsification, probabilistic calibration, survivable risk, and second-level investment judgment. Use when distilling a thesis or decision; testing whether a conclusion follows from its premises; clarifying contested concepts or hidden assumptions; separating signal from noise; checking whether a personal, career, relationship, business, or system problem is narrowly framed; fighting analysis paralysis or wishful thinking; converting intuition into resolvable forecasts; sizing consequential bets; distinguishing stable from adaptive worlds and process from outcome luck; or finding a correct, non-consensus, unpriced investment edge."
+description: "The cognitive operating system for judgment in the AI era. Integrates crux-finding, argument and concept audits, four-quadrant perspective scans, worldview switching, trained intuition, problem-selection taste, falsification, probabilistic calibration, survivable risk, and second-level investment judgment. Use when distilling a thesis or decision; testing whether a conclusion follows from its premises; clarifying contested concepts or hidden assumptions; separating signal from noise; calibrating research, product, or founder taste through an opportunity forecast ledger; checking whether a personal, career, relationship, business, or system problem is narrowly framed; fighting analysis paralysis or wishful thinking; converting intuition into resolvable forecasts; sizing consequential bets; distinguishing stable from adaptive worlds and process from outcome luck; or finding a correct, non-consensus, unpriced investment edge."
 ---
 
 # Judgment Craft (judgment in the AI era)
@@ -61,6 +61,8 @@ The quadrant map is a coverage tool, not a voting system. Do not give all four b
 - **Intuition is the brain's compression of massive information into a shortcut** — judgment forged into intuition. It feels instant because the work was done earlier.
 - **You can't outsource taste / a feeling / an experience.** AI can take over knowledge and computation, but the feeling, the lived experience, and the judgment and taste forged from them cannot be outsourced — unless you actually do the thing yourself. **Judgment is trained, not read.**
 
+Read `references/taste-calibration.md` when deciding which problem deserves scarce time, choosing among research or product opportunities, or deliberately training taste through dated forecasts and retrospective resolution.
+
 ---
 
 ## Pillar 3 — Fight vagueness & wishful thinking (the operating system)
@@ -108,15 +110,16 @@ Pillar 1 chooses the direction; Pillar 2 earns the intuition; Pillar 3 makes the
 - **When a decision churns, suspect vagueness:** structure it (goal / constraints / payoffs) before deciding, instead of looping.
 - **Hedge wishful thinking** by writing the strongest bear/opposing case before concluding.
 - **Audit the argument before debating the conclusion:** classify the claim, freeze key meanings, expose premises and hidden assumptions, test the inference, and state what evidence would change the judgment.
+- **Train taste with a forecast portfolio:** record several plausible opportunities, choose only a few bets, then resolve the entire portfolio at a fixed horizon so selection quality cannot be rewritten by hindsight.
 
 ## Relationship to other skills
 
 - Investment skills such as `buy-side-equity-research-memo` and `serenity-alpha` use this discipline: lead with the crux and write the falsification trigger before committing.
-- `define-problem` owns problem contracts, `research-craft` owns evidence-generating loops, and `writing` owns clear delivery; use the argument audit here when their key concepts, premises, or inference remain contestable.
+- `define-problem` owns problem contracts, `research-craft` owns evidence-generating loops and resolvable experiment records, and `writing` owns clear delivery; use the taste adapter here to decide what deserves attention and the argument audit when key concepts, premises, or inference remain contestable.
 - The investment adapter owns variant perception: asset classification, consensus-versus-price, edge half-life, reflexivity, observation positions, survivable sizing, and process-versus-outcome review.
 - Pillar 3 is the *soul* of a buy-side memo's **"thesis breakpoint / falsification trigger."**
 - Complements **`research-craft`** (how to run good research): judgment-craft is *how to think and decide*; research-craft is *how to investigate*.
 
 ## Source
 
-Distilled from《深刻的简单》《顶级洞察力的形成》(Pillar 1); the user-supplied four-quadrant thinking article (Pillar 1 completeness adapter);《好运框架·决策本质》《纳瓦尔:判断力淬炼为直觉》(Pillar 2);《模糊,是最贵的成本》《如何做个正确的独立思考者》《认知飞轮》and the user-supplied philosophy-as-cognitive-quality-control synthesis (Pillar 3); the supplied analysis of Nate Silver's risk-culture framework (Pillar 4); and Howard Marks, George Soros, and the Davis double-play for the investment adapter. Core thesis: judgment means seeing enough of reality to choose the decisive variables, then expressing them through bets that preserve survival, learning, and legitimate choice.
+Distilled from《深刻的简单》《顶级洞察力的形成》(Pillar 1); the user-supplied four-quadrant thinking article (Pillar 1 completeness adapter);《好运框架·决策本质》《纳瓦尔:判断力淬炼为直觉》and the supplied Jeff Dean discussion of problem-selection taste and 12-month retrospective practice (Pillar 2);《模糊,是最贵的成本》《如何做个正确的独立思考者》《认知飞轮》and the user-supplied philosophy-as-cognitive-quality-control synthesis (Pillar 3); the supplied analysis of Nate Silver's risk-culture framework (Pillar 4); and Howard Marks, George Soros, and the Davis double-play for the investment adapter. Core thesis: judgment means seeing enough of reality to choose the decisive variables, then expressing them through bets that preserve survival, learning, and legitimate choice.

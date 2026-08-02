@@ -155,6 +155,7 @@ pattern files.
 
 | File | Purpose |
 |------|---------|
+| `references/performance-foundations.md` | Cross-pattern cost model, optimization order, API judgment, flat-profile tactics, and evidence contract; read before source/profile routing. |
 | `references/library-versions.md` | Known library symbols with a newer high-performance version; used by the library-version-upgrade pattern |
 | `references/known-algorithms.md` | Compact index: algorithm name → common function names. Inlined into trigger files so detection costs no extra file load; add a row here when adding a new algorithm. |
 | `references/known-algorithms-impl.md` | Per-algorithm implementation details: ISA levels, dispatch guards, key notes. Demand-loaded only after a function name match is confirmed — do not load speculatively. |

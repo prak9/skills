@@ -25,6 +25,8 @@
 
 **Dependencies:** None
 
+**Specification sources:** None. Add the problem contract, protocol, schema, tests, fixtures, or reference implementation only when each source's authority is known.
+
 **Preference refs / tactical overrides:** Inherit `program.md`; overrides: None.
 
 **Locked constraints:** None beyond accepted scope and program imperative bounds.

@@ -17,6 +17,9 @@ class SkillDocsTests(unittest.TestCase):
         unknowns_reference = PLAN_SKILL_ROOT / "references" / "unknowns-contract.md"
         reflection_reference = PLAN_SKILL_ROOT / "references" / "reflection-contract.md"
         foundation_reference = PLAN_SKILL_ROOT / "references" / "foundation-contract.md"
+        executable_spec_reference = (
+            PLAN_SKILL_ROOT / "references" / "executable-spec-contract.md"
+        )
         loop_reference = PLAN_SKILL_ROOT / "references" / "loop-contract.md"
         clean_reference = PLAN_SKILL_ROOT / "references" / "clean-contract.md"
         agent_config = (PLAN_SKILL_ROOT / "agents" / "openai.yaml").read_text(
@@ -30,6 +33,7 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("references/unknowns-contract.md", skill)
         self.assertIn("references/reflection-contract.md", skill)
         self.assertIn("references/foundation-contract.md", skill)
+        self.assertIn("references/executable-spec-contract.md", skill)
         self.assertIn("references/abstraction-quality.md", skill)
         self.assertIn("references/loop-contract.md", skill)
         self.assertIn("references/clean-contract.md", skill)
@@ -82,6 +86,13 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("maker's narrative", foundation)
         self.assertIn("judgment coverage map", foundation)
         self.assertIn("Comprehension Debt", foundation)
+
+        self.assertTrue(executable_spec_reference.is_file())
+        executable_spec = executable_spec_reference.read_text(encoding="utf-8")
+        self.assertIn("# Executable Specification Contract", executable_spec)
+        self.assertIn("## Treat Reference Behavior As Evidence", executable_spec)
+        self.assertIn("## Write An Independent Work Packet", executable_spec)
+        self.assertIn("differential", executable_spec)
 
         abstraction = abstraction_reference.read_text(encoding="utf-8")
         self.assertIn("# Abstraction Quality Gate", abstraction)
@@ -138,6 +149,7 @@ class SkillDocsTests(unittest.TestCase):
             self.assertIn("Active unknowns", text)
             self.assertIn("Escalate when", text)
         self.assertIn("Preference refs / tactical overrides", task)
+        self.assertIn("Specification sources", task)
         self.assertIn("Discovered unknowns / deviations", task)
         self.assertIn("## Reflection Log", lite)
         self.assertIn("| Node | Status | Action | Verification | Evidence | Reflection |", lite)

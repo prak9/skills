@@ -20,6 +20,14 @@ Do not optimize an answer until the question is good enough to guide action. A f
 - Define the problem only as precisely as the next decision requires. Avoid both vague slogans and weeks of analysis before a reversible first step.
 - End with a problem contract. Hand off to planning, research, design, or execution only after the contract is accepted or explicitly marked provisional.
 
+## Make the contract agent-legible
+
+- Write so a capable outsider or agent can recover the same outcome, scope, constraints, key terms, and success evidence without hidden organizational context.
+- Replace adjectives such as "fast," "robust," or "equivalent" with observable bounds. Separate required behavior from illustrative examples and negotiable preferences.
+- Point to authoritative artifacts—current behavior, protocols, schemas, tests, fixtures, or a reference implementation—and state what each one specifies and what it does not.
+- Keep unresolved decisions explicit. Do not let an agent silently choose a load-bearing interpretation.
+- Stop before work decomposition or implementation design; hand the accepted contract to `plan-skill`.
+
 ## Classify the input
 
 First identify what the user actually supplied:
@@ -119,7 +127,7 @@ Before handoff, verify:
 - **Success test:** let an independent observer decide whether the outcome improved.
 - **Constraint test:** expose the real limits, tradeoffs, and non-goals.
 - **Falsification test:** name evidence that would revise or retire the definition.
-- **Outsider test:** let a capable outsider paraphrase the problem and reach the same scope without extra explanation.
+- **Agent-legibility test:** let a capable outsider or agent paraphrase the problem and reach the same scope without extra explanation.
 
 If a test fails, revise the definition instead of compensating with a longer prompt or plan.
 
@@ -135,6 +143,7 @@ without [guardrail violation]. Success means [observable standard].
 
 Current evidence and baseline:
 Key terms / operational definitions:
+Authoritative behavior references and their limits:
 Decision this definition enables:
 Hard constraints and negotiable preferences:
 Non-goals:

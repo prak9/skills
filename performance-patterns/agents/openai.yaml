@@ -1,4 +1,4 @@
 interface:
   display_name: "Performance Patterns"
-  short_description: "Detect and fix x86 C and C++ performance patterns"
-  default_prompt: "Use $performance-patterns to inspect this code or profile and recommend a measured performance fix."
+  short_description: "Prioritize and fix measured performance bottlenecks"
+  default_prompt: "Use $performance-patterns to rank this performance problem by leverage, select the matching pattern, and verify the fix with representative evidence."
