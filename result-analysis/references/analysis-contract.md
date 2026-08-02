@@ -31,7 +31,7 @@ model_path / params_mtime / SHA256 / missing_or_backfilled_fields
 
 - 日报通常是相邻日期的一日窗；排除周报和 `_trade` 重复文件，防止重复计权。
 - 不硬编码 t0/t1/t2 的 feature/target 映射。用当前日报的 `account×y`、params 和 artifact hash 确认。
-- 模型、标签、horizon、feature、gate 或状态机不同的日期拆成不同 cohort。
+- 按最小受影响单位拆 cohort：账户级模型、标签、horizon 或 feature 变化影响该账户；品种×session 的 fg/sg、gate 或状态机变化只影响对应 cell。除非是全局身份变化，不得因单个 cell 改动剔除整日其它可比数据。
 - 报告时模型身份无法恢复，写 `identity_unverified`，跨日结论降一级。
 - 若实盘字段缺失或 bundle 不完整，检查对应 `/data/logs/result/cron_YYMMDD.log` 中的 `未拿到`、跳过和回填告警，并把生成失败与真实零值分开。
 

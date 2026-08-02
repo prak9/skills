@@ -15,7 +15,7 @@ description: 统一分析 py 期货仓库的 result.py 日报、周报与 winres
 - 单日只给 `观察/假设`；跨日证据不足时不写 `PROMOTE/DISCARD` 或具体参数裁决。
 - 只选择一个首要瓶颈。最多给 3 条 action，每条包含机制、验证方法和 falsifier。
 
-每次分析先完整读取 [references/analysis-contract.md](references/analysis-contract.md)。只有进入深度归因时再读 [references/deep-attribution.md](references/deep-attribution.md)；只有用户要求模型、标签、训练或参数优化时再读 [references/model-training-tuning.md](references/model-training-tuning.md)。
+每次分析先完整读取 [references/analysis-contract.md](references/analysis-contract.md)。分析周报、周复盘或下周运行建议时再读 [references/weekly-review.md](references/weekly-review.md)；只有进入深度归因时再读 [references/deep-attribution.md](references/deep-attribution.md)；只有用户要求模型、标签、训练或参数优化时再读 [references/model-training-tuning.md](references/model-training-tuning.md)。
 
 ## 深度路由
 
@@ -23,6 +23,7 @@ description: 统一分析 py 期货仓库的 result.py 日报、周报与 winres
 |---|---|---|---|
 | Quick | “看下日报/周报、按账户或品种汇总” | `winress`，可选 `detail` | 交易所/账户/品种/session 概览、稳定性与异常 |
 | Standard（默认） | “复盘、为什么赚/亏、SIM/REAL 差距” | `detail + winress + trades` | 经济性、预测、策略、部署四层路由与首要瓶颈 |
+| Weekly | “本周复盘、模型比较、下周运行建议” | 至少 3 个 READY 日报 bundle | pot-first 模型选择、稳定性过滤、日夜运行卡和调整信号 |
 | Deep | “逐笔/因子/regime/容量/P&L 瀑布” | Standard + 按需 `signals/capacity` | 重尾、行为、因子、容量和证据缺口 |
 | Tuning | “训练优化/标签/正则/gate/参数/实验方向” | 至少 3 个同身份日报束；优先 5+ | 单 editable surface 的可证伪假设包 |
 
@@ -131,6 +132,7 @@ Quick 模式可省略深层章节，但仍要给证据边界。Tuning 模式最�
 ## 资源
 
 - `references/analysis-contract.md`：所有模式必读的数据、指标、聚合和证据边界
+- `references/weekly-review.md`：Weekly 模式的 cohort、pot-first、资格门槛和运行卡合同
 - `references/deep-attribution.md`：Deep 模式的 regime、P&L、行为、部署、因子和容量方法
 - `references/model-training-tuning.md`：Tuning 模式的身份冻结、证据梯和实验合同
 - `scripts/model_tuning_diagnostics.py`：跨日报、跨证据层的候选路由脚本；先运行 `--self-test`
