@@ -67,6 +67,8 @@ Describe the gap between current and desired states with available evidence:
 
 Do not write a suspected cause as an established fact. Label root-cause claims as hypotheses until evidence distinguishes them from plausible rivals.
 
+Clarify any concept whose meaning can change the actor, gap, measurement, or solution space. Give it an operational definition when possible; check whether stakeholders use the same word differently, whether a proposed condition is necessary or merely sufficient, and whether an indicator has silently replaced the outcome it is meant to represent.
+
 ### 4. Set constraints and non-goals
 
 Name the boundaries that shape a valid answer:
@@ -112,6 +114,7 @@ Before handoff, verify:
 - **Outcome test:** describe a changed condition, not a deliverable.
 - **Actor test:** identify one primary actor and a real context.
 - **Evidence test:** separate observed facts from interpretations and guesses.
+- **Concept test:** keep load-bearing terms stable, observable enough for the next decision, and shared across stakeholders or explicitly preserve their competing meanings.
 - **Open-solution test:** allow at least two materially different solution classes.
 - **Success test:** let an independent observer decide whether the outcome improved.
 - **Constraint test:** expose the real limits, tradeoffs, and non-goals.
@@ -131,6 +134,7 @@ We need [desired outcome] by [time horizon], subject to [hard constraints],
 without [guardrail violation]. Success means [observable standard].
 
 Current evidence and baseline:
+Key terms / operational definitions:
 Decision this definition enables:
 Hard constraints and negotiable preferences:
 Non-goals:
@@ -146,7 +150,7 @@ Compress the contract for simple tasks; do not fill fields with boilerplate. Kee
 
 - Use `plan-skill` after a project problem is defined and implementation must be decomposed.
 - Use `research-craft` when a decisive assumption requires controlled investigation.
-- Use `judgment-craft` when the problem is defined but the crux, tradeoff, or consequential choice remains unclear.
+- Use `judgment-craft` when the problem is defined but a load-bearing concept, premise, crux, tradeoff, or consequential choice remains contestable.
 
 Do not invoke downstream execution merely because the problem can now be stated. Let the user confirm the contract or explicitly authorize the next stage.
 

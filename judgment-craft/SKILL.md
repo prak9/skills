@@ -1,6 +1,6 @@
 ---
 name: judgment-craft
-description: "The cognitive operating system for judgment in the AI era — what computation/knowledge cannot replace. Integrates crux-finding, four-quadrant perspective scanning, worldview switching, trained intuition, falsification, probabilistic forecasting and calibration, survivable risk-taking, and second-level investment judgment. Use when distilling a thesis or decision, separating signal from noise, checking whether a personal/career/relationship/business/system problem is framed too narrowly, combining subjective experience with observable behavior, culture, and external systems, fighting analysis paralysis or wishful thinking, turning intuition into a resolvable probability or updating it with evidence, sizing a consequential bet, distinguishing model-friendly from adaptive worlds, separating process quality from outcome luck, identifying a correct non-consensus unpriced investment edge, choosing contrarian versus trend-confirming logic, or providing the judgment discipline behind buy-side and alpha analysis."
+description: "The cognitive operating system for judgment in the AI era. Integrates crux-finding, argument and concept audits, four-quadrant perspective scans, worldview switching, trained intuition, falsification, probabilistic calibration, survivable risk, and second-level investment judgment. Use when distilling a thesis or decision; testing whether a conclusion follows from its premises; clarifying contested concepts or hidden assumptions; separating signal from noise; checking whether a personal, career, relationship, business, or system problem is narrowly framed; fighting analysis paralysis or wishful thinking; converting intuition into resolvable forecasts; sizing consequential bets; distinguishing stable from adaptive worlds and process from outcome luck; or finding a correct, non-consensus, unpriced investment edge."
 ---
 
 # Judgment Craft (judgment in the AI era)
@@ -70,6 +70,8 @@ The quadrant map is a coverage tool, not a voting system. Do not give all four b
 - **A probability is useful only when it can resolve and change action.** Define the event, deadline, and source of truth; start from a base rate; update without double-counting evidence; and let the posterior alter the bet or its size.
 - **Independent thinking is grounded in evidence and logic**, not credulity — don't blindly trust others' words, your own eyes, sell-side research, or the algorithmic feed — and **hedge wishful thinking with the strongest opposing view.**
 
+Read `references/argument-and-concept-audit.md` before accepting or rejecting a consequential claim, adjudicating a dispute whose terms may differ, or relying on a causal, predictive, normative, or definitional argument. Use it to expose premises and concept drift before applying falsification or probability.
+
 Read `references/probabilistic-judgment.md` before quantifying intuition, making repeated forecasts, updating a belief from sequential evidence, evaluating calibration, or adding a confidence/meta-model to a prediction system.
 
 ---
@@ -105,14 +107,16 @@ Pillar 1 chooses the direction; Pillar 2 earns the intuition; Pillar 3 makes the
 - **For an investment, prove the edge:** state consensus, what price embeds, your divergent view, why it is more accurate, when the edge expires, and the evidence that earns an add or forces an exit.
 - **When a decision churns, suspect vagueness:** structure it (goal / constraints / payoffs) before deciding, instead of looping.
 - **Hedge wishful thinking** by writing the strongest bear/opposing case before concluding.
+- **Audit the argument before debating the conclusion:** classify the claim, freeze key meanings, expose premises and hidden assumptions, test the inference, and state what evidence would change the judgment.
 
 ## Relationship to other skills
 
 - Investment skills such as `buy-side-equity-research-memo` and `serenity-alpha` use this discipline: lead with the crux and write the falsification trigger before committing.
+- `define-problem` owns problem contracts, `research-craft` owns evidence-generating loops, and `writing` owns clear delivery; use the argument audit here when their key concepts, premises, or inference remain contestable.
 - The investment adapter owns variant perception: asset classification, consensus-versus-price, edge half-life, reflexivity, observation positions, survivable sizing, and process-versus-outcome review.
 - Pillar 3 is the *soul* of a buy-side memo's **"thesis breakpoint / falsification trigger."**
 - Complements **`research-craft`** (how to run good research): judgment-craft is *how to think and decide*; research-craft is *how to investigate*.
 
 ## Source
 
-Distilled from《深刻的简单》《顶级洞察力的形成》(Pillar 1); the user-supplied four-quadrant thinking article (Pillar 1 completeness adapter);《好运框架·决策本质》《纳瓦尔:判断力淬炼为直觉》(Pillar 2);《模糊,是最贵的成本》《如何做个正确的独立思考者》《认知飞轮》(Pillar 3); the supplied analysis of Nate Silver's risk-culture framework (Pillar 4); and Howard Marks, George Soros, and the Davis double-play for the investment adapter. Core thesis: judgment means seeing enough of reality to choose the decisive variables, then expressing them through bets that preserve survival, learning, and legitimate choice.
+Distilled from《深刻的简单》《顶级洞察力的形成》(Pillar 1); the user-supplied four-quadrant thinking article (Pillar 1 completeness adapter);《好运框架·决策本质》《纳瓦尔:判断力淬炼为直觉》(Pillar 2);《模糊,是最贵的成本》《如何做个正确的独立思考者》《认知飞轮》and the user-supplied philosophy-as-cognitive-quality-control synthesis (Pillar 3); the supplied analysis of Nate Silver's risk-culture framework (Pillar 4); and Howard Marks, George Soros, and the Davis double-play for the investment adapter. Core thesis: judgment means seeing enough of reality to choose the decisive variables, then expressing them through bets that preserve survival, learning, and legitimate choice.

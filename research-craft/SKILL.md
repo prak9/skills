@@ -45,8 +45,10 @@ Before a consequential run or edit, record the minimum contract:
 
 ```text
 Objective and decision:
+Claim type and key terms:
 Hypothesis and mechanism:
-Prediction and plausible rival:
+Explicit premises / hidden assumptions:
+Prediction and strongest plausible rival:
 Baseline or current champion:
 Editable surface:
 Frozen evaluator and data:
@@ -69,6 +71,7 @@ Never optimize the candidate and redefine success in the same round.
 ## 3. Upgrade inputs and inspect reality first
 
 - Read primary sources, original data, code, traces, and appendices before relying on summaries.
+- Operationalize any concept that determines labels, metrics, inclusion, or causal interpretation; do not let a convenient proxy silently replace the construct being claimed.
 - Diversify beyond the current feed; use old and cross-field work to escape synchronized conclusions.
 - Inspect raw samples by hand before building abstractions. Silent data or labeling errors often produce plausible but false theories.
 - Shrink the problem until it is cheap: one batch, one trace, one symbol, one regime, one failing case, or one minimal reproduction.
@@ -105,6 +108,7 @@ Change one meaningful variable or rule family per round when attribution matters
 Require the gates relevant to the claim:
 
 - **Protocol integrity:** evaluator, data, split, costs, seed, and objective remained fixed during candidate comparison.
+- **Argument integrity:** the evidence supports the stated premises, the inference connects them to the conclusion, key terms remain stable, and the strongest plausible rival has not been ignored.
 - **Baseline strength:** the candidate beats a tuned, reproducible baseline rather than a weak straw man.
 - **Held-out confirmation:** validation or truth data vetoes promotion; repeated exposure is contamination, not free evidence.
 - **Sample and uncertainty:** the effective sample supports the claimed precision; show ranges or sensitivity when it does not.
@@ -155,6 +159,7 @@ End substantial work with:
 
 ```text
 Decision and confidence:
+Claim type / concept boundary:
 Crux / decisive evidence:
 Protocol and baseline:
 Accepted and rejected changes:

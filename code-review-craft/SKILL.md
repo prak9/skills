@@ -26,7 +26,7 @@ Automate evidence collection aggressively. Do not outsource comprehension, quali
 Before judging the code:
 
 1. Read applicable repository instructions and the files under review in full.
-2. Identify the change intent, expected behavior, base revision, scope, and explicit acceptance criteria.
+2. Identify the change intent, expected behavior, base revision, scope, and explicit acceptance criteria. Clarify any load-bearing term whose meaning differs across the request, public API, implementation, documentation, or tests.
 3. Name the protected properties: correctness, compatibility, data integrity, security, latency, availability, or another project-specific constraint.
 4. Calibrate depth to impact and reversibility. Inspect architecture, migrations, auth, billing, concurrency, public APIs, and destructive operations more deeply than local formatting or generated boilerplate.
 5. Infer missing intent from callers, tests, docs, schemas, history, and existing patterns. State any material assumption; do not invent a specification.
@@ -55,6 +55,15 @@ Read beyond the diff until the behavior can be explained without guessing:
 5. Perform the explain-back gate: state what the code does, why it does it, what must remain true, and how failure becomes visible.
 
 If any material step still depends on “the framework probably handles it,” keep reading or mark the uncertainty. Passing the explain-back gate is required before approval.
+
+## Audit The Approval Argument
+
+Treat every verdict as a compact argument: the approval claim depends on supported requirements and invariants, evidence from the actual code and probes, and an inference that survives the strongest realistic failure path. Keep these separate:
+
+- Tests demonstrate the cases they exercise; they do not prove that the contract or case selection is complete.
+- Matching words do not prove matching semantics; compare definitions, units, defaults, boundaries, and lifecycle across specification and implementation.
+- A plausible concern is not a finding until its premises and trigger are evidenced; absence of an observed failure is not proof of safety.
+- Before approving or reporting, try the strongest counterexample and state the residual boundary that remains unverified.
 
 ## Allocate attention by cost of late change
 

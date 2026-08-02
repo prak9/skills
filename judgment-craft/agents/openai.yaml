@@ -1,4 +1,4 @@
 interface:
   display_name: "Judgment Craft"
-  short_description: "Find the crux and size consequential decisions"
-  default_prompt: "Use $judgment-craft to identify the decisive variables, falsifiers, and survivable next bet in this decision."
+  short_description: "Audit arguments, find cruxes, and size decisions"
+  default_prompt: "Use $judgment-craft to audit the concepts, premises, hidden assumptions, falsifiers, and decision consequence in this claim."

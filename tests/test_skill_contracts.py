@@ -101,6 +101,30 @@ class SkillContractTests(unittest.TestCase):
     def test_judgment_craft_has_no_missing_alpha_research_dependency(self) -> None:
         self.assertNotIn("alpha-research", skill_text("judgment-craft"))
 
+    def test_argument_audit_has_one_canonical_core_and_domain_adapters(self) -> None:
+        judgment = skill_text("judgment-craft")
+        audit_path = (
+            ROOT
+            / "judgment-craft"
+            / "references"
+            / "argument-and-concept-audit.md"
+        )
+        audit = audit_path.read_text(encoding="utf-8")
+
+        self.assertIn("references/argument-and-concept-audit.md", judgment)
+        self.assertIn("# Argument And Concept Audit", audit)
+        self.assertIn("Explicit premises", audit)
+        self.assertIn("Hidden assumptions", audit)
+        self.assertIn("necessary from sufficient", audit)
+        self.assertIn("Strongest countercase", audit)
+        self.assertIn("Update trigger", audit)
+
+        self.assertIn("Concept test", skill_text("define-problem"))
+        self.assertIn("Argument integrity", skill_text("research-craft"))
+        self.assertIn("Audit The Approval Argument", skill_text("code-review-craft"))
+        self.assertIn("核心概念一致", skill_text("writing"))
+        self.assertIn("论证与概念审计", skill_text("storm-deep-research"))
+
 
 if __name__ == "__main__":
     unittest.main()
