@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, or audit, cleanup, simplification, and repair of existing plan artifacts or memory. It can refine a raw idea, expose material preferences and tradeoffs, create a single-file Lite plan, expand work into Full task packages, periodically align durable docs, distill consequential memory, control complexity, and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
+description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, or audit, cleanup, simplification, and repair of existing plan artifacts or memory. It can refine a raw idea, expose material preferences and tradeoffs, capture evidence-linked reflection after each completed node, create a single-file Lite plan, expand work into Full task packages, periodically align durable docs, distill memory, control complexity, and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
 ---
 
 # Plan Skill
@@ -20,9 +20,9 @@ Prefer the lighter surface when uncertain. Upgrade Lite in place when its state 
 
 ## Authority
 
-- In Lite, `program.md` is the only plan artifact.
+- In Lite, `program.md` is the only plan artifact and owns its `Reflection Log`.
 - In Full, `program.md` owns project outcome, constraints, acceptance, task index, checkpoints, blockers, and next action. A task package is the only source of its task status and atomic execution state.
-- `memory.md` is optional in Lite and required in Full. Record only decisions, findings, or consequential runs that change future work.
+- `memory.md` is optional in Lite and required in Full. It owns the Full reflection ledger plus decisions, findings, and consequential runs.
 - Code, tests, CI, logs, and runtime output are facts. Markdown points to evidence; it does not replace it.
 - Generated deliverables may use `tasks/output/TASK-NNN-<slug>/` as a latest snapshot. Create and gitignore it only when a task actually produces such artifacts.
 
@@ -56,7 +56,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 ## Execute And Resume
 
 - Resume by reading `program.md`, then the active task package and only the memory/evidence it references.
-- Execute the smallest useful node, run its verifier, record evidence, and update the authoritative status once.
+- Execute the smallest useful node, run its verifier, then read `references/reflection-contract.md` and record one evidence-linked `R-*` before selecting the next action or closing the node.
 - Create later task packages just in time, after their dependencies and acceptance conditions are known.
 - A failed verifier changes the plan, retires an assumption, or triggers escalation; repeating output without new information is not progress.
 - When Clean becomes due, or before handoff, `待验收`, or `完成`, read `references/clean-contract.md` and compress stale or duplicated state before continuing.
@@ -67,13 +67,14 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 ## Invariants
 
 - Planning is read-only unless the user also authorizes execution.
+- Every completed atomic node has one evidence-linked reflection that states what changed or held, what to preserve, and the next operational rule; record decision summaries, not hidden chain-of-thought.
 - Do not silently invent a material preference. Research discoverable facts, state consequential assumptions, and ask only when human judgment can change the plan.
 - Prefer declarative objectives with explicit bounds; reserve imperative constraints for fragile, high-stakes, or deliberately standardized paths and surface a materially better option without overriding the lock.
 - `完成` and `待验收` require acceptance evidence; written code is not completion.
 - A blocked item names the missing input, owner or external condition, and unblock action.
 - Loop mode has a finite budget, verifier, reflect trigger, and stop/escalation condition.
 - Preserve user constraints and existing project conventions; escalate before changing scope or acceptance criteria.
-- Store historical facts only when they will change future execution; do not duplicate ordinary progress or Git history.
+- Outside the per-node reflection ledger, store historical facts only when they will change future execution; do not duplicate ordinary progress or Git history.
 - Clean may compress Markdown state but must preserve stable IDs, evidence links, and raw facts.
 
 ## Resources
@@ -81,6 +82,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - `assets/program-lite.template.md`: single-file Lite contract; use through `init_plan.py`
 - `assets/program-full-starter.template.md`, `assets/task-full-starter.template.md`, `assets/memory-starter.template.md`: compact Full contracts; use through `init_plan.py`
 - `references/preference-contract.md`: strategic/tactical and declarative/imperative preference contract
+- `references/reflection-contract.md`: per-node wrong/right feedback and memory writeback contract
 - `references/loop-contract.md`: exact Full/Loop program, task, and memory interface
 - `references/clean-contract.md`: periodic alignment, distillation, and complexity-control contract
 - `scripts/init_plan.py`: safe initialization without overwriting existing plan files

@@ -332,6 +332,153 @@ def is_concrete(value: str | None) -> bool:
     return not PENDING_VALUE.search(normalized)
 
 
+REFLECTION_SECTION_TITLES = ("Reflection Log", "Reflections", "Node Reflections")
+REFLECTION_FIELDS = {
+    "scope": "Scope",
+    "evidence": "Evidence",
+    "wrong / changed": "Wrong / changed",
+    "right / preserve": "Right / preserve",
+    "next rule": "Next rule",
+}
+
+
+def has_reflection_ledger(text: str) -> bool:
+    return any(
+        markdown_heading_section(text, title) is not None
+        for title in REFLECTION_SECTION_TITLES
+    )
+
+
+def reflection_records(
+    path: Path,
+    text: str,
+    errors: list[str],
+) -> dict[str, dict[str, str]]:
+    records: dict[str, dict[str, str]] = {}
+    for title in REFLECTION_SECTION_TITLES:
+        section = markdown_heading_section(text, title)
+        if section is None:
+            continue
+        for header, cells in iter_table_rows(section):
+            normalized = [norm_cell(cell).lower() for cell in header]
+            lookup = {name: index for index, name in enumerate(normalized)}
+            required = {"id", *REFLECTION_FIELDS}
+            if not required.issubset(lookup):
+                continue
+            if max(lookup[field] for field in required) >= len(cells):
+                continue
+            reflection_id = norm_cell(cells[lookup["id"]])
+            if not re.fullmatch(r"R-\d{3}", reflection_id):
+                continue
+            if reflection_id in records:
+                errors.append(f"{path} has duplicate reflection ID `{reflection_id}`")
+                continue
+            record = {
+                field: norm_cell(cells[lookup[field]])
+                for field in REFLECTION_FIELDS
+            }
+            records[reflection_id] = record
+            missing = [
+                label
+                for field, label in REFLECTION_FIELDS.items()
+                if not is_concrete(record[field])
+            ]
+            if missing:
+                errors.append(
+                    f"{path} reflection `{reflection_id}` is incomplete: "
+                    + ", ".join(missing)
+                )
+    return records
+
+
+def completed_nodes(section: str | None, id_pattern: str) -> list[str]:
+    return [
+        row_id
+        for row_id, status in section_status_rows(section)
+        if re.fullmatch(id_pattern, row_id) and status == "完成"
+    ]
+
+
+def check_node_reflections(
+    path: Path,
+    text: str,
+    section_title: str,
+    id_pattern: str,
+    records: dict[str, dict[str, str]],
+    errors: list[str],
+    related_plan_node: str | None = None,
+) -> None:
+    section = markdown_heading_section(text, section_title)
+    if section is None:
+        return
+    node_ids_in_section = [
+        row_id
+        for row_id, _ in section_status_rows(section)
+        if re.fullmatch(id_pattern, row_id)
+    ]
+    allow_plan_node_scope = len(node_ids_in_section) == 1
+    used_reflections: dict[str, str] = {}
+    for header, cells in iter_table_rows(section):
+        normalized = [norm_cell(cell).lower() for cell in header]
+        lookup = {name: index for index, name in enumerate(normalized)}
+        node_idx = lookup.get("node")
+        status_idx = lookup.get("status")
+        if node_idx is None or status_idx is None:
+            continue
+        if max(node_idx, status_idx) >= len(cells):
+            continue
+        node = norm_cell(cells[node_idx])
+        status = norm_cell(cells[status_idx])
+        if not re.fullmatch(id_pattern, node) or status != "完成":
+            continue
+        reflection_idx = lookup.get("reflection")
+        if reflection_idx is None or reflection_idx >= len(cells):
+            errors.append(
+                f"{path} completed atomic node `{node}` has no reflection column"
+            )
+            continue
+        references = sorted(set(re.findall(r"\bR-\d{3}\b", cells[reflection_idx])))
+        if not references:
+            errors.append(
+                f"{path} completed atomic node `{node}` has no `R-*` reflection"
+            )
+            continue
+        missing = [reference for reference in references if reference not in records]
+        if missing:
+            errors.append(
+                f"{path} completed atomic node `{node}` references missing reflections: "
+                + ", ".join(missing)
+            )
+            continue
+        scoped = [
+            reference
+            for reference in references
+            if node in records[reference]["scope"]
+            or (
+                allow_plan_node_scope
+                and related_plan_node is not None
+                and related_plan_node in records[reference]["scope"]
+            )
+        ]
+        if not scoped:
+            errors.append(
+                f"{path} completed atomic node `{node}` has no reflection scoped to "
+                f"`{node}` or `{related_plan_node or 'its plan node'}`"
+            )
+            continue
+        available = [reference for reference in scoped if reference not in used_reflections]
+        if not available:
+            owners = ", ".join(
+                f"{reference}->{used_reflections[reference]}" for reference in scoped
+            )
+            errors.append(
+                f"{path} completed atomic node `{node}` reuses a reflection already "
+                f"assigned to another node: {owners}"
+            )
+            continue
+        used_reflections[available[0]] = node
+
+
 def is_clean_record(value: str | None) -> bool:
     if value is None:
         return False
@@ -1358,6 +1505,27 @@ def main() -> int:
     elif not lite:
         errors.append(f"Missing file: {memory_path}")
 
+    lite_reflection_ledger = has_reflection_ledger(program_text) if lean_lite else False
+    memory_reflection_ledger = has_reflection_ledger(memory_text)
+    lite_reflections = (
+        reflection_records(program_path, program_text, errors)
+        if lite_reflection_ledger
+        else {}
+    )
+    memory_reflections = (
+        reflection_records(memory_path, memory_text, errors)
+        if memory_reflection_ledger
+        else {}
+    )
+    if lean_lite and not lite_reflection_ledger:
+        warnings.append(
+            "program.md has no Reflection Log; add one `R-*` entry per completed node"
+        )
+    if lean_full and memory_text and not memory_reflection_ledger:
+        warnings.append(
+            "memory.md has no Reflections ledger; add one `R-*` entry per completed node"
+        )
+
     checked_paths: list[Path] = [program_path] if program_path.exists() else []
     if memory_path.exists():
         checked_paths.append(memory_path)
@@ -1425,6 +1593,15 @@ def main() -> int:
 
     if lean_lite:
         node_statuses = check_lite_plan(program_path, program_text, errors)
+        if lite_reflection_ledger:
+            check_node_reflections(
+                program_path,
+                program_text,
+                "Plan",
+                r"NODE-\d{3}",
+                lite_reflections,
+                errors,
+            )
         task_node_mapping: dict[str, str] = {}
     else:
         node_statuses, task_node_mapping = (
@@ -1581,6 +1758,26 @@ def main() -> int:
             errors.append(
                 f"{program_path} Active task package `{link}` already has terminal status "
                 f"`{package_status}`"
+            )
+        completed = completed_nodes(
+            markdown_heading_section(task_text, atomic_heading),
+            r"N-\d{3}",
+        )
+        task_reflections = memory_reflections or lite_reflections
+        task_ledger_present = memory_reflection_ledger or lite_reflection_ledger
+        if completed and not task_ledger_present:
+            warnings.append(
+                f"{task_path} has completed atomic nodes but no Reflections ledger"
+            )
+        elif task_ledger_present:
+            check_node_reflections(
+                task_path,
+                task_text,
+                atomic_heading,
+                r"N-\d{3}",
+                task_reflections,
+                errors,
+                related_plan_node=task_plan_node,
             )
         if "N-001" not in task_text:
             warnings.append(f"{task_path} has no atomic node ID, e.g. N-001")

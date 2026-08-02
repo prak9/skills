@@ -25,14 +25,15 @@ Audit the plan by checking authority, usefulness, and evidence rather than templ
 
 - Each node is independently useful or proves a material assumption.
 - Completed or acceptance-ready work has evidence that would fail if the result were broken.
+- Every completed atomic node points to one `R-*` entry that records wrong/changed, right/preserve, evidence, and the next rule.
 - A blocked item names its unblock condition.
 - Outputs are created and gitignored only when the task produces deliverable artifacts.
-- Memory contains only decisions, findings, and consequential runs that change future work.
+- Memory contains the per-node reflection ledger plus only decisions, findings, and consequential runs that change future work.
 
 ## Clean And Complexity
 
 - `Clean state` becomes `Due` at handoff or terminal boundaries, after the fixed accumulation thresholds, or when durable state drifts.
-- Clean preserves stable IDs and raw evidence while retiring duplicate, stale, or superseded Markdown state with pointers.
+- Clean preserves stable IDs, raw evidence, and unique node reflections while retiring duplicate, stale, or superseded Markdown state with pointers.
 - Program, active task, memory, and referenced living docs agree on authority, constraints, decisions, and next action.
 - The pass reduces retrieval surface or records a concrete no-op reason; it does not add an unbounded cleanup log.
 

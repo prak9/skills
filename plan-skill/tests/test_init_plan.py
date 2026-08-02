@@ -63,8 +63,12 @@ class InitPlanTests(unittest.TestCase):
         self.assertIn("- Clean state: `Not due`", program)
         self.assertIn("- Last clean: `Not run`", program)
         self.assertIn("- Owner: `Platform Team`", program)
-        self.assertIn("| Node | Status | Action | Verification | Evidence |", program)
-        self.assertLessEqual(len(program.splitlines()), 45)
+        self.assertIn(
+            "| Node | Status | Action | Verification | Evidence | Reflection |",
+            program,
+        )
+        self.assertIn("## Reflection Log", program)
+        self.assertLessEqual(len(program.splitlines()), 52)
         self.assertFalse((self.root / "tasks").exists())
         self.assertFalse((self.root / "memory.md").exists())
         self.assertFalse((self.root / ".gitignore").exists())
@@ -108,7 +112,10 @@ class InitPlanTests(unittest.TestCase):
         self.assertTrue(task.exists())
         task_text = task.read_text(encoding="utf-8")
         self.assertIn("**Preference refs / tactical overrides:**", task_text)
-        self.assertIn("| Node | Status | Action | Verification | Evidence |", task_text)
+        self.assertIn(
+            "| Node | Status | Action | Verification | Evidence | Reflection |",
+            task_text,
+        )
         self.assertIn("## Completion Review", task_text)
         self.assertNotIn("## Standing Checklist", task_text)
         self.assertNotIn("## Pre-completion Red Team", task_text)
@@ -119,9 +126,12 @@ class InitPlanTests(unittest.TestCase):
         self.assertIn("## Decisions", memory_text)
         self.assertIn("## Findings", memory_text)
         self.assertIn("## Runs", memory_text)
-        self.assertIn("During Clean, preserve stable IDs and evidence", memory_text)
+        self.assertIn("## Reflections", memory_text)
+        self.assertIn("Wrong / changed", memory_text)
+        self.assertIn("Right / preserve", memory_text)
+        self.assertIn("During Clean, preserve unique `R-*` feedback", memory_text)
         self.assertNotRegex(memory_text, r"(?m)^##\s+\d+\.")
-        self.assertLessEqual(len(memory_text.splitlines()), 24)
+        self.assertLessEqual(len(memory_text.splitlines()), 32)
         generated_lines = sum(
             len(path.read_text(encoding="utf-8").splitlines())
             for path in (self.root / "program.md", task, memory)
@@ -130,7 +140,7 @@ class InitPlanTests(unittest.TestCase):
             len(re.findall(r"<[^>\n]+>", path.read_text(encoding="utf-8")))
             for path in (self.root / "program.md", task, memory)
         )
-        self.assertLessEqual(generated_lines, 180)
+        self.assertLessEqual(generated_lines, 195)
         self.assertLessEqual(placeholder_count, 20)
         result = self.validate_generated_plan()
         self.assertEqual("Full", result["profile"])

@@ -37,9 +37,9 @@
 
 ## Atomic Plan
 
-| Node | Status | Action | Verification | Evidence |
-|---|---|---|---|---|
-| N-001 | `待开始` | <smallest useful action> | <command or scenario> | None |
+| Node | Status | Action | Verification | Evidence | Reflection |
+|---|---|---|---|---|---|
+| N-001 | `待开始` | <smallest useful action> | <command or scenario> | None | Pending |
 
 ## Risks And Escalation
 
@@ -50,6 +50,6 @@
 - Final result: pending
 - Evidence: pending
 - Unverified / residual risk: pending
-- Memory writeback: N/A: no durable finding yet
+- Memory writeback: pending: add one `R-*` per completed node; add `D-*` or `F-*` only for durable learning
 - Remaining work: N-001
 - Completed: pending

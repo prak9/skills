@@ -89,8 +89,8 @@ class ValidatePlanTests(unittest.TestCase):
         self.replace(task, "| N-002 | `待开始` |", "| N-002 | `完成` |")
         self.replace(
             task,
-            "| N-002 | `完成` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | 待运行 |",
-            "| N-002 | `完成` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | RUN-002 |",
+            "| N-002 | `完成` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | 待运行 | Pending |",
+            "| N-002 | `完成` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | RUN-002 | R-002 |",
         )
         self.replace(
             task,
@@ -101,8 +101,8 @@ class ValidatePlanTests(unittest.TestCase):
         self.replace(task, "待任务收尾时作答", "已根据对应问题复核，证据见 RUN-002")
         self.replace(
             task,
-            "- Memory writeback: RUN-001 / F-001 已写入；完成时补 CHG 与 H 条目并跑提炼",
-            "- Memory writeback: RUN-001 / RUN-002 / CHG-001 / HIST-001",
+            "- Memory writeback: RUN-001 / F-001 / R-001 已写入；完成时补 R-002、CHG 与 H 条目并跑提炼",
+            "- Memory writeback: RUN-001 / RUN-002 / R-001 / R-002 / CHG-001 / HIST-001",
         )
         self.replace(task, "- Final result: 待完成", "- Final result: CLI CSV export verified end-to-end")
         self.replace(
@@ -115,6 +115,11 @@ class ValidatePlanTests(unittest.TestCase):
             "memory.md",
             "| RUN-001 | 2026-07-11 | TASK-001 N-001 | test | Ran `pytest tests/test_export.py` with escaping cases. | passed | ci run 118 | N-002 | K-001 |",
             "| RUN-001 | 2026-07-11 | TASK-001 N-001 | test | Ran `pytest tests/test_export.py` with escaping cases. | passed | ci run 118 | N-002 | K-001 |\n| RUN-002 | 2026-07-11 | TASK-001 N-002 | test | Ran CLI and end-to-end export checks. | passed | ci run 119 | none | 不需要 |",
+        )
+        self.replace(
+            "memory.md",
+            "| R-001 | TASK-001 N-001 | RUN-001 | Manual quoting logic was unnecessary; the standard library already owns escaping. | Standard-library serialization passed adversarial escaping cases. | Keep serialization delegated to `csv`; move to CLI integration. |",
+            "| R-001 | TASK-001 N-001 | RUN-001 | Manual quoting logic was unnecessary; the standard library already owns escaping. | Standard-library serialization passed adversarial escaping cases. | Keep serialization delegated to `csv`; move to CLI integration. |\n| R-002 | TASK-001 N-002 | RUN-002 | The CLI path needed an end-to-end check beyond exporter unit tests. | The existing output boundary accepted the flag without query-layer changes. | Preserve the boundary and require an end-to-end check for future output modes. |",
         )
         self.replace(
             "memory.md",
@@ -187,8 +192,63 @@ class ValidatePlanTests(unittest.TestCase):
         self.assertEqual([], result["warnings"])
         program = (LITE_EXAMPLE / "program.md").read_text(encoding="utf-8")
         self.assertIsNone(re.search(r"(?m)^##\s+\d+\.", program))
-        self.assertIn("| Node | Status | Action | Verification | Evidence |", program)
+        self.assertIn(
+            "| Node | Status | Action | Verification | Evidence | Reflection |",
+            program,
+        )
         self.assertFalse((LITE_EXAMPLE / "tasks").exists())
+
+    def test_lite_completed_node_requires_reflection(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "lite-change"
+            shutil.copytree(LITE_EXAMPLE, root)
+            program = root / "program.md"
+            text = program.read_text(encoding="utf-8").replace(
+                "| NODE-001 | `进行中` | Add boundary validation and regression cases | `pytest tests/test_cli.py -k timeout` | None | Pending |",
+                "| NODE-001 | `完成` | Add boundary validation and regression cases | `pytest tests/test_cli.py -k timeout` | RUN-001 | Pending |",
+            )
+            program.write_text(text, encoding="utf-8")
+
+            process = subprocess.run(
+                [sys.executable, "-B", str(VALIDATOR), str(root), "--json", "--strict"],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            result = json.loads(process.stdout)
+
+            self.assertNotEqual(0, process.returncode, process.stdout)
+            self.assertIn("no `R-*` reflection", "\n".join(result["errors"]))
+
+    def test_lite_completed_node_accepts_evidence_linked_reflection(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "lite-change"
+            shutil.copytree(LITE_EXAMPLE, root)
+            program = root / "program.md"
+            text = program.read_text(encoding="utf-8").replace(
+                "| NODE-001 | `进行中` | Add boundary validation and regression cases | `pytest tests/test_cli.py -k timeout` | None | Pending |",
+                "| NODE-001 | `完成` | Add boundary validation and regression cases | `pytest tests/test_cli.py -k timeout` | RUN-001 | R-001 |",
+            )
+            text = text.replace(
+                "| ID | Scope | Evidence | Wrong / changed | Right / preserve | Next rule |\n|---|---|---|---|---|---|",
+                (
+                    "| ID | Scope | Evidence | Wrong / changed | Right / preserve | Next rule |\n"
+                    "|---|---|---|---|---|---|\n"
+                    "| R-001 | NODE-001 | RUN-001 | The late validation assumption was wrong. | Boundary validation produced the intended CLI error. | Preserve boundary validation for future CLI inputs. |"
+                ),
+            )
+            program.write_text(text, encoding="utf-8")
+
+            process = subprocess.run(
+                [sys.executable, "-B", str(VALIDATOR), str(root), "--json", "--strict"],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            result = json.loads(process.stdout)
+
+            self.assertEqual(0, process.returncode, process.stdout)
+            self.assertTrue(result["ok"], result)
 
     def test_unresolved_profile_choice_is_rejected(self) -> None:
         self.replace("program.md", "- Profile: `Full`", "- Profile: `Lite / Full`")
@@ -368,6 +428,45 @@ class ValidatePlanTests(unittest.TestCase):
         self.assertEqual(0, process.returncode, process.stdout)
         self.assertTrue(result["ok"], result)
         self.assertEqual([], result["errors"])
+
+    def test_completed_atomic_node_requires_reflection_reference(self) -> None:
+        self.replace(
+            "tasks/TASK-001-add-export.md",
+            "| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 | R-001 |",
+            "| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 | Pending |",
+        )
+
+        self.assert_rejected("atomic node `N-001`", "reflection")
+
+    def test_reflection_requires_evidence_and_cognitive_feedback(self) -> None:
+        self.replace(
+            "memory.md",
+            "| R-001 | TASK-001 N-001 | RUN-001 | Manual quoting logic was unnecessary; the standard library already owns escaping. | Standard-library serialization passed adversarial escaping cases. | Keep serialization delegated to `csv`; move to CLI integration. |",
+            "| R-001 | TASK-001 N-001 | None | pending | pending | pending |",
+        )
+
+        self.assert_rejected(
+            "reflection `R-001` is incomplete",
+            "Evidence",
+            "Wrong / changed",
+            "Right / preserve",
+            "Next rule",
+        )
+
+    def test_completed_nodes_cannot_reuse_one_reflection(self) -> None:
+        self.mark_completed()
+        self.replace(
+            "tasks/TASK-001-add-export.md",
+            "| N-002 | `完成` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | RUN-002 | R-002 |",
+            "| N-002 | `完成` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | RUN-002 | R-001 |",
+        )
+        self.replace(
+            "memory.md",
+            "| R-001 | TASK-001 N-001 | RUN-001 |",
+            "| R-001 | TASK-001 N-001 N-002 | RUN-001 |",
+        )
+
+        self.assert_rejected("N-002", "reuses a reflection")
 
     def test_clean_fields_must_be_declared_together(self) -> None:
         self.replace(
@@ -677,12 +776,12 @@ class ValidatePlanTests(unittest.TestCase):
         self.mark_completed()
         self.replace(
             "tasks/TASK-001-add-export.md",
-            "| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 |\n",
+            "| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 | R-001 |\n",
             "",
         )
         self.replace(
             "tasks/TASK-001-add-export.md",
-            "| N-002 | `完成` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | RUN-002 |\n",
+            "| N-002 | `完成` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | RUN-002 | R-002 |\n",
             "",
         )
 

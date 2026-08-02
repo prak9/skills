@@ -45,10 +45,16 @@ None.
 
 None.
 
-## 9. Reflection And Curation
+## 9. Node Reflections
+
+| ID | Scope | Evidence | Wrong / changed | Right / preserve | Next rule |
+|---|---|---|---|---|---|
+| R-001 | TASK-001 N-001 | RUN-001 | Manual quoting logic was unnecessary; the standard library already owns escaping. | Standard-library serialization passed adversarial escaping cases. | Keep serialization delegated to `csv`; move to CLI integration. |
+
+## 10. Reflection And Curation
 
 Trigger when a task package closes or `待提炼` reaches 5. No backlog now: RUN-001 was distilled into K-001.
 
-## 10. Update Rules
+## 11. Update Rules
 
 Follow plan-skill memory rules: add entries incrementally, keep evidence pointers, and mark superseded entries instead of deleting them.

@@ -38,6 +38,11 @@
 
 ## Plan
 
-| Node | Status | Action | Verification | Evidence |
-|---|---|---|---|---|
-| NODE-001 | `待开始` | <smallest useful step> | <command or scenario> | None |
+| Node | Status | Action | Verification | Evidence | Reflection |
+|---|---|---|---|---|---|
+| NODE-001 | `待开始` | <smallest useful step> | <command or scenario> | None | Pending |
+
+## Reflection Log
+
+| ID | Scope | Evidence | Wrong / changed | Right / preserve | Next rule |
+|---|---|---|---|---|---|

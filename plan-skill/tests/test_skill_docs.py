@@ -14,6 +14,7 @@ class SkillDocsTests(unittest.TestCase):
         abstraction_reference = PLAN_SKILL_ROOT / "references" / "abstraction-quality.md"
         readiness_reference = PLAN_SKILL_ROOT / "references" / "pre-execution-grill.md"
         preference_reference = PLAN_SKILL_ROOT / "references" / "preference-contract.md"
+        reflection_reference = PLAN_SKILL_ROOT / "references" / "reflection-contract.md"
         loop_reference = PLAN_SKILL_ROOT / "references" / "loop-contract.md"
         clean_reference = PLAN_SKILL_ROOT / "references" / "clean-contract.md"
         agent_config = (PLAN_SKILL_ROOT / "agents" / "openai.yaml").read_text(
@@ -24,6 +25,7 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("references/status-and-completion.md", skill)
         self.assertIn("references/pre-execution-grill.md", skill)
         self.assertIn("references/preference-contract.md", skill)
+        self.assertIn("references/reflection-contract.md", skill)
         self.assertIn("references/abstraction-quality.md", skill)
         self.assertIn("references/loop-contract.md", skill)
         self.assertIn("references/clean-contract.md", skill)
@@ -49,6 +51,14 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("Tactical", preference)
         self.assertIn("Declarative", preference)
         self.assertIn("Imperative", preference)
+
+        self.assertTrue(reflection_reference.is_file())
+        reflection = reflection_reference.read_text(encoding="utf-8")
+        self.assertIn("# Node Reflection Contract", reflection)
+        self.assertIn("## Close Every Node", reflection)
+        self.assertIn("Wrong / changed", reflection)
+        self.assertIn("Right / preserve", reflection)
+        self.assertIn("hidden chain-of-thought", reflection)
 
         abstraction = abstraction_reference.read_text(encoding="utf-8")
         self.assertIn("# Abstraction Quality Gate", abstraction)
@@ -83,13 +93,16 @@ class SkillDocsTests(unittest.TestCase):
         task = (
             PLAN_SKILL_ROOT / "assets" / "task-full-starter.template.md"
         ).read_text(encoding="utf-8")
+        memory = (
+            PLAN_SKILL_ROOT / "assets" / "memory-starter.template.md"
+        ).read_text(encoding="utf-8")
         markdown = "\n".join(
             path.read_text(encoding="utf-8")
             for path in PLAN_SKILL_ROOT.rglob("*.md")
         )
 
         self.assertLessEqual(len(skill.splitlines()), 130)
-        self.assertLessEqual(len(lite.splitlines()), 45)
+        self.assertLessEqual(len(lite.splitlines()), 52)
         for text in (lite, full):
             self.assertIn("Strategic defaults", text)
             self.assertIn("Tactical objective", text)
@@ -97,6 +110,13 @@ class SkillDocsTests(unittest.TestCase):
             self.assertIn("Negotiable space", text)
             self.assertIn("Escalate when", text)
         self.assertIn("Preference refs / tactical overrides", task)
+        self.assertIn("## Reflection Log", lite)
+        self.assertIn("| Node | Status | Action | Verification | Evidence | Reflection |", lite)
+        self.assertIn("| Node | Status | Action | Verification | Evidence | Reflection |", task)
+        self.assertIn("## Reflections", memory)
+        self.assertIn("Wrong / changed", memory)
+        self.assertIn("Right / preserve", memory)
+        self.assertLessEqual(len(memory.splitlines()), 32)
         self.assertLessEqual(markdown.count("tasks/output/"), 35)
 
     def test_only_current_template_contracts_remain(self) -> None:

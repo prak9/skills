@@ -154,6 +154,33 @@ class UpgradePlanTests(unittest.TestCase):
         self.assertIn("## Completion Review", task)
         self.assertEqual([], self.validate()["errors"])
 
+    def test_upgrade_preserves_lite_reflection_log(self) -> None:
+        program_path = self.root / "program.md"
+        self.replace(
+            program_path,
+            "| NODE-001 | `待开始` | <smallest useful step> | <command or scenario> | None | Pending |",
+            "| NODE-001 | `进行中` | Inspect the boundary | pytest tests/test_cli.py | RUN-007 | R-007 |",
+        )
+        self.replace(
+            program_path,
+            "| ID | Scope | Evidence | Wrong / changed | Right / preserve | Next rule |\n|---|---|---|---|---|---|\n",
+            (
+                "| ID | Scope | Evidence | Wrong / changed | Right / preserve | Next rule |\n"
+                "|---|---|---|---|---|---|\n"
+                "| R-007 | NODE-001 | RUN-007 | The first boundary assumption was wrong. | The existing parser contract should stay. | Inspect callers before changing the parser. |\n"
+            ),
+        )
+
+        process = self.run_upgrader()
+
+        self.assertEqual(0, process.returncode, process.stdout + process.stderr)
+        task = (self.root / "tasks" / "TASK-001-upgrade-test.md").read_text(
+            encoding="utf-8"
+        )
+        memory = (self.root / "memory.md").read_text(encoding="utf-8")
+        self.assertIn("RUN-007 | R-007", task)
+        self.assertIn("| R-007 | NODE-001 | RUN-007 |", memory)
+
     def test_dry_run_reports_changes_without_writing(self) -> None:
         before = (self.root / "program.md").read_text(encoding="utf-8")
 

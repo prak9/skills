@@ -25,9 +25,10 @@ For every task:
 - acceptance criteria are checked and tied to evidence;
 - relevant runtime behavior or an explicit scoped alternative was verified;
 - atomic nodes are terminal;
+- every completed atomic node points to an evidence-linked `R-*` reflection;
 - the completion review states the observable result, evidence, unverified behavior or residual risk, remaining work, and completion date;
 - consequential decisions or findings are written once to `memory.md`.
 
 For risky changes, also review applicable migration, compatibility, security, observability, rollback, and human-approval requirements. Add a deeper red-team checklist only when the risk warrants it; do not force an empty universal questionnaire.
 
-For a Lite plan, the Plan table and top-level status carry the same evidence contract without a task package.
+For a Lite plan, the Plan table, Reflection Log, and top-level status carry the same evidence and reflection contract without a task package.

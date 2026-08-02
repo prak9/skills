@@ -74,10 +74,10 @@ Use `tasks/output/TASK-001-add-export/` for this task's latest final output snap
 
 ## Atomic Implementation Plan
 
-| Node | Status | Depends on | Action | Verification | Evidence |
-|---|---|---|---|---|---|
-| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 |
-| N-002 | `待开始` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | 待运行 |
+| Node | Status | Depends on | Action | Verification | Evidence | Reflection |
+|---|---|---|---|---|---|---|
+| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 | R-001 |
+| N-002 | `待开始` | N-001 | CLI 加 --csv 参数 | pytest tests/test_cli.py | 待运行 | Pending |
 
 - N-001 likely touched / failure action: `src/exporter.py`; 修转义逻辑后重跑。
 - N-002 likely touched / failure action: `src/cli.py`; 回退参数解析。
@@ -168,7 +168,7 @@ Answer all four questions before moving this package to `待验收` or `完成`.
 
 When this task package is done, update ../program.md node status and evidence, and write to ../memory.md:
 
-- Memory writeback: RUN-001 / F-001 已写入；完成时补 CHG 与 H 条目并跑提炼
+- Memory writeback: RUN-001 / F-001 / R-001 已写入；完成时补 R-002、CHG 与 H 条目并跑提炼
 - Final result: 待完成
 - Output artifacts: `tasks/output/TASK-001-add-export/` 待 N-002 后刷新
 - Completed: 待完成

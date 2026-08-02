@@ -34,6 +34,11 @@
 
 ## Plan
 
-| Node | Status | Action | Verification | Evidence |
-|---|---|---|---|---|
-| NODE-001 | `进行中` | Add boundary validation and regression cases | `pytest tests/test_cli.py -k timeout` | None |
+| Node | Status | Action | Verification | Evidence | Reflection |
+|---|---|---|---|---|---|
+| NODE-001 | `进行中` | Add boundary validation and regression cases | `pytest tests/test_cli.py -k timeout` | None | Pending |
+
+## Reflection Log
+
+| ID | Scope | Evidence | Wrong / changed | Right / preserve | Next rule |
+|---|---|---|---|---|---|

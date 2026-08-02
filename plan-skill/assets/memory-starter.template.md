@@ -1,6 +1,6 @@
 # Memory: <Project Name>
 
-> Durable facts only. Add an entry when it changes future planning or execution.
+> Durable facts and node learning. Keep status in program/task state and evidence in raw sources.
 
 - Last updated: `YYYY-MM-DD`
 - Program: `program.md`
@@ -17,8 +17,14 @@ None yet.
 
 None yet. Record only Loop, migration, rollout, rollback, or otherwise consequential runs.
 
+## Reflections
+
+| ID | Scope | Evidence | Wrong / changed | Right / preserve | Next rule |
+|---|---|---|---|---|---|
+
 ## Update Rules
 
-- Use stable `D-*`, `F-*`, and `RUN-*` IDs with evidence.
+- Use stable `D-*`, `F-*`, `RUN-*`, and `R-*` IDs with evidence.
+- Add one `R-*` for every completed atomic node and verified Loop attempt.
 - Mark superseded entries with a pointer; do not duplicate ordinary progress or Git history.
-- During Clean, preserve stable IDs and evidence; retire stale entries with a pointer and reason.
+- During Clean, preserve unique `R-*` feedback and stable IDs; distill repeated lessons with a pointer instead of deleting them.

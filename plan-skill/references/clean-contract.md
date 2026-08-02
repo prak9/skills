@@ -28,12 +28,13 @@ Preserve:
 
 - outcome, locked constraints, acceptance criteria, current blocker, and next action;
 - stable `D-*`, `F-*`, and `RUN-*` IDs that still affect work;
+- every `R-*` node reflection with its scope, evidence, wrong/right feedback, and successor or distillation pointer;
 - raw code, tests, CI, logs, external records, and links needed to verify a claim;
 - the reason and successor pointer for a superseded decision or finding.
 
 Retire or compress:
 
-- duplicated status views, ordinary progress, chat narrative, and raw logs already represented by evidence;
+- duplicated status views, ordinary progress, chat narrative, and raw logs already represented by evidence; do not treat unique `R-*` learning as ordinary progress;
 - stale hypotheses, obsolete next steps, and superseded entries after their replacement is linked;
 - abstractions, sections, or concepts whose only justification is possible future use.
 
@@ -47,7 +48,7 @@ Clean is complete only when:
 - work can resume from `program.md`, the active task, and only their referenced memory/evidence;
 - stable IDs and evidence links still resolve, with no material fact silently lost;
 - duplicate or stale state is removed or explicitly retired;
-- line count, retrieval surface, and concept count do not increase without a concrete reason;
+- line count, retrieval surface, and concept count do not increase except for required append-only reflection entries or another concrete reason;
 - `scripts/validate_plan.py --strict <project-root>` passes.
 
 Set `Clean state` to `Not due`. Set `Last clean` to a date plus evidence pointer, or `N/A: <concrete reason>` when the pass found no accumulated state to change.

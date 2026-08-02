@@ -22,7 +22,7 @@ Replace `Loop Contract` with this exact field set:
 | Reflect trigger | <when to interpret evidence> |
 | Iterate rule | <what may change and what stays fixed> |
 | Stop / escalation condition | <budget, safety, or repeated-failure stop> |
-| Memory write rule | <which consequential attempts become RUN entries> |
+| Memory write rule | <every verified attempt gets R; which consequential attempts also become RUN entries> |
 
 Replace `Loop State` with one current-state row:
 
@@ -52,7 +52,7 @@ Keep planned actions in `Atomic Plan`. Update only the current attempt here; pre
 
 - Record a pre-execution Loop decision as `D-*` when it constrains future work. Do not invent a `RUN-*` before an attempt starts.
 - On start, increment `Loop iteration`, set program and task to `Act`, and keep the same `L-*` ID.
-- After verification, move to `Pass`, `Reflect`, or `Blocked`; cite raw evidence.
+- After verification, write one evidence-linked `R-*`, then move to `Pass`, `Reflect`, or `Blocked`.
 - Continue only when the next attempt changes a belief, method, or falsifiable uncertainty.
 - During `Reflect`, set `Clean state` to `Due` when stale hypotheses, repeated state, or the Clean thresholds are reached; run Clean before handoff or a terminal transition.
 - Stop when success, the finite budget, a safety condition, or the escalation condition is reached.

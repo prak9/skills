@@ -78,12 +78,17 @@ def inline_node_records(text: str) -> list[dict[str, str]]:
         node = norm_cell(cells[lookup["node"]])
         if not re.fullmatch(r"NODE-\d{3}", node):
             continue
-        records.append(
-            {
-                name: norm_cell(cells[lookup[name]])
-                for name in required
-            }
+        record = {
+            name: norm_cell(cells[lookup[name]])
+            for name in required
+        }
+        reflection_idx = lookup.get("reflection")
+        record["reflection"] = (
+            norm_cell(cells[reflection_idx])
+            if reflection_idx is not None and reflection_idx < len(cells)
+            else "Pending"
         )
+        records.append(record)
     if not records:
         raise UpgradeError("Lite program has no upgradeable Plan rows")
     return records
@@ -149,6 +154,113 @@ def next_decision_id(text: str) -> str:
     return f"D-{max(numbers, default=0) + 1:03d}"
 
 
+REFLECTION_TABLE_HEADER = (
+    "| ID | Scope | Evidence | Wrong / changed | Right / preserve | Next rule |\n"
+    "|---|---|---|---|---|---|"
+)
+
+
+def lite_reflection_rows(text: str) -> list[str]:
+    section = markdown_heading_section(text, "Reflection Log") or ""
+    return [
+        line.strip()
+        for line in section.splitlines()
+        if re.match(r"^\|\s*R-\d{3}\s*\|", line.strip())
+    ]
+
+
+def prepare_reflection_rows(
+    nodes: list[dict[str, str]],
+    lite_text: str,
+    memory_text: str | None,
+    today: str,
+) -> list[str]:
+    rows = lite_reflection_rows(lite_text)
+    occupied = {
+        int(number)
+        for number in re.findall(
+            r"\bR-(\d{3})\b",
+            lite_text + "\n" + (memory_text or ""),
+        )
+    }
+    row_ids = {
+        match.group(0)
+        for row in rows
+        if (match := re.search(r"\bR-\d{3}\b", row)) is not None
+    }
+
+    def allocate() -> str:
+        number = max(occupied, default=0) + 1
+        occupied.add(number)
+        return f"R-{number:03d}"
+
+    for node in nodes:
+        references = re.findall(r"\bR-\d{3}\b", node["reflection"])
+        if not references and node["status"] == "完成":
+            references = [allocate()]
+            node["reflection"] = references[0]
+        if not references or references[0] in row_ids:
+            continue
+        reflection_id = references[0]
+        row_ids.add(reflection_id)
+        evidence = node["evidence"] or f"profile migration {today}"
+        rows.append(
+            f"| {reflection_id} | {node['node']} | {evidence} | "
+            "Legacy Lite reflection details were not recorded before upgrade. | "
+            "The accepted node state and verifier were preserved. | "
+            "Capture wrong/right feedback before closing future nodes. |"
+        )
+    return rows
+
+
+def merge_reflection_rows(memory: str, rows: list[str]) -> str:
+    if not rows:
+        return memory
+    target = next(
+        (
+            title
+            for title in ("Reflections", "Node Reflections")
+            if markdown_heading_section(memory, title) is not None
+        ),
+        None,
+    )
+    if target is None:
+        block = "## Reflections\n\n" + REFLECTION_TABLE_HEADER + "\n" + "\n".join(rows)
+        marker = next(
+            (
+                h2_line(memory, title)
+                for title in ("Reflection And Curation", "Update Rules", "Run Logs")
+                if markdown_heading_section(memory, title) is not None
+            ),
+            None,
+        )
+        if marker is None:
+            raise UpgradeError("memory.md has no insertion point for Reflections")
+        return insert_before(memory, marker, block)
+
+    body = markdown_heading_section(memory, target) or REFLECTION_TABLE_HEADER
+    additions: list[str] = []
+    for row in rows:
+        match = re.search(r"\bR-\d{3}\b", row)
+        if match is None:
+            continue
+        reflection_id = match.group(0)
+        if re.search(rf"\b{re.escape(reflection_id)}\b", body):
+            if row not in body:
+                raise UpgradeError(
+                    f"reflection ID collision while upgrading Lite: {reflection_id}"
+                )
+            continue
+        additions.append(row)
+    if not additions:
+        return memory
+    return replace_h2_body(
+        memory,
+        target,
+        body.rstrip() + "\n" + "\n".join(additions),
+    )
+
+
 def upgrade_lean_memory(text: str | None, title: str, today: str) -> tuple[str, str]:
     if text is None:
         text = render_memory(title, today)
@@ -178,6 +290,7 @@ def upgrade_inline_lite(
     title = title_match.group(1)
     owner = metadata_value(text, "Owner") or "AI"
     nodes = inline_node_records(text)
+    reflection_rows = prepare_reflection_rows(nodes, text, memory_text, today)
     acceptance = acceptance_record(text)
     outcome = markdown_heading_section(text, "Outcome")
     constraints = markdown_heading_section(text, "Constraints")
@@ -334,10 +447,15 @@ def upgrade_inline_lite(
         task = task.replace("<smallest useful action>", node["action"], 1)
         task = task.replace("<command or scenario>", node["verification"], 1)
         task = task.replace("| N-001 | `待开始` |", f"| N-001 | `{node['status']}` |", 1)
-        task = task.replace("| None |", f"| {node['evidence']} |", 1)
+        task = task.replace(
+            "| None | Pending |",
+            f"| {node['evidence']} | {node['reflection']} |",
+            1,
+        )
         tasks[Path(f"{task_stem}.md")] = task
 
     memory, decision_id = upgrade_lean_memory(memory_text, title, today)
+    memory = merge_reflection_rows(memory, reflection_rows)
     return program, tasks, memory, decision_id
 
 
