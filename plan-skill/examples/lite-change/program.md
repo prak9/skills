@@ -19,8 +19,12 @@
 
 ## Constraints
 
-- Locked: Do not change retry or request semantics.
-- Negotiable: Validation helper placement.
+- Strategic defaults: Follow repository conventions and dependency policy.
+- Tactical objective: Reject invalid input at the earliest user-facing boundary with a clear error.
+- Imperative bounds: Do not change retry or request semantics because they are outside the accepted behavior change.
+- Negotiable space: Validation helper placement.
+- Material assumptions: Existing exit-code conventions remain authoritative.
+- Escalate when: Meeting the error contract would require changing retry or request semantics.
 
 ## Acceptance
 

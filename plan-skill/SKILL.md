@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, or audit, cleanup, simplification, and repair of existing plan artifacts or memory. It can refine a raw idea, create a single-file Lite plan, expand work into Full task packages, periodically align durable docs, distill consequential memory, control complexity, and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
+description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, or audit, cleanup, simplification, and repair of existing plan artifacts or memory. It can refine a raw idea, expose material preferences and tradeoffs, create a single-file Lite plan, expand work into Full task packages, periodically align durable docs, distill consequential memory, control complexity, and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
 ---
 
 # Plan Skill
@@ -31,19 +31,20 @@ Never create a second hand-maintained view of state that can be derived from an 
 ## Create Or Refresh
 
 1. Read the request, relevant repository instructions, specs, entry points, tests, configuration, and recent changes.
-2. State the observable outcome, locked constraints, acceptance evidence, material unknowns, and next useful action.
+2. Frame the plan as an objective plus bounds: state the observable outcome, inherited strategic defaults, tactical objective, imperative bounds, negotiable space, material assumptions, acceptance evidence, and next useful action.
 3. Choose Inline, Lite, Full, or Loop.
 4. For a raw idea with several plausible directions, read `references/concept-refinement.md`.
-5. Read `references/pre-execution-grill.md` only when unresolved judgment or evidence could change scope, method, risk, or whether to proceed.
-6. For Loop, read `references/loop-contract.md` before drafting its program and task state.
-7. Initialize durable state:
+5. Read `references/preference-contract.md` when valid solutions differ materially, a preference must be inferred, or a requested method may conflict with its objective.
+6. Read `references/pre-execution-grill.md` only when unresolved judgment or evidence could change scope, method, risk, or whether to proceed.
+7. For Loop, read `references/loop-contract.md` before drafting its program and task state.
+8. Initialize durable state:
 
    ```bash
    python3 <plan-skill>/scripts/init_plan.py <project-root> --title "<work title>"
    # Use --profile full only when Full/Loop is already justified.
    ```
 
-8. Replace placeholders and run `scripts/validate_plan.py --strict <project-root>` before execution or handoff.
+9. Replace placeholders and run `scripts/validate_plan.py --strict <project-root>` before execution or handoff.
 
 For a Lite plan that grows into Full:
 
@@ -66,6 +67,8 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 ## Invariants
 
 - Planning is read-only unless the user also authorizes execution.
+- Do not silently invent a material preference. Research discoverable facts, state consequential assumptions, and ask only when human judgment can change the plan.
+- Prefer declarative objectives with explicit bounds; reserve imperative constraints for fragile, high-stakes, or deliberately standardized paths and surface a materially better option without overriding the lock.
 - `完成` and `待验收` require acceptance evidence; written code is not completion.
 - A blocked item names the missing input, owner or external condition, and unblock action.
 - Loop mode has a finite budget, verifier, reflect trigger, and stop/escalation condition.
@@ -77,6 +80,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 
 - `assets/program-lite.template.md`: single-file Lite contract; use through `init_plan.py`
 - `assets/program-full-starter.template.md`, `assets/task-full-starter.template.md`, `assets/memory-starter.template.md`: compact Full contracts; use through `init_plan.py`
+- `references/preference-contract.md`: strategic/tactical and declarative/imperative preference contract
 - `references/loop-contract.md`: exact Full/Loop program, task, and memory interface
 - `references/clean-contract.md`: periodic alignment, distillation, and complexity-control contract
 - `scripts/init_plan.py`: safe initialization without overwriting existing plan files

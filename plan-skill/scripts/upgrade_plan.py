@@ -184,8 +184,23 @@ def upgrade_inline_lite(
     problem = bullet_field(outcome, "Problem") or "<observable problem>"
     success = bullet_field(outcome, "Success") or "<observable result>"
     non_goals = bullet_field(outcome, "Non-goals") or "None"
-    locked = bullet_field(constraints, "Locked") or "None"
-    negotiable = bullet_field(constraints, "Negotiable") or "Implementation details"
+    strategic = bullet_field(constraints, "Strategic defaults") or "None"
+    tactical = bullet_field(constraints, "Tactical objective") or success
+    imperative = (
+        bullet_field(constraints, "Imperative bounds")
+        or bullet_field(constraints, "Locked")
+        or "None"
+    )
+    negotiable = (
+        bullet_field(constraints, "Negotiable space")
+        or bullet_field(constraints, "Negotiable")
+        or "Implementation details"
+    )
+    assumptions = bullet_field(constraints, "Material assumptions") or "None"
+    escalation = (
+        bullet_field(constraints, "Escalate when")
+        or "A preference conflicts or a better option requires changing a bound."
+    )
     project_slug = slugify(title)
 
     task_specs: list[tuple[dict[str, str], str]] = []
@@ -218,9 +233,13 @@ def upgrade_inline_lite(
         program,
         "Constraints And Decisions",
         (
-            f"- Locked constraints: {locked}\n"
+            f"- Strategic defaults: {strategic}\n"
+            f"- Tactical objective: {tactical}\n"
+            f"- Imperative bounds: {imperative}\n"
             f"- Negotiable space: {negotiable}\n"
-            "- Decisions: The accepted Lite direction is preserved."
+            f"- Material assumptions: {assumptions}\n"
+            "- Decisions: The accepted Lite direction is preserved.\n"
+            f"- Escalate when: {escalation}"
         ),
     )
     acceptance_body = (
@@ -303,12 +322,12 @@ def upgrade_inline_lite(
             1,
         )
         task = task.replace(
-            "**Locked constraints:** None beyond accepted scope.",
-            f"**Locked constraints:** {locked}",
+            "**Locked constraints:** None beyond accepted scope and program imperative bounds.",
+            f"**Locked constraints:** {imperative}",
             1,
         )
         task = task.replace(
-            "**Negotiable space:** Implementation details within acceptance criteria.",
+            "**Negotiable space:** Implementation details within the declarative objective and acceptance criteria.",
             f"**Negotiable space:** {negotiable}",
             1,
         )
@@ -392,11 +411,12 @@ None yet. Add `CTX-*`, `REF-*`, or `OWN-*` entries only when they change executi
 
 ## Preferences And Tradeoffs
 
-- Preferences: None yet; add `PREF-*` only when a tradeoff matters.
-- Tradeoffs: None yet.
-- Locked constraints: None identified beyond accepted scope.
+- Strategic defaults: Follow authoritative repository instructions, rules, and skills.
+- Tactical objective: Preserve the accepted Lite outcome and its observable acceptance evidence.
+- Imperative bounds: None identified beyond accepted scope; add `PREF-*` only when a method or interface is locked.
 - Negotiable space: implementation details within acceptance criteria.
-- Escalation rule: ask before changing scope or acceptance criteria."""
+- Material assumptions: None identified during profile migration.
+- Escalate when: a preference conflicts or scope, acceptance, or an imperative bound must change."""
     text = insert_before(text, h2_line(text, "Goals And Metrics"), context_block)
 
     planning_block = """## Constraints

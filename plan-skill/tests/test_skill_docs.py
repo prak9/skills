@@ -13,6 +13,7 @@ class SkillDocsTests(unittest.TestCase):
         reference = PLAN_SKILL_ROOT / "references" / "status-and-completion.md"
         abstraction_reference = PLAN_SKILL_ROOT / "references" / "abstraction-quality.md"
         readiness_reference = PLAN_SKILL_ROOT / "references" / "pre-execution-grill.md"
+        preference_reference = PLAN_SKILL_ROOT / "references" / "preference-contract.md"
         loop_reference = PLAN_SKILL_ROOT / "references" / "loop-contract.md"
         clean_reference = PLAN_SKILL_ROOT / "references" / "clean-contract.md"
         agent_config = (PLAN_SKILL_ROOT / "agents" / "openai.yaml").read_text(
@@ -22,6 +23,7 @@ class SkillDocsTests(unittest.TestCase):
         self.assertTrue(reference.is_file())
         self.assertIn("references/status-and-completion.md", skill)
         self.assertIn("references/pre-execution-grill.md", skill)
+        self.assertIn("references/preference-contract.md", skill)
         self.assertIn("references/abstraction-quality.md", skill)
         self.assertIn("references/loop-contract.md", skill)
         self.assertIn("references/clean-contract.md", skill)
@@ -38,6 +40,15 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("references/abstraction-quality.md", skill)
         self.assertTrue(readiness_reference.is_file())
         self.assertIn("references/pre-execution-grill.md", skill)
+
+        self.assertTrue(preference_reference.is_file())
+        preference = preference_reference.read_text(encoding="utf-8")
+        self.assertIn("# Preference And Tradeoff Contract", preference)
+        self.assertIn("## Find The Crux", preference)
+        self.assertIn("Strategic", preference)
+        self.assertIn("Tactical", preference)
+        self.assertIn("Declarative", preference)
+        self.assertIn("Imperative", preference)
 
         abstraction = abstraction_reference.read_text(encoding="utf-8")
         self.assertIn("# Abstraction Quality Gate", abstraction)
@@ -66,6 +77,12 @@ class SkillDocsTests(unittest.TestCase):
         lite = (PLAN_SKILL_ROOT / "assets" / "program-lite.template.md").read_text(
             encoding="utf-8"
         )
+        full = (
+            PLAN_SKILL_ROOT / "assets" / "program-full-starter.template.md"
+        ).read_text(encoding="utf-8")
+        task = (
+            PLAN_SKILL_ROOT / "assets" / "task-full-starter.template.md"
+        ).read_text(encoding="utf-8")
         markdown = "\n".join(
             path.read_text(encoding="utf-8")
             for path in PLAN_SKILL_ROOT.rglob("*.md")
@@ -73,6 +90,13 @@ class SkillDocsTests(unittest.TestCase):
 
         self.assertLessEqual(len(skill.splitlines()), 130)
         self.assertLessEqual(len(lite.splitlines()), 45)
+        for text in (lite, full):
+            self.assertIn("Strategic defaults", text)
+            self.assertIn("Tactical objective", text)
+            self.assertIn("Imperative bounds", text)
+            self.assertIn("Negotiable space", text)
+            self.assertIn("Escalate when", text)
+        self.assertIn("Preference refs / tactical overrides", task)
         self.assertLessEqual(markdown.count("tasks/output/"), 35)
 
     def test_only_current_template_contracts_remain(self) -> None:

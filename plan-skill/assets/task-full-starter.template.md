@@ -25,9 +25,11 @@
 
 **Dependencies:** None
 
-**Locked constraints:** None beyond accepted scope.
+**Preference refs / tactical overrides:** Inherit `program.md`; overrides: None.
 
-**Negotiable space:** Implementation details within acceptance criteria.
+**Locked constraints:** None beyond accepted scope and program imperative bounds.
+
+**Negotiable space:** Implementation details within the declarative objective and acceptance criteria.
 
 **Files likely touched:**
 

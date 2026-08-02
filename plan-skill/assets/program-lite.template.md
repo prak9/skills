@@ -23,8 +23,12 @@
 
 ## Constraints
 
-- Locked: <must not change, or None>
-- Negotiable: <implementation choices the agent may make>
+- Strategic defaults: <repo instructions, rules, skills, or specs that apply across this work; or None>
+- Tactical objective: <project-specific outcome or quality to optimize when valid solutions differ>
+- Imperative bounds: <required method, interface, threshold, or process and why; or None>
+- Negotiable space: <implementation choices delegated to the agent>
+- Material assumptions: None unless an inferred preference could change the plan.
+- Escalate when: A preference conflicts or evidence reveals a better option that requires changing a bound.
 
 ## Acceptance
 

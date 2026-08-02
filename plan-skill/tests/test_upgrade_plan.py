@@ -67,6 +67,21 @@ class UpgradePlanTests(unittest.TestCase):
             "<observable result>",
             "UNIQUE LITE SUCCESS",
         )
+        self.replace(
+            program_path,
+            "<repo instructions, rules, skills, or specs that apply across this work; or None>",
+            "STRATEGIC SAFETY DEFAULT",
+        )
+        self.replace(
+            program_path,
+            "<project-specific outcome or quality to optimize when valid solutions differ>",
+            "TACTICAL LATENCY OBJECTIVE",
+        )
+        self.replace(
+            program_path,
+            "<required method, interface, threshold, or process and why; or None>",
+            "IMPERATIVE API BOUND",
+        )
         memory = (PLAN_SKILL_ROOT / "assets" / "memory-starter.template.md").read_text(
             encoding="utf-8"
         )
@@ -91,6 +106,10 @@ class UpgradePlanTests(unittest.TestCase):
         self.assertIn("UNIQUE LITE PROBLEM", program)
         self.assertIn("UNIQUE LITE SUCCESS", program)
         self.assertIn("UNIQUE LITE SUCCESS", task)
+        self.assertIn("STRATEGIC SAFETY DEFAULT", program)
+        self.assertIn("TACTICAL LATENCY OBJECTIVE", program)
+        self.assertIn("IMPERATIVE API BOUND", program)
+        self.assertIn("Inherit `program.md`; overrides: None", task)
         self.assertIn("D-001", upgraded_memory)
         self.assertIn("D-002", upgraded_memory)
         result = self.validate()
