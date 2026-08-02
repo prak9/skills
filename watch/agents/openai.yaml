@@ -1,0 +1,4 @@
+interface:
+  display_name: "Watch Video"
+  short_description: "Analyze video URLs and local files with frames"
+  default_prompt: "Use $watch to analyze this video and answer my question with timestamped evidence."
