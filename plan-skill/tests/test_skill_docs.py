@@ -14,6 +14,7 @@ class SkillDocsTests(unittest.TestCase):
         abstraction_reference = PLAN_SKILL_ROOT / "references" / "abstraction-quality.md"
         readiness_reference = PLAN_SKILL_ROOT / "references" / "pre-execution-grill.md"
         preference_reference = PLAN_SKILL_ROOT / "references" / "preference-contract.md"
+        unknowns_reference = PLAN_SKILL_ROOT / "references" / "unknowns-contract.md"
         reflection_reference = PLAN_SKILL_ROOT / "references" / "reflection-contract.md"
         loop_reference = PLAN_SKILL_ROOT / "references" / "loop-contract.md"
         clean_reference = PLAN_SKILL_ROOT / "references" / "clean-contract.md"
@@ -25,6 +26,7 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("references/status-and-completion.md", skill)
         self.assertIn("references/pre-execution-grill.md", skill)
         self.assertIn("references/preference-contract.md", skill)
+        self.assertIn("references/unknowns-contract.md", skill)
         self.assertIn("references/reflection-contract.md", skill)
         self.assertIn("references/abstraction-quality.md", skill)
         self.assertIn("references/loop-contract.md", skill)
@@ -51,6 +53,16 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("Tactical", preference)
         self.assertIn("Declarative", preference)
         self.assertIn("Imperative", preference)
+
+        self.assertTrue(unknowns_reference.is_file())
+        unknowns = unknowns_reference.read_text(encoding="utf-8")
+        self.assertIn("# Unknowns Discovery Contract", unknowns)
+        self.assertIn("Known knowns", unknowns)
+        self.assertIn("Known unknowns", unknowns)
+        self.assertIn("Unknown knowns", unknowns)
+        self.assertIn("Unknown unknowns", unknowns)
+        self.assertIn("blind-spot pass", unknowns)
+        self.assertIn("implementation-notes.md", unknowns)
 
         self.assertTrue(reflection_reference.is_file())
         reflection = reflection_reference.read_text(encoding="utf-8")
@@ -108,8 +120,10 @@ class SkillDocsTests(unittest.TestCase):
             self.assertIn("Tactical objective", text)
             self.assertIn("Imperative bounds", text)
             self.assertIn("Negotiable space", text)
+            self.assertIn("Active unknowns", text)
             self.assertIn("Escalate when", text)
         self.assertIn("Preference refs / tactical overrides", task)
+        self.assertIn("Discovered unknowns / deviations", task)
         self.assertIn("## Reflection Log", lite)
         self.assertIn("| Node | Status | Action | Verification | Evidence | Reflection |", lite)
         self.assertIn("| Node | Status | Action | Verification | Evidence | Reflection |", task)

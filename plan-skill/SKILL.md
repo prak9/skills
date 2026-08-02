@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, or audit, cleanup, simplification, and repair of existing plan artifacts or memory. It can refine a raw idea, expose material preferences and tradeoffs, capture evidence-linked reflection after each completed node, create a single-file Lite plan, expand work into Full task packages, periodically align durable docs, distill memory, control complexity, and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
+description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, or audit, cleanup, simplification, and repair of existing plan artifacts or memory. It can refine a raw idea, expose material preferences, tradeoffs, and map-versus-territory unknowns, capture evidence-linked reflection after each completed node, create a single-file Lite plan, expand work into Full task packages, periodically align durable docs, distill memory, control complexity, and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
 ---
 
 # Plan Skill
@@ -34,17 +34,18 @@ Never create a second hand-maintained view of state that can be derived from an 
 2. Frame the plan as an objective plus bounds: state the observable outcome, inherited strategic defaults, tactical objective, imperative bounds, negotiable space, material assumptions, acceptance evidence, and next useful action.
 3. Choose Inline, Lite, Full, or Loop.
 4. For a raw idea with several plausible directions, read `references/concept-refinement.md`.
-5. Read `references/preference-contract.md` when valid solutions differ materially, a preference must be inferred, or a requested method may conflict with its objective.
-6. Read `references/pre-execution-grill.md` only when unresolved judgment or evidence could change scope, method, risk, or whether to proceed.
-7. For Loop, read `references/loop-contract.md` before drafting its program and task state.
-8. Initialize durable state:
+5. Read `references/unknowns-contract.md` when the territory is unfamiliar, important preferences are tacit, or implementation is likely to reveal constraints the prompt cannot contain.
+6. Read `references/preference-contract.md` when valid solutions differ materially, a preference must be inferred, or a requested method may conflict with its objective.
+7. Read `references/pre-execution-grill.md` only when unresolved judgment or evidence could change scope, method, risk, or whether to proceed.
+8. For Loop, read `references/loop-contract.md` before drafting its program and task state.
+9. Initialize durable state:
 
    ```bash
    python3 <plan-skill>/scripts/init_plan.py <project-root> --title "<work title>"
    # Use --profile full only when Full/Loop is already justified.
    ```
 
-9. Replace placeholders and run `scripts/validate_plan.py --strict <project-root>` before execution or handoff.
+10. Replace placeholders and run `scripts/validate_plan.py --strict <project-root>` before execution or handoff.
 
 For a Lite plan that grows into Full:
 
@@ -56,6 +57,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 ## Execute And Resume
 
 - Resume by reading `program.md`, then the active task package and only the memory/evidence it references.
+- If the territory reveals a material unknown or deviation, read `references/unknowns-contract.md`, resolve discoverable facts from evidence, and update or stop the plan before crossing a bound.
 - Execute the smallest useful node, run its verifier, then read `references/reflection-contract.md` and record one evidence-linked `R-*` before selecting the next action or closing the node.
 - Create later task packages just in time, after their dependencies and acceptance conditions are known.
 - A failed verifier changes the plan, retires an assumption, or triggers escalation; repeating output without new information is not progress.
@@ -69,6 +71,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - Planning is read-only unless the user also authorizes execution.
 - Every completed atomic node has one evidence-linked reflection that states what changed or held, what to preserve, and the next operational rule; record decision summaries, not hidden chain-of-thought.
 - Do not silently invent a material preference. Research discoverable facts, state consequential assumptions, and ask only when human judgment can change the plan.
+- Treat unknowns as continuously discoverable: use the four classes as search lenses, then route each discovered unknown into existing plan state instead of maintaining a parallel unknowns diary.
 - Prefer declarative objectives with explicit bounds; reserve imperative constraints for fragile, high-stakes, or deliberately standardized paths and surface a materially better option without overriding the lock.
 - `完成` and `待验收` require acceptance evidence; written code is not completion.
 - A blocked item names the missing input, owner or external condition, and unblock action.
@@ -82,6 +85,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - `assets/program-lite.template.md`: single-file Lite contract; use through `init_plan.py`
 - `assets/program-full-starter.template.md`, `assets/task-full-starter.template.md`, `assets/memory-starter.template.md`: compact Full contracts; use through `init_plan.py`
 - `references/preference-contract.md`: strategic/tactical and declarative/imperative preference contract
+- `references/unknowns-contract.md`: four unknown classes plus pre-, during-, and post-implementation discovery and routing
 - `references/reflection-contract.md`: per-node wrong/right feedback and memory writeback contract
 - `references/loop-contract.md`: exact Full/Loop program, task, and memory interface
 - `references/clean-contract.md`: periodic alignment, distillation, and complexity-control contract

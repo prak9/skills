@@ -47,6 +47,7 @@ None yet. Add only references that change execution.
 - Imperative bounds: <required method, interface, threshold, or process and why; or None>
 - Negotiable space: <implementation choices delegated to the agent>
 - Material assumptions: None unless an inferred preference could change the plan.
+- Active unknowns: None. Record only unknowns that can change execution, each with its cheapest resolution.
 - Decisions: None yet.
 - Escalate when: A preference conflicts or evidence reveals a better option that requires changing a bound.
 

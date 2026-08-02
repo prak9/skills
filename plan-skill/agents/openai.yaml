@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan Skill"
   short_description: "Learn at every node in the lightest plan"
-  default_prompt: "Use $plan-skill to choose the lightest sufficient planning surface, make preferences explicit, and turn each completed node into evidence-linked reflection."
+  default_prompt: "Use $plan-skill to choose the lightest sufficient planning surface, surface material preferences and unknowns, and turn each completed node into evidence-linked reflection."

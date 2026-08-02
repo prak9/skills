@@ -43,6 +43,7 @@
 
 ## Risks And Escalation
 
+- Discovered unknowns / deviations: None. If one changes scope, acceptance, risk, or a locked constraint, stop and update the program before continuing.
 - Stop when acceptance criteria or a locked constraint must change.
 
 ## Completion Review
