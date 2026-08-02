@@ -1,0 +1,27 @@
+diff --git a/documents.py b/documents.py
+index 912cd10..be72f31 100644
+--- a/documents.py
++++ b/documents.py
+@@ -11 +11,4 @@ def can_read(document: Document, viewer: User) -> bool:
+-    return document.owner_id == viewer.id
++    return (
++        document.owner_id == viewer.id
++        or document.workspace_id == viewer.workspace_id
++    )
+diff --git a/test_documents.py b/test_documents.py
+index 289aae2..4df65af 100644
+--- a/test_documents.py
++++ b/test_documents.py
+@@ -12 +12,12 @@ def test_owner_can_read_document():
+     assert can_read(document, owner)
++
++def test_workspace_member_can_read_shared_document():
++    document = Document(owner_id=1, workspace_id=9)
++    member = User(id=2, workspace_id=9, membership_status="active")
++    assert can_read(document, member)
++
++
++def test_other_workspace_cannot_read_document():
++    document = Document(owner_id=1, workspace_id=9)
++    outsider = User(id=2, workspace_id=7, membership_status="active")
++    assert not can_read(document, outsider)

@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "skill_name": "code-review-craft",
+  "acceptance": {
+    "min_candidate_pass_rate": 0.85,
+    "max_required_failures": 0,
+    "min_pass_rate_delta": 0.0
+  },
+  "evals": [
+    {
+      "id": "required-versus-polish",
+      "prompt": "Review the supplied authorization change. Workspace documents may be shared only when the viewer has an active membership and the workspace has document sharing enabled. A suspended user's workspace_id remains populated for audit history. Give findings and an approval decision; do not implement fixes.",
+      "expected_output": "An evidence-backed required finding for the authorization expansion, with the missing negative cases connected to the same failure path and a request-changes decision rather than style noise.",
+      "files": [
+        "fixtures/required-versus-polish/change.diff"
+      ],
+      "assertions": [
+        {
+          "id": "finds-auth-bypass",
+          "text": "The review identifies that matching workspace_id alone authorizes suspended members and workspaces with sharing disabled, and cites the changed predicate as evidence.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "required-disposition",
+          "text": "The authorization issue is explicitly required/blocking and the final state is Request changes; priority and disposition are not conflated with certainty.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "test-gap-not-duplicate",
+          "text": "The absent suspended-member and disabled-sharing tests strengthen the authorization finding or fix direction instead of being inflated into duplicate findings.",
+          "kind": "model",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "healthy-change-with-polish",
+      "prompt": "Review the supplied retry-delay change and recommend an approval state. The accepted contract is an integer delay clamped inclusively to 1 through 60 seconds. Do not implement fixes and do not invent future requirements.",
+      "expected_output": "Approval of a correct, tested improvement without fabricated blockers; any polish is labeled nonblocking.",
+      "files": [
+        "fixtures/healthy-change-with-polish/change.diff"
+      ],
+      "assertions": [
+        {
+          "id": "no-false-finding",
+          "text": "The review reports no qualifying defect after checking the inclusive bounds and tests.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "approves-improvement",
+          "text": "The final state is Approve or Approve with comments, and no optional preference is presented as a required defect.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "states-evidence-boundary",
+          "text": "The review names what was inspected or tested and any residual limitation without manufacturing concern for appearance.",
+          "kind": "model",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "unreviewable-mixed-change",
+      "prompt": "Review the supplied change manifest and description. The author requests whole-change approval today. Respond as a reviewer without guessing at code that is not supplied.",
+      "expected_output": "An early reviewability response that explains why whole-change approval is unsupported, proposes concrete coherent split boundaries, and states the partial review scope and next action.",
+      "files": [
+        "fixtures/unreviewable-mixed-change/description.txt",
+        "fixtures/unreviewable-mixed-change/manifest.txt"
+      ],
+      "assertions": [
+        {
+          "id": "does-not-fake-review",
+          "text": "The reviewer does not claim to have reviewed or approved missing implementation details and explicitly states the coverage limitation.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "early-reviewability-feedback",
+          "text": "The response identifies the mixed behavior, migration, refactor, generated churn, and formatting as an unreliable review unit before inventing line-level defects.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "actionable-splits",
+          "text": "The response proposes a coherent sequence such as baseline tests, behavior-preserving rename/refactor, schema migration, feature behavior, rollout/configuration, and separate mechanical formatting or generation.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "description-gap",
+          "text": "The response explains that 'Phase 1' does not record what changed and why, and requests an updated durable description.",
+          "kind": "model",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

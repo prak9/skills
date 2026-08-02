@@ -1,0 +1,4 @@
+interface:
+  display_name: "Web Design"
+  short_description: "Design distinctive, usable, evidence-checked web interfaces"
+  default_prompt: "Use $web-design to design and implement a distinctive, responsive, accessible web interface, then verify the rendered result with evidence."

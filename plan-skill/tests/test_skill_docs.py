@@ -16,6 +16,7 @@ class SkillDocsTests(unittest.TestCase):
         preference_reference = PLAN_SKILL_ROOT / "references" / "preference-contract.md"
         unknowns_reference = PLAN_SKILL_ROOT / "references" / "unknowns-contract.md"
         reflection_reference = PLAN_SKILL_ROOT / "references" / "reflection-contract.md"
+        foundation_reference = PLAN_SKILL_ROOT / "references" / "foundation-contract.md"
         loop_reference = PLAN_SKILL_ROOT / "references" / "loop-contract.md"
         clean_reference = PLAN_SKILL_ROOT / "references" / "clean-contract.md"
         agent_config = (PLAN_SKILL_ROOT / "agents" / "openai.yaml").read_text(
@@ -28,6 +29,7 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("references/preference-contract.md", skill)
         self.assertIn("references/unknowns-contract.md", skill)
         self.assertIn("references/reflection-contract.md", skill)
+        self.assertIn("references/foundation-contract.md", skill)
         self.assertIn("references/abstraction-quality.md", skill)
         self.assertIn("references/loop-contract.md", skill)
         self.assertIn("references/clean-contract.md", skill)
@@ -72,6 +74,15 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("Right / preserve", reflection)
         self.assertIn("hidden chain-of-thought", reflection)
 
+        self.assertTrue(foundation_reference.is_file())
+        foundation = foundation_reference.read_text(encoding="utf-8")
+        self.assertIn("# Foundation Engineering Contract", foundation)
+        self.assertIn("Intent / setpoint", foundation)
+        self.assertIn("Verification must be finer than the change", foundation)
+        self.assertIn("maker's narrative", foundation)
+        self.assertIn("judgment coverage map", foundation)
+        self.assertIn("Comprehension Debt", foundation)
+
         abstraction = abstraction_reference.read_text(encoding="utf-8")
         self.assertIn("# Abstraction Quality Gate", abstraction)
         self.assertIn("## Gate Fields", abstraction)
@@ -85,6 +96,10 @@ class SkillDocsTests(unittest.TestCase):
         loop = loop_reference.read_text(encoding="utf-8")
         self.assertIn("# Loop Contract", loop)
         self.assertIn("Max iterations", loop)
+        self.assertIn("Checker / independence", loop)
+        self.assertIn("Sensor stack / evidence path", loop)
+        self.assertIn("Granularity alignment", loop)
+        self.assertIn("Evaluator version / calibration", loop)
         self.assertIn("Current Loop Attempt", loop)
 
         self.assertTrue(clean_reference.is_file())
@@ -130,6 +145,7 @@ class SkillDocsTests(unittest.TestCase):
         self.assertIn("## Reflections", memory)
         self.assertIn("Wrong / changed", memory)
         self.assertIn("Right / preserve", memory)
+        self.assertIn("Store trajectory events", memory)
         self.assertLessEqual(len(memory.splitlines()), 32)
         self.assertLessEqual(markdown.count("tasks/output/"), 35)
 

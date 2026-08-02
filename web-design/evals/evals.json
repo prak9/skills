@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "skill_name": "web-design",
+  "acceptance": {
+    "min_candidate_pass_rate": 0.8,
+    "max_required_failures": 0,
+    "min_pass_rate_delta": 0.0
+  },
+  "evals": [
+    {
+      "id": "repair-cafe-landing",
+      "prompt": "Build a standalone production-quality single-page website for Repair Night, a neighborhood repair cafe. The primary job is to understand the next monthly session and book a repair slot. Include accepted and rejected items, the process, a volunteer path, location and hours, and meaningful empty, validation, loading, success, and error behavior for booking. Use only HTML, CSS, and small JavaScript with no external dependencies or assets. Make it responsive and accessible.",
+      "expected_output": "A runnable, distinctive interface whose first viewport prioritizes the next session and booking, with resilient responsive behavior and evidence-backed interaction states.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "runnable-semantic-page",
+          "text": "The output is a runnable standalone page with semantic landmarks, one descriptive h1, native controls, associated form labels, and no required external dependency.",
+          "kind": "deterministic",
+          "required": true
+        },
+        {
+          "id": "primary-job-first",
+          "text": "The first viewport makes the next session and booking path more prominent than generic brand mood or secondary content.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "states-and-reflow",
+          "text": "Booking validation, loading, success, and error states are implemented, and the page remains usable at narrow mobile and laptop widths without page-level horizontal overflow.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "specific-composition",
+          "text": "The composition is specific to a repair cafe and does not default to an interchangeable centered hero followed by a uniform card grid.",
+          "kind": "human",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "incident-triage-dashboard",
+      "prompt": "Create a responsive incident-triage dashboard for an on-call engineer. The main task is to identify the most urgent active incident and take ownership without losing awareness of lower-priority incidents. Include realistic sparse, dense, loading, disconnected, and resolved states; keyboard operation; filters reflected in the URL; and a narrow-screen strategy. Preserve exact severity, owner, service, start time, and status meaning. Use a small runnable implementation without third-party UI or chart libraries.",
+      "expected_output": "A task-led operational interface with honest information density, robust state handling, keyboard access, and verification suited to a high-consequence workflow.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "urgency-is-legible",
+          "text": "Urgency, ownership, service, start time, and status remain legible and are not encoded by color alone.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "operable-flow",
+          "text": "Taking ownership and filtering are keyboard-operable, provide visible feedback, and preserve shareable filter state in the URL.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "density-and-states",
+          "text": "Sparse, dense, loading, disconnected, and resolved data do not collapse the hierarchy or create a dead end.",
+          "kind": "human",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "brand-boundary-redesign",
+      "prompt": "Redesign a small arts-festival schedule page whose established identity is warm, colorful, typographic, and playful. Improve hierarchy, filtering, event detail, mobile reflow, and accessibility while preserving that identity. Do not turn it into a monochrome developer-tool site, a generic SaaS landing page, or a card catalog. Include long event names, sold-out and accessible-performance states, and a useful no-results state.",
+      "expected_output": "A distinctive redesign that preserves the stated brand while improving task clarity, interaction resilience, and accessibility without importing Vercel decoration.",
+      "files": [],
+      "assertions": [
+        {
+          "id": "brand-preserved",
+          "text": "The result remains warm, colorful, typographic, and playful rather than adopting a Vercel-like monochrome visual identity.",
+          "kind": "human",
+          "required": true
+        },
+        {
+          "id": "schedule-task",
+          "text": "Users can scan, filter, and understand schedule details, sold-out status, and accessible performances without reconstructing meaning from color alone.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "content-extremes",
+          "text": "Long names, narrow screens, and no-results behavior are intentionally designed rather than clipped, hidden, or left empty.",
+          "kind": "model",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

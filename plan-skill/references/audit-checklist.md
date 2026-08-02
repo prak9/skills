@@ -19,12 +19,13 @@ Audit the plan by checking authority, usefulness, and evidence rather than templ
 - A raw idea was refined only when directions were genuinely open.
 - The readiness gate was used because a material uncertainty could flip the decision, not merely because of the task category.
 - Locked constraints, negotiable implementation space, acceptance evidence, and the next useful action are concrete.
-- Loop mode has a finite budget, verifier, reflect trigger, and stop condition.
+- Loop mode maps intent, actuator, sensor, state, and controller; it has a finite budget, bounded execution scope, independent checker, evidence path, calibration rule, and stop condition.
 
 ## Execution And Evidence
 
 - Each node is independently useful or proves a material assumption.
 - Completed or acceptance-ready work has evidence that would fail if the result were broken.
+- Verification is finer than the change slice, each material acceptance condition has a decisive sensor or retained human gate, and maker self-report is not terminal evidence.
 - Every completed atomic node points to one `R-*` entry that records wrong/changed, right/preserve, evidence, and the next rule.
 - A blocked item names its unblock condition.
 - Outputs are created and gitignored only when the task produces deliverable artifacts.
@@ -35,6 +36,7 @@ Audit the plan by checking authority, usefulness, and evidence rather than templ
 - `Clean state` becomes `Due` at handoff or terminal boundaries, after the fixed accumulation thresholds, or when durable state drifts.
 - Clean preserves stable IDs, raw evidence, and unique node reflections while retiring duplicate, stale, or superseded Markdown state with pointers.
 - Program, active task, memory, and referenced living docs agree on authority, constraints, decisions, and next action.
+- A responsible owner can replay why the result passed and name residual gaps without relying on hidden chat history.
 - The pass reduces retrieval surface or records a concrete no-op reason; it does not add an unbounded cleanup log.
 
 ## Validation

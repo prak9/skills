@@ -43,6 +43,8 @@ Set readiness to `Ready` when the core fields are concrete, contradictions are b
 ## Keep Loops Informative
 
 - Pre-register the verifier and stop condition.
+- Name an independent checker and raw evidence path; maker self-report cannot close the loop.
+- Keep the change slice smaller than what the verifier can localize, or strengthen the sensor before acting.
 - Prefer a check that can disprove the idea.
 - On reflection ask: “What new information changed the plan?”
 - If nothing changed, stop local optimization and revisit the readiness contract.

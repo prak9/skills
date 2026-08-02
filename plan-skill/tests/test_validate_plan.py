@@ -379,12 +379,18 @@ class ValidatePlanTests(unittest.TestCase):
 |---|---|
 | Loop goal | Make CSV export pass end-to-end |
 | Success criteria | A-001 passes |
+| Execution scope | edit exporter and CLI files; run local tests only |
 | Failure signal | pytest failure |
 | Verifier | pytest tests/test_export.py tests/test_cli.py |
+| Checker / independence | pytest exit code decides PASS; maker self-report cannot |
+| Sensor stack / evidence path | A-001 -> escaping or CLI failure -> pytest -> captured output -> PASS or FAIL |
+| Granularity alignment | one CLI behavior per attempt; failing test localizes the case; one R entry per attempt |
 | Max iterations | 3 |
 | Reflect trigger | verifier failure |
 | Iterate rule | change implementation, keep A-001 fixed |
 | Stop / escalation condition | three failed iterations |
+| Irreversible gate / recovery | N/A: local reversible edits; restore the changed lines on failure |
+| Evaluator version / calibration | freeze current tests for each attempt; test changes start a new evaluator version |
 | Memory write rule | record failed runs in memory.md |
 """,
         )
@@ -408,9 +414,9 @@ class ValidatePlanTests(unittest.TestCase):
             "## Current Loop Attempt\n\n不适用（Linear）。",
             """## Current Loop Attempt
 
-| Iteration | Loop step | Node | Attempt | Verification result | Reflection | Plan delta | Next |
-|---|---|---|---|---|---|---|---|
-| L-001 | Plan | N-002 | Add the CLI flag | 待验证 | Not run yet | None | Act |
+| Iteration | Loop step | Node | Change slice | Checker / evidence | Latest result | Reflection | Plan delta | Next |
+|---|---|---|---|---|---|---|---|---|
+| L-001 | Plan | N-002 | Add one CLI flag behavior | pytest CLI case and captured output | 待验证 | Not run yet | None | Act |
 """,
         )
 
@@ -419,6 +425,46 @@ class ValidatePlanTests(unittest.TestCase):
         self.assertEqual(0, process.returncode, process.stdout)
         self.assertTrue(result["ok"], result)
         self.assertEqual([], result["errors"])
+
+    def test_blind_loop_without_foundation_fields_is_rejected(self) -> None:
+        self.replace("program.md", "- Plan mode: `Linear`", "- Plan mode: `Loop`")
+        self.replace("program.md", "- Loop state: `Not applicable`", "- Loop state: `Plan`")
+        self.replace("program.md", "- Loop iteration: `Not applicable`", "- Loop iteration: `1/3`")
+        self.replace(
+            "program.md",
+            "### Loop Contract\n\nNot applicable (Linear).",
+            """### Loop Contract
+
+| Field | Content |
+|---|---|
+| Loop goal | Rewrite the whole user module |
+| Success criteria | the app starts |
+| Failure signal | startup failure |
+| Verifier | run the app |
+| Max iterations | 3 |
+| Reflect trigger | startup failure |
+| Iterate rule | keep changing code |
+| Stop / escalation condition | three attempts |
+| Memory write rule | note completion |
+""",
+        )
+        self.replace(
+            "program.md",
+            "### Loop State\n\nNot applicable.",
+            """### Loop State
+
+| Iteration | Node | Step | Current hypothesis / plan delta | Verification | Latest result | Decision | Next |
+|---|---|---|---|---|---|---|---|
+| L-001 | NODE-001 | Plan | Rewrite module | app startup | 待验证 | continue | N-002 |
+""",
+        )
+
+        self.assert_rejected(
+            "Checker / independence",
+            "Sensor stack / evidence path",
+            "Granularity alignment",
+            "Evaluator version / calibration",
+        )
 
     def test_valid_completed_plan_passes(self) -> None:
         self.mark_completed()

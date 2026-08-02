@@ -1,4 +1,4 @@
 interface:
   display_name: "Code Review Craft"
-  short_description: "深读代码、重建系统理解、评估风险并给出证据化 review"
-  default_prompt: "使用 $code-review-craft 阅读这组代码，重建其行为，并给出按风险排序、可验证的 review。"
+  short_description: "深读代码、区分阻塞项并校准审批结论"
+  default_prompt: "使用 $code-review-craft 重建这组代码的行为，给出有证据、意图标签清晰的 findings，并提出校准后的审批结论。"

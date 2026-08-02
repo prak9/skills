@@ -1,0 +1,27 @@
+diff --git a/retry.py b/retry.py
+index 1f875b2..c7e0f3c 100644
+--- a/retry.py
++++ b/retry.py
+@@ -1,2 +1,6 @@
++MIN_RETRY_SECONDS = 1
++MAX_RETRY_SECONDS = 60
++
++
+ def clamp_retry_delay(seconds: int) -> int:
+-    return seconds
++    return min(max(seconds, MIN_RETRY_SECONDS), MAX_RETRY_SECONDS)
+diff --git a/test_retry.py b/test_retry.py
+index 71952ba..b5d05e1 100644
+--- a/test_retry.py
++++ b/test_retry.py
+@@ -4 +4,9 @@
+-def test_delay_is_unchanged():
++def test_delay_inside_range_is_unchanged():
+     assert clamp_retry_delay(30) == 30
++
++
++def test_delay_is_clamped_inclusively():
++    assert clamp_retry_delay(-2) == 1
++    assert clamp_retry_delay(1) == 1
++    assert clamp_retry_delay(60) == 60
++    assert clamp_retry_delay(100) == 60

@@ -1,6 +1,6 @@
 ---
 name: code-review-craft
-description: Read unfamiliar code and diffs, reconstruct behavior and invariants, evaluate correctness, maintainability, efficiency, security, operability, and tests, then produce evidence-backed review findings. Use when Codex needs to explain a code path, understand a repository or subsystem, review a PR/diff/commit, audit AI-generated code, assess an architectural change, find edge cases or failure modes, judge whether code is safe to approve, or train and evaluate code-review judgment. Work review-first and do not implement fixes unless the user explicitly asks.
+description: Read unfamiliar code and diffs, reconstruct behavior and invariants, evaluate correctness, maintainability, efficiency, security, operability, and tests, then produce evidence-backed findings and a calibrated approval decision. Use when Codex needs to explain a code path, understand a repository or subsystem, review a PR/diff/commit, audit AI-generated code, assess an architectural change, find edge cases or failure modes, judge whether code is safe to approve, communicate review comments, or train and evaluate code-review judgment. Work review-first and do not implement fixes unless the user explicitly asks.
 ---
 
 # Code Review Craft
@@ -17,7 +17,7 @@ Automate evidence collection aggressively. Do not outsource comprehension, quali
 ## Route the task
 
 - **Explain code:** reconstruct purpose, execution path, state, invariants, side effects, and failure behavior. Read `references/comprehension-protocol.md` for an unfamiliar or cross-file system.
-- **Review a diff or PR:** compare intended behavior with actual behavior and report actionable findings. Read `references/review-rubric.md` for the relevant risk dimensions.
+- **Review a diff or PR:** compare intended behavior with actual behavior and report actionable findings plus an approval state. Read `references/review-flow.md` and `references/review-rubric.md`.
 - **Audit a subsystem or architecture:** trace trust boundaries, persistence, concurrency, recovery, and operational consequences beyond the changed lines. Read both references above.
 - **Train or evaluate judgment:** predict before validation, keep an error ledger, and score review quality across real changes. Read `references/judgment-training.md`.
 
@@ -26,12 +26,19 @@ Automate evidence collection aggressively. Do not outsource comprehension, quali
 Before judging the code:
 
 1. Read applicable repository instructions and the files under review in full.
-2. Identify the change intent, expected behavior, base revision, scope, and explicit acceptance criteria. Clarify any load-bearing term whose meaning differs across the request, public API, implementation, documentation, or tests.
+2. Identify the change intent, expected behavior, base revision, scope, and explicit acceptance criteria. Check that the change description says what changed and why, and still matches the diff. Clarify any load-bearing term whose meaning differs across the request, public API, implementation, documentation, or tests.
 3. Name the protected properties: correctness, compatibility, data integrity, security, latency, availability, or another project-specific constraint.
 4. Calibrate depth to impact and reversibility. Inspect architecture, migrations, auth, billing, concurrency, public APIs, and destructive operations more deeply than local formatting or generated boilerplate.
-5. Infer missing intent from callers, tests, docs, schemas, history, and existing patterns. State any material assumption; do not invent a specification.
+5. Check reviewability: the change should be one coherent, independently safe step with related tests. If mixed behavior, refactoring, generated churn, or sheer breadth prevents reliable review, say so early and propose concrete split boundaries.
+6. Infer missing intent from callers, tests, docs, schemas, history, and existing patterns. State any material assumption; do not invent a specification.
 
 Do not modify code during a review unless the user also asks for a fix. Run read-only inspection and relevant diagnostics; treat generated caches or test artifacts as incidental, not as permission to change source.
+
+## Apply the approval standard
+
+Optimize for team progress and long-term code health together. Approve when the change definitely improves or preserves the system's overall health and no required concern remains; do not demand perfection or block on personal preference. Do not approve a known net degradation merely because the change is urgent, large, or expensive to revise.
+
+Technical evidence and repository rules outrank taste. When several approaches are equally valid under those constraints, accept the author's choice. Keep required corrections separate from optional improvement, polish, education, and praise so the author can act without guessing.
 
 ## Predict before validation
 
@@ -43,6 +50,17 @@ After learning the intent but before trusting tests or the author's explanation,
 - What evidence would disprove the concern?
 
 Use the forecast to direct attention, not to anchor the verdict. Revise it when the code disagrees. In judgment-training mode, preserve the forecast and compare it with the final result.
+
+## Navigate for early feedback
+
+Read `references/review-flow.md` for a PR, multi-file diff, oversized change, author-facing review, or approval recommendation.
+
+1. Take a broad view: decide whether the change belongs, its description is trustworthy, and its shape is reviewable.
+2. Inspect the load-bearing design or main file first. If the direction is wrong, report that immediately with a constructive alternative; do not spend the review budget polishing code likely to disappear.
+3. Then inspect every in-scope human-written line in a logical sequence, using tests early when they recover intent.
+4. State which files, layers, or risk dimensions were and were not reviewed. Route specialist concerns to a qualified reviewer instead of implying expertise.
+
+Fast review means low response latency and a clear next action, not shallow judgment. For a huge change, an early scope or design response is more useful than silence followed by an incomplete pseudo-approval.
 
 ## Reconstruct the system
 
@@ -101,12 +119,22 @@ Assign severity by impact and likelihood:
 
 Do not use severity to express certainty. State uncertainty separately.
 
+Also assign comment disposition independently from severity:
+
+- **Required:** must be resolved before approval because a contract, invariant, standard, or net code health would otherwise fail.
+- **Optional / Consider:** credible improvement that is not needed for approval.
+- **Nit:** minor polish; never blocks.
+- **FYI:** educational context or future consideration; no action expected in this change.
+
+P0–P3 findings are normally `Required`. Do not inflate an optional preference into a P3 defect. Positive reinforcement may be included when it names a practice worth preserving.
+
 ## Deliver the review
 
 Lead with findings, ordered by severity. Use this shape:
 
 ```text
 [P1] Imperative, specific title — path/to/file.ext:line
+Disposition: Required
 Trigger: the input, state, sequence, or environment that reaches the issue.
 Impact: the observable failure and affected user or system.
 Evidence: the relevant control/data path, test result, or violated contract.
@@ -121,6 +149,14 @@ After the findings, add only what helps the decision:
 - tests run and decisive evidence;
 - residual risks or untested paths;
 - a brief system model when the user asked for understanding.
+- optional, Nit, FYI, or positive comments only when their nonblocking intent is explicit.
+
+End a PR review with one calibrated state:
+
+- **Approve:** no required concern remains and the change improves or preserves code health.
+- **Approve with comments:** only explicitly nonblocking comments remain.
+- **Request changes:** at least one required finding remains.
+- **Blocked / needs specialist:** the reviewed scope or evidence cannot support a responsible verdict; name the missing reviewer, evidence, or split.
 
 If no qualifying findings remain, say so plainly. State what was inspected and any residual test or comprehension gap; do not invent a concern to make the review look useful.
 

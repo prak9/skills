@@ -65,7 +65,7 @@ None yet. Add only references that change execution.
 
 ## Loop Contract
 
-Not applicable (Linear). For Loop mode, replace this section using `references/loop-contract.md`.
+Not applicable (Linear). For Loop mode, read `references/foundation-contract.md`, then replace this section using `references/loop-contract.md`.
 
 ## Loop State
 

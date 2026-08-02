@@ -5,7 +5,7 @@ Use this protocol when the code is unfamiliar, crosses files or services, or car
 ## Read in layers
 
 1. **Repository contract:** read `AGENTS.md`, `CLAUDE.md`, contributor guidance, manifests, and relevant architecture notes.
-2. **Change boundary:** inspect the base, diff, renamed files, generated files, dependency changes, and configuration changes.
+2. **Change boundary:** inspect the description as a claim about what and why, then verify it against the base, diff, renamed files, generated files, dependency changes, and configuration changes.
 3. **Whole files:** read each changed file in full. A correct-looking hunk can violate setup, cleanup, ordering, or file-level invariants.
 4. **Call graph:** find direct callers, callees, implementations, interfaces, callbacks, event consumers, and public exports.
 5. **Data and state:** locate schemas, migrations, serialization, caches, state machines, transactions, and ownership rules.

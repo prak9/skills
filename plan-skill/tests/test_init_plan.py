@@ -129,6 +129,7 @@ class InitPlanTests(unittest.TestCase):
         self.assertIn("## Reflections", memory_text)
         self.assertIn("Wrong / changed", memory_text)
         self.assertIn("Right / preserve", memory_text)
+        self.assertIn("Store trajectory events", memory_text)
         self.assertIn("During Clean, preserve unique `R-*` feedback", memory_text)
         self.assertNotRegex(memory_text, r"(?m)^##\s+\d+\.")
         self.assertLessEqual(len(memory_text.splitlines()), 32)

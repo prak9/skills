@@ -1,6 +1,29 @@
 # Evidence-Based Review Rubric
 
+## Contents
+
+- Change shape and description
+- API semantics, correctness, and compatibility
+- State, concurrency, and distributed behavior
+- Security and privacy
+- Data and migrations
+- Reliability and operability
+- Performance and resource use
+- Maintainability and architecture
+- Documentation
+- Tests and validation
+- Code style
+- Finding quality gate
+
 Select dimensions according to the review contract. Start with API semantics and implementation semantics because defects there are costlier to correct after callers, data, documentation, and tests accrete around them. Then inspect documentation and tests, and automate code-style checks where possible. This is an attention heuristic, not a severity scale or a substitute for following evidence across layers. Do not give every dimension equal weight and do not report a checklist item without a concrete failure path.
+
+## Change shape and description
+
+- Confirm the description explains what changes and why, records material limitations, and still matches the diff.
+- Prefer one coherent, independently safe change with its related tests. Treat conceptual scope and reviewer comprehension as more important than a rigid line-count threshold.
+- Ask for mechanical refactoring, formatting, generated churn, and behavior change to be separated when their combination hides semantics or weakens rollback.
+- For stacked work, check that each step builds, preserves user and developer behavior, and supplies the context required by the next step.
+- If the assigned scope excludes files or a specialist dimension, state that boundary rather than implying whole-change approval.
 
 ## API semantics, correctness, and compatibility
 

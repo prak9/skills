@@ -31,4 +31,6 @@ For every task:
 
 For risky changes, also review applicable migration, compatibility, security, observability, rollback, and human-approval requirements. Add a deeper red-team checklist only when the risk warrants it; do not force an empty universal questionnaire.
 
+For Loop or unsupervised execution, also require the declared independent checker and raw evidence path, confirm verification was finer than the change slice, and name any retained human judgment. When safe ownership depends on understanding, include an explainer or teach-back that traces intent, change, sensor, evidence, and residual risk.
+
 For a Lite plan, the Plan table, Reflection Log, and top-level status carry the same evidence and reflection contract without a task package.

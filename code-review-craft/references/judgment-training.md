@@ -58,6 +58,7 @@ Score at least:
 - **evidence quality:** whether findings have reproducible or code-level support;
 - **test selection:** whether chosen checks are informative rather than merely broad;
 - **decision calibration:** whether confidence and approve/reject recommendations match outcomes;
+- **disposition calibration:** whether required, optional, Nit, and FYI comments were distinguished without blocking on preference;
 - **review cost:** time, tool calls, and reviewer burden per useful finding.
 
 Keep the artifact set, rubric, known findings, scoring rules, and reviewer context fixed during a comparison. Include clean changes so a reviewer cannot score well by always objecting. Preserve hidden or held-out artifacts to detect adaptation to the evaluator.

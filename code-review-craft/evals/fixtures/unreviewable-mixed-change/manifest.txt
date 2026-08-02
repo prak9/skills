@@ -1,0 +1,11 @@
+Change summary from the review tool:
+
+- 46 files and 1,842 changed lines.
+- Renames the public Account API to Principal across server and client code.
+- Adds a nullable principal_id column and a production backfill job.
+- Changes authorization behavior to support delegated administrators.
+- Regenerates API clients after the schema change.
+- Reformats 18 files with a new formatter version.
+- Moves authorization helpers into a new package while changing their behavior.
+- Updates deployment configuration so old and new binaries overlap for 30 minutes.
+- Includes unit tests for the new helper but no migration, mixed-version, or rollback test evidence.

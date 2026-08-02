@@ -30,6 +30,8 @@ Do not advance to the next node until its predecessor has evidence and an `R-*` 
 - Distinguish outcome luck from process quality. A passing test does not vindicate an unsupported assumption; a failed experiment can still validate a good falsification process.
 - Update the plan immediately when a reflection changes scope, order, verifier, preference, or risk. If it changes a durable project rule, distill it into `D-*` or `F-*` and link the originating `R-*`.
 - In Loop mode, create one `R-*` for every verified attempt; create `RUN-*` only for attempts whose raw execution details remain consequential.
+- If reality contradicts a passing checker, record the escaped failure class and revise the acceptance or sensor contract. Do not reinterpret the same evidence as success.
+- If a rubric, sensor, or holdout set changes, record it as a versioned harness decision and re-evaluate affected claims; do not hide evaluator drift inside an implementation reflection.
 
 ## Preserve Learning
 

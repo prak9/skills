@@ -1156,12 +1156,18 @@ def task_status(text: str) -> str | None:
 LOOP_CONTRACT_FIELDS = {
     "Loop goal",
     "Success criteria",
+    "Execution scope",
     "Failure signal",
     "Verifier",
+    "Checker / independence",
+    "Sensor stack / evidence path",
+    "Granularity alignment",
     "Max iterations",
     "Reflect trigger",
     "Iterate rule",
     "Stop / escalation condition",
+    "Irreversible gate / recovery",
+    "Evaluator version / calibration",
     "Memory write rule",
 }
 

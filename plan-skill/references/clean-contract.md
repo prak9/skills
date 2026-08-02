@@ -10,6 +10,7 @@ Set `Clean state` to `Due` when any of these occurs:
 - after three completed nodes or five consequential runs awaiting distillation since the last Clean;
 - when `program.md`, the active task, `memory.md`, or referenced living docs duplicate, contradict, or obscure the current state;
 - when a plan exceeds its context budget or added concepts no longer earn their maintenance cost;
+- when generated output is no longer traceable from intent through change and evidence, or the owner cannot explain the active system well enough to re-judge it;
 - during Loop `Reflect` when stale hypotheses or repeated attempts make the next action harder to recover.
 
 Do not run Clean on every update. If none of the triggers fired, leave the state alone.
@@ -27,6 +28,7 @@ Do not run Clean on every update. If none of the triggers fired, leave the state
 Preserve:
 
 - outcome, locked constraints, acceptance criteria, current blocker, and next action;
+- the replayable path from intent to change, sensor, evidence, decision, and residual risk;
 - stable `D-*`, `F-*`, and `RUN-*` IDs that still affect work;
 - every `R-*` node reflection with its scope, evidence, wrong/right feedback, and successor or distillation pointer;
 - raw code, tests, CI, logs, external records, and links needed to verify a claim;
@@ -46,6 +48,7 @@ Clean is complete only when:
 
 - authoritative plan, task, memory, and referenced living docs agree;
 - work can resume from `program.md`, the active task, and only their referenced memory/evidence;
+- a responsible owner can explain and re-judge the active result without reconstructing hidden chat history;
 - stable IDs and evidence links still resolve, with no material fact silently lost;
 - duplicate or stale state is removed or explicitly retired;
 - line count, retrieval surface, and concept count do not increase except for required append-only reflection entries or another concrete reason;

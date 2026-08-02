@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, or audit, cleanup, simplification, and repair of existing plan artifacts or memory. It can refine a raw idea, expose material preferences, tradeoffs, and map-versus-territory unknowns, capture evidence-linked reflection after each completed node, create a single-file Lite plan, expand work into Full task packages, periodically align durable docs, distill memory, control complexity, and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
+description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, verification-foundation design for repeated agentic work, or audit, cleanup, simplification, and repair of existing plan artifacts or memory. It can expose preferences, tradeoffs, and unknowns; align change, verification, and memory granularity; capture evidence-linked reflection; create Lite or Full plans; control complexity; and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
 ---
 
 # Plan Skill
@@ -37,15 +37,16 @@ Never create a second hand-maintained view of state that can be derived from an 
 5. Read `references/unknowns-contract.md` when the territory is unfamiliar, important preferences are tacit, or implementation is likely to reveal constraints the prompt cannot contain.
 6. Read `references/preference-contract.md` when valid solutions differ materially, a preference must be inferred, or a requested method may conflict with its objective.
 7. Read `references/pre-execution-grill.md` only when unresolved judgment or evidence could change scope, method, risk, or whether to proceed.
-8. For Loop, read `references/loop-contract.md` before drafting its program and task state.
-9. Initialize durable state:
+8. Read `references/foundation-contract.md` when an agent may act repeatedly or without line-by-line supervision, a change slice is broader than its verifier, or the work includes irreversible effects. Loop mode always reads it.
+9. For Loop, read `references/loop-contract.md` before drafting its program and task state.
+10. Initialize durable state:
 
    ```bash
    python3 <plan-skill>/scripts/init_plan.py <project-root> --title "<work title>"
    # Use --profile full only when Full/Loop is already justified.
    ```
 
-10. Replace placeholders and run `scripts/validate_plan.py --strict <project-root>` before execution or handoff.
+11. Replace placeholders and run `scripts/validate_plan.py --strict <project-root>` before execution or handoff.
 
 For a Lite plan that grows into Full:
 
@@ -61,6 +62,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - Execute the smallest useful node, run its verifier, then read `references/reflection-contract.md` and record one evidence-linked `R-*` before selecting the next action or closing the node.
 - Create later task packages just in time, after their dependencies and acceptance conditions are known.
 - A failed verifier changes the plan, retires an assumption, or triggers escalation; repeating output without new information is not progress.
+- If a checker passes but reality fails, treat it as a foundation defect: reopen acceptance, identify the escaped failure class, and add the cheapest decisive sensor.
 - When Clean becomes due, or before handoff, `待验收`, or `完成`, read `references/clean-contract.md` and compress stale or duplicated state before continuing.
 - Before `阻塞`, `待验收`, or `完成`, read `references/status-and-completion.md`.
 - For a shared abstraction change, read `references/abstraction-quality.md`.
@@ -74,8 +76,9 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - Treat unknowns as continuously discoverable: use the four classes as search lenses, then route each discovered unknown into existing plan state instead of maintaining a parallel unknowns diary.
 - Prefer declarative objectives with explicit bounds; reserve imperative constraints for fragile, high-stakes, or deliberately standardized paths and surface a materially better option without overriding the lock.
 - `完成` and `待验收` require acceptance evidence; written code is not completion.
+- The executor's self-report is never terminal evidence. Verification must be finer than the change slice and expose a path from acceptance condition to raw evidence.
 - A blocked item names the missing input, owner or external condition, and unblock action.
-- Loop mode has a finite budget, verifier, reflect trigger, and stop/escalation condition.
+- Loop mode has a finite budget, bounded execution scope, independent checker, sensor stack, granularity alignment, calibration rule, reflect trigger, and stop/escalation condition.
 - Preserve user constraints and existing project conventions; escalate before changing scope or acceptance criteria.
 - Outside the per-node reflection ledger, store historical facts only when they will change future execution; do not duplicate ordinary progress or Git history.
 - Clean may compress Markdown state but must preserve stable IDs, evidence links, and raw facts.
@@ -87,6 +90,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - `references/preference-contract.md`: strategic/tactical and declarative/imperative preference contract
 - `references/unknowns-contract.md`: four unknown classes plus pre-, during-, and post-implementation discovery and routing
 - `references/reflection-contract.md`: per-node wrong/right feedback and memory writeback contract
+- `references/foundation-contract.md`: closed-loop parts, maker/checker separation, granularity alignment, judgment descent, calibration, and comprehension-debt control
 - `references/loop-contract.md`: exact Full/Loop program, task, and memory interface
 - `references/clean-contract.md`: periodic alignment, distillation, and complexity-control contract
 - `scripts/init_plan.py`: safe initialization without overwriting existing plan files
