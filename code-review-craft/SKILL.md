@@ -56,17 +56,21 @@ Read beyond the diff until the behavior can be explained without guessing:
 
 If any material step still depends on “the framework probably handles it,” keep reading or mark the uncertainty. Passing the explain-back gate is required before approval.
 
-## Evaluate the change
+## Allocate attention by cost of late change
 
-Compare implementation against the contract and the surrounding system:
+Review from the base of this pyramid upward. Spend the most human judgment where a mistake becomes most expensive to change later:
 
-- Check the hard path, not only the intended path: boundaries, partial failure, retry, rollback, concurrency, compatibility, and cleanup.
-- Judge tests as evidence, not as truth. Verify that they would fail for the defect they claim to prevent and that assertions cover behavior rather than incidental implementation.
-- Prefer project conventions and existing dependencies. Flag abstractions only when they create a concrete cost or hide an invariant.
-- Separate defects from preferences. Report style only when it causes ambiguity, inconsistency, maintenance risk, or a documented rule violation.
-- Look for the final 10%: error semantics, observability, safe rollout, migration ordering, resource cleanup, and the exact behavior at limits.
+1. **API semantics:** judge public contracts, compatibility, consistency, boundaries, defaults, and whether the interface is as small as possible but as large as required.
+2. **Implementation semantics:** verify requirements, invariants, failure behavior, security, performance, observability, dependency cost, and unnecessary complexity.
+3. **Documentation:** check that changed behavior, configuration, migration, and operational expectations are documented accurately where their users will look.
+4. **Tests:** use tests as evidence that important behavior, boundaries, integrations, and non-functional requirements are protected.
+5. **Code style:** leave formatting and mechanical convention checks to automation when possible; spend human review only on readability or consistency problems with a concrete consequence.
 
-Use targeted tests, static analysis, type checking, minimal reproductions, logs, or history when they can confirm or refute a concern. Read the full output and connect each result to a claim. Do not inflate confidence because a broad suite passed.
+This order allocates attention; it does not rank severity or require a rigid reading sequence. Read tests early when they help recover intent, use them as evidence at every layer, and pursue a plausible high-impact risk immediately. Rank findings by impact and likelihood regardless of their layer.
+
+Compare the change against the contract and surrounding system at each layer. Check the hard path, not only the intended path: boundaries, partial failure, retry, rollback, concurrency, compatibility, and cleanup. Look for the final 10%: error semantics, observability, safe rollout, migration ordering, resource cleanup, and exact behavior at limits.
+
+Use targeted tests, static analysis, type checking, minimal reproductions, logs, or history when they can confirm or refute a concern. Read the full output and connect each result to a claim. Do not inflate confidence because a broad suite passed. Prefer project conventions and existing dependencies. Flag abstractions only when they create a concrete cost or hide an invariant, and separate defects from preferences.
 
 ## Decide what qualifies as a finding
 
