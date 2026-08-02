@@ -1,0 +1,4 @@
+interface:
+  display_name: "Linux Perf Profiling"
+  short_description: "Profile Linux CPU performance with perf workflows"
+  default_prompt: "Use $linux-perf to profile this Linux workload and identify the dominant CPU bottleneck."
