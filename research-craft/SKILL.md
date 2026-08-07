@@ -1,6 +1,6 @@
 ---
 name: research-craft
-description: "Run rigorous, instrumented research as a controlled learning loop: choose consequential problems, form falsifiable hypotheses, design trustworthy evaluators, build reproducible harnesses, inspect raw evidence, keep durable experiment memory, and accept changes only through explicit gates. Use when planning or conducting research, choosing a direction, reading literature, designing experiments or evals, debugging models, iterating experimental code or quantitative/trading strategies, building agent harnesses or self-improvement loops, managing research logs, controlling overfitting and reward hacking, or improving research quality and speed."
+description: "Run rigorous, instrumented research as a controlled learning loop: choose consequential problems, organize small high-talent research teams, form falsifiable hypotheses, design trustworthy evaluators, build reproducible harnesses, inspect raw evidence, keep durable experiment memory, and accept changes only through explicit gates. Use when planning or conducting research, choosing a direction, structuring a research group, reading literature, designing experiments or evals, debugging models, iterating experimental code or quantitative/trading strategies, building agent harnesses or self-improvement loops, managing research logs, controlling overfitting and reward hacking, or improving research quality and speed."
 ---
 
 # Research Craft
@@ -40,7 +40,19 @@ Do not force exploratory work into fake precision. Increase control as soon as t
 - Predict the result before reading the answer or running the experiment. Record the prediction so hindsight cannot rewrite it.
 - When training problem-selection taste, keep a dated portfolio of plausible opportunities—including those not pursued—with a resolution horizon and source of truth. Use `judgment-craft` to decide which opportunities matter; use this skill to make their forecasts resolvable.
 
-## 2. Write the research contract
+## 2. Concentrate ownership before scaling headcount
+
+- Default to the smallest stable core that can span the decisive unknowns. Optimize for density of relevant skill, context, and judgment rather than the number of researchers.
+- Give each core researcher end-to-end ownership of an important question: understand the mechanism, design the test, inspect the evidence, and defend the update. Do not turn exceptional researchers into ticket takers.
+- Prefer sustained domain obsession when it has produced artifacts, unusually sharp questions, or repeated learning. Intensity without evidence, falsifiability, or willingness to update is fixation, not research quality.
+- Compose the core around complementary bottlenecks instead of interchangeable resumes. Add a person only when a named constraint cannot be removed more cheaply by better tools, automation, advice, or a narrower problem.
+- Use agents, automation, contractors, and broader contributors to multiply the core's reach without diffusing problem ownership or changing who has authority over hypotheses, evaluators, and acceptance gates.
+- Protect the small core from becoming a closed consensus: expose provisional work to trusted critics, require independent reproduction for consequential claims, and preserve rejected evidence and dissent.
+- Reduce key-person risk by writing down protocols, decision rationales, failure histories, and reusable findings. Keep judgment attributable, but make the research recoverable if one person leaves.
+
+Scale the support surface after the core has found a repeatable learning loop. Do not scale headcount to compensate for a vague question, weak evaluator, or missing research taste.
+
+## 3. Write the research contract
 
 Before a consequential run or edit, record the minimum contract:
 
@@ -69,7 +81,7 @@ Separate two kinds of work:
 
 Never optimize the candidate and redefine success in the same round.
 
-## 3. Upgrade inputs and inspect reality first
+## 4. Upgrade inputs and inspect reality first
 
 - Read primary sources, original data, code, traces, and appendices before relying on summaries.
 - Operationalize any concept that determines labels, metrics, inclusion, or causal interpretation; do not let a convenient proxy silently replace the construct being claimed.
@@ -78,7 +90,7 @@ Never optimize the candidate and redefine success in the same round.
 - Shrink the problem until it is cheap: one batch, one trace, one symbol, one regime, one failing case, or one minimal reproduction.
 - Tune the strongest honest baseline before claiming improvement.
 
-## 4. Build only the harness the claim requires
+## 5. Build only the harness the claim requires
 
 Make evidence easy to produce and hard to counterfeit:
 
@@ -91,7 +103,7 @@ Make evidence easy to produce and hard to counterfeit:
 
 Prefer inspectable files and deterministic rules over hidden memory or a large opaque framework.
 
-## 5. Run one informative loop at a time
+## 6. Run one informative loop at a time
 
 1. **Baseline:** reproduce the current champion and verify the harness.
 2. **Diagnose:** inspect raw failures and identify one concrete weakness or uncertainty.
@@ -104,7 +116,7 @@ Prefer inspectable files and deterministic rules over hidden memory or a large o
 
 Change one meaningful variable or rule family per round when attribution matters. Let most ideas die cheaply.
 
-## 6. Gate claims, not just scores
+## 7. Gate claims, not just scores
 
 Require the gates relevant to the claim:
 
@@ -121,7 +133,7 @@ Require the gates relevant to the claim:
 
 If a required gate fails, reject the claim even when the headline metric improves.
 
-## 7. Turn every run into durable learning
+## 8. Turn every run into durable learning
 
 Use the project's existing research log or control documents. Do not create a competing ledger when one already exists. Record failures immediately because memory preferentially keeps convenient evidence.
 
@@ -145,7 +157,7 @@ Maintain three separations:
 - Keep current context separate from durable memory; promote a lesson only when evidence justifies it.
 - At the declared horizon, resolve the full opportunity portfolio and grade selection quality separately from execution quality and outcome luck. Preserve misses and unchosen winners so hindsight cannot turn one successful bet into proof of good taste.
 
-## 8. Scale and publish after learning survives
+## 9. Scale and publish after learning survives
 
 - Spend more compute, data, capital, or autonomy only after the small version works and the protocol survives replay.
 - Ablate until the component carrying the result is known.
