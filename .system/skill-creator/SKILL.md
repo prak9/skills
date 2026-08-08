@@ -45,6 +45,14 @@ Match the level of specificity to the task's fragility and variability:
 
 Think of Codex as exploring a path: a narrow bridge with cliffs needs specific guardrails (low freedom), while an open field allows many routes (high freedom).
 
+### Keep a Stable Kernel and Explicit Extensions
+
+- Keep the smallest coherent, dependable workflow in `SKILL.md`; route optional depth to named references, scripts, or separate skills.
+- Give every experimental extension a purpose, owner, stability status, and promotion or deletion rule. Do not create a generic `contrib`, `misc`, or catch-all area that becomes an unofficial second API.
+- Provide the shortest direct path for the common task before introducing graphs, plugin systems, configuration layers, or other general machinery.
+- Promote an extension into the core only after repeated use demonstrates a stable contract. If it duplicates a core operation, consolidate it or document an explicit compatibility and migration path.
+- Preserve escape hatches where hidden runtime, provider, or performance details can change correctness; a clean abstraction must not erase load-bearing constraints.
+
 ### Protect Validation Integrity
 
 You may use subagents during iteration to validate whether a skill works on realistic tasks or whether a suspected problem is real. This is most useful when you want an independent pass on the skill's behavior, outputs, or failure modes after a revision.  Only do this when it is possible to start new subagents.

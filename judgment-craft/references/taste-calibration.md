@@ -32,6 +32,26 @@ Smallest evidence-buying bet, if chosen:
 
 Use a portfolio, not one prediction. Include distinct domains or approaches when breadth could reveal a better problem class.
 
+## Scan Broadly, Commit Narrowly
+
+Build taste by following many directions lightly enough to notice recurring constraints, missing combinations, and changes in feasibility. Skim abstracts and summaries across fields; spend deep-reading time only after a candidate passes a deliberate filter.
+
+For each serious candidate, record:
+
+```text
+Enduring outcome, independent of today's fashionable implementation:
+Load-bearing constraint or bottleneck:
+Proven footholds and reusable ideas:
+Small number of decisive unresolved cruxes:
+Order-of-magnitude data / compute / time / cost estimate:
+Why the opportunity may be neglected:
+What evidence would make it uninteresting or infeasible:
+```
+
+Prefer problems that are important and **partly solvable**: enough of the path is real to support experiments, while a few hard unknowns still create meaningful upside. Avoid both polished execution on a trivial problem and grand problems with no discriminating next step.
+
+Use first-principles and Fermi estimates to test whether a different problem formulation could create a 10x or 100x change in cost or capability. Estimates are filters, not evidence; carry the survivors into `research-craft` for falsifiable experiments.
+
 ## Resolve Without Hindsight
 
 At the declared horizon, backfill every entry, including ideas not pursued:

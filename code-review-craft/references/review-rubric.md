@@ -31,6 +31,9 @@ Select dimensions according to the review contract. Start with API semantics and
 - Keep public interfaces no larger than current requirements demand, but large enough to express those requirements without forcing workarounds onto callers.
 - Prefer one clear way to perform an operation. Check consistency with established vocabulary, defaults, lifecycle, and error behavior; apply least surprise.
 - Keep implementation details behind the public boundary. Check whether a new interface is reusable across its demonstrated use cases rather than coupled to one incidental implementation.
+- Check that an abstraction hides incidental backend, hardware, or orchestration details while preserving an explicit escape hatch when those details affect semantics, performance, debugging, or correctness.
+- Require a direct, legible path for the common case before advanced graphs, configuration, plugins, or distributed machinery. A basic operation that requires the most general abstraction is an API warning.
+- Keep one stable core contract. If experimental extensions create competing public paths for the same operation, require a promotion, compatibility, migration, or deprecation story.
 - Check boundary values, condition polarity, ordering, defaults, nullability, and error semantics.
 - Trace partial success, cleanup, retry, cancellation, and rollback.
 - Check public API, serialized data, schema, command-line, configuration, metrics, log formats, and event compatibility.
@@ -84,6 +87,8 @@ Select dimensions according to the review contract. Start with API semantics and
 - Check whether responsibilities, ownership, and invariants remain legible.
 - Prefer the repository's existing patterns and dependencies unless the change has a concrete reason to depart.
 - Flag abstraction when it hides behavior, multiplies change surfaces, or makes invalid states easier to express.
+- Prefer a small stable kernel with named, owned extensions. Flag generic `contrib`, `misc`, `experimental`, or catch-all surfaces when stability, compatibility, lifecycle, and promotion criteria are unclear.
+- Check whether an extension that duplicates the core API should be promoted with a migration path, isolated behind a clear boundary, or removed instead of becoming a permanent fork.
 - Flag duplication only when it can drift or already encodes the same rule inconsistently.
 - Check naming, comments, and types for semantic accuracy, not personal taste.
 - Justify each new dependency by its concrete value, transitive weight, operational cost, security posture, and license compatibility.

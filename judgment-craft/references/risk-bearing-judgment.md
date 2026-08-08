@@ -73,7 +73,21 @@ When a decision affects non-participants or creates durable power, apply three h
 
 Do not convert these constraints into expected-value terms that a sufficiently large claimed benefit can erase. Escalate decisions that are irreversible, civilization-scale, rights-affecting, or materially externalize downside.
 
-## 8. Review Process Separately From Outcome
+## 8. Govern Dual-Use Capability
+
+When the same capability can create public benefit and scalable harm, do not treat good intent as a control. Map both pathways:
+
+- who can access the capability, at what skill and resource threshold
+- how quickly useful and harmful actions can be repeated or scaled
+- whether misuse is detectable, attributable, reversible, and containable
+- whether defense improves at least as quickly as offense
+- which non-participants bear downside without meaningful consent
+
+Use defense in depth. Combine technical controls—staged access, least privilege, monitoring, red-teaming, rate limits, rollback, and human authorization at irreversible points—with nontechnical controls such as law, liability, insurance, procurement standards, reporting duties, and incident response. No single safeguard should be the only thing standing between a plausible misuse path and material harm.
+
+Release autonomy and access in stages tied to observed evidence. Preserve misuse cases, near misses, and control failures in the decision record so later optimism cannot erase them.
+
+## 9. Review Process Separately From Outcome
 
 Before the result, timestamp the information set, crux, confidence range, sizing logic, model limits, falsifier, and update rule. After the result, grade two things separately:
 
