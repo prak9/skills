@@ -55,6 +55,8 @@ Identify whether the item is merely narrative or a demand inflection. Prioritize
 
 If demand is not observable, classify the idea as watchlist-only.
 
+Before calling demand real, write `observed signal -> latent demand hypothesis -> rival explanations -> independent corroboration`. Cluster signals that share one cause: orders, price increases, shortages, and supplier backlog may be several projections of the same event, not four independent confirmations.
+
 ### 2. Translate Phenomenon Into Financial Lines
 
 Use this sentence structure:
@@ -71,6 +73,8 @@ For each candidate, map the mechanism to income-statement or balance-sheet items
 - gross margin: mix shift, pricing power, utilization, input costs
 - operating leverage: fixed-cost absorption, sales efficiency, R&D leverage
 - cash flow: working capital, capex needs, inventory turns, prepayments
+
+Do not assume demand transmits linearly into revenue or profit. Check capacity, competition, substitution, pricing, delivery, qualification, working-capital, and reporting lags; distinguish volume, price, mix, acquisition, currency, and accounting effects that could produce the same reported growth.
 
 ### 3. Prefer Small, Pure, Misclassified Picks
 

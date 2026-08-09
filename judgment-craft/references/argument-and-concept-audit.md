@@ -22,7 +22,27 @@ Each type has a different burden. Evidence can support a descriptive premise wit
 - Distinguish necessary from sufficient conditions, causes from reasons, indicators from the thing measured, and means from ends.
 - When participants use legitimate but different definitions, preserve the difference and show which conclusions follow under each; do not settle a substantive dispute by silently choosing a definition.
 
-## 3. Build The Argument Map
+## 3. Audit The Model Boundary
+
+When a conclusion depends on a metric, score, forecast, curve, decomposition, or simulation, keep reality, observed data, and the model distinct. A model is a purpose-specific, lossy representation; precision inside it does not establish that its inputs, structure, or objective are correct.
+
+Record only the boundaries that can change the decision:
+
+```text
+Decision purpose:
+Target construct or real-world state:
+Observed data and measurement process:
+Latent state being inferred:
+Mapping assumptions and rival states consistent with the same output:
+Linearity / additivity / independence / stationarity assumptions:
+Interactions / thresholds / feedback / delay / path dependence / adaptation:
+Omitted variables, sensitivity, and structural-break signal:
+Owner-chosen objective, values, and hard constraints:
+```
+
+Do not infer a unique internal state from one output when several mechanisms can produce it; seek an observation that separates the rivals. Treat component or spectral decompositions as representations, not proof of independent causes or stable cycles. Widen ranges or withhold a model-based conclusion when measurement noise, parameter uncertainty, omitted structure, or regime change dominates the apparent precision.
+
+## 4. Build The Argument Map
 
 Record only the load-bearing structure:
 
@@ -44,7 +64,7 @@ Keep three questions separate:
 
 A valid inference from false premises is not a sound judgment. True premises with a missing warrant do not establish the conclusion.
 
-## 4. Stress The Structure
+## 5. Stress The Structure
 
 - Steelman the strongest opposing case rather than attacking a weak version.
 - Search for a counterexample that satisfies the premises but defeats the conclusion; use it to reject, narrow, or qualify the rule.
@@ -52,7 +72,7 @@ A valid inference from false premises is not a sound judgment. True premises wit
 - Ask what should be observable if the claim is true and what evidence would be surprising under it.
 - Apply the same burden to your preferred conclusion. Confidence that survives only friendly framing is not independent judgment.
 
-## 5. Calibrate The Judgment
+## 6. Calibrate The Judgment
 
 End with:
 
@@ -60,6 +80,7 @@ End with:
 Crux:
 Claim type:
 Key concept boundary:
+Model boundary and rival state, when material:
 Supported premises and evidence:
 Unsupported or hidden assumptions:
 Strongest countercase:

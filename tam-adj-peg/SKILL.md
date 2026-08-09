@@ -58,6 +58,10 @@ Use EPS CAGR as a percentage number in the denominator. Example: if forward PE i
 
 Do not directly add TAM CAGR to EPS CAGR. EPS CAGR usually already reflects part of TAM expansion; TAM should mainly adjust growth duration and certainty.
 
+Treat EPS CAGR, TAM Runway Factor, and Quality Factor as interacting assumptions, not independent measurements. State what incremental information each factor adds beyond the others; if TAM, moat, cyclicality, or margin durability is already embedded in the EPS forecast, do not count it again without an explicit reason.
+
+Report Low / Base / High factor combinations and the resulting TAM-Adj-PEG range. If a small plausible change in either factor moves the result across more than one valuation band, label the conclusion `model-sensitive` and do not make a strong point-estimate call.
+
 ## TAM Runway Factor
 
 Use TAM Runway Factor to correct for how long high growth can continue:
@@ -194,6 +198,7 @@ TAM-Adj-PEG = Forward PE / (EPS CAGR x TAM Runway Factor x Quality Factor)
 计算：
 - 修正后增长率：
 - TAM-Adj-PEG：
+- Low / Base / High 敏感性：
 
 6. 结论
 - 估值档位：

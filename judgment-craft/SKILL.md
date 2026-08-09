@@ -72,7 +72,7 @@ Read `references/taste-calibration.md` when deciding which problem deserves scar
 - **A probability is useful only when it can resolve and change action.** Define the event, deadline, and source of truth; start from a base rate; update without double-counting evidence; and let the posterior alter the bet or its size.
 - **Independent thinking is grounded in evidence and logic**, not credulity — don't blindly trust others' words, your own eyes, sell-side research, or the algorithmic feed — and **hedge wishful thinking with the strongest opposing view.**
 
-Read `references/argument-and-concept-audit.md` before accepting or rejecting a consequential claim, adjudicating a dispute whose terms may differ, or relying on a causal, predictive, normative, or definitional argument. Use it to expose premises and concept drift before applying falsification or probability.
+Read `references/argument-and-concept-audit.md` before accepting or rejecting a consequential claim, adjudicating a dispute whose terms may differ, relying on a causal, predictive, normative, or definitional argument, or trusting a model, metric, curve, or score as a representation of reality. Use it to expose premises, concept drift, and model boundaries before applying falsification or probability.
 
 Read `references/probabilistic-judgment.md` before quantifying intuition, making repeated forecasts, updating a belief from sequential evidence, evaluating calibration, or adding a confidence/meta-model to a prediction system.
 
@@ -109,7 +109,7 @@ Pillar 1 chooses the direction; Pillar 2 earns the intuition; Pillar 3 makes the
 - **For an investment, prove the edge:** state consensus, what price embeds, your divergent view, why it is more accurate, when the edge expires, and the evidence that earns an add or forces an exit.
 - **When a decision churns, suspect vagueness:** structure it (goal / constraints / payoffs) before deciding, instead of looping.
 - **Hedge wishful thinking** by writing the strongest bear/opposing case before concluding.
-- **Audit the argument before debating the conclusion:** classify the claim, freeze key meanings, expose premises and hidden assumptions, test the inference, and state what evidence would change the judgment.
+- **Audit the argument and model before debating the conclusion:** classify the claim, freeze key meanings, separate reality from observations and representations, expose premises and hidden assumptions, test the inference, and state what evidence would change the judgment.
 - **Train taste with a forecast portfolio:** record several plausible opportunities, choose only a few bets, then resolve the entire portfolio at a fixed horizon so selection quality cannot be rewritten by hindsight.
 
 ## Relationship to other skills
@@ -122,4 +122,4 @@ Pillar 1 chooses the direction; Pillar 2 earns the intuition; Pillar 3 makes the
 
 ## Source
 
-Distilled from《深刻的简单》《顶级洞察力的形成》(Pillar 1); the user-supplied four-quadrant thinking article (Pillar 1 completeness adapter);《好运框架·决策本质》《纳瓦尔:判断力淬炼为直觉》and the supplied Jeff Dean discussion of problem-selection taste and 12-month retrospective practice (Pillar 2);《模糊,是最贵的成本》《如何做个正确的独立思考者》《认知飞轮》and the user-supplied philosophy-as-cognitive-quality-control synthesis (Pillar 3); the supplied analysis of Nate Silver's risk-culture framework (Pillar 4); and Howard Marks, George Soros, and the Davis double-play for the investment adapter. Core thesis: judgment means seeing enough of reality to choose the decisive variables, then expressing them through bets that preserve survival, learning, and legitimate choice.
+Distilled from《深刻的简单》《顶级洞察力的形成》(Pillar 1); the user-supplied four-quadrant thinking article (Pillar 1 completeness adapter);《好运框架·决策本质》《纳瓦尔:判断力淬炼为直觉》and the supplied Jeff Dean discussion of problem-selection taste and 12-month retrospective practice (Pillar 2);《模糊,是最贵的成本》《如何做个正确的独立思考者》《认知飞轮》, the user-supplied philosophy-as-cognitive-quality-control synthesis, and the user-supplied mathematical-modeling worldview (Pillar 3); the supplied analysis of Nate Silver's risk-culture framework (Pillar 4); and Howard Marks, George Soros, and the Davis double-play for the investment adapter. Core thesis: judgment means seeing enough of reality to choose the decisive variables, then expressing them through bets that preserve survival, learning, and legitimate choice.

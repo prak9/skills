@@ -79,6 +79,13 @@ Compute `G_DMA20`, `G_DMA50`, `G_DMA100`, and `G_DMA200`.
 
 ### 3. Fundamental-DMA Match
 
+Before calculating `R_x`, apply these gates:
+
+- If `G_f` is near zero relative to guidance or estimate uncertainty, changes sign, uses EPS or gross profit that crosses zero, or compares incompatible horizons, mark GrowthMatch `N/A` and report the components instead of forcing a ratio.
+- Treat GF-DMA as a conditional heuristic projection, not a return probability, causal model, hidden market state, or stable-cycle estimator. A similar DMA shape can arise from different liquidity, crowding, leverage, event, and fundamental states.
+- Preserve the module vector and its main failure mode. The same total score from different module combinations does not imply the same risk state.
+- If a plausible change in `k`, module weights, or thresholds changes the decision category, report the sensitivity and label the result `model-sensitive`.
+
 Calculate:
 
 ```text
@@ -201,6 +208,8 @@ Calculate total score out of 100:
 HealthScore = 0.40S_GrowthMatch + 0.25S_Divergence + 0.20S_Parallel + 0.15S_Revision
 ```
 
+Do not renormalize around a failed GrowthMatch gate or publish a full HealthScore as if all modules were valid. Report the remaining modules and the total as `N/A` unless the user explicitly requests a clearly labeled partial score.
+
 Module scoring:
 
 | Module | Weight |
@@ -223,7 +232,20 @@ Final interpretation:
 
 ## Output Format
 
-Use this structure for every ticker:
+When a required gate fails, use this unscorable branch instead of the numeric template:
+
+```text
+# TICKER: GF-DMA Health Index 评分
+
+最终评分：N/A / 100
+状态：Unscorable
+失效原因：
+仍有效的模块观察：
+模型敏感性：
+恢复评分需要的数据：
+```
+
+Otherwise use this structure:
 
 ```text
 # TICKER: GF-DMA Health Index 评分

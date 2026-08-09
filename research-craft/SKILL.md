@@ -63,6 +63,7 @@ Claim type and key terms:
 Hypothesis and mechanism:
 Explicit premises / hidden assumptions:
 Prediction and strongest plausible rival:
+Observed variables / latent construct / model boundary and rival data-generating process:
 Baseline or current champion:
 Editable surface:
 Frozen evaluator and data:
@@ -86,6 +87,7 @@ Never optimize the candidate and redefine success in the same round.
 
 - Read primary sources, original data, code, traces, and appendices before relying on summaries.
 - Operationalize any concept that determines labels, metrics, inclusion, or causal interpretation; do not let a convenient proxy silently replace the construct being claimed.
+- Treat measurements as projections of system state. When several mechanisms can produce the same output, design the cheapest observation that separates them before inferring a cause or hidden state.
 - Diversify beyond the current feed; use old and cross-field work to escape synchronized conclusions.
 - Inspect raw samples by hand before building abstractions. Silent data or labeling errors often produce plausible but false theories.
 - Shrink the problem until it is cheap: one batch, one trace, one symbol, one regime, one failing case, or one minimal reproduction.
@@ -126,6 +128,7 @@ Require the gates relevant to the claim:
 - **Baseline strength:** the candidate beats a tuned, reproducible baseline rather than a weak straw man.
 - **Held-out confirmation:** validation or truth data vetoes promotion; repeated exposure is contamination, not free evidence.
 - **Sample and uncertainty:** the effective sample supports the claimed precision; show ranges or sensitivity when it does not.
+- **Model validity:** material assumptions about measurement, independence, linearity, interactions, feedback, stationarity, and adaptation are stated; test predeclared plausible in-scope rival data-generating processes and structural-break signals, then narrow, condition, or reject claims that exceed the supported scope.
 - **Raw-evidence check:** inspect actual failures, traces, trades, or outputs instead of trusting an aggregate alone.
 - **Replay and regression:** preserve known useful behavior and unrelated passing cases.
 - **Mechanism and simplicity:** prefer smooth, legible, causal or economic explanations over fragmented exceptions.

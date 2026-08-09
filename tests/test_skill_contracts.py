@@ -125,6 +125,30 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("核心概念一致", skill_text("writing"))
         self.assertIn("论证与概念审计", skill_text("storm-deep-research"))
 
+    def test_model_boundary_audit_has_domain_guardrails(self) -> None:
+        audit = (
+            ROOT
+            / "judgment-craft"
+            / "references"
+            / "argument-and-concept-audit.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("Audit The Model Boundary", audit)
+        self.assertIn("reality, observed data, and the model distinct", audit)
+        self.assertIn("rival states consistent with the same output", audit)
+        self.assertIn("latent construct / model boundary", skill_text("research-craft"))
+
+        bayesian = skill_text("bayesian-intrinsic-growth-valuation")
+        self.assertIn("not independent confirmations", bayesian)
+        self.assertIn("inverse problem, not a unique observable", bayesian)
+
+        gf_dma = skill_text("gf-dma-health-index")
+        self.assertIn("mark GrowthMatch `N/A`", gf_dma)
+        self.assertIn("状态：Unscorable", gf_dma)
+
+        self.assertIn("latent demand hypothesis", skill_text("serenity-alpha"))
+        self.assertIn("label the conclusion `model-sensitive`", skill_text("tam-adj-peg"))
+
 
 if __name__ == "__main__":
     unittest.main()

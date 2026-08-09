@@ -79,12 +79,15 @@ If information mainly affects market attention, update valuation multiple and FO
 
 Ask how likely the new information is under each growth hypothesis:
 
+- Write the update chain as `observed signal -> latent growth variable -> rival explanation -> disclosure or measurement lag` before changing probabilities.
+- Cluster observations that share one underlying cause. Orders, supplier backlog, management commentary, and analyst revisions triggered by the same demand event are not independent confirmations.
 - If the information is more consistent with H3/H4/H5, raise those probabilities.
 - If it looks cyclical, one-off, or backlog timing, avoid over-updating long-term growth.
 - If it only strengthens narrative or trading enthusiasm, raise FOMO and multiple risk rather than intrinsic growth.
 - If it contradicts high growth, shift probability toward H0-H2.
+- If competition, regulation, company structure, or the industry regime breaks the old mechanism or reference class, rebuild the prior, likelihood interpretation, and latent growth drivers while keeping H0-H5 as CAGR outcome bins. If 3-5 year revenue CAGR itself is no longer a meaningful target because the entity or reporting basis changed, mark the framework inapplicable instead of forcing an update.
 
-Show the update as prior -> likelihood interpretation -> posterior.
+Show the update as prior -> likelihood interpretation -> posterior. Use probability ranges and prior/likelihood sensitivity when the evidence is judgmental; do not imply decimal-level posterior precision.
 
 ### 4. Calculate Weighted Intrinsic Growth
 
@@ -104,6 +107,8 @@ Report a range, not false precision.
 ### 5. Reverse-Engineer Market-Implied Growth
 
 Infer the growth rate embedded in current valuation using market cap or enterprise value, revenue, margin, FCF margin, valuation multiple, and discount-rate assumptions.
+
+Treat implied growth as an inverse problem, not a unique observable. The same price can be consistent with different combinations of growth duration, margins, discount rates, dilution, and terminal multiples; show the joint sensitivity that can change the valuation state.
 
 If exact data is unavailable, state the missing inputs and provide a qualitative implied-growth bracket instead of inventing numbers.
 
