@@ -42,6 +42,44 @@ Do not confuse broad scanning with broad execution. Commit resources narrowly af
 
 Measure useful learning per unit time. Experiment count, agent count, and GPU utilization are activity metrics unless they reduce a decision-relevant uncertainty.
 
+Treat discovery throughput as a diagnostic product, not a literal formula:
+
+```text
+discriminating experiments x evidence validity x independence x integration rate
+-------------------------------------------------------------------------  per unit time
+```
+
+Increasing parallelism amplifies error when validity, independence, or integration falls.
+
+## Coordinate Coupled Improvement Loops
+
+Treat problem decomposition, data selection, evaluator design, candidate architecture or algorithm, training procedure, and portfolio scheduling as separate, versioned loops.
+
+- Keep the objective, target construct, permissions, acceptance gates, and irreversible promotion human-approved.
+- Change one loop or layer per comparison when attribution matters. Freeze the dependent data, evaluator, training protocol, and candidate versions.
+- Treat data, evaluator, or harness improvement as its own loop. Validate it against replay anchors, record the new version, and refreeze it before candidate comparison resumes.
+- Run candidate loops under the frozen harness. Do not infer which change caused an improvement when several layers moved together.
+- Let the portfolio loop schedule declared experiments; do not let it silently redefine the objective, judge, or evidence needed for promotion.
+- When loops must interact, stage them on different timescales and record their dependency graph and version tuple.
+
+The goal is end-to-end automation with attributable evidence, not simultaneous co-adaptation of every layer.
+
+## Allocate Compute By Expected Learning Value
+
+Rank experiments with an explicit, revisable heuristic:
+
+```text
+priority ~= (expected reduction in decision-relevant uncertainty
+             x impact on the crux or downstream decision)
+            / (compute + elapsed time + coordination cost)
+```
+
+- Stage cheap falsifiers before expensive confirmations, and expand a run only through predeclared evidence gates.
+- Maintain separate capacity for exploitation, exploration, independent replication, and evaluator or leakage audits. Do not let the current leader consume the whole budget.
+- Treat the priority as a forecast to calibrate after resolution, not as ground truth. Record expected and realized learning value in the ledger.
+- Do not rely only on an experiment-proposing model's estimate of its own value. Use replay performance, independent checks, or a separately governed scheduler.
+- Count repeated exposure to the same evaluator or holdout as an adaptation cost even when wall-clock execution is cheap.
+
 ## Automate Without Self-Deception
 
 The system may propose data selections, architectures, transformations, hypotheses, and follow-up experiments. Keep these outside its editable surface unless the research contract explicitly says otherwise:
@@ -76,6 +114,9 @@ Expected observation and falsifier:
 Command, environment, seed, and artifacts:
 Result with uncertainty and failure cases:
 Integration dependency or conflict:
+Loop or layer under change / frozen dependency versions:
+Expected learning value / crux impact / total cost:
+Scheduler rule / exploration floor / replication and evaluator-audit budget:
 ```
 
 The coordinator resolves incompatible assumptions and duplicated evidence before combining results. Do not “average” incompatible claims into consensus.
@@ -84,10 +125,12 @@ The coordinator resolves incompatible assumptions and duplicated evidence before
 
 - **Fashion anchoring:** optimizing the dominant implementation without asking whether the underlying constraint admits a different formulation.
 - **Parallel noise:** launching many coupled experiments whose results cannot be attributed or reproduced.
+- **Coupled-loop confounding:** changing data, evaluator, training, and candidate layers together, then assigning the gain to a preferred explanation.
+- **Greedy scheduling:** allocating everything to early leaders, suppressing exploration, replication, and discovery of evaluator failure.
 - **Evaluator co-adaptation:** improving the score by weakening, leaking, or rewriting the judge.
 - **Premature platform:** building cross-domain infrastructure before one domain has produced a repeatable learning loop.
 - **API fragmentation:** allowing experimental extensions to create multiple competing ways to express the same core operation.
 - **Self-grading:** accepting an agent's completion claim without raw artifacts and an independent checker.
 - **Speed without learning:** reducing runtime while the decisive uncertainty remains unchanged.
 
-Source: distilled from the supplied discussion of Jeff Dean's TensorFlow and Gemini lessons, first-principles problem selection, automated ML, and automated scientific discovery.
+Source: distilled from the supplied discussions of Jeff Dean's TensorFlow and Gemini lessons, first-principles problem selection, automated ML, and automated scientific discovery loops.

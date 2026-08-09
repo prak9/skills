@@ -83,6 +83,8 @@ Separate two kinds of work:
 
 Never optimize the candidate and redefine success in the same round.
 
+For an automated discovery portfolio, append the loop under change, frozen dependency versions, expected learning value, and scheduling budgets from `references/automated-discovery.md`.
+
 ## 4. Upgrade inputs and inspect reality first
 
 - Read primary sources, original data, code, traces, and appendices before relying on summaries.
