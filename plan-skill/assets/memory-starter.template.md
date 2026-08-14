@@ -26,6 +26,6 @@ None yet. Record only Loop, migration, rollout, rollback, or otherwise consequen
 
 - Use stable `D-*`, `F-*`, `RUN-*`, and `R-*` IDs with evidence.
 - Store trajectory events: attempt, result, evidence, changed belief, and next rule; not coarse snapshots or token transcripts.
-- Add one `R-*` for every completed atomic node and verified Loop attempt.
+- In Full Linear, add `R-*` only when the reflection trigger fires; add one for every verified Loop attempt.
 - Mark superseded entries with a pointer; do not duplicate ordinary progress or Git history.
 - During Clean, preserve unique `R-*` feedback and stable IDs; distill repeated lessons with a pointer instead of deleting them.

@@ -407,6 +407,7 @@ def check_node_reflections(
     records: dict[str, dict[str, str]],
     errors: list[str],
     related_plan_node: str | None = None,
+    require_reflection: bool = True,
 ) -> None:
     section = markdown_heading_section(text, section_title)
     if section is None:
@@ -437,11 +438,25 @@ def check_node_reflections(
                 f"{path} completed atomic node `{node}` has no reflection column"
             )
             continue
-        references = sorted(set(re.findall(r"\bR-\d{3}\b", cells[reflection_idx])))
+        reflection_value = norm_cell(cells[reflection_idx])
+        references = sorted(set(re.findall(r"\bR-\d{3}\b", reflection_value)))
         if not references:
-            errors.append(
-                f"{path} completed atomic node `{node}` has no `R-*` reflection"
+            no_trigger = re.fullmatch(
+                r"None\s*:\s*(.+)", reflection_value, flags=re.IGNORECASE
             )
+            if not require_reflection and no_trigger is not None and is_concrete(
+                no_trigger.group(1)
+            ):
+                continue
+            if require_reflection:
+                errors.append(
+                    f"{path} completed atomic node `{node}` has no `R-*` reflection"
+                )
+            else:
+                errors.append(
+                    f"{path} completed atomic node `{node}` reflection decision is unresolved; "
+                    "use `R-*` or `None: <no trigger reason>`"
+                )
             continue
         missing = [reference for reference in references if reference not in records]
         if missing:
@@ -1529,7 +1544,8 @@ def main() -> int:
         )
     if lean_full and memory_text and not memory_reflection_ledger:
         warnings.append(
-            "memory.md has no Reflections ledger; add one `R-*` entry per completed node"
+            "memory.md has no Reflections ledger; add one when a Full Linear trigger "
+            "fires or before recording a Loop attempt"
         )
 
     checked_paths: list[Path] = [program_path] if program_path.exists() else []
@@ -1784,6 +1800,7 @@ def main() -> int:
                 task_reflections,
                 errors,
                 related_plan_node=task_plan_node,
+                require_reflection=metadata_value(task_text, "Plan mode") == "Loop",
             )
         if "N-001" not in task_text:
             warnings.append(f"{task_path} has no atomic node ID, e.g. N-001")

@@ -475,14 +475,26 @@ class ValidatePlanTests(unittest.TestCase):
         self.assertTrue(result["ok"], result)
         self.assertEqual([], result["errors"])
 
-    def test_completed_atomic_node_requires_reflection_reference(self) -> None:
+    def test_completed_linear_atomic_node_accepts_no_reflection_trigger(self) -> None:
+        self.replace(
+            "tasks/TASK-001-add-export.md",
+            "| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 | R-001 |",
+            "| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 | None: no reflection trigger |",
+        )
+
+        process, result = self.run_validator()
+
+        self.assertEqual(0, process.returncode, process.stdout)
+        self.assertTrue(result["ok"], result)
+
+    def test_completed_linear_atomic_node_rejects_pending_reflection_decision(self) -> None:
         self.replace(
             "tasks/TASK-001-add-export.md",
             "| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 | R-001 |",
             "| N-001 | `完成` | None | 写 exporter 模块与转义用例 | pytest tests/test_export.py | RUN-001 | Pending |",
         )
 
-        self.assert_rejected("atomic node `N-001`", "reflection")
+        self.assert_rejected("atomic node `N-001`", "reflection decision is unresolved")
 
     def test_reflection_requires_evidence_and_cognitive_feedback(self) -> None:
         self.replace(

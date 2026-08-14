@@ -22,7 +22,7 @@ Prefer the lighter surface when uncertain. Upgrade Lite in place when its state 
 
 - In Lite, `program.md` is the only plan artifact and owns its `Reflection Log`.
 - In Full, `program.md` owns project outcome, constraints, acceptance, task index, checkpoints, blockers, and next action. A task package is the only source of its task status and atomic execution state.
-- `memory.md` is optional in Lite and required in Full. It owns the Full reflection ledger plus decisions, findings, and consequential runs.
+- `memory.md` is optional in Lite and required in Full. It owns durable decisions, findings, consequential runs, and reflections triggered by material learning.
 - Code, tests, CI, logs, and runtime output are facts. Markdown points to evidence; it does not replace it.
 - Generated deliverables may use `tasks/output/TASK-NNN-<slug>/` as a latest snapshot. Create and gitignore it only when a task actually produces such artifacts.
 
@@ -60,7 +60,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 
 - Resume by reading `program.md`, then the active task package and only the memory/evidence it references.
 - If the territory reveals a material unknown or deviation, read `references/unknowns-contract.md`, resolve discoverable facts from evidence, and update or stop the plan before crossing a bound.
-- Execute the smallest useful node, run its verifier, then read `references/reflection-contract.md` and record one evidence-linked `R-*` before selecting the next action or closing the node.
+- Execute the smallest useful node and run its verifier. In Full Linear mode, read `references/reflection-contract.md` and write `R-*` only when its trigger fires; otherwise mark the node `None: <no trigger reason>`. Loop keeps one evidence-linked `R-*` per verified attempt.
 - Create later task packages just in time, after their dependencies and acceptance conditions are known.
 - A failed verifier changes the plan, retires an assumption, or triggers escalation; repeating output without new information is not progress.
 - If a checker passes but reality fails, treat it as a foundation defect: reopen acceptance, identify the escaped failure class, and add the cheapest decisive sensor.
@@ -72,7 +72,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 ## Invariants
 
 - Planning is read-only unless the user also authorizes execution.
-- Every completed atomic node has one evidence-linked reflection that states what changed or held, what to preserve, and the next operational rule; record decision summaries, not hidden chain-of-thought.
+- Every completed node has evidence. Full Linear records reflection only for material learning; Loop records one evidence-linked reflection per verified attempt. Record decision summaries, not hidden chain-of-thought.
 - Do not silently invent a material preference. Research discoverable facts, state consequential assumptions, and ask only when human judgment can change the plan.
 - Treat unknowns as continuously discoverable: use the four classes as search lenses, then route each discovered unknown into existing plan state instead of maintaining a parallel unknowns diary.
 - Prefer declarative objectives with explicit bounds; reserve imperative constraints for fragile, high-stakes, or deliberately standardized paths and surface a materially better option without overriding the lock.
@@ -82,7 +82,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - A blocked item names the missing input, owner or external condition, and unblock action.
 - Loop mode has a finite budget, bounded execution scope, independent checker, sensor stack, granularity alignment, calibration rule, reflect trigger, and stop/escalation condition.
 - Preserve user constraints and existing project conventions; escalate before changing scope or acceptance criteria.
-- Outside the per-node reflection ledger, store historical facts only when they will change future execution; do not duplicate ordinary progress or Git history.
+- Store historical facts only when they will change future execution; do not duplicate ordinary progress or Git history.
 - Clean may compress Markdown state but must preserve stable IDs, evidence links, and raw facts.
 
 ## Resources
@@ -91,7 +91,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - `assets/program-full-starter.template.md`, `assets/task-full-starter.template.md`, `assets/memory-starter.template.md`: compact Full contracts; use through `init_plan.py`
 - `references/preference-contract.md`: strategic/tactical and declarative/imperative preference contract
 - `references/unknowns-contract.md`: four unknown classes plus pre-, during-, and post-implementation discovery and routing
-- `references/reflection-contract.md`: per-node wrong/right feedback and memory writeback contract
+- `references/reflection-contract.md`: event-triggered Full reflection and per-attempt Loop feedback contract
 - `references/foundation-contract.md`: closed-loop parts, maker/checker separation, granularity alignment, judgment descent, calibration, and comprehension-debt control
 - `references/executable-spec-contract.md`: layered specifications, reference behavior, differential verification, and independently owned agent work packets
 - `references/loop-contract.md`: exact Full/Loop program, task, and memory interface

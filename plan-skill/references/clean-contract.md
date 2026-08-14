@@ -30,7 +30,7 @@ Preserve:
 - outcome, locked constraints, acceptance criteria, current blocker, and next action;
 - the replayable path from intent to change, sensor, evidence, decision, and residual risk;
 - stable `D-*`, `F-*`, and `RUN-*` IDs that still affect work;
-- every `R-*` node reflection with its scope, evidence, wrong/right feedback, and successor or distillation pointer;
+- every triggered `R-*` reflection with its scope, evidence, wrong/right feedback, and successor or distillation pointer;
 - raw code, tests, CI, logs, external records, and links needed to verify a claim;
 - the reason and successor pointer for a superseded decision or finding.
 
@@ -51,7 +51,7 @@ Clean is complete only when:
 - a responsible owner can explain and re-judge the active result without reconstructing hidden chat history;
 - stable IDs and evidence links still resolve, with no material fact silently lost;
 - duplicate or stale state is removed or explicitly retired;
-- line count, retrieval surface, and concept count do not increase except for required append-only reflection entries or another concrete reason;
+- line count, retrieval surface, and concept count do not increase except for triggered reflection entries or another concrete reason;
 - `scripts/validate_plan.py --strict <project-root>` passes.
 
 Set `Clean state` to `Not due`. Set `Last clean` to a date plus evidence pointer, or `N/A: <concrete reason>` when the pass found no accumulated state to change.

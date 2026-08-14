@@ -41,7 +41,7 @@
 
 | Node | Status | Action | Verification | Evidence | Reflection |
 |---|---|---|---|---|---|
-| N-001 | `待开始` | <smallest useful action> | <command or scenario> | None | Pending |
+| N-001 | `待开始` | <smallest useful action> | <command or scenario> | None | Pending; on completion use `R-*` or `None: routine pass produced no durable learning` |
 
 ## Risks And Escalation
 
@@ -53,6 +53,6 @@
 - Final result: pending
 - Evidence: pending
 - Unverified / residual risk: pending
-- Memory writeback: pending: add one `R-*` per completed node; add `D-*` or `F-*` only for durable learning
+- Memory writeback: pending: add `R-*`, `D-*`, or `F-*` only for triggered durable learning
 - Remaining work: N-001
 - Completed: pending

@@ -448,7 +448,7 @@ def upgrade_inline_lite(
         task = task.replace("<command or scenario>", node["verification"], 1)
         task = task.replace("| N-001 | `待开始` |", f"| N-001 | `{node['status']}` |", 1)
         task = task.replace(
-            "| None | Pending |",
+            "| None | Pending; on completion use `R-*` or `None: routine pass produced no durable learning` |",
             f"| {node['evidence']} | {node['reflection']} |",
             1,
         )

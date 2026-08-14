@@ -25,7 +25,7 @@ For every task:
 - acceptance criteria are checked and tied to evidence;
 - relevant runtime behavior or an explicit scoped alternative was verified;
 - atomic nodes are terminal;
-- every completed atomic node points to an evidence-linked `R-*` reflection;
+- every completed Full Linear node records either a triggered evidence-linked `R-*` or `None: <no trigger reason>`; every verified Loop attempt points to an `R-*`;
 - the completion review states the observable result, evidence, unverified behavior or residual risk, remaining work, and completion date;
 - consequential decisions or findings are written once to `memory.md`.
 

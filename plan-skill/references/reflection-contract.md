@@ -1,10 +1,18 @@
 # Node Reflection Contract
 
-Turn execution into a feedback loop. Close every completed atomic node and every decision checkpoint with an evidence-linked `R-*` reflection before selecting the next action.
+Turn consequential execution events into durable learning without converting routine success into prose.
 
-## Close Every Node
+## Reflect On Consequential Events
 
-After verification, record one reflection with this shape:
+In Full Linear mode, write an evidence-linked `R-*` only when at least one trigger fires:
+
+- evidence retires an assumption or changes the planned method, scope, order, verifier, or risk;
+- a verifier fails, an unexpected condition appears, or reality escapes a passing checker;
+- a decision checkpoint produces a reusable rule or a finding that will change later work.
+
+A routine passing node needs evidence but no ledger entry. Mark its Reflection cell `None: <no trigger reason>` so completion does not hide an unresolved reflection decision. In Loop mode, every verified attempt requires one `R-*`, including a passing attempt, because interpreting each result controls the next iteration.
+
+When reflection is triggered, use this shape:
 
 | Field | Requirement |
 |---|---|
@@ -14,12 +22,12 @@ After verification, record one reflection with this shape:
 | Right / preserve | State the useful pattern and the boundary within which it should be repeated. |
 | Next rule | Convert the lesson into a concrete change to the next action, verifier, constraint, or reusable rule. |
 
-Do not advance to the next node until its predecessor has evidence and an `R-*` entry. A passing result still needs reflection: name what worked and why it should remain. A failed attempt or key decision gets a reflection even when no node closes.
+Do not advance from a triggered event until its `R-*` entry is recorded. Do not invent learning merely to close a routine node.
 
 ## Separate Log From State
 
 - In Lite, keep the authoritative `Reflection Log` in `program.md`; the Plan row points to its `R-*` entry.
-- In Full and Loop, keep the authoritative `Reflections` ledger in `memory.md`; each completed task node points to its `R-*` entry.
+- In Full and Loop, keep the authoritative `Reflections` ledger in `memory.md`; triggered nodes and verified Loop attempts point to their `R-*` entries.
 - Keep status, evidence, and reflection in their existing authoritative locations. Do not copy progress prose into the reflection ledger.
 - Record decision-relevant summaries, not a hidden chain-of-thought transcript. Preserve observable evidence, changed beliefs, and operational lessons without narrating private token-by-token reasoning.
 
@@ -35,4 +43,4 @@ Do not advance to the next node until its predecessor has evidence and an `R-*` 
 
 ## Preserve Learning
 
-Use stable, append-only `R-*` IDs. Clean may merge repeated lessons into a durable decision or finding and mark reflections as distilled or superseded, but it must retain each node's scope, evidence, wrong/right feedback, and successor pointer. Remove chat narrative and duplicated progress, not unique learning.
+Use stable, append-only `R-*` IDs. Clean may merge repeated lessons into a durable decision or finding and mark reflections as distilled or superseded, but it must retain each recorded reflection's scope, evidence, wrong/right feedback, and successor pointer. Remove chat narrative and duplicated progress, not unique learning.
