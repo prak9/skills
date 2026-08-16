@@ -1,6 +1,6 @@
 ---
 name: research-craft
-description: "Run rigorous, instrumented research as a controlled learning loop: choose consequential problems, organize small high-talent research teams, form falsifiable hypotheses, design trustworthy evaluators, build reproducible harnesses, inspect raw evidence, keep durable experiment memory, and accept changes only through explicit gates. Use when planning or conducting research, choosing a direction, structuring a research group, reading literature, designing experiments or evals, debugging models, iterating experimental code or quantitative/trading strategies, building agent harnesses or self-improvement loops, managing research logs, controlling overfitting and reward hacking, or improving research quality and speed."
+description: 兼容项。决策实验与证据验证已并入 `decision` 的闭环中；本技能保留用于需要更复杂研究编排的独立任务。
 ---
 
 # Research Craft

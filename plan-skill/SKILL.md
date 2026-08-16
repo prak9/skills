@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: "Use this skill when work needs durable planning state: a requested implementation plan, cross-session or multi-agent handoff, uncertainty-driven Loop execution, verification-foundation design for repeated agentic work, or audit, cleanup, simplification, and repair of existing plan artifacts or memory. It can expose preferences, tradeoffs, and unknowns; align change, verification, and memory granularity; capture evidence-linked reflection; create Lite or Full plans; control complexity; and validate status and evidence. Do not trigger it merely because an ordinary single-session task has several steps."
+description: 兼容项。工作闭环与复盘节奏已并入 `decision`；本技能保留用于复杂工程/协作场景中需要独立计划文件的项目。
 ---
 
 # Plan Skill

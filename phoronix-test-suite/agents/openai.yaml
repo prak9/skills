@@ -1,4 +1,0 @@
-interface:
-  display_name: "Phoronix Test Suite"
-  short_description: "Run and optimize Phoronix Test Suite benchmarks"
-  default_prompt: "Use $phoronix-test-suite to run this PTS benchmark, measure a baseline, and optimize it safely."

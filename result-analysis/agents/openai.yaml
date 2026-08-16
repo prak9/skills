@@ -1,4 +1,4 @@
 interface:
-  display_name: "Result 统一复盘"
-  short_description: "统一复盘 result 日报、实盘传导与可证伪训练调优"
-  default_prompt: "Use $result-analysis 统一复盘最新 result bundle，定位证据支持的首要瓶颈，并给出可证伪的下一步。"
+  display_name: "Result 决策复盘"
+  short_description: "把 result 日报图、实盘建议与研究循环接成证据链"
+  default_prompt: "Use $result-analysis 深化最新 result 日报：生成决策优先的复盘图片与逐品种运行卡，给出有证据边界的实盘建议，并把首要瓶颈转成可证伪的研究方向和 research handoff。"

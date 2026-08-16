@@ -1,4 +1,0 @@
-interface:
-  display_name: "STORM Deep Research"
-  short_description: "Research and write sourced multi-perspective reports"
-  default_prompt: "Use $storm-deep-research to research this topic from multiple perspectives and write a source-backed report."

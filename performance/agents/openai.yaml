@@ -1,0 +1,4 @@
+interface:
+  display_name: "Performance"
+  short_description: "Profile, diagnose, and optimize performance issues end-to-end"
+  default_prompt: "Use $performance for Linux profiling, performance-pattern analysis, and Phoronix benchmark tuning."

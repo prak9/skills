@@ -1,4 +1,0 @@
-interface:
-  display_name: "Performance Patterns"
-  short_description: "Prioritize and fix measured performance bottlenecks"
-  default_prompt: "Use $performance-patterns to rank this performance problem by leverage, select the matching pattern, and verify the fix with representative evidence."

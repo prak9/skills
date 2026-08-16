@@ -1,0 +1,6 @@
+interface:
+  display_name: "高质量决策"
+  short_description: "把复杂选择转化为事实、场景、评分与可验证行动"
+  default_prompt: "请使用高质量决策框架分析这个选择，区分事实与假设，比较机会成本，推演二阶和复利结果，做概率场景、失败预演和加权评分，并给出明确下一步。"
+policy:
+  allow_implicit_invocation: true

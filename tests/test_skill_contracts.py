@@ -83,14 +83,6 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("If gross profit or EPS is missing", text)
         self.assertIn("If EPS is missing", text)
 
-    def test_storm_uses_runtime_neutral_tools_and_direct_links(self) -> None:
-        text = skill_text("storm-deep-research")
-        self.assertNotIn("WebSearch", text)
-        self.assertNotIn("WebFetch", text)
-        self.assertNotIn("本机 claude", text)
-        self.assertNotIn("[n]", text)
-        self.assertIn("Markdown", text)
-
     def test_every_skill_has_openai_interface_metadata(self) -> None:
         for skill_dir in sorted(ROOT.iterdir()):
             if skill_dir.name.startswith(".") or not (skill_dir / "SKILL.md").is_file():
@@ -123,7 +115,6 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("Argument integrity", skill_text("research-craft"))
         self.assertIn("Audit The Approval Argument", skill_text("code-review-craft"))
         self.assertIn("核心概念一致", skill_text("writing"))
-        self.assertIn("论证与概念审计", skill_text("storm-deep-research"))
 
     def test_model_boundary_audit_has_domain_guardrails(self) -> None:
         audit = (
@@ -148,6 +139,27 @@ class SkillContractTests(unittest.TestCase):
 
         self.assertIn("latent demand hypothesis", skill_text("serenity-alpha"))
         self.assertIn("label the conclusion `model-sensitive`", skill_text("tam-adj-peg"))
+
+    def test_result_analysis_daily_loop_keeps_live_and_research_gates_separate(
+        self,
+    ) -> None:
+        skill = skill_text("result-analysis")
+        daily = (
+            ROOT
+            / "result-analysis"
+            / "references"
+            / "daily-decision-loop.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("references/daily-decision-loop.md", skill)
+        self.assertIn("PREAPPROVED_LIVE", daily)
+        self.assertIn("REAL_OBSERVED", daily)
+        self.assertIn("POSTHOC_CANDIDATE", daily)
+        self.assertIn("KEEP_CURRENT", daily)
+        self.assertIn("日报不能凭单日 SIM 盈利新增实盘品种", daily)
+        self.assertIn("1 个同身份日：只能 `OBSERVE/MEASURE`", daily)
+        self.assertIn("policy-conditional cohort", daily)
+        self.assertIn("不自动落盘", daily)
 
 
 if __name__ == "__main__":
