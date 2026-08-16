@@ -6,16 +6,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-INVESTMENT_SKILLS = (
-    "bayesian-intrinsic-growth-valuation",
-    "buy-side-equity-research-memo",
-    "gf-dma-health-index",
-    "serenity-alpha",
-    "tam-adj-peg",
-)
-EXPLICIT_DELIVERY_SKILLS = tuple(
-    name for name in INVESTMENT_SKILLS if name != "buy-side-equity-research-memo"
-)
+INVESTMENT_SKILL = "invest"
 
 
 def skill_text(name: str) -> str:
@@ -30,58 +21,36 @@ def description(name: str) -> str:
 
 
 class SkillContractTests(unittest.TestCase):
-    def test_specialized_equity_skills_do_not_claim_bare_tickers(self) -> None:
-        self.assertNotIn(
-            "user provides a ticker",
-            description("gf-dma-health-index").lower(),
-        )
-        self.assertNotIn(
-            "user provides a ticker",
-            description("tam-adj-peg").lower(),
-        )
-        self.assertNotIn(
-            "or company analysis based on fundamentals",
-            description("bayesian-intrinsic-growth-valuation").lower(),
+    def test_specialized_equity_modes_do_not_claim_bare_tickers(self) -> None:
+        text = skill_text(INVESTMENT_SKILL)
+        self.assertIn("Do not trigger Modes B, C, or E from a bare ticker", text)
+        self.assertIn(
+            "Do not trigger from a bare ticker or generic stock-analysis request",
+            text,
         )
 
-    def test_investment_skills_require_explicit_external_mutation(self) -> None:
-        for name in INVESTMENT_SKILLS:
-            text = skill_text(name)
-            with self.subTest(skill=name):
-                self.assertNotIn("install with `pip install edgartools`", text)
-                self.assertNotIn('set_identity("name@example.com")', text)
-
-        for name in EXPLICIT_DELIVERY_SKILLS:
-            with self.subTest(skill=name):
-                self.assertIn(
-                    "only when the user explicitly asks",
-                    skill_text(name),
-                )
+    def test_investment_skill_requires_explicit_external_mutation(self) -> None:
+        text = skill_text(INVESTMENT_SKILL)
+        self.assertNotIn("install with `pip install edgartools`", text)
+        self.assertNotIn('set_identity("name@example.com")', text)
+        self.assertIn("archive only when the user explicitly asks", text)
 
     def test_buy_side_memos_default_to_the_invest_notion_target(self) -> None:
-        text = skill_text("buy-side-equity-research-memo")
-        self.assertIn("Default Notion Delivery", text)
+        text = skill_text(INVESTMENT_SKILL)
+        self.assertIn("## Notion Delivery", text)
         self.assertIn("named `Invest`", text)
         self.assertIn("Notion archive pending", text)
 
     def test_gf_dma_uses_percentage_weights_and_available_fallbacks(self) -> None:
-        text = skill_text("gf-dma-health-index")
-        reference = (
-            ROOT / "gf-dma-health-index" / "references" / "original-framework.md"
-        ).read_text(encoding="utf-8")
+        text = skill_text(INVESTMENT_SKILL)
 
         self.assertIn(
-            "HealthScore = 0.40S_GrowthMatch + 0.25S_Divergence "
-            "+ 0.20S_Parallel + 0.15S_Revision",
+            "HealthScore = 0.40*S_GrowthMatch + 0.25*S_Divergence "
+            "+ 0.20*S_Parallel + 0.15*S_Revision",
             text,
         )
-        self.assertIn(
-            "HealthScore = 0.40S_{GrowthMatch}+0.25S_{Divergence}"
-            "+0.20S_{Parallel}+0.15S_{Revision}",
-            reference,
-        )
         self.assertNotIn("If gross profit or EPS is missing", text)
-        self.assertIn("If EPS is missing", text)
+        self.assertIn("EPS missing", text)
 
     def test_every_skill_has_openai_interface_metadata(self) -> None:
         for skill_dir in sorted(ROOT.iterdir()):
@@ -129,16 +98,13 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("rival states consistent with the same output", audit)
         self.assertIn("latent construct / model boundary", skill_text("research-craft"))
 
-        bayesian = skill_text("bayesian-intrinsic-growth-valuation")
-        self.assertIn("not independent confirmations", bayesian)
-        self.assertIn("inverse problem, not a unique observable", bayesian)
-
-        gf_dma = skill_text("gf-dma-health-index")
-        self.assertIn("mark GrowthMatch `N/A`", gf_dma)
-        self.assertIn("状态：Unscorable", gf_dma)
-
-        self.assertIn("latent demand hypothesis", skill_text("serenity-alpha"))
-        self.assertIn("label the conclusion `model-sensitive`", skill_text("tam-adj-peg"))
+        invest = skill_text(INVESTMENT_SKILL)
+        self.assertIn("not independent confirmations", invest)
+        self.assertIn("inverse problem, not a unique observable", invest)
+        self.assertIn("mark GrowthMatch `N/A`", invest)
+        self.assertIn("状态：Unscorable", invest)
+        self.assertIn("latent demand hypothesis", invest)
+        self.assertIn("label the conclusion `model-sensitive`", invest)
 
     def test_result_analysis_daily_loop_keeps_live_and_research_gates_separate(
         self,
