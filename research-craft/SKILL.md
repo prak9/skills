@@ -39,7 +39,7 @@ Do not force exploratory work into fake precision. Increase control as soon as t
 - Name the one or two decisive unknowns. Avoid absorbing a fashionable problem without its reasoning chain.
 - Define the decision the result will change. If no plausible result changes a decision, narrow or stop the work.
 - Predict the result before reading the answer or running the experiment. Record the prediction so hindsight cannot rewrite it.
-- When training problem-selection taste, keep a dated portfolio of plausible opportunities—including those not pursued—with a resolution horizon and source of truth. Use `judgment-craft` to decide which opportunities matter; use this skill to make their forecasts resolvable.
+- When training problem-selection taste, keep a dated portfolio of plausible opportunities—including those not pursued—with a resolution horizon and source of truth. Use `decision` to judge which opportunities matter; use this skill to make their forecasts resolvable.
 
 ## 2. Concentrate ownership before scaling headcount
 

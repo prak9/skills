@@ -8,6 +8,33 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 INVESTMENT_SKILL = "invest"
 
+# Skills whose content was folded into a surviving skill. A live reference to one
+# of these names is a dangling pointer for anyone following the instructions.
+REMOVED_SKILLS = (
+    "judgment-craft",
+    "define-problem",
+    "alpha-research",
+    "linux-perf",
+    "performance-patterns",
+)
+
+
+# Files a SKILL.md points at inside its own bundle. Bare filenames are excluded:
+# several skills name files they create at runtime (`memory.md`, `manifest.json`).
+BUNDLED_DIRS = ("references", "assets", "scripts", "evals", "agents")
+PATH_IN_BACKTICKS = re.compile(
+    r"`((?:" + "|".join(BUNDLED_DIRS) + r")/[A-Za-z0-9_./-]+)`"
+)
+MARKDOWN_LINK = re.compile(r"\]\(([^)]+)\)")
+
+
+def skill_dirs() -> list[Path]:
+    return sorted(
+        d
+        for d in ROOT.iterdir()
+        if not d.name.startswith(".") and (d / "SKILL.md").is_file()
+    )
+
 
 def skill_text(name: str) -> str:
     return (ROOT / name / "SKILL.md").read_text(encoding="utf-8")
@@ -59,43 +86,38 @@ class SkillContractTests(unittest.TestCase):
             with self.subTest(skill=skill_dir.name):
                 self.assertTrue((skill_dir / "agents" / "openai.yaml").is_file())
 
-    def test_judgment_craft_has_no_missing_alpha_research_dependency(self) -> None:
-        self.assertNotIn("alpha-research", skill_text("judgment-craft"))
+    def test_no_skill_references_a_removed_skill(self) -> None:
+        for skill_dir in sorted(ROOT.iterdir()):
+            if skill_dir.name.startswith(".") or not (skill_dir / "SKILL.md").is_file():
+                continue
+            text = skill_text(skill_dir.name)
+            for removed in REMOVED_SKILLS:
+                with self.subTest(skill=skill_dir.name, removed=removed):
+                    self.assertNotIn(removed, text)
 
-    def test_argument_audit_has_one_canonical_core_and_domain_adapters(self) -> None:
-        judgment = skill_text("judgment-craft")
-        audit_path = (
-            ROOT
-            / "judgment-craft"
-            / "references"
-            / "argument-and-concept-audit.md"
-        )
-        audit = audit_path.read_text(encoding="utf-8")
+    def test_skill_file_paths_resolve(self) -> None:
+        for skill_dir in skill_dirs():
+            text = skill_text(skill_dir.name)
+            targets = set(PATH_IN_BACKTICKS.findall(text))
+            targets.update(
+                link
+                for link in MARKDOWN_LINK.findall(text)
+                if not link.startswith(("http://", "https://", "#"))
+            )
+            for target in sorted(targets):
+                with self.subTest(skill=skill_dir.name, path=target):
+                    self.assertTrue(
+                        (skill_dir / target.split("#", 1)[0]).exists(),
+                        f"{skill_dir.name}/SKILL.md points at missing {target}",
+                    )
 
-        self.assertIn("references/argument-and-concept-audit.md", judgment)
-        self.assertIn("# Argument And Concept Audit", audit)
-        self.assertIn("Explicit premises", audit)
-        self.assertIn("Hidden assumptions", audit)
-        self.assertIn("necessary from sufficient", audit)
-        self.assertIn("Strongest countercase", audit)
-        self.assertIn("Update trigger", audit)
-
-        self.assertIn("Concept test", skill_text("define-problem"))
+    def test_argument_audit_keeps_its_domain_adapters(self) -> None:
         self.assertIn("Argument integrity", skill_text("research-craft"))
         self.assertIn("Audit The Approval Argument", skill_text("code-review-craft"))
         self.assertIn("核心概念一致", skill_text("writing"))
+        self.assertIn("是否分清事实、假设和推断", skill_text("decision"))
 
     def test_model_boundary_audit_has_domain_guardrails(self) -> None:
-        audit = (
-            ROOT
-            / "judgment-craft"
-            / "references"
-            / "argument-and-concept-audit.md"
-        ).read_text(encoding="utf-8")
-
-        self.assertIn("Audit The Model Boundary", audit)
-        self.assertIn("reality, observed data, and the model distinct", audit)
-        self.assertIn("rival states consistent with the same output", audit)
         self.assertIn("latent construct / model boundary", skill_text("research-craft"))
 
         invest = skill_text(INVESTMENT_SKILL)
