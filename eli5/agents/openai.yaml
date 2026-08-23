@@ -1,0 +1,4 @@
+interface:
+  display_name: "ELI5"
+  short_description: "Explain any topic for a chosen audience"
+  default_prompt: "Use $eli5 to explain this topic at the right level for the intended audience."
