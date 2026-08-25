@@ -1,6 +1,6 @@
 ---
 name: code-review-craft
-description: Read unfamiliar code and diffs, reconstruct behavior and invariants, evaluate correctness, maintainability, efficiency, security, operability, and tests, then produce evidence-backed findings and a calibrated approval decision. Use when Codex needs to explain a code path, understand a repository or subsystem, review a PR/diff/commit, audit AI-generated code, assess an architectural change, find edge cases or failure modes, judge whether code is safe to approve, communicate review comments, or train and evaluate code-review judgment. Work review-first and do not implement fixes unless the user explicitly asks.
+description: Read unfamiliar code and diffs, reconstruct behavior and invariants, evaluate correctness, maintainability, efficiency, security, operability, and tests, then produce evidence-backed findings and a calibrated approval decision. Use when Codex needs to explain a code path, understand a repository or subsystem, review a PR/diff/commit, audit AI-generated code, run a strict maintainability or structural-quality audit, assess an architectural change, find edge cases or failure modes, judge whether code is safe to approve, communicate review comments, or train and evaluate code-review judgment. Work review-first and do not implement fixes unless the user explicitly asks.
 ---
 
 # Code Review Craft
@@ -17,7 +17,7 @@ Automate evidence collection aggressively. Do not outsource comprehension, quali
 ## Route the task
 
 - **Explain code:** reconstruct purpose, execution path, state, invariants, side effects, and failure behavior. Read `references/comprehension-protocol.md` for an unfamiliar or cross-file system.
-- **Review a diff or PR:** compare intended behavior with actual behavior and report actionable findings plus an approval state. Read `references/review-flow.md` and `references/review-rubric.md`.
+- **Review a diff, PR, or strict code-quality audit:** compare intended behavior with actual behavior and report actionable findings plus an approval state. For a maintainability-focused audit, explicitly run the structural-simplification pass below. Read `references/review-flow.md` and `references/review-rubric.md`.
 - **Audit a subsystem or architecture:** trace trust boundaries, persistence, concurrency, recovery, and operational consequences beyond the changed lines. Read both references above.
 - **Train or evaluate judgment:** predict before validation, keep an error ledger, and score review quality across real changes. Read `references/judgment-training.md`.
 
@@ -73,6 +73,18 @@ Read beyond the diff until the behavior can be explained without guessing:
 5. Perform the explain-back gate: state what the code does, why it does it, what must remain true, and how failure becomes visible.
 
 If any material step still depends on “the framework probably handles it,” keep reading or mark the uncertainty. Passing the explain-back gate is required before approval.
+
+## Search for structural simplification
+
+After checking behavior, inspect every meaningful change for the complexity it adds:
+
+1. Inventory new branches, flags, modes, wrappers, state owners, type escape hatches, and boundary crossings.
+2. Look for a behavior-preserving change to the state model, ownership boundary, or control-flow shape that would make several of those concepts disappear. Treat this as a **code-judo move**: use the existing architecture more effectively so the implementation becomes smaller and more direct.
+3. Prefer deleting concepts and special cases over moving the same complexity into more helpers, files, or generic machinery. A decomposition is not a simplification when readers must still hold the same states and branches in mind.
+4. Check whether policy is scattered through unrelated paths, canonical logic is duplicated or placed in the wrong layer, or unnecessary optionality, casts, and pass-through abstractions obscure the real contract.
+5. Check orchestration for needlessly serialized independent work and related updates that can become partially applied, but propose concurrency or atomicity changes only when they preserve required ordering and make the design clearer.
+
+Publish a structural finding only when the diff demonstrates a concrete maintenance cost and repository evidence supports a materially simpler direction. Cite the affected decision sites or invariant, explain which concepts the direction removes, and give the smallest safe migration and test boundary. Treat file growth and numeric line thresholds as investigation signals, not verdicts. If no clear, behavior-preserving simplification is supported, keep the idea optional or drop it; do not demand speculative rewrites, future-proof abstractions, or personal style.
 
 ## Audit The Approval Argument
 

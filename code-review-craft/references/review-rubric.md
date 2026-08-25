@@ -87,12 +87,20 @@ Select dimensions according to the review contract. Start with API semantics and
 - Check whether responsibilities, ownership, and invariants remain legible.
 - Prefer the repository's existing patterns and dependencies unless the change has a concrete reason to depart.
 - Flag abstraction when it hides behavior, multiplies change surfaces, or makes invalid states easier to express.
+- Inventory the branches, flags, modes, wrappers, state owners, and boundary crossings introduced by the change. Ask whether one behavior-preserving change to the model, ownership, or control-flow shape can remove several of them at once.
+- Distinguish complexity deletion from complexity relocation. Splitting the same decisions across more helpers or files does not reduce the number of concepts a reader must track.
+- Treat scattered feature checks, one-off booleans, nullable modes, and special cases in unrelated paths as structural problems when they duplicate one policy or make valid states harder to identify.
+- Prefer direct code over thin wrappers, pass-through helpers, cast-heavy contracts, and generic mechanisms that hide a simple data shape. Require each abstraction to remove duplication, enforce an invariant, or provide a meaningful boundary.
+- Keep logic in the canonical owning layer and reuse established helpers. Flag near-duplicates or boundary leaks when they create multiple places for the same rule to drift.
+- Inspect unnecessary sequential orchestration and non-atomic related updates when a clearer structure can preserve ordering, failure behavior, and observability while reducing partial states.
+- Use file length, function length, and threshold crossings as prompts to inspect cohesion and navigation, not as automatic blockers. Require evidence of mixed responsibility, branching growth, or an avoidable change surface.
 - Prefer a small stable kernel with named, owned extensions. Flag generic `contrib`, `misc`, `experimental`, or catch-all surfaces when stability, compatibility, lifecycle, and promotion criteria are unclear.
 - Check whether an extension that duplicates the core API should be promoted with a migration path, isolated behind a clear boundary, or removed instead of becoming a permanent fork.
 - Flag duplication only when it can drift or already encodes the same rule inconsistently.
 - Check naming, comments, and types for semantic accuracy, not personal taste.
 - Justify each new dependency by its concrete value, transitive weight, operational cost, security posture, and license compatibility.
 - Evaluate whether the difficult version of the problem was solved or merely pushed onto callers and operators.
+- Make a structural concern required only when the current diff causes a concrete net-health regression and a clear, behavior-preserving direction exists. Name the invariant, the complexity removed, and the smallest safe test or migration boundary; otherwise label the idea optional or omit it.
 
 ## Documentation
 
@@ -133,3 +141,7 @@ What is the narrowest safe fix direction?
 ```
 
 Reject the finding if these answers remain vague after reasonable inspection.
+
+## Source
+
+The “code-judo” structural-simplification lens adapts the [Thermo-Nuclear Code Quality Review](https://github.com/cursor/plugins/blob/main/thermos/skills/thermo-nuclear-code-quality-review/SKILL.md). This rubric converts its fixed size thresholds and presumptive blockers into evidence-based probes so they remain compatible with calibrated review findings.

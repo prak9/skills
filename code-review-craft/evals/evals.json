@@ -97,6 +97,40 @@
           "required": true
         }
       ]
+    },
+    {
+      "id": "structural-regression-with-correct-behavior",
+      "prompt": "Review the supplied preview-mode change and recommend an approval state. Preview must reuse normal validation and return the validated candidate, but it must not persist, audit, or notify. The existing side-effect helper signatures are the canonical live-operation boundary. The listed tests pass. Perform a strict maintainability audit; do not implement fixes or invent a functional failure.",
+      "expected_output": "A required, evidence-backed structural finding that identifies the preview flag scattered through canonical side-effect helpers, proposes one behavior-preserving decision at the orchestration boundary, and requests changes without pretending the tested behavior is broken.",
+      "files": [
+        "fixtures/structural-regression-with-correct-behavior/change.diff"
+      ],
+      "assertions": [
+        {
+          "id": "finds-scattered-mode-policy",
+          "text": "The review identifies the preview checks threaded through provision, saveProvision, writeAudit, and sendNotice as a concrete structural regression or policy leak, rather than a naming or formatting nit.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "offers-complexity-deleting-direction",
+          "text": "The fix direction preserves shared validation but makes one preview decision before the live side-effect pipeline, so the side-effect helpers remain canonical and the repeated flag branches disappear.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "calibrates-structural-blocker",
+          "text": "The structural regression is explicitly required and the final state is Request changes, with the concrete change surface or reasoning cost explained instead of relying on a generic rewrite preference or numeric file-size threshold.",
+          "kind": "model",
+          "required": true
+        },
+        {
+          "id": "does-not-invent-functional-bug",
+          "text": "The review acknowledges or does not contradict the supplied behavioral evidence and does not fabricate a functional failure merely to justify the maintainability finding.",
+          "kind": "model",
+          "required": true
+        }
+      ]
     }
   ]
 }

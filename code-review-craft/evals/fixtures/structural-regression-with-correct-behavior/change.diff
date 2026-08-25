@@ -1,0 +1,71 @@
+diff --git a/provision.ts b/provision.ts
+index 217958a..5f5a2b1 100644
+--- a/provision.ts
++++ b/provision.ts
+@@ -8,21 +8,31 @@ export async function provision(
+   input: ProvisionInput,
+   deps: Dependencies,
++  preview = false,
+ ): Promise<ProvisionResult> {
+   const candidate = validateProvision(input);
+-  const resource = await saveProvision(candidate, deps.store);
+-  await writeAudit(resource, deps.audit);
+-  await sendNotice(resource, deps.notifier);
+-  return { status: "created", resource };
++  const resource = await saveProvision(candidate, deps.store, preview);
++  await writeAudit(resource, deps.audit, preview);
++  await sendNotice(resource, deps.notifier, preview);
++  return { status: preview ? "preview" : "created", resource };
+ }
+-
++
+-async function saveProvision(candidate: Provision, store: Store) {
++async function saveProvision(candidate: Provision, store: Store, preview: boolean) {
++  if (preview) {
++    return candidate;
++  }
+   return store.create(candidate);
+ }
+-
++
+-async function writeAudit(resource: Provision, audit: AuditLog) {
++async function writeAudit(resource: Provision, audit: AuditLog, preview: boolean) {
++  if (preview) {
++    return;
++  }
+   await audit.record("provisioned", resource);
+ }
+-
++
+-async function sendNotice(resource: Provision, notifier: Notifier) {
++async function sendNotice(resource: Provision, notifier: Notifier, preview: boolean) {
++  if (preview) {
++    return;
++  }
+   await notifier.provisioned(resource);
+ }
+diff --git a/provision.test.ts b/provision.test.ts
+index 2fe1291..46ba115 100644
+--- a/provision.test.ts
++++ b/provision.test.ts
+@@ -15,3 +15,20 @@ test("provisions a resource", async () => {
+   expect(deps.audit.record).toHaveBeenCalledTimes(1);
+   expect(deps.notifier.provisioned).toHaveBeenCalledTimes(1);
+ });
++
++test("previews a valid resource without side effects", async () => {
++  const deps = fakeDependencies();
++
++  const result = await provision(validInput, deps, true);
++
++  expect(result).toEqual({ status: "preview", resource: validatedCandidate });
++  expect(deps.store.create).not.toHaveBeenCalled();
++  expect(deps.audit.record).not.toHaveBeenCalled();
++  expect(deps.notifier.provisioned).not.toHaveBeenCalled();
++});
++
++test("preview uses normal validation", async () => {
++  const deps = fakeDependencies();
++
++  await expect(provision(invalidInput, deps, true)).rejects.toThrow(ValidationError);
++});
