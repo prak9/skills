@@ -117,6 +117,19 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("核心概念一致", skill_text("writing"))
         self.assertIn("是否分清事实、假设和推断", skill_text("decision"))
 
+    def test_decision_causal_attribution_keeps_its_counterfactual_gate(self) -> None:
+        skill = skill_text("decision")
+        causal = (
+            ROOT / "decision" / "references" / "causal-analysis.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("references/causal-analysis.md", skill)
+        self.assertIn("观察变化是否等于干预效果", skill)
+        self.assertIn("恒等式用于定位变化，不自动证明原因", causal)
+        self.assertIn("目标效应 = 8 月涨价后的结果", causal)
+        self.assertIn("反事实来源、识别假设和范围", causal)
+        self.assertIn("中介、交互与反馈", causal)
+
     def test_model_boundary_audit_has_domain_guardrails(self) -> None:
         self.assertIn("latent construct / model boundary", skill_text("research-craft"))
 

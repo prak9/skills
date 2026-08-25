@@ -6,6 +6,7 @@
 
 - `SKILL.md`：触发范围、工作流、输出结构和质量检查。
 - `references/framework.md`：详细方法论。
+- `references/causal-analysis.md`：从观察变化到反事实识别与系统重组的因果分析协议。
 - `references/scoring-rubric.md`：评分锚点和阈值。
 - `assets/decision-worksheet.md`：可填写工作表。
 - `assets/decision-report-template.md`：正式报告模板。
