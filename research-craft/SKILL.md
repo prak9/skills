@@ -1,6 +1,6 @@
 ---
 name: research-craft
-description: 兼容项。决策实验与证据验证已并入 `decision` 的闭环中；本技能保留用于需要更复杂研究编排的独立任务。
+description: 兼容项。决策实验与证据验证已并入 `decision` 的闭环中；本技能保留用于复杂研究编排，以及 agent harness、verification closure、可观测并行工作、自我改进与按任务类型校准自治。
 ---
 
 # Research Craft
@@ -26,7 +26,7 @@ Choose the lightest mode that protects the claim:
 - **Exploration:** map an unfamiliar problem, inspect raw material, compare explanations, and identify the next discriminating observation. Keep hypotheses provisional.
 - **Controlled experiment:** compare a candidate against a baseline under a fixed protocol and explicit acceptance gates.
 - **Artifact iteration:** edit code, prompts, rules, or configuration through a bounded propose-evaluate-accept loop. Freeze the evaluator before optimizing the candidate.
-- **Agent or self-improving harness:** read `references/harness-engineering.md` before designing runtime control flow, persistent memory, context construction, subagents, permissions, or self-edits.
+- **Agent or self-improving harness:** read `references/harness-engineering.md` before designing runtime control flow, persistent memory, feature maps, verification closure, subagents, permissions, self-edits, or autonomy scaling.
 - **Automated scientific or engineering discovery:** read `references/automated-discovery.md` before decomposing a problem into parallel experiments, optimizing iteration throughput, designing a multimodal research system, or extracting reusable infrastructure from a narrow-domain loop.
 - **Quantitative or trading strategy:** read `references/quant-strategy-iteration.md` before changing a strategy, backtest, scorer, data split, promotion gate, or distributed experiment wrapper.
 
@@ -105,6 +105,7 @@ Make evidence easy to produce and hard to counterfeit:
 - Validate expected task counts, rows, keys, files, and failed cells before scoring.
 - Preserve interruption-safe state in files: contract, run status, traces, diffs, decisions, and rejected attempts.
 - Keep safety, permissions, secrets, holdouts, and the evaluator outside any self-editing surface.
+- Prove the agent can reach, reproduce, act, observe, compare, preserve evidence, and recover before multiplying workers or authority; otherwise record the human-verification debt.
 
 Prefer inspectable files and deterministic rules over hidden memory or a large opaque framework.
 

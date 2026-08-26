@@ -117,6 +117,30 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("核心概念一致", skill_text("writing"))
         self.assertIn("是否分清事实、假设和推断", skill_text("decision"))
 
+    def test_agent_harness_closes_verification_before_scaling_autonomy(self) -> None:
+        skill = skill_text("research-craft")
+        harness = (
+            ROOT / "research-craft" / "references" / "harness-engineering.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("verification closure", skill)
+        self.assertIn("Close the verifier loop before scaling", harness)
+        self.assertIn("Human-verification debt", harness)
+        self.assertIn("User surface / entry", harness)
+        self.assertIn("failure evidence", harness)
+        self.assertIn("Autonomy tier by task class", harness)
+
+    def test_code_review_gates_auto_merge_by_task_class(self) -> None:
+        skill = skill_text("code-review-craft")
+        judgment = (
+            ROOT / "code-review-craft" / "references" / "judgment-training.md"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("Calibrate review or merge autonomy", skill)
+        self.assertIn("task-class-specific privilege", skill)
+        self.assertIn("revision-linked evidence", judgment)
+        self.assertIn("PR count", judgment)
+
     def test_decision_causal_attribution_keeps_its_counterfactual_gate(self) -> None:
         skill = skill_text("decision")
         causal = (

@@ -1,6 +1,6 @@
 ---
 name: code-review-craft
-description: Read unfamiliar code and diffs, reconstruct behavior and invariants, evaluate correctness, maintainability, efficiency, security, operability, and tests, then produce evidence-backed findings and a calibrated approval decision. Use when Codex needs to explain a code path, understand a repository or subsystem, review a PR/diff/commit, audit AI-generated code, run a strict maintainability or structural-quality audit, assess an architectural change, find edge cases or failure modes, judge whether code is safe to approve, communicate review comments, or train and evaluate code-review judgment. Work review-first and do not implement fixes unless the user explicitly asks.
+description: Read unfamiliar code and diffs, reconstruct behavior and invariants, evaluate correctness, maintainability, efficiency, security, operability, and tests, then produce evidence-backed findings and a calibrated approval decision. Use when Codex needs to explain a code path, understand a repository or subsystem, review a PR/diff/commit, audit AI-generated code, run a strict maintainability or structural-quality audit, assess an architectural change, find edge cases or failure modes, judge whether code is safe to approve, communicate review comments, train and evaluate code-review judgment, or calibrate automated review and merge autonomy. Work review-first and do not implement fixes unless the user explicitly asks.
 ---
 
 # Code Review Craft
@@ -20,6 +20,7 @@ Automate evidence collection aggressively. Do not outsource comprehension, quali
 - **Review a diff, PR, or strict code-quality audit:** compare intended behavior with actual behavior and report actionable findings plus an approval state. For a maintainability-focused audit, explicitly run the structural-simplification pass below. Read `references/review-flow.md` and `references/review-rubric.md`.
 - **Audit a subsystem or architecture:** trace trust boundaries, persistence, concurrency, recovery, and operational consequences beyond the changed lines. Read both references above.
 - **Train or evaluate judgment:** predict before validation, keep an error ledger, and score review quality across real changes. Read `references/judgment-training.md`.
+- **Calibrate review or merge autonomy:** evaluate representative task classes, choose the least authority supported by evidence, and gate auto-merge with revision-linked verification. Read `references/judgment-training.md`.
 
 ## Set the review contract
 
@@ -174,4 +175,4 @@ If no qualifying findings remain, say so plainly. State what was inspected and a
 
 ## Preserve accountability
 
-Recommend an approval state only when the evidence supports it. Require an explicit human checkpoint for expensive or hard-to-reverse decisions such as architecture, security boundaries, destructive migrations, billing, compliance, and public compatibility. Make the uncertainty and owner decision visible; never imply that tool output has accepted the consequence for them.
+Recommend an approval state only when the evidence supports it. Treat auto-merge as an earned, task-class-specific privilege, never an agent-wide capability or throughput target. Require an explicit human checkpoint for expensive or hard-to-reverse decisions such as architecture, security boundaries, destructive migrations, billing, compliance, and public compatibility. Make the uncertainty and owner decision visible; never imply that tool output has accepted the consequence for them.

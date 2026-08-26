@@ -31,6 +31,40 @@ Human checkpoints:
 
 Ask for human judgment at goals, taste, material risk, and acceptance boundaries. Do not require approval for every safe, ordinary step inside an agreed contract.
 
+## Close the verifier loop before scaling
+
+Tool access is not verification capability. Prove a closed loop on a representative task before adding concurrency or authority:
+
+| Link | Required proof |
+|---|---|
+| Reach | Enter the target state from a declared starting state. |
+| Reproduce | Trigger the reported symptom or establish the baseline. |
+| Act | Make the bounded change through the real product or system path. |
+| Observe | Capture the decisive runtime, UI, trace, metric, or state signal. |
+| Compare | Apply predeclared acceptance criteria to before-and-after evidence. |
+| Preserve | Link evidence and verifier results to the exact candidate revision. |
+| Recover | Resume interrupted work and roll back an accepted change safely. |
+
+Record every missing link as **Human-verification debt** with an owner and next probe. Until the link closes, the human remains the verifier bottleneck; more agents only multiply unchecked output.
+
+## Maintain a feature map from symptom to evidence
+
+Keep a versioned map that lets an agent turn a screenshot, user surface, or vague report into a reproducible path and decisive evidence:
+
+```text
+Feature / claim:
+User surface / entry:
+Preconditions / fixture:
+Reproduction steps and expected symptom:
+Code entry points / owner:
+Decisive sensors:
+Regression / acceptance:
+Rollback / recovery:
+Freshness source / last verified:
+```
+
+Generate or reconcile entries from routes, tests, ownership, and telemetry where possible. Keep the map local enough to maintain, test its navigation and evidence links, and mark missing or stale coverage explicitly; a giant stale inventory creates false confidence.
+
 ## Design state for recovery and audit
 
 Store long-horizon state outside the context window:
@@ -48,10 +82,12 @@ For subagents or backend jobs:
 
 - isolate inputs, permissions, artifact paths, and status
 - preserve each result outside transient chat context
+- freeze the task contract and rubric before workers run; keep candidate work independent and judge anonymized outputs when comparing them
 - let a parent compare evidence, resolve conflicts, and decide what enters durable memory
 - prevent one worker from modifying the evaluator or another worker's evidence
+- treat model agreement as a clue, not ground truth; adjudicate disagreements with decisive evidence or a named human checkpoint
 
-Parallelism is useful only when the merge and verification costs remain lower than the saved time.
+Parallelism is useful only when outputs have independent acceptance and merge contracts, and the merge and verification costs remain lower than the saved time.
 
 ## Run self-improvement as research
 
@@ -63,6 +99,23 @@ Parallelism is useful only when the merge and verification costs remain lower th
 6. **Update memory:** promote only causal, reusable findings; do not turn one noisy win into a permanent rule.
 
 Do not call a loop self-improving if it merely retries without persistent failure attribution, an editable boundary, or an acceptance criterion.
+
+## Compile failures into durable rules carefully
+
+Use a promotion pipeline instead of turning every incident into a permanent instruction:
+
+```text
+failure evidence
+  -> root-cause attribution
+  -> candidate rule or playbook item
+  -> reproducible regression
+  -> independent blind evaluation
+  -> promote
+  -> monitor
+  -> retire or demote
+```
+
+Promote only a recurring failure or one high-consequence systemic failure whose cause, reusable boundary, and affected task class are clear. Require target cases, held-out regressions, clean negatives, preserved passing behavior, an owner, and a retirement trigger. Keep one-off symptoms in the error ledger. Retire or narrow a rule when it creates false positives, stale context, duplicated policy, or evaluator gaming.
 
 ## Choose the lowest effective optimization level
 
@@ -76,6 +129,20 @@ Do not call a loop self-improving if it merely retries without persistent failur
 | Model weights | Training | Non-parametric changes are insufficient | Stability and safety failures |
 
 If the evaluator is fuzzy, slow, leaked, or gameable, improve it before increasing autonomy or search power.
+
+## Earn autonomy by task class
+
+Autonomy belongs to a tested task class and evidence regime, not to an agent identity. Advance one rung at a time:
+
+| Tier | Authority |
+|---|---|
+| Observe / suggest | Inspect, reproduce, and propose; do not mutate. |
+| Edit | Make bounded reversible changes; do not publish them. |
+| Open PR | Publish a reviewable change with evidence. |
+| Self-verified PR | Run the closed verifier loop and attach revision-linked evidence. |
+| Auto-merge low-risk | Merge only a qualified, bounded task class with recovery and audit controls. |
+
+Promote using repeated evidence about defect escape, false confidence, verifier coverage, rollback or recovery, blast radius, and auditability—not throughput alone. Preserve sampled review after promotion. Demote after a surprise, evaluator gap, stale feature map, or material context change; keep judgment-heavy and hard-to-reverse classes behind explicit human approval.
 
 ## Review the system, not only the answer
 
@@ -106,8 +173,12 @@ Harness loop:
 Editable and frozen surfaces:
 Tools and permissions:
 Persistent state and context lifecycle:
+Verifier closure / human-verification debt:
+Feature-map version and freshness:
 Verifier, held-out set, and regressions:
 Improvement and rollback rules:
+Autonomy tier by task class:
+Evidence packet, defect escapes, and sampled review:
 Human checkpoints:
 Next experiment:
 ```

@@ -67,6 +67,12 @@ Inspect disagreements rather than trusting the aggregate score. An alleged false
 
 ## Calibrate autonomy by consequence
 
+Autonomy attaches to a tested task class and evidence regime, not to an Agent identity. Advance one rung at a time:
+
+```text
+observe / suggest -> edit -> open PR -> self-verified PR -> auto-merge low-risk
+```
+
 Choose the least supervision that preserves judgment and safety:
 
 | Task | Reversibility and evidence | Default autonomy |
@@ -77,7 +83,20 @@ Choose the least supervision that preserves judgment and safety:
 | Public API, migration, concurrency, billing | Expensive or cross-system | Human owns spec and independent review |
 | Auth, privacy, destructive operation, architecture | Hard to reverse; judgment-heavy | Low; explicit human approval required |
 
-Increase autonomy only after repeated evidence shows both high defect recall and low false confidence in that task class. Reduce it after surprises, evaluator gaps, or changes in system context.
+Increase autonomy only after repeated representative and held-out evidence shows high defect recall, low false confidence, adequate verifier coverage, reliable rollback or recovery, acceptable reviewer burden, bounded blast radius, and a usable audit trail in that task class. Preserve sampled human review after promotion. Reduce autonomy after a surprise, evaluator gap, failed recovery, or material change in system context.
+
+## Gate auto-merge with revision-linked evidence
+
+Auto-merge is a downstream privilege, not the objective or default. Require all of the following for the exact revision being merged:
+
+- deterministic checks and relevant runtime or product-path verification pass;
+- the evidence packet identifies the commit and contains the decisive before-and-after observations;
+- no unresolved `Required` finding or unexplained verifier gap remains;
+- the task class is already qualified, reversible, low-blast-radius, and inside its tested boundary;
+- rollback or revert is ready, with branch protection, canary, or equivalent containment when relevant;
+- the decision, evidence, and recovery owner remain auditable, with sampled human review after merge.
+
+PR count, lines changed, and model consensus are throughput signals, not quality evidence, and never qualify a task class. Do not auto-merge auth, privacy, billing, destructive migrations, public API or compatibility changes, architecture, or other hard-to-reverse work without explicit human approval. Demote the task class immediately when escaped defects, false confidence, recovery failure, or context drift invalidate the promotion evidence.
 
 ## Measure the last mile
 
