@@ -25,6 +25,7 @@ Control flow and stop conditions:
 Tools and authority boundaries:
 Persistent artifacts and recovery path:
 Context construction and retirement rules:
+Data sources, coverage, freshness, and provenance:
 Regression anchors and rollback:
 Human checkpoints:
 ```
@@ -64,6 +65,17 @@ Freshness source / last verified:
 ```
 
 Generate or reconcile entries from routes, tests, ownership, and telemetry where possible. Keep the map local enough to maintain, test its navigation and evidence links, and mark missing or stale coverage explicitly; a giant stale inventory creates false confidence.
+
+## Make the data boundary observable
+
+An agent cannot recover information that its data path never exposes. Treat data architecture as part of the harness contract, not as passive storage:
+
+- derive storage, indexing, retrieval, and retention from the agent's real access patterns and update cadence
+- map decision-critical claims to sources and expose provenance, freshness, permissions, and coverage to the agent and verifier
+- distinguish negative evidence from missing data, permission filtering, stale data, and retrieval failure
+- test missing, stale, conflicting, and partially available inputs; require abstention or escalation when the evidence boundary cannot support the claim
+
+More context tokens do not repair a blind or unobservable data pipeline.
 
 ## Design state for recovery and audit
 
@@ -183,4 +195,4 @@ Human checkpoints:
 Next experiment:
 ```
 
-Source: Lilian Weng, “Harness Engineering for Self-Improvement,” Lil'Log, 2026-07-04.
+Sources: Lilian Weng, “Harness Engineering for Self-Improvement,” Lil'Log, 2026-07-04; Andrew Ng, [“AI Engineering Skills Map: Software engineering fundamentals”](https://x.com/AndrewYNg/status/2093388974194872781), 2026-08-29.

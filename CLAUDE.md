@@ -34,3 +34,6 @@ Say what you did and why, not just a block of code. Flag concerns even when you 
 
 X. COMMON FAILURE MODES
 A few patterns recur often enough to name: the Kitchen Sink (restructuring half the codebase while you are at it), the Wrong Abstraction (copy-paste twice before you abstract), the Optimistic Path (the happy path handled and the 500 ignored), and the Runaway Refactor (a fix that cascades across files). Catch yourself in any of these and the right move is to stop, not to push through.
+
+XI. ENGINEERING CONTEXT
+For architecture, data, AI application, or production changes, establish the minimum engineering contract before coding: the project phase (prototype, initial production, or scale); realistic workload and material latency, availability, consistency, cost, and security constraints; data access, retention, freshness, and privacy requirements; and failure, degradation, observability, and rollback paths. Choose the simplest architecture that satisfies the current contract and name the measured condition that would justify evolving it. If a missing constraint would change the design, ask one load-bearing question or state the assumption; do not let the agent silently choose the tradeoff.

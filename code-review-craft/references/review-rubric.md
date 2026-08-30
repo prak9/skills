@@ -57,6 +57,7 @@ Select dimensions according to the review contract. Start with API semantics and
 
 ## Data and migrations
 
+- Recover the real read, write, query, retention, freshness, and growth patterns before judging the data model, storage type, indexes, or lifecycle. Do not accept a fashionable technology choice without a workload it improves.
 - Check schema compatibility, migration order, backfill behavior, indexes, constraints, and rollback feasibility.
 - Verify units, rounding, numeric precision, encoding, locale, time zones, and timestamp semantics.
 - Check whether old and new binaries can operate during a rolling deployment.
@@ -84,6 +85,7 @@ Select dimensions according to the review contract. Start with API semantics and
 
 ## Maintainability and architecture
 
+- Judge architecture against the current lifecycle phase and explicit workload: a prototype need not absorb hypothetical scale, while production code must satisfy its actual reliability, operability, security, and cost contract. Require a measured trigger before adding distribution, services, caches, queues, or a new storage model for future scale.
 - Check whether responsibilities, ownership, and invariants remain legible.
 - Prefer the repository's existing patterns and dependencies unless the change has a concrete reason to depart.
 - Flag abstraction when it hides behavior, multiplies change surfaces, or makes invalid states easier to express.
@@ -144,4 +146,4 @@ Reject the finding if these answers remain vague after reasonable inspection.
 
 ## Source
 
-The “code-judo” structural-simplification lens adapts the [Thermo-Nuclear Code Quality Review](https://github.com/cursor/plugins/blob/main/thermos/skills/thermo-nuclear-code-quality-review/SKILL.md). This rubric converts its fixed size thresholds and presumptive blockers into evidence-based probes so they remain compatible with calibrated review findings.
+The “code-judo” structural-simplification lens adapts the [Thermo-Nuclear Code Quality Review](https://github.com/cursor/plugins/blob/main/thermos/skills/thermo-nuclear-code-quality-review/SKILL.md). This rubric converts its fixed size thresholds and presumptive blockers into evidence-based probes so they remain compatible with calibrated review findings. The lifecycle, workload, and data-access gates draw on Andrew Ng's [“AI Engineering Skills Map: Software engineering fundamentals”](https://x.com/AndrewYNg/status/2093388974194872781).

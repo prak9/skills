@@ -27,8 +27,8 @@ Automate evidence collection aggressively. Do not outsource comprehension, quali
 Before judging the code:
 
 1. Read applicable repository instructions and the files under review in full.
-2. Identify the change intent, expected behavior, base revision, scope, and explicit acceptance criteria. Check that the change description says what changed and why, and still matches the diff. Clarify any load-bearing term whose meaning differs across the request, public API, implementation, documentation, or tests.
-3. Name the protected properties: correctness, compatibility, data integrity, security, latency, availability, or another project-specific constraint.
+2. Identify the change intent, expected behavior, base revision, scope, explicit acceptance criteria, and, when design depends on them, the lifecycle phase and realistic workload. Check that the change description says what changed and why, and still matches the diff. Clarify any load-bearing term whose meaning differs across the request, public API, implementation, documentation, or tests.
+3. Name the protected properties: correctness, compatibility, data integrity, security, latency, availability, consistency, reliability, maintainability, cost, or another project-specific constraint. Require evidence only for properties material to this change.
 4. Calibrate depth to impact and reversibility. Inspect architecture, migrations, auth, billing, concurrency, public APIs, and destructive operations more deeply than local formatting or generated boilerplate.
 5. Check reviewability: the change should be one coherent, independently safe step with related tests. If mixed behavior, refactoring, generated churn, or sheer breadth prevents reliable review, say so early and propose concrete split boundaries.
 6. Infer missing intent from callers, tests, docs, schemas, history, and existing patterns. State any material assumption; do not invent a specification.
