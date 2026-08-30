@@ -9,7 +9,11 @@ description: Generate source-backed buy-side equity research memos from a ticker
 
 Start with the investment decision, not company background or news summary. Every mode in this skill converts an input (ticker, news item, or explicit framework request) into a decision-useful artifact: a thesis, a probability, a score, or a valuation band — always with the evidence that could prove it wrong.
 
+Replace point-certainty with conditional distributions; do not pretend that investing stops requiring forecasts. Evaluate an idea through `independent evidence -> calibrated scenarios -> net payoff -> survivable exposure -> update or decay`, and keep thesis quality, price attractiveness, and position size as three separate judgments.
+
 Treat every output as research analysis, not personalized investment advice. Verify current prices, market cap, filings, estimates, valuation multiples, earnings calls, investor presentations, and catalysts from reliable current sources before making time-sensitive claims. Do not invent unavailable data — mark it `未核验` (unverified) and say what source would confirm it.
+
+When the user asks about opportunity/risk, entry, sizing, portfolio fit, evidence overlap, or whether new information materially changes a thesis, read [references/uncertainty-exposure.md](references/uncertainty-exposure.md) and apply only the sections supported by the available data.
 
 ## Which Mode To Use
 
@@ -175,7 +179,7 @@ Pull in another mode as a sub-section only when it sharpens the decision — do 
 
 ### Quality Bar
 
-Lead with the investment conclusion. Support each core judgment with data, source documents, or explicit reasoning. Do not replace analysis with news summaries. Do not extrapolate historical growth mechanically. Show valuation assumptions, not only a target price. Include Bull/Base/Bear scenarios and reverse thesis testing. Make all unverifiable data and missing inputs explicit. Keep the memo decision-useful, professional, and concise enough for buy-side discussion.
+Lead with the investment conclusion. Support each core judgment with data, source documents, or explicit reasoning. Do not replace analysis with news summaries. Do not extrapolate historical growth mechanically. Show valuation assumptions, not only a target price. Include Bull/Base/Bear scenarios and reverse thesis testing. Keep thesis confidence, valuation attractiveness, and exposure posture distinct. Make all unverifiable data and missing inputs explicit. Keep the memo decision-useful, professional, and concise enough for buy-side discussion.
 
 ## Mode B — Bayesian Intrinsic Growth Valuation
 

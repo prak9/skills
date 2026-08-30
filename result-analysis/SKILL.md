@@ -13,9 +13,10 @@ description: 统一分析 py 期货仓库的 result.py 日报、周报与 winres
 - 每个关键数字都注明 `来源文件/列或代码位置 + 聚合方法 + 口径边界`。
 - 用户未指定日期时，选择最新的完整 bundle，并在开头写明日期范围、账户、文件和缺失项。
 - 单日只给 `观察/假设` 和受限运行建议；不凭单日 SIM 优势新增实盘、扩量、切模型或写 `PROMOTE/DISCARD`。
+- 比较新信号或特征时，只承认其相对当前 baseline 在 fresh OOS 上新增的成本后经济价值；孤立 IC、hit 或相关性不算边际 edge。
 - 只选择一个首要瓶颈。最多给 3 条 action，每条包含机制、验证方法和 falsifier。
 
-每次分析先完整读取 [references/analysis-contract.md](references/analysis-contract.md)。分析日报图片、实盘运行建议或研究方向时再读 [references/daily-decision-loop.md](references/daily-decision-loop.md)；分析周报、周复盘或下周运行建议时再读 [references/weekly-review.md](references/weekly-review.md)；只有进入深度归因时再读 [references/deep-attribution.md](references/deep-attribution.md)；只有用户要求模型、标签、训练或参数优化时再读 [references/model-training-tuning.md](references/model-training-tuning.md)。
+每次分析先完整读取 [references/analysis-contract.md](references/analysis-contract.md)。分析日报图片、实盘运行建议或研究方向时再读 [references/daily-decision-loop.md](references/daily-decision-loop.md)；分析周报、周复盘或下周运行建议时再读 [references/weekly-review.md](references/weekly-review.md)；只有进入深度归因时再读 [references/deep-attribution.md](references/deep-attribution.md)；只有用户要求模型、标签、训练或参数优化时再读 [references/model-training-tuning.md](references/model-training-tuning.md)；比较新信号的边际价值、组合因子、仓位上限、信号衰减或 regime 风险时再读 [references/edge-portfolio-controls.md](references/edge-portfolio-controls.md)。
 
 ## 深度路由
 
@@ -137,6 +138,8 @@ Daily Loop 模式还要给决策首页、品种 × session 运行矩阵、当前
 - 不把 `real_sim_trade_ratio` 当 coverage，不把 `enter_reald-enter_d` 当滑点。
 - 不把 REAL−SIM 差额自动归因于执行，不混用 dret capture 与原始 P&L capture。
 - 不把 IC、R²、hit 或漂亮图表当作成本后 edge。
+- 不把多个品种或策略名称当作分散；未检查共同因子、风险贡献和压力相关性时，只能报告名义分散。
+- 不用 full Kelly 或 `mu / variance` 近似自动扩量；模型仓位必须受最大损失、流动性/容量、保证金、集中度、尾部压力和人工门禁约束。
 - 不凭单日、单品种、top_fc 或后验 regime 直接改参数。
 - 不把日报图片、综合分或 SIM 当日排名变成自动实盘指令；不凭单日新增品种、扩量或切模。
 - 不把 `meta.recommend`、当日 REAL 交易和盘前已批准的实盘集合混为一谈；盘后赢家不能改写成盘前推荐。
@@ -152,4 +155,5 @@ Daily Loop 模式还要给决策首页、品种 × session 运行矩阵、当前
 - `references/weekly-review.md`：Weekly 模式的 cohort、pot-first、资格门槛和运行卡合同
 - `references/deep-attribution.md`：Deep 模式的 regime、P&L、行为、部署、因子和容量方法
 - `references/model-training-tuning.md`：Tuning 模式的身份冻结、证据梯和实验合同
+- `references/edge-portfolio-controls.md`：边际信号价值、组合因子、稳健仓位、衰减与 regime 风险合同
 - `scripts/model_tuning_diagnostics.py`：跨日报、跨证据层的候选路由脚本；先运行 `--self-test`
