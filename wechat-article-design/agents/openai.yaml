@@ -1,0 +1,4 @@
+interface:
+  display_name: "微信公众号排版"
+  short_description: "把 Markdown 排成可直接粘贴的公众号富文本 HTML"
+  default_prompt: "使用 $wechat-article-design 将这篇 Markdown 排成可粘贴到微信公众号编辑器的 HTML，并完成合规校验。"
