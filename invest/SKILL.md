@@ -1,6 +1,6 @@
 ---
 name: invest
-description: Generate source-backed buy-side equity research memos from a ticker — investment view, SEC/IR-backed financial analysis, industry chain, competition, SOTP/relative valuation, Bull/Base/Bear scenarios, catalysts, risks, and monitoring dashboard — with built-in specialist lenses for Bayesian intrinsic-vs-implied growth valuation, GF-DMA trend-health scoring, Serenity-style news-to-alpha translation, and TAM-Adj-PEG growth-adjusted valuation. Use when the user asks to analyze a stock or ticker, create a buy-side memo, investment committee note, or fund-manager-style company analysis, or explicitly asks for Bayesian valuation / intrinsic vs implied growth, GF-DMA / DMA-ATR trend health, news-to-alpha / small-cap beneficiaries, or TAM-Adj-PEG.
+description: Generate source-backed buy-side equity research and monitoring memos from a ticker — longitudinal evidence, integrated financial modeling, DCF/normalized EPS/reverse DCF, forecast-consistency checks, thesis stress tests, scenarios, catalysts, risks, and material-change monitoring — with specialist lenses for Bayesian intrinsic-vs-implied growth valuation, GF-DMA trend health, Serenity-style news-to-alpha translation, and TAM-Adj-PEG. Use when the user asks to analyze a stock or ticker, create or update a buy-side memo or investment-committee note, monitor an investment thesis, or explicitly requests one of those specialist lenses.
 ---
 
 # Invest
@@ -15,11 +15,14 @@ Treat every output as research analysis, not personalized investment advice. Ver
 
 When the user asks about opportunity/risk, entry, sizing, portfolio fit, evidence overlap, or whether new information materially changes a thesis, read [references/uncertainty-exposure.md](references/uncertainty-exposure.md) and apply only the sections supported by the available data.
 
+When Mode A calls for deep or full re-underwriting, a long historical record, model reconstruction, forecast-consistency checks, DCF/normalized EPS/reverse DCF reconciliation, review of prior investment judgments, or ongoing monitoring, read [references/underwriting-loop.md](references/underwriting-loop.md). Apply the reference as an auditable workflow, not as a requirement to maximize context or report length.
+
 ## Which Mode To Use
 
 | Trigger | Mode |
 | --- | --- |
 | "analyze this ticker", "buy-side memo", "investment committee note", or any bare ticker/company request | **Mode A — Buy-Side Equity Research Memo** (default) |
+| "monitor/update this thesis", "what changed since the last memo", or "alert only on material changes" | **Mode A — Re-underwriting / thesis-change monitor**; use the prior versioned baseline when available |
 | explicit ask for Bayesian valuation, intrinsic vs implied growth, growth-hypothesis probabilities, posterior updates, FOMO vs fundamentals | **Mode B — Bayesian Intrinsic Growth Valuation** |
 | explicit ask for GF-DMA, DMA/ATR trend health, price-to-DMA divergence, escape risk | **Mode C — GF-DMA Health Index** |
 | user shares news, a product launch, a procurement/supply-chain signal, or asks for alpha hypotheses / small-cap beneficiaries / "news to financial statement" translation | **Mode D — Serenity Alpha (News → Alpha)** |
@@ -62,17 +65,17 @@ Unless the user specifies otherwise: language Chinese; depth deep version; horiz
 
 **4. Analyze competition and moat direction.** Direct competitors, substitutes, potential entrants, bargaining power, market-share direction, margin differences, brand/channel/scale/network/data/R&D advantages, and whether the moat is widening or narrowing.
 
-**5. Read financial statements like a buy-side analyst.** Revenue mix, segment profitability, gross/operating margin, R&D, SG&A, operating and free cash flow, capex, inventory, receivables, deferred revenue, debt, cash, SBC, buybacks, dilution, guidance. Focus on what changes the thesis: acceleration/deceleration, margin quality, working-capital stress, capital intensity, accounting quality, and whether guidance confirms or contradicts the story.
+**5. Read financial statements and rebuild the economic model.** Revenue mix, segment profitability, gross/operating margin, R&D, SG&A, operating and free cash flow, capex, inventory, receivables, deferred revenue, debt, cash, SBC, buybacks, dilution, guidance. When history is comparable and available, use a decision-relevant 5-10 year / 12-20 quarter spine, normalize reporting changes, and link operating drivers through revenue, margin, reinvestment, free cash flow, and per-share value. Keep reported history, management guidance, consensus, and analyst assumptions distinct. Focus on what changes the thesis: acceleration/deceleration, margin quality, working-capital stress, capital intensity, accounting quality, and whether guidance confirms or contradicts the story.
 
 **6. Identify 3-7 key value drivers.** Pick the variables that truly drive valuation (units, ASP, ARPU, NRR, users, backlog, book-to-bill, utilization, gross margin, take rate, inventory cycle, customer concentration, capex intensity, credit quality, regulatory cost). For each: why it matters, past trend, market expectation, management guidance, valuation sensitivity, and the metric that would confirm or falsify the thesis.
 
-**7. Build valuation and scenarios.** Use SOTP when segments deserve different multiples/growth (per segment: revenue, growth, margin, comparables, multiple, value range, premium/discount rationale). Otherwise use the method that fits the business model: EV/Revenue, EV/EBITDA, P/E, P/FCF, DCF, NAV, normalized earnings, or milestone/option-style valuation. Always include Bull/Base/Bear scenarios with assumptions, probability, revenue growth, margin, multiple, target price, implied return, and trigger conditions; report probability-weighted target value and risk/reward when data allows.
+**7. Build valuation, reconcile forecasts, and run scenarios.** Use SOTP when segments deserve different multiples/growth (per segment: revenue, growth, margin, comparables, multiple, value range, premium/discount rationale). Otherwise use the method that fits the business model: EV/Revenue, EV/EBITDA, P/E, P/FCF, DCF, NAV, normalized earnings, or milestone/option-style valuation. For a full underwriting when data supports it, triangulate DCF, normalized EPS, and reverse DCF; explain divergent assumptions rather than averaging methods mechanically. Audit whether demand, capacity, revenue, margins, opex, capex, working capital, share count, FCF, and terminal value can all be true at once. Always include Bull/Base/Bear scenarios with assumptions, probability, revenue growth, margin, multiple, target price, implied return, and trigger conditions; report probability-weighted target value and risk/reward when data allows.
 
-**8. Challenge the thesis.** Actively argue against the conclusion: where the thesis can be wrong, what consensus may be too optimistic about, what risks are unpriced, which metrics would break the thesis, and what would force a downgrade or removal from the watchlist.
+**8. Challenge the thesis and identify the dominant thesis-killer.** Actively argue against the conclusion: where the thesis can be wrong, what consensus may be too optimistic about, what risks are unpriced, which metrics would break the thesis, and what would force a downgrade or removal from the watchlist. Name the single variable that can invalidate the causal chain, with an observable threshold and deadline; if no honest single variable exists, name the smallest weakest-link set instead of inventing one.
 
 Apply this investment-adapter check directly: classify the asset as *mean-reverting* (price oscillates around a fundamental anchor — fade extremes), *paradigm-shifting* (the anchor itself is moving — extrapolation can still be too conservative), or *mixed*. State what consensus believes and what the current price already embeds. Then require a divergent view that is (a) more accurate than consensus on a checkable dimension, (b) not already priced in, (c) executable given available instruments and liquidity, and (d) bounded by an explicit **edge half-life** (how long the mispricing plausibly persists before it closes or the informational edge decays) and an explicit **falsifier** (the observation that proves the divergent view wrong). Cover fundamental, valuation, competition, cycle, regulation, technology-substitution, management-execution, accounting-quality, liquidity, FX, and macro risk where relevant.
 
-**9. Track catalysts and build the monitoring dashboard.** List next 3-6 month catalysts (earnings dates, investor days, product launches, regulatory nodes, industry conferences, major contracts, M&A progress, capacity ramps, price changes, guidance updates, index changes, capital-return policy changes) with time window, event, market expectation, likely impact direction, and tracking metrics. End with a dashboard of the most important filings, operating metrics, management comments, and falsification points.
+**9. Track catalysts and monitor by thesis change.** List next 3-6 month catalysts (earnings dates, investor days, product launches, regulatory nodes, industry conferences, major contracts, M&A progress, capacity ramps, price changes, guidance updates, index changes, capital-return policy changes) with time window, event, market expectation, likely impact direction, and tracking metrics. Version the core assumptions, expected ranges, market-implied hurdle, dominant falsifier, decision state, and next review date. Separate `no thesis change`, confidence updates, valuation-only changes, core-assumption breaches, and regime changes; default to no alert for immaterial or overlapping news. Do not claim continuous monitoring or create external alerts without user authorization and persistent tooling.
 
 ### Cross-Mode Use
 
@@ -84,6 +87,8 @@ Pull in another mode as a sub-section only when it sharpens the decision — do 
 - **Mode C (GF-DMA Health Index)** when the user asks whether the current trend or entry point is healthy, or when price/DMA/ATR and estimate-revision data are available.
 
 ### Output Template
+
+Use the full template for an initial memo or full re-underwriting. For a subsequent monitoring run, preserve the prior baseline and use the delta-report format in [references/underwriting-loop.md](references/underwriting-loop.md); do not regenerate unchanged background. If an interactive user explicitly asks for a check and nothing material changed, return a concise `no thesis change` result with the evidence window checked. In a persistent monitoring workflow, log that result without sending an alert.
 
 ```markdown
 # [Company / Ticker] Buy-Side Equity Research Memo
@@ -126,6 +131,7 @@ Pull in another mode as a sub-section only when it sharpens the decision — do 
 - Cash Flow, Capex, And Working Capital
 - Balance Sheet, Debt, Cash, Dilution, SBC
 - Guidance And Management Commentary
+- Historical / Guidance / Consensus / Analyst Model Reconciliation
 
 ## 5. Key Value Drivers
 - Driver 1
@@ -133,8 +139,10 @@ Pull in another mode as a sub-section only when it sharpens the decision — do 
 - Driver 3
 - Valuation Sensitivity
 
-## 6. SOTP / Valuation
+## 6. SOTP / Valuation Triangulation
 - Segment Or Business-Line Valuation
+- DCF / Normalized EPS / Reverse DCF When Applicable
+- Cross-Forecast Consistency Audit
 - Comparable Companies And Multiple Assumptions
 - Net Cash / Debt And Dilution Adjustment
 - Implied Equity Value And Target Price
@@ -150,6 +158,7 @@ Pull in another mode as a sub-section only when it sharpens the decision — do 
 - Where Consensus May Be Wrong
 - What Is Underappreciated
 - What Would Break The Thesis
+- Dominant Thesis-Killer, Threshold, And Deadline
 - Edge Half-Life And Falsifier
 
 ## 9. Catalysts: Next 3-6 Months
@@ -165,10 +174,13 @@ Pull in another mode as a sub-section only when it sharpens the decision — do 
 - Regulatory Risks
 - Thesis Breakpoints
 
-## 11. Monitoring Dashboard
+## 11. Monitoring Dashboard And Alert Policy
 - Metrics To Track
 - Filing Items To Review
 - Management Commentary To Watch
+- Versioned Core Assumptions And Expected Ranges
+- No-Change / Confidence / Valuation / Breach / Re-underwrite Classification
+- Prior Forecast Versus Actual Calibration
 
 ## 12. Source List
 - SEC / Exchange Filings
@@ -179,7 +191,7 @@ Pull in another mode as a sub-section only when it sharpens the decision — do 
 
 ### Quality Bar
 
-Lead with the investment conclusion. Support each core judgment with data, source documents, or explicit reasoning. Do not replace analysis with news summaries. Do not extrapolate historical growth mechanically. Show valuation assumptions, not only a target price. Include Bull/Base/Bear scenarios and reverse thesis testing. Keep thesis confidence, valuation attractiveness, and exposure posture distinct. Make all unverifiable data and missing inputs explicit. Keep the memo decision-useful, professional, and concise enough for buy-side discussion.
+Lead with the investment conclusion. Support each core judgment with data, source documents, or explicit reasoning. Do not replace analysis with news summaries or an indiscriminate context dump. Do not extrapolate historical growth mechanically. Show valuation assumptions, not only a target price; reconcile material contradictions across operating forecasts, earnings, cash flow, and valuation. Include Bull/Base/Bear scenarios, a dominant thesis-killer, and reverse thesis testing. Keep thesis confidence, valuation attractiveness, and exposure posture distinct. Preserve prior forecasts for calibration instead of rewriting them with hindsight. Make all unverifiable data and missing inputs explicit. Keep the memo decision-useful, professional, and concise enough for buy-side discussion.
 
 ## Mode B — Bayesian Intrinsic Growth Valuation
 
@@ -729,6 +741,8 @@ TAM-Adj-PEG = Forward PE / (EPS CAGR x TAM Runway Factor x Quality Factor)
 ## Notion Delivery
 
 **Mode A (full memo):** archive to the Notion page or database named `Invest` unless the user names another destination or explicitly opts out. Title it `[YYYY-MM-DD] [TICKER] — Buy-Side Memo`; preserve the as-of date, decision, crux, scenarios, citations, and falsifiers.
+
+**Mode A (monitoring update):** do not create a new Notion page for `no thesis change`. When exactly one prior thesis page is resolved, preserve its existing baseline and append a dated decision-journal entry only when the user requested logging or a material change occurred; otherwise return the delta report without guessing a target.
 
 **Modes B, C, D, E:** archive only when the user explicitly asks. Resolve the exact Notion page or database the user names — do not assume `Invest`. Title as `[YYYY-MM-DD] [TICKER] — Bayesian Growth Valuation`, `— GF-DMA Health`, `— Alpha Note`, or `— TAM-Adj-PEG` respectively; preserve the as-of date, key tables/decision, citations, and falsifiers.
 
