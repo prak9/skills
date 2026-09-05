@@ -18,6 +18,7 @@ Design:
 """
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import platform
@@ -351,12 +352,15 @@ def cmd_install() -> int:
 
 
 def main() -> int:
-    if len(sys.argv) > 1:
-        arg = sys.argv[1]
-        if arg == "--check":
-            return cmd_check()
-        if arg == "--json":
-            return cmd_json()
+    parser = argparse.ArgumentParser(description="Check watch prerequisites or install/scaffold setup (default).")
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument("--check", action="store_true", help="Silent preflight; never install")
+    modes.add_argument("--json", action="store_true", help="Print structured preflight; never install")
+    args = parser.parse_args()
+    if args.check:
+        return cmd_check()
+    if args.json:
+        return cmd_json()
     return cmd_install()
 
 

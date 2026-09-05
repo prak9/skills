@@ -371,6 +371,9 @@ def _segments_from_response(data: dict) -> list[dict]:
 def transcribe_chunks(
     chunks: list[tuple[Path, float]],
     transcribe_one,
+    *,
+    completeness: dict | None = None,
+    total_seconds: float | None = None,
 ) -> list[dict]:
     """Transcribe each chunk, shift its segments by the chunk offset, concatenate.
 
@@ -379,11 +382,14 @@ def transcribe_chunks(
     """
     segments: list[dict] = []
     failures = 0
+    missing = []
     for index, (path, offset) in enumerate(chunks):
         try:
             chunk_segments = transcribe_one(path)
         except SystemExit as exc:
             failures += 1
+            end = chunks[index + 1][1] if index + 1 < len(chunks) else total_seconds
+            missing.append({"start": offset, "end": end})
             print(
                 f"[watch] chunk {index + 1}/{len(chunks)} failed — skipping ({exc})",
                 file=sys.stderr,
@@ -395,6 +401,11 @@ def transcribe_chunks(
             file=sys.stderr,
         )
 
+    if completeness is not None:
+        completeness.update({
+            "status": "none" if failures == len(chunks) else "partial" if failures else "complete",
+            "missing_intervals": missing,
+        })
     if failures == len(chunks):
         raise SystemExit("Whisper failed on every audio chunk")
     return segments
@@ -416,11 +427,16 @@ def transcribe_video(
     audio_out: Path,
     backend: str | None = None,
     api_key: str | None = None,
+    *,
+    completeness: dict | None = None,
 ) -> tuple[list[dict], str]:
     """Run the full flow: extract audio → upload → parse segments.
 
-    Returns (segments, backend_used). Raises SystemExit on any failure.
+    Returns (segments, backend_used). Optional completeness records failed spans.
+    Raises SystemExit if no transcript can be produced.
     """
+    if completeness is not None:
+        completeness.update({"status": "none", "missing_intervals": []})
     if backend is None or api_key is None:
         detected_backend, detected_key = load_api_key()
         backend = backend or detected_backend
@@ -437,6 +453,7 @@ def transcribe_video(
     print(f"[watch] extracting audio for Whisper ({backend})…", file=sys.stderr)
     audio_path = extract_audio(video_path, audio_out)
     audio_bytes = audio_path.stat().st_size
+    duration = audio_duration(audio_path)
 
     def transcribe_one(path: Path) -> list[dict]:
         return _transcribe_file(backend, api_key, path)
@@ -446,9 +463,11 @@ def transcribe_video(
             f"[watch] audio: {audio_bytes / 1024:.0f} kB — uploading to {backend} Whisper…",
             file=sys.stderr,
         )
-        segments = transcribe_one(audio_path)
+        segments = transcribe_chunks(
+            [(audio_path, 0.0)], transcribe_one,
+            completeness=completeness, total_seconds=duration,
+        )
     else:
-        duration = audio_duration(audio_path)
         plan = plan_chunks(duration, audio_bytes, MAX_UPLOAD_BYTES)
         print(
             f"[watch] audio: {audio_bytes / (1024 * 1024):.0f} MB exceeds "
@@ -456,9 +475,12 @@ def transcribe_video(
             file=sys.stderr,
         )
         chunks = split_audio(audio_path, audio_out.parent / "chunks", plan)
-        segments = transcribe_chunks(chunks, transcribe_one)
+        segments = transcribe_chunks(chunks, transcribe_one,
+                                     completeness=completeness, total_seconds=duration)
 
     if not segments:
+        if completeness is not None:
+            completeness["status"] = "none"
         raise SystemExit("Whisper returned no transcript segments")
 
     print(f"[watch] transcribed {len(segments)} segments via {backend}", file=sys.stderr)
@@ -476,5 +498,7 @@ if __name__ == "__main__":
     if "--backend" in sys.argv:
         backend_override = sys.argv[sys.argv.index("--backend") + 1]
 
-    segments, backend = transcribe_video(video, audio_out, backend=backend_override)
-    print(json.dumps({"backend": backend, "segments": segments}, indent=2))
+    completeness = {}
+    segments, backend = transcribe_video(video, audio_out, backend=backend_override,
+                                        completeness=completeness)
+    print(json.dumps({"backend": backend, "segments": segments, "completeness": completeness}, indent=2))

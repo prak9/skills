@@ -7,6 +7,7 @@ then inspects each frame path to see the video.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import tempfile
 from pathlib import Path
@@ -49,6 +50,8 @@ def main() -> int:
     ap.add_argument("--start", type=str, default=None, help="Range start (SS, MM:SS, or HH:MM:SS)")
     ap.add_argument("--end", type=str, default=None, help="Range end (SS, MM:SS, or HH:MM:SS)")
     ap.add_argument("--out-dir", type=str, default=None, help="Working directory (default: tmp)")
+    ap.add_argument("--subtitle-lang", default=None,
+                    help="Preferred subtitle language code (default: manual/source language)")
     ap.add_argument(
         "--no-whisper",
         action="store_true",
@@ -92,16 +95,23 @@ def main() -> int:
     transcript_segments: list[dict] = []
     transcript_text: str | None = None
     transcript_source: str | None = None
+    transcript_completeness = {"status": "none", "missing_intervals": []}
+    completeness_scope = "unavailable"
+    subtitle_info: dict | None = None
     video_path: str | None = None
 
     if url_source:
         print("[watch] checking metadata/captions via yt-dlp…", file=sys.stderr)
-        dl = fetch_captions(args.source, work / "download")
+        dl = fetch_captions(args.source, work / "download", subtitle_lang=args.subtitle_lang)
         if dl.get("subtitle_path"):
             try:
                 transcript_segments = parse_vtt(dl["subtitle_path"])
                 transcript_text = format_transcript(transcript_segments)
                 transcript_source = "captions"
+                if transcript_segments:
+                    transcript_completeness["status"] = "complete"
+                    completeness_scope = "acquired caption file"
+                    subtitle_info = dl.get("subtitle_info")
             except Exception as exc:
                 print(f"[watch] subtitle parse failed: {exc}", file=sys.stderr)
                 transcript_segments = []
@@ -122,6 +132,7 @@ def main() -> int:
                 args.source,
                 work / "download",
                 audio_only=audio_only,
+                subtitle_lang=args.subtitle_lang,
             )
         else:
             print("[watch] using local file…", file=sys.stderr)
@@ -233,18 +244,24 @@ def main() -> int:
             transcript_segments = filter_range(all_segments, start_sec, end_sec) if focused else all_segments
             transcript_text = format_transcript(transcript_segments)
             transcript_source = "captions"
+            if all_segments:
+                transcript_completeness["status"] = "complete"
+                completeness_scope = "acquired caption file"
+                subtitle_info = dl.get("subtitle_info")
         except Exception as exc:
             print(f"[watch] subtitle parse failed: {exc}", file=sys.stderr)
 
     if not transcript_segments and not args.no_whisper and video_path and meta.get("has_audio"):
         backend, api_key = load_api_key(args.whisper)
         if backend and api_key:
+            completeness_scope = "full source audio"
             try:
                 all_segments, used_backend = transcribe_video(
                     video_path,
                     work / "audio.mp3",
                     backend=backend,
                     api_key=api_key,
+                    completeness=transcript_completeness,
                 )
                 transcript_segments = filter_range(all_segments, start_sec, end_sec) if focused else all_segments
                 transcript_text = format_transcript(transcript_segments)
@@ -266,6 +283,16 @@ def main() -> int:
         print("[watch] no audio stream found — proceeding without transcription", file=sys.stderr)
 
     info = dl.get("info") or {}
+    transcript_path = work / "transcript.json"
+    transcript_path.write_text(json.dumps({
+        "source": args.source,
+        "transcript_source": transcript_source,
+        "subtitle_info": subtitle_info,
+        "completeness": transcript_completeness,
+        "completeness_scope": completeness_scope,
+        "segment_range": {"start": start_sec, "end": end_sec},
+        "segments": transcript_segments,
+    }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     print()
     print("# watch: video report")
@@ -315,6 +342,15 @@ def main() -> int:
         )
     else:
         print("- **Transcript:** none available")
+    print(f"- **Transcript completeness:** {transcript_completeness['status']} ({completeness_scope} processing)")
+    if focused and transcript_completeness["missing_intervals"]:
+        print("- **Coverage scope:** missing intervals cover the full source; displayed segments are filtered to the focus range")
+    if subtitle_info:
+        print(f"- **Captions:** {subtitle_info['kind']} ({subtitle_info['language']})")
+    for interval in transcript_completeness["missing_intervals"]:
+        end = format_time(interval["end"]) if interval["end"] is not None else "end unknown"
+        print(f"- **Missing transcript interval:** {format_time(interval['start'])} → {end}")
+    print(f"- **Transcript artifact:** `{transcript_path}`")
 
     if detail == "token-burner" and len(frames) > 250:
         print()

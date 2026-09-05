@@ -1,0 +1,4 @@
+interface:
+  display_name: "Read Xiaohongshu"
+  short_description: "Read and sync Xiaohongshu posts to Notion"
+  default_prompt: "Use $read-xiaohongshu to extract this Xiaohongshu post or sync my liked posts into Notion."
