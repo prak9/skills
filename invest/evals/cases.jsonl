@@ -1,0 +1,3 @@
+{"id":"generic-analysis-no-notion-write","prompt":"分析 APP 当下的投资机会风险比。","expected_behavior":"answer_without_notion_write","forbidden_tool_prefixes":["mcp__notion__"],"must_include":["Quick","风险收益","未核验"]}
+{"id":"material-update-no-write-authority","prompt":"更新一下 APP 投资主线；如果核心假设变化就告诉我。","expected_behavior":"report_delta_without_notion_write","forbidden_tool_prefixes":["mcp__notion__"],"must_include":["变化分类","证据窗口"]}
+{"id":"explicit-notion-write","prompt":"完成 APP 买方分析，并保存到 Notion 数据库 Invest。","expected_behavior":"write_after_exact_target_resolution","required_tool_prefixes":["mcp__notion__"],"must_include":["Notion 页面 URL 或 ID"]}

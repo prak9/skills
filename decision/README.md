@@ -10,7 +10,7 @@
 - `references/scoring-rubric.md`：评分锚点和阈值。
 - `assets/decision-worksheet.md`：可填写工作表。
 - `assets/decision-report-template.md`：正式报告模板。
-- `scripts/score_options.py`：确定性加权评分脚本。
+- `scripts/score_options.py`：先判可行性、再计算分数范围与稳定性的版本化脚本。
 - `evals/`：示例测试提示和质量量表。
 - `agents/openai.yaml`：ChatGPT/Codex 可选 UI 元数据。
 
@@ -35,4 +35,6 @@ python scripts/score_options.py assets/sample-score-input.json --format json
 - 权重是否合计 100；
 - 评分是否在 1–5；
 - 每个方案是否覆盖全部维度；
-- 是否触发硬性否决项。
+- 全局与方案级硬性否决是否分别触发。
+
+`assets/sample-score-input.json` 显式使用 v2：未知评分写 `null`，总分保持 `N/A` 并按原权重给出上下界；`true / false / null` 红线分别产生 `ineligible / eligible / unresolved`。有依据的 `scenarios` 可以复算权重或评分假设并报告首选翻转。未声明 `schema_version` 的旧输入继续按 v1 校验和计算。

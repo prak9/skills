@@ -1540,7 +1540,7 @@ def main() -> int:
     )
     if lean_lite and not lite_reflection_ledger:
         warnings.append(
-            "program.md has no Reflection Log; add one `R-*` entry per completed node"
+            "program.md has no Reflection Log; keep one available for triggered learning"
         )
     if lean_full and memory_text and not memory_reflection_ledger:
         warnings.append(
@@ -1623,6 +1623,7 @@ def main() -> int:
                 r"NODE-\d{3}",
                 lite_reflections,
                 errors,
+                require_reflection=False,
             )
         task_node_mapping: dict[str, str] = {}
     else:

@@ -1,4 +1,5 @@
 {
+  "schema_version": 2,
   "criteria": [
     {"name": "目标一致性", "weight": 15},
     {"name": "问题真实性与价值", "weight": 10},
@@ -25,7 +26,10 @@
         "机会成本优势": 3,
         "下行风险可控性": 3,
         "激励一致性": 4
-      }
+      },
+      "vetoes": [
+        {"name": "超过方案工期上限", "triggered": false, "detail": ""}
+      ]
     },
     {
       "name": "方案B",
@@ -38,9 +42,21 @@
         "二阶结果": 3,
         "选择权与可逆性": 4,
         "机会成本优势": 4,
-        "下行风险可控性": 2,
+        "下行风险可控性": null,
         "激励一致性": 3
-      }
+      },
+      "vetoes": [
+        {"name": "超过方案工期上限", "triggered": false, "detail": ""}
+      ],
+      "validation_actions": [
+        {
+          "criterion": "下行风险可控性",
+          "action": "用一个受限试点测量最大损失与退出成本",
+          "cost": 1,
+          "cost_unit": "个试点",
+          "could_change_decision": true
+        }
+      ]
     }
   ],
   "vetoes": [

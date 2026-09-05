@@ -1,4 +1,4 @@
 interface:
   display_name: "Invest"
-  short_description: "Buy-side stock memos and specialist valuation lenses"
-  default_prompt: "Use $invest to analyze this ticker or news item — buy-side memo with investment view, SEC-backed financials, valuation scenarios, catalysts and risks, plus Bayesian growth, GF-DMA, alpha-translation, or TAM-Adj-PEG lenses when they fit."
+  short_description: "Quick or full buy-side research with testable specialist lenses"
+  default_prompt: "Use $invest for a decision-led Quick stock view by default; load full underwriting or a specialist valuation, trend, or news-to-alpha mode only when the request requires it."

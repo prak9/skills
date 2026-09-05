@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import re
 import unittest
 from pathlib import Path
@@ -40,6 +41,10 @@ def skill_text(name: str) -> str:
     return (ROOT / name / "SKILL.md").read_text(encoding="utf-8")
 
 
+def reference_text(name: str, filename: str) -> str:
+    return (ROOT / name / "references" / filename).read_text(encoding="utf-8")
+
+
 def description(name: str) -> str:
     match = re.search(r"^description:\s*(.+)$", skill_text(name), flags=re.MULTILINE)
     if match is None:
@@ -50,34 +55,155 @@ def description(name: str) -> str:
 class SkillContractTests(unittest.TestCase):
     def test_specialized_equity_modes_do_not_claim_bare_tickers(self) -> None:
         text = skill_text(INVESTMENT_SKILL)
+        gf_dma = reference_text(INVESTMENT_SKILL, "mode-c-gf-dma.md")
         self.assertIn("Do not trigger Modes B, C, or E from a bare ticker", text)
         self.assertIn(
             "Do not trigger from a bare ticker or generic stock-analysis request",
-            text,
+            gf_dma,
         )
 
     def test_investment_skill_requires_explicit_external_mutation(self) -> None:
         text = skill_text(INVESTMENT_SKILL)
         self.assertNotIn("install with `pip install edgartools`", text)
         self.assertNotIn('set_identity("name@example.com")', text)
-        self.assertIn("archive only when the user explicitly asks", text)
+        self.assertIn("does not authorize a Notion write", text)
+        self.assertIn("explicitly requests it in the current turn", text)
 
-    def test_buy_side_memos_default_to_the_invest_notion_target(self) -> None:
+    def test_buy_side_memos_do_not_default_to_notion_writes(self) -> None:
         text = skill_text(INVESTMENT_SKILL)
         self.assertIn("## Notion Delivery", text)
-        self.assertIn("named `Invest`", text)
+        self.assertNotIn("archive to the Notion page or database named `Invest`", text)
         self.assertIn("Notion archive pending", text)
 
-    def test_gf_dma_uses_percentage_weights_and_available_fallbacks(self) -> None:
-        text = skill_text(INVESTMENT_SKILL)
+    def test_gf_dma_keeps_modules_but_disables_uncalibrated_aggregate(self) -> None:
+        text = reference_text(INVESTMENT_SKILL, "mode-c-gf-dma.md")
 
-        self.assertIn(
-            "HealthScore = 0.40*S_GrowthMatch + 0.25*S_Divergence "
-            "+ 0.20*S_Parallel + 0.15*S_Revision",
-            text,
-        )
+        self.assertIn("currently always `N/A`", text)
+        self.assertNotIn("HealthScore = 0.40*S_GrowthMatch", text)
         self.assertNotIn("If gross profit or EPS is missing", text)
         self.assertIn("EPS missing", text)
+        self.assertIn("scripts/calculate_gf_dma.py", text)
+        self.assertIn("uncalibrated heuristic", text)
+
+    def test_invest_links_a_point_in_time_numeric_data_contract(self) -> None:
+        text = skill_text(INVESTMENT_SKILL)
+        contract = reference_text(INVESTMENT_SKILL, "data-contract.md")
+        self.assertIn("references/data-contract.md", text)
+        self.assertIn("scripts/validate_invest_data.py", text)
+        self.assertIn("available_at", contract)
+        self.assertIn("missing_reason", contract)
+        self.assertIn("point-in-time validation", contract)
+
+    def test_invest_is_a_compact_router_with_on_demand_modes(self) -> None:
+        text = skill_text(INVESTMENT_SKILL)
+        self.assertLessEqual(len(text.splitlines()), 190)
+        for filename in (
+            "mode-a-buy-side.md",
+            "mode-b-bayesian-growth.md",
+            "mode-c-gf-dma.md",
+            "mode-d-serenity-alpha.md",
+            "mode-e-tam-adj-peg.md",
+        ):
+            self.assertIn(f"references/{filename}", text)
+            self.assertTrue((ROOT / INVESTMENT_SKILL / "references" / filename).is_file())
+
+    def test_cross_skill_handoff_preserves_upstream_decisions(self) -> None:
+        for name in ("decision", "invest", "plan-skill", "writing"):
+            text = skill_text(name)
+            with self.subTest(skill=name):
+                self.assertIn("do not rerun upstream work", text.lower())
+                self.assertIn("do not invoke all four", text.lower())
+
+    def test_writing_translation_modes_allow_natural_reparagraphing(self) -> None:
+        translation = reference_text("writing", "translation-guardrails.md")
+        self.assertIn("Structure-aligned", translation)
+        self.assertIn("Natural translation", translation)
+        self.assertIn("Localization", translation)
+        self.assertNotIn("不合并或拆分段落、列表项和表格单元", translation)
+
+    def test_writing_declares_edit_levels_and_semantic_fidelity_checks(self) -> None:
+        text = skill_text("writing")
+        levels = reference_text("writing", "editing-levels.md")
+        self.assertIn("references/editing-levels.md", text)
+        for level in ("Proofread", "Polish", "Restructure", "Rewrite"):
+            self.assertIn(level, levels)
+        for protected in ("主体", "数字", "否定", "条件", "因果强度", "可能性", "来源归属"):
+            self.assertIn(protected, levels)
+        self.assertIn("scripts/check_semantic_fidelity.py", text)
+
+    def test_decision_v2_contract_preserves_unknowns_and_tests_stability(self) -> None:
+        text = skill_text("decision")
+        rubric = reference_text("decision", "scoring-rubric.md")
+        self.assertIn("eligible / ineligible / unresolved", text)
+        self.assertIn('"schema_version": 2', rubric)
+        self.assertIn("`null`", rubric)
+        self.assertIn("不重新归一化", rubric)
+        self.assertIn("首选是否翻转", rubric)
+
+    def test_plan_optional_evidence_snapshot_keeps_legacy_plans_compatible(self) -> None:
+        text = skill_text("plan-skill")
+        reference = reference_text("plan-skill", "evidence-validity.md")
+        self.assertIn("references/evidence-validity.md", text)
+        self.assertIn("never created by default", text)
+        self.assertIn("skip `init_plan.py`", text)
+        self.assertIn("Old plans keep", reference)
+        for status in ("valid_in_recorded_scope", "stale", "evidence_missing", "uncheckable"):
+            self.assertIn(status, reference)
+
+    def test_core_skill_behavior_suite_has_24_cases_and_holdouts(self) -> None:
+        all_cases = []
+        for skill in ("decision", "writing", "invest", "plan-skill"):
+            path = ROOT / skill / "evals" / "behavior-cases.jsonl"
+            cases = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+            with self.subTest(skill=skill):
+                self.assertEqual(6, len(cases))
+                self.assertEqual(2, sum(case["split"] == "acceptance" for case in cases))
+                self.assertTrue(all(case["skill"] == skill for case in cases))
+                self.assertTrue(all("expected_behavior" in case for case in cases))
+                self.assertTrue(all("cost_limits" in case for case in cases))
+                self.assertTrue(
+                    all(
+                        {
+                            "max_reference_reads",
+                            "max_followup_questions",
+                            "max_external_mutations",
+                            "max_operations",
+                        }
+                        <= set(case["cost_limits"])
+                        for case in cases
+                    )
+                )
+            all_cases.extend(cases)
+        self.assertEqual(24, len(all_cases))
+        self.assertEqual(24, len({case["id"] for case in all_cases}))
+
+    def test_decision_eval_cases_cover_observable_multi_turn_paths(self) -> None:
+        path = ROOT / "decision" / "evals" / "cases.jsonl"
+        cases = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+        behaviors = {case.get("expected_behavior") for case in cases}
+        self.assertTrue(
+            {"ask_then_stop", "decide_after_answer", "decide_without_question"}
+            <= behaviors
+        )
+        ask_case = next(case for case in cases if case.get("expected_behavior") == "ask_then_stop")
+        self.assertIn("最终决定", ask_case["must_not_include"])
+
+    def test_invest_behavior_cases_gate_notion_tool_calls(self) -> None:
+        path = ROOT / INVESTMENT_SKILL / "evals" / "cases.jsonl"
+        cases = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+        by_behavior = {case["expected_behavior"]: case for case in cases}
+        self.assertIn(
+            "mcp__notion__",
+            by_behavior["answer_without_notion_write"]["forbidden_tool_prefixes"],
+        )
+        self.assertIn(
+            "mcp__notion__",
+            by_behavior["report_delta_without_notion_write"]["forbidden_tool_prefixes"],
+        )
+        self.assertIn(
+            "mcp__notion__",
+            by_behavior["write_after_exact_target_resolution"]["required_tool_prefixes"],
+        )
 
     def test_every_skill_has_openai_interface_metadata(self) -> None:
         for skill_dir in sorted(ROOT.iterdir()):
@@ -157,11 +283,19 @@ class SkillContractTests(unittest.TestCase):
     def test_model_boundary_audit_has_domain_guardrails(self) -> None:
         self.assertIn("latent construct / model boundary", skill_text("research-craft"))
 
-        invest = skill_text(INVESTMENT_SKILL)
+        invest = "\n".join(
+            [
+                skill_text(INVESTMENT_SKILL),
+                reference_text(INVESTMENT_SKILL, "mode-b-bayesian-growth.md"),
+                reference_text(INVESTMENT_SKILL, "mode-c-gf-dma.md"),
+                reference_text(INVESTMENT_SKILL, "mode-d-serenity-alpha.md"),
+                reference_text(INVESTMENT_SKILL, "mode-e-tam-adj-peg.md"),
+            ]
+        )
         self.assertIn("not independent confirmations", invest)
         self.assertIn("inverse problem, not a unique observable", invest)
-        self.assertIn("mark GrowthMatch `N/A`", invest)
-        self.assertIn("状态：Unscorable", invest)
+        self.assertIn("GrowthMatch gate", invest)
+        self.assertIn("aggregate score is disabled", invest.lower())
         self.assertIn("latent demand hypothesis", invest)
         self.assertIn("label the conclusion `model-sensitive`", invest)
 

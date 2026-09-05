@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: 兼容项。工作闭环与复盘节奏已并入 `decision`；本技能保留用于复杂工程/协作场景中需要独立计划文件的项目。
+description: 为复杂工程、跨会话协作或高风险执行建立可恢复的持久计划状态，维护目标、约束、节点、证据、阻塞与有限复盘；不用于只需做选择的决策分析，也不为单次简单任务强制创建计划文件。
 ---
 
 # Plan Skill
@@ -33,6 +33,7 @@ Never create a second hand-maintained view of state that can be derived from an 
 1. Read the request, relevant repository instructions, specs, entry points, tests, configuration, and recent changes.
 2. Frame the plan as an objective plus bounds: state the observable outcome, inherited strategic defaults, tactical objective, imperative bounds, negotiable space, material assumptions, acceptance evidence, and next useful action.
 3. Choose Inline, Lite, Full, or Loop.
+   - If Inline, keep state in the conversation/tool plan and skip `init_plan.py`, plan files, memory files, and evidence snapshots. Continue at execution; the remaining reference reads apply only if their condition is independently triggered.
 4. For a raw idea with several plausible directions, read `references/concept-refinement.md`.
 5. Read `references/unknowns-contract.md` when the territory is unfamiliar, important preferences are tacit, or implementation is likely to reveal constraints the prompt cannot contain.
 6. Read `references/preference-contract.md` when valid solutions differ materially, a preference must be inferred, or a requested method may conflict with its objective.
@@ -49,6 +50,8 @@ Never create a second hand-maintained view of state that can be derived from an 
 
 12. Replace placeholders and run `scripts/validate_plan.py --strict <project-root>` before execution or handoff.
 
+For a durable task where old evidence validity must survive interruption or handoff, explicitly opt in to `references/evidence-validity.md` after choosing Lite/Full/Loop. This adds a separate evidence snapshot checked by `scripts/check_evidence_snapshot.py`; it is never created by default and does not change legacy plan validation.
+
 For a Lite plan that grows into Full:
 
 ```bash
@@ -60,7 +63,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 
 - Resume by reading `program.md`, then the active task package and only the memory/evidence it references.
 - If the territory reveals a material unknown or deviation, read `references/unknowns-contract.md`, resolve discoverable facts from evidence, and update or stop the plan before crossing a bound.
-- Execute the smallest useful node and run its verifier. In Full Linear mode, read `references/reflection-contract.md` and write `R-*` only when its trigger fires; otherwise mark the node `None: <no trigger reason>`. Loop keeps one evidence-linked `R-*` per verified attempt.
+- Execute the smallest useful node and run its verifier. In Lite and Full Linear modes, read `references/reflection-contract.md` and write `R-*` only when its trigger fires; otherwise mark the node `None: <no trigger reason>`. Loop keeps one evidence-linked `R-*` per verified attempt.
 - Create later task packages just in time, after their dependencies and acceptance conditions are known.
 - A failed verifier changes the plan, retires an assumption, or triggers escalation; repeating output without new information is not progress.
 - If a checker passes but reality fails, treat it as a foundation defect: reopen acceptance, identify the escaped failure class, and add the cheapest decisive sensor.
@@ -72,18 +75,20 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 ## Invariants
 
 - Planning is read-only unless the user also authorizes execution.
-- Every completed node has evidence. Full Linear records reflection only for material learning; Loop records one evidence-linked reflection per verified attempt. Record decision summaries, not hidden chain-of-thought.
+- Every completed node has evidence. Lite and Full Linear record reflection only for material learning; Loop records one evidence-linked reflection per verified attempt. Record decision summaries, not hidden chain-of-thought.
 - Do not silently invent a material preference. Research discoverable facts, state consequential assumptions, and ask only when human judgment can change the plan.
 - Treat unknowns as continuously discoverable: use the four classes as search lenses, then route each discovered unknown into existing plan state instead of maintaining a parallel unknowns diary.
 - Prefer declarative objectives with explicit bounds; reserve imperative constraints for fragile, high-stakes, or deliberately standardized paths and surface a materially better option without overriding the lock.
 - For behavior-preserving work, treat reference code, translated tests, and differential evidence as specification sources; document intentional differences instead of hiding them behind a broad "equivalent" claim.
 - `完成` and `待验收` require acceptance evidence; written code is not completion.
+- When evidence-validity checking is explicitly enabled, a recorded source, test, config, data, or acceptance change makes only the affected evidence stale. Unrelated unrecorded files do not force a full rerun. Fingerprints cannot substitute for coverage or behavioral verification.
 - The executor's self-report is never terminal evidence. Verification must be finer than the change slice and expose a path from acceptance condition to raw evidence.
 - A blocked item names the missing input, owner or external condition, and unblock action.
 - Loop mode has a finite budget, bounded execution scope, independent checker, sensor stack, granularity alignment, calibration rule, reflect trigger, and stop/escalation condition.
 - Preserve user constraints and existing project conventions; escalate before changing scope or acceptance criteria.
 - Store historical facts only when they will change future execution; do not duplicate ordinary progress or Git history.
 - Clean may compress Markdown state but must preserve stable IDs, evidence links, and raw facts.
+- Boundary and handoff: `decision` owns the choice; `plan-skill` owns durable execution state; `invest` supplies investment research; `writing` shapes expression. Preserve confirmed goals, constraints, and conclusions; do not rerun upstream work unless they are missing or contradictory, and do not invoke all four by default.
 
 ## Resources
 
@@ -96,8 +101,10 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - `references/executable-spec-contract.md`: layered specifications, reference behavior, differential verification, and independently owned agent work packets
 - `references/loop-contract.md`: exact Full/Loop program, task, and memory interface
 - `references/clean-contract.md`: periodic alignment, distillation, and complexity-control contract
+- `references/evidence-validity.md`: optional versioned acceptance/evidence fingerprints and selective revalidation contract
 - `scripts/init_plan.py`: safe initialization without overwriting existing plan files
 - `scripts/upgrade_plan.py`: previewable Lite-to-Full migration
 - `scripts/validate_plan.py`: structural and semantic validation; add `--json` for machine-readable results
+- `scripts/check_evidence_snapshot.py`: optional, read-only check for valid, stale, missing, or uncheckable recorded evidence
 - `examples/lite-change/`, `examples/csv-export/`: test and migration fixtures; do not load for ordinary creation
 - `tests/`: regression and context-budget checks

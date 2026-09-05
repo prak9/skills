@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "acceptance": {
+    "id": "A-001",
+    "version": "v1",
+    "condition": "<observable acceptance condition>",
+    "source": {
+      "path": "<relative acceptance source path>",
+      "sha256": "<sha256>"
+    }
+  },
+  "inputs": [
+    {
+      "path": "<relative source, test, config, or data path>",
+      "role": "source",
+      "sha256": "<sha256>"
+    }
+  ],
+  "verification": {
+    "method": "<exact command or manual verification method>",
+    "verified_at": "<ISO-8601 timestamp with timezone>",
+    "raw_result": {
+      "path": "<relative raw result path>",
+      "sha256": "<sha256>"
+    }
+  }
+}

@@ -1,4 +1,4 @@
 interface:
   display_name: "Plan Skill"
-  short_description: "Build the lightest plan and verification foundation"
+  short_description: "Maintain the lightest durable execution and verification plan"
   default_prompt: "Use $plan-skill to choose the lightest sufficient planning surface, expose material unknowns and preferences, and build an evidence-backed verification foundation before execution."

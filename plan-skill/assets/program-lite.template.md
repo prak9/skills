@@ -45,5 +45,7 @@
 
 ## Reflection Log
 
+Add `R-*` only when evidence changes an assumption, plan, verifier, scope, or reusable rule. For routine success, use `None: <no trigger reason>` in the Plan row.
+
 | ID | Scope | Evidence | Wrong / changed | Right / preserve | Next rule |
 |---|---|---|---|---|---|

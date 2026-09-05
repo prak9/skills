@@ -198,7 +198,29 @@ class ValidatePlanTests(unittest.TestCase):
         )
         self.assertFalse((LITE_EXAMPLE / "tasks").exists())
 
-    def test_lite_completed_node_requires_reflection(self) -> None:
+    def test_lite_completed_node_accepts_no_reflection_trigger(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "lite-change"
+            shutil.copytree(LITE_EXAMPLE, root)
+            program = root / "program.md"
+            text = program.read_text(encoding="utf-8").replace(
+                "| NODE-001 | `进行中` | Add boundary validation and regression cases | `pytest tests/test_cli.py -k timeout` | None | Pending |",
+                "| NODE-001 | `完成` | Add boundary validation and regression cases | `pytest tests/test_cli.py -k timeout` | RUN-001 | None: verifier passed and no plan assumption changed |",
+            )
+            program.write_text(text, encoding="utf-8")
+
+            process = subprocess.run(
+                [sys.executable, "-B", str(VALIDATOR), str(root), "--json", "--strict"],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            result = json.loads(process.stdout)
+
+            self.assertEqual(0, process.returncode, process.stdout)
+            self.assertTrue(result["ok"], result)
+
+    def test_lite_completed_node_rejects_unresolved_reflection_decision(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "lite-change"
             shutil.copytree(LITE_EXAMPLE, root)
@@ -218,7 +240,7 @@ class ValidatePlanTests(unittest.TestCase):
             result = json.loads(process.stdout)
 
             self.assertNotEqual(0, process.returncode, process.stdout)
-            self.assertIn("no `R-*` reflection", "\n".join(result["errors"]))
+            self.assertIn("reflection decision is unresolved", "\n".join(result["errors"]))
 
     def test_lite_completed_node_accepts_evidence_linked_reflection(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

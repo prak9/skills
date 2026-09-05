@@ -17,7 +17,7 @@ Include the relevant parts of:
 - point-in-time sell-side consensus and estimate revisions;
 - the investor's prior theses, forecasts, decisions, and stated falsifiers.
 
-For every important item, preserve the document date, the information-availability date, source type, and whether it is reported fact, management guidance, consensus, third-party estimate, or analyst inference. Do not let later restatements, revised consensus, or known outcomes leak into an earlier decision reconstruction.
+For every important item, preserve the document date, the information-availability date, source type, and whether it is reported fact, management guidance, consensus, third-party estimate, or analyst inference. Material numeric inputs also follow [data-contract.md](data-contract.md); validate linked calculations and historical timestamps with its script. Do not let later restatements, revised consensus, or known outcomes leak into an earlier decision reconstruction.
 
 If a point-in-time consensus snapshot or prior judgment cannot be recovered, mark it missing; never backfill it with a current estimate or a hindsight reconstruction. Use an evidence ledger with citations and retrieve the supporting passages as needed instead of forcing every source document into one context window.
 
@@ -131,7 +131,7 @@ Monitor the company, competitors, customers, suppliers, industry supply/demand, 
 - `core-assumption breach`: a causal driver crosses its threshold;
 - `new regime / re-underwrite`: the old model no longer explains the business.
 
-Default to no alert for `no thesis change`. When maintaining a persistent research log, record the item without notifying the user. Define materiality before monitoring in economic terms tied to the model: a core driver crossing its range, a meaningful change in scenario probability or long-term cash flow, a market-implied hurdle or expected return crossing a decision gate, the dominant falsifier being approached or breached, or the decision state changing. Do not use a universal percentage, a headline, or a stock-price move alone as proof of thesis change.
+Default to no alert for `no thesis change`. Record a routine no-change item only when a separately authorized persistent log is active and that authorization explicitly includes routine logging; monitoring by itself grants no write permission. Define materiality before monitoring in economic terms tied to the model: a core driver crossing its range, a meaningful change in scenario probability or long-term cash flow, a market-implied hurdle or expected return crossing a decision gate, the dominant falsifier being approached or breached, or the decision state changing. Do not use a universal percentage, a headline, or a stock-price move alone as proof of thesis change.
 
 Every material-change report should answer:
 
