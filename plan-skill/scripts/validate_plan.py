@@ -1644,7 +1644,9 @@ def main() -> int:
                 f"{program_path} Active plan node `{active_node}` does not match "
                 f"Active task package `{current_task}` mapped to `{expected_active_node}`"
             )
-    elif lean_lite and active_node not in node_statuses:
+    elif lean_lite and active_node not in node_statuses and not (
+        program_status in {"完成", "已取消"} and active_node in {"None", "无"}
+    ):
         errors.append(f"{program_path} Active plan node `{active_node}` is not present in Plan")
     elif not lean_lite and active_node not in {None, "None", "无"}:
         errors.append(

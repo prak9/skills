@@ -1081,5 +1081,102 @@ class ValidatePlanTests(unittest.TestCase):
         self.assert_rejected("tracked by git")
 
 
+class LiteTerminalPlanTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.temp_dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp_dir.cleanup)
+        self.root = Path(self.temp_dir.name) / "lite-change"
+        shutil.copytree(LITE_EXAMPLE, self.root)
+        self.program = (self.root / "program.md").read_text(encoding="utf-8")
+        for old, new in (
+            ("- Overall status: `进行中`", "- Overall status: `完成`"),
+            ("- Active plan node: `NODE-001`", "- Active plan node: `None`"),
+            ("- Latest evidence: `None`", "- Latest evidence: `RUN-001`"),
+            ("- Next step: `NODE-001`", "- Next step: `None`"),
+            ("| NODE-001 | `进行中` |", "| NODE-001 | `完成` |"),
+            ("| None | Pending |", "| RUN-001 | None: verifier passed with no material learning |"),
+        ):
+            self.assertIn(old, self.program)
+            self.program = self.program.replace(old, new)
+
+    def run_validator(self, program: str) -> tuple[subprocess.CompletedProcess[str], dict]:
+        (self.root / "program.md").write_text(program, encoding="utf-8")
+        process = subprocess.run(
+            [sys.executable, "-B", str(VALIDATOR), str(self.root), "--json", "--strict"],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        return process, json.loads(process.stdout)
+
+    def test_completed_lite_plan_accepts_no_active_node(self) -> None:
+        for inactive in ("None", "无"):
+            with self.subTest(inactive=inactive):
+                program = self.program.replace(
+                    "- Active plan node: `None`", f"- Active plan node: `{inactive}`"
+                )
+                process, result = self.run_validator(program)
+
+                self.assertEqual(0, process.returncode, process.stdout)
+                self.assertTrue(result["ok"], result)
+                self.assertEqual([], result["warnings"])
+                self.assertEqual([str(self.root / "program.md")], result["checked"])
+
+    def test_cancelled_lite_plan_accepts_no_active_node(self) -> None:
+        for inactive in ("None", "无"):
+            with self.subTest(inactive=inactive):
+                program = self.program.replace("`完成`", "`已取消`").replace(
+                    "- Active plan node: `None`", f"- Active plan node: `{inactive}`"
+                )
+                program += "\nCancellation reason: Owner retired the CLI; no dependent work remains.\n"
+                process, result = self.run_validator(program)
+
+                self.assertEqual(0, process.returncode, process.stdout)
+                self.assertTrue(result["ok"], result)
+
+    def test_nonterminal_lite_plan_requires_existing_active_node(self) -> None:
+        for status in ("待开始", "探索中", "进行中", "阻塞", "待验证", "待验收"):
+            for active in ("None", "无", "NODE-999", None):
+                with self.subTest(status=status, active=active):
+                    program = self.program.replace(
+                        "- Overall status: `完成`", f"- Overall status: `{status}`"
+                    ).replace(
+                        "- Active plan node: `None`\n",
+                        f"- Active plan node: `{active}`\n" if active is not None else "",
+                    )
+                    process, result = self.run_validator(program)
+
+                    self.assertNotEqual(0, process.returncode, process.stdout)
+                    self.assertIn("is not present in Plan", "\n".join(result["errors"]))
+
+    def test_completed_lite_plan_rejects_nonterminal_nodes(self) -> None:
+        for status in ("待开始", "进行中", "阻塞", "待验证", "待验收"):
+            with self.subTest(status=status):
+                program = self.program.replace(
+                    "| NODE-001 | `完成` |", f"| NODE-001 | `{status}` |"
+                )
+                process, result = self.run_validator(program)
+
+                self.assertNotEqual(0, process.returncode, process.stdout)
+                self.assertIn(
+                    f"Overall status is `完成`, but `NODE-001` is `{status}`",
+                    "\n".join(result["errors"]),
+                )
+
+    def test_completed_lite_plan_rejects_active_node(self) -> None:
+        for active in ("NODE-001", "NODE-999"):
+            with self.subTest(active=active):
+                program = self.program.replace(
+                    "- Active plan node: `None`", f"- Active plan node: `{active}`"
+                )
+                process, result = self.run_validator(program)
+
+                self.assertNotEqual(0, process.returncode, process.stdout)
+                self.assertIn(
+                    f"Overall status is `完成`, but Active plan node is `{active}`",
+                    "\n".join(result["errors"]),
+                )
+
+
 if __name__ == "__main__":
     unittest.main()
