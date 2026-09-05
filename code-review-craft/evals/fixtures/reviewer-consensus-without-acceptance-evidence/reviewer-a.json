@@ -1,0 +1,9 @@
+{
+  "reviewer": "Agent A",
+  "candidate_id": "orders-summary-0.2.0",
+  "verdict": "Approve",
+  "inspected": ["summary.py", "test_summary.py"],
+  "checks": [{"command": "python3 -m unittest -v test_summary.py", "exit_status": 0, "tests_run": 2}],
+  "snapshot_replay": null,
+  "notes": "The count and integer sum match the supplied input contract. Function tests pass."
+}

@@ -148,7 +148,7 @@ def check(snapshot: dict[str, Any], project_root: Path) -> dict[str, Any]:
         inputs = []
     for index, entry in enumerate(inputs):
         role = entry.get("role") if isinstance(entry, dict) else None
-        if role not in INPUT_ROLES:
+        if not isinstance(role, str) or role not in INPUT_ROLES:
             uncheckable.append(
                 {
                     "path": f"inputs[{index}].role",

@@ -31,6 +31,8 @@ For every task:
 
 For risky changes, also review applicable migration, compatibility, security, observability, rollback, and human-approval requirements. Add a deeper red-team checklist only when the risk warrants it; do not force an empty universal questionnaire.
 
+For a changed public or Agent-facing workflow whose documentation is part of acceptance, require evidence from the affected documented journey against the delivery version, as defined in `executable-spec-contract.md`. A required path that failed or has not run remains `待验证`, or `阻塞` when an external prerequisite prevents verification. Use `待验收` only after technical evidence is complete and an explicit owner decision remains; record that decision before `完成`. Passing unit tests or reviewer agreement cannot substitute for the missing journey evidence or owner decision.
+
 For Loop or unsupervised execution, also require the declared independent checker and raw evidence path, confirm verification was finer than the change slice, and name any retained human judgment. When safe ownership depends on understanding, include an explainer or teach-back that traces intent, change, sensor, evidence, and residual risk.
 
 For a Lite plan, the Plan table, Reflection Log, and top-level status carry the same evidence and reflection contract without a task package.

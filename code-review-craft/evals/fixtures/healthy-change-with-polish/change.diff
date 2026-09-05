@@ -14,7 +14,7 @@ diff --git a/test_retry.py b/test_retry.py
 index 71952ba..b5d05e1 100644
 --- a/test_retry.py
 +++ b/test_retry.py
-@@ -4 +4,9 @@
+@@ -4,2 +4,9 @@
 -def test_delay_is_unchanged():
 +def test_delay_inside_range_is_unchanged():
      assert clamp_retry_delay(30) == 30

@@ -39,7 +39,7 @@ Never create a second hand-maintained view of state that can be derived from an 
 6. Read `references/preference-contract.md` when valid solutions differ materially, a preference must be inferred, or a requested method may conflict with its objective.
 7. Read `references/pre-execution-grill.md` only when unresolved judgment or evidence could change scope, method, risk, or whether to proceed.
 8. Read `references/foundation-contract.md` when an agent may act repeatedly or without line-by-line supervision, a change slice is broader than its verifier, or the work includes irreversible effects. Loop mode always reads it.
-9. Read `references/executable-spec-contract.md` for parallel agent work, ports, rewrites, migrations, or any task whose correctness depends on preserving reference behavior.
+9. Read `references/executable-spec-contract.md` for parallel agent work, ports, rewrites, migrations, preserving reference behavior, or a changed public/Agent-facing workflow whose delivery documentation forms part of acceptance.
 10. For Loop, read `references/loop-contract.md` before drafting its program and task state.
 11. Initialize durable state:
 

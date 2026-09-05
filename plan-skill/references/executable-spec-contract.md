@@ -1,6 +1,6 @@
 # Executable Specification Contract
 
-Use this contract when several agents must work from one definition, when implementation is being ported or rewritten, or when prose alone cannot prove behavioral equivalence.
+Use this contract when several agents must work from one definition, when implementation is being ported or rewritten, when prose alone cannot prove behavioral equivalence, or when delivery documentation describes a changed public or Agent-facing workflow. Apply only the sections relevant to that task.
 
 ## Build A Layered Oracle
 
@@ -29,6 +29,16 @@ A working implementation can be the richest available specification, but it is n
 
 Reference code answers "what happens today." The problem contract answers "what must be true." When they conflict, surface the conflict instead of silently choosing one.
 
+## Verify Delivery Documentation Through The User Journey
+
+Treat affected Quickstart steps, tutorial commands, API examples, and CLI help as executable product claims. Link each material claim to the accepted user journey, its prerequisite state, expected result, and verification evidence. Use the project's existing documentation surface; the contract does not require a separate documentation site or a new document for every task.
+
+- Run the documented path against the exact delivery revision or artifact in a suitable isolated environment, starting from the documented prerequisites. Hidden setup, developer-only state, or bypassing the published interface cannot prove that a new user can follow it.
+- Record the documentation version, tested code/artifact version, environment or fixture, command or interaction steps, and raw result location in the existing acceptance evidence. Revalidate the affected journey when either side changes in a way that can invalidate the result.
+- Resolve material contradictions between accepted requirements, documentation, implementation, and tests before completion. Document intentional contract changes and obtain any required owner decision; changing prose to match a bug does not satisfy the original requirement.
+- Scope execution to changed material claims and credible failure paths. A rendering or link check supports document integrity, but cannot establish the runtime behavior of its examples. Record any required path that could not be exercised and its next verification action.
+- Separate technical evidence from retained product judgment. Agents can execute acceptance scenarios; a required human decision about suitability, risk, or release remains with the named owner. Follow `status-and-completion.md` for the resulting status.
+
 ## Write An Independent Work Packet
 
 Each agent-owned task should let a capable executor and checker proceed without private chat history:
@@ -52,8 +62,8 @@ Align granularity: the task slice must be smaller than the verifier's ability to
 
 Do not call the specification ready until:
 
-- two independent readers can paraphrase the same required behavior and scope;
-- each agent packet has explicit inputs, outputs, ownership, and acceptance evidence;
+- for delegated work, independent executor and checker interpretations agree on the required behavior and scope;
+- each agent packet, when used, has explicit inputs, outputs, ownership, and acceptance evidence;
 - authoritative references and their limits are named;
 - behavior-preserving work has a translated or differential verification path;
 - intentional differences and unresolved decisions are visible; and

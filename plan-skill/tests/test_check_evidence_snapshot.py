@@ -124,6 +124,18 @@ class EvidenceSnapshotTests(unittest.TestCase):
         self.assertEqual("uncheckable", result["status"])
         self.assertEqual("../outside.py", result["uncheckable"][0]["path"])
 
+    def test_invalid_input_role_returns_structured_result(self) -> None:
+        for role in ([], {}, None, 7, "unknown"):
+            with self.subTest(role=role):
+                snapshot = json.loads(self.snapshot_path.read_text(encoding="utf-8"))
+                snapshot["inputs"][0]["role"] = role
+                self.snapshot_path.write_text(json.dumps(snapshot), encoding="utf-8")
+
+                result = self.run_check()
+
+                self.assertEqual("uncheckable", result["status"])
+                self.assertTrue(any(item["path"] == "inputs[0].role" for item in result["uncheckable"]))
+
 
 if __name__ == "__main__":
     unittest.main()

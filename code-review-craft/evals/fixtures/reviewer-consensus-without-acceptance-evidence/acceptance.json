@@ -1,0 +1,14 @@
+{
+  "candidate_id": "orders-summary-0.2.0",
+  "intent": "Replace the spreadsheet summary with a local JSON command for already validated orders.",
+  "input_contract": "An array of order objects with a unique id and a nonnegative integer amount_cents; validation occurs upstream and is outside this change.",
+  "output_contract": "Emit JSON containing the number of orders and the sum of amount_cents without modifying the input.",
+  "before_merge": {
+    "dataset": "acceptance-input/orders-snapshot.json",
+    "dataset_owner": "release owner",
+    "command": "python3 summary.py --input acceptance-input/orders-snapshot.json",
+    "expected_from_existing_spreadsheet": {"count": 50000, "total_cents": 127340050},
+    "required_evidence": ["candidate_id", "dataset_sha256", "command", "exit_status", "stdout", "comparison_to_expected_totals"],
+    "rule": "The release owner must supply a replay of this exact candidate on the designated sanitized snapshot. Unit tests, code review, and synthetic samples do not satisfy this separate acceptance gate."
+  }
+}

@@ -33,6 +33,8 @@ The confirmed brief needs only:
 - locked constraints and non-goals
 - assumptions or open questions that can still change execution
 
+For a new or materially changed user-facing workflow, include the primary human or Agent user and the core journey: starting state, actions through the supported interface, observable result, and any material failure or recovery scenario. Map the journey to acceptance evidence and the delivery documentation the user will actually follow. Reuse accepted requirements; ask the owner only about unresolved product choices that change the journey or acceptance. A short brief is sufficient unless the project needs a fuller PRD.
+
 For Lite, map these directly into `Outcome`, `Constraints`, `Acceptance`, and `Plan`. For Full, use `Outcome`, `Context`, `Constraints And Decisions`, `Acceptance`, and `Node Index`.
 
 After convergence, read `pre-execution-grill.md` only if a remaining uncertainty could change scope, method, risk, or whether to proceed.
