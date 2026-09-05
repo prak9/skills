@@ -49,6 +49,8 @@ python3 <SKILL_ROOT>/scripts/render_wechat.py article.md --theme-file brand-them
 
 渲染器支持标题、二三级章节、段落、显式加粗、`==高亮==`、行内代码、链接、引用、列表、代码块、图片和分割线。遇到 Markdown 表格、脚注、复杂嵌套列表或嵌入式 HTML 时，先在 Markdown 副本中转换为语义等价的简单段落或列表，并让用户能追溯到原文；不要静默遗漏。
 
+标题优先采用代码块外的首个 H1，其次 frontmatter 的 `title`，最后使用命令行或文件名回退值。代码围栏支持至少三个反引号或波浪号及简单语言标签；结束围栏必须同类且不短于开头。块内的 `#`、Markdown 标记与空行保留为代码，未闭合围栏报错。
+
 不要在脚本输出后随手添加 `<div>`、`class`、`<style>` 或交互脚本。需要改视觉时调整主题输入或渲染器，再重新生成完整片段。
 
 ## Validate before delivery

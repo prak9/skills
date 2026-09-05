@@ -8,6 +8,26 @@
   },
   "evals": [
     {
+      "id": "flat-scaling-with-mutex-waiters",
+      "prompt": "Use Flow D to interpret this fixed diagnostic snapshot; do not execute commands or change code. The same workload measures 100,000 ops/s at 1 core and 102,000 at 32 cores. Thirty-two worker threads were observed during the timed region; most repeatedly sleep in futex_wait from pthread_mutex_lock. The lock protects a shared lookup; its read/write mix has not been measured. Available CPUs and CPU quota both permit 32 cores. ldd shows no separate libpthread. What should we investigate next?",
+      "expected_output": "Recognizes observed multithreading despite a 1.02 throughput ratio and no separate threading library, investigates serialization with lock wait/hold evidence, and does not prescribe an unverified lock replacement.",
+      "files": [],
+      "assertions": [
+        {"id": "does-not-confuse-scaling-with-threading", "text": "The response treats the ratio as lack of scaling and does not conclude that threading must be enabled or stop Flow D because the ratio is below 1.05 or libpthread is absent.", "kind": "model", "required": true},
+        {"id": "investigates-observed-lock-wait", "text": "It investigates the observed pthread_mutex_lock/futex waits using call stacks and lock wait/hold time or equivalent evidence; it does not assume rwlock, TTAS, or false sharing is already proven.", "kind": "model", "required": true}
+      ]
+    },
+    {
+      "id": "flat-scaling-with-bandwidth-saturation",
+      "prompt": "Interpret this fixed Flow D snapshot without running commands. Thirty-two workers are runnable across 32 allowed CPUs. Throughput is 1.02 times the single-core result. A memory controller measurement reaches 95% of independently measured sustainable bandwidth. Lock wait time is negligible and perf c2c has no significant HITM lines. The loop streams disjoint arrays. What does this establish, and what investigation follows?",
+      "expected_output": "Treats bandwidth saturation as the leading supported hypothesis, with no inference of single-threading or exclusion of memory limits from absent HITM.",
+      "files": [],
+      "assertions": [
+        {"id": "uses-bandwidth-evidence", "text": "The response prioritizes memory bandwidth based on the stated measured bandwidth and streaming accesses, while preserving its hypothesis status pending a controlled workload or bytes-transferred comparison.", "kind": "model", "required": true},
+        {"id": "absence-of-hitm-is-not-absence-of-memory-limits", "text": "It neither declares the workload unthreaded nor treats no HITM as proof of compute/branch limitation, and does not invent a measured speedup.", "kind": "model", "required": true}
+      ]
+    },
+    {
       "id": "algorithm-before-microarchitecture",
       "prompt": "Review the supplied C++ lookup routine for performance. The production workload has roughly 50,000 queries and 50,000 entries per call. Recommend the highest-leverage change and a verification plan; do not implement it.",
       "expected_output": "Prioritize eliminating the repeated linear search before SIMD or instruction-level tuning, note secondary allocation work, and require representative before/after measurement with correctness checks.",

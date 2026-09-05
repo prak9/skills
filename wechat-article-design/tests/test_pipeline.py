@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from html.parser import HTMLParser
 from pathlib import Path
 
 
@@ -46,6 +47,61 @@ def publish(article):
 
 
 class PipelineTests(unittest.TestCase):
+    def test_fenced_comments_never_become_the_article_title(self) -> None:
+        class Paragraphs(HTMLParser):
+            def __init__(self) -> None:
+                super().__init__()
+                self.paragraphs = []
+                self.current = None
+
+            def handle_starttag(self, tag, attrs) -> None:
+                if tag == "p":
+                    self.current = ""
+
+            def handle_data(self, data) -> None:
+                if self.current is not None:
+                    self.current += data
+
+            def handle_endtag(self, tag) -> None:
+                if tag == "p" and self.current is not None:
+                    self.paragraphs.append(self.current.replace("\u00a0", " ").replace("\u200b", ""))
+                    self.current = None
+
+        theme, _ = load_theme("ink")
+        code = "# Actual code comment\n\tvalue  = '<literal> & **bold**'\n\n  # nested comment"
+        for fence in ("```", "````", "~~~"):
+            for metadata, heading, expected in (
+                ("---\ntitle: Correct Title\n---\n", "", "Correct Title"),
+                ("", "\n# Real H1\n", "Real H1"),
+                ("---\ntitle: Metadata\n---\n", "\n# Real H1\n", "Real H1"),
+                ("", "", "Fallback"),
+            ):
+                with self.subTest(fence=fence, expected=expected, metadata=metadata):
+                    fragment = render_document(
+                        metadata + fence + "sh\n" + code + "\n" + fence + heading,
+                        theme,
+                        "Fallback",
+                    )
+                    parser = Paragraphs()
+                    parser.feed(fragment)
+                    self.assertEqual([expected, "SH", *code.expandtabs(4).split("\n")], parser.paragraphs)
+                    self.assertEqual(([], []), validate_html(fragment))
+
+    def test_only_matching_fence_can_close_code(self) -> None:
+        theme, _ = load_theme("ink")
+        fragment = render_document(
+            "````sh\n```\n~~~\n````python\n# literal\n`````\n# Article", theme
+        )
+        for literal in ("```", "~~~", "````python", "# literal"):
+            self.assertIn(f'<span leaf="">{literal}</span>', fragment)
+        self.assertIn('<span leaf="">Article</span>', fragment)
+
+    def test_unclosed_fence_is_rejected_even_when_it_contains_h1(self) -> None:
+        theme, _ = load_theme("ink")
+        for fence in ("```", "````", "~~~"):
+            with self.subTest(fence=fence), self.assertRaisesRegex(ValueError, "代码块缺少结束"):
+                render_document(fence + "sh\n# still code", theme)
+
     def test_renderer_output_passes_validator_and_preserves_content(self) -> None:
         theme, _ = load_theme("moss")
         fragment = render_document(SAMPLE, theme)

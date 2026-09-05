@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "skill_name": "eli5",
+  "evals": [
+    {
+      "id": "simplify-without-changing-conditions",
+      "prompt": "ELI5 this rule in two sentences: a backup can restore deleted files only if those files were included in a completed backup before deletion. We have not checked whether yesterday's backup completed.",
+      "expected_output": "A short explanation keeps the completed-before-deletion condition and the uncertainty about yesterday's backup; optional implementation detail may be omitted.",
+      "files": [],
+      "assertions": [
+        {"id": "accurate-core", "text": "The explanation preserves that recovery depends on the files being in a backup completed before deletion and does not promise recovery from yesterday's unverified backup.", "kind": "model", "required": true},
+        {"id": "respects-length", "text": "The response uses two sentences understandable to a beginner without adding backup mechanics that obscure the condition.", "kind": "model", "required": true}
+      ]
+    },
+    {
+      "id": "partner-with-domain-expertise",
+      "prompt": "Explain database snapshot isolation to my wife. She is a database engineer familiar with serializability; focus on write skew and use a short two-transaction example.",
+      "expected_output": "Uses the stated expertise, explains write skew with two transactions, and does not infer beginner status from the relationship.",
+      "files": [],
+      "assertions": [
+        {"id": "uses-known-background", "text": "The explanation uses snapshot isolation and serializability accurately at an engineer's level, with a two-transaction example showing write skew.", "kind": "model", "required": true},
+        {"id": "no-relationship-stereotype", "text": "It does not substitute household or childlike analogies or basic computer lessons merely because the audience is the user's wife.", "kind": "model", "required": true}
+      ]
+    },
+    {
+      "id": "manager-with-technical-question",
+      "prompt": "Explain relaxed atomics to my manager, who wrote our C++ memory model guide. She wants the ordering guarantees and the limits of a counter example, not budget or delivery advice.",
+      "expected_output": "Explains the requested technical guarantees and limits using the given background and focus.",
+      "files": [],
+      "assertions": [
+        {"id": "role-does-not-override-request", "text": "The response addresses atomicity, modification order, and lack of synchronization for unrelated memory; it does not replace this with ROI, timelines, or business advice.", "kind": "model", "required": true}
+      ]
+    },
+    {
+      "id": "tell-boss-is-not-an-explanation",
+      "prompt": "Write a one-line note to tell my boss I'll be ten minutes late. No explanation needed.",
+      "expected_output": "Produces only a brief lateness note, without invoking an audience explanation workflow or sending a message.",
+      "files": [],
+      "assertions": [
+        {"id": "respects-negative-trigger", "text": "The output is a one-line note about being ten minutes late; it does not explain lateness, ask about the boss's knowledge, use an analogy, or send the message.", "kind": "model", "required": true}
+      ]
+    }
+  ]
+}

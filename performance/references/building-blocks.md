@@ -370,7 +370,7 @@ Surface the hottest functions from a recording as a Markdown table. No interpret
 
 ### Step 1 — Record
 
-Use **Building block: perf record** (Part 4) with `-g` (call graphs are required for accurate per-function attribution).
+Use [Building block: perf record](#building-block-perf-record) with `-g` (call graphs are required for accurate per-function attribution).
 
 Reuse existing `perf.data` if the user prefers.
 
@@ -564,7 +564,7 @@ as observation bullets and omit the RS column.
 ### Prerequisites
 
 **CPU capability flags** — some patterns depend on knowing what the CPU supports.
-Use **Building block: Check CPU capabilities** (Part 4) once per session and cache
+Use [Building block: Check CPU capabilities](#building-block-check-cpu-capabilities) once per session and cache
 the result. From its output, note the vector width tier (AVX-512 / AVX2 / AVX / SSE).
 
 **Perf stat numbers** (optional) — IPC and cache-miss rate from a prior `perf stat`

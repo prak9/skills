@@ -9,7 +9,7 @@ Markdown document.
 
 ## Phase 0 — Ensure debug symbols
 
-Run **Building block: Ensure debug symbols** (Part 4) on the binary before recording.
+Run [Building block: Ensure debug symbols](building-blocks.md#building-block-ensure-debug-symbols) on the binary before recording.
 If the binary lacks DWARF and the user agrees to recompile, do so now — before Phase 1 —
 so that the recording and annotation use the same binary. If the user declines, note the
 limitation; source-unavailable fallback format applies in Phase 4a.
@@ -18,7 +18,7 @@ limitation; source-unavailable fallback format applies in Phase 4a.
 
 ## Phase 1 — Record
 
-Use **Building block: perf record** (Part 4). Note the wall-clock duration of the
+Use [Building block: perf record](building-blocks.md#building-block-perf-record). Note the wall-clock duration of the
 recording — it determines whether to run `perf stat` in Phase 2.
 
 If a `perf.data` file already exists, do not ask if you know it is valid based on the session:
@@ -35,7 +35,7 @@ be reused.
 | Condition | Action |
 |-----------|--------|
 | `perf stat` was already collected in this session | Reuse those numbers — do not re-run |
-| Recording wall-clock duration < 60 s | Run `perf stat` now using **Building block: perf stat** (Part 4) |
+| Recording wall-clock duration < 60 s | Run `perf stat` now using [Building block: perf stat](building-blocks.md#building-block-perf-stat) |
 | Recording duration ≥ 60 s | Skip — note its absence in the report header |
 
 **If perf stat data is available**, format it as a compact summary table followed by
@@ -64,7 +64,7 @@ Regime sentence rules:
 
 ## Phase 3 — Top functions table
 
-Use **Building block: Top-N functions** (Part 4) to get the ranked function list.
+Use [Building block: Top-N functions](building-blocks.md#building-block-top-n-functions) to get the ranked function list.
 
 **Selection cutoffs** (apply the first rule that fires):
 - Default maximum: **5 functions**; user may override (e.g., "show me 7" → use 7)
@@ -219,7 +219,7 @@ Example (short function, ≤ 20 lines, shown in full):
 
 ### Step 4e — Observations
 
-Run **Building block: Annotate pattern scan** (Part 4) on the assembly output from Step 4a.
+Run [Building block: Annotate pattern scan](building-blocks.md#building-block-annotate-pattern-scan) on the assembly output from Step 4a.
 Present each detected pattern as a bullet — include the **Pattern** name and **Evidence**;
 omit the Suggested RS column (this is a reporting flow, not a prescriptive one).
 

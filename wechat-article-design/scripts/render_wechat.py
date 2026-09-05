@@ -61,7 +61,7 @@ COLOR_KEYS = {
 THEME_KEYS = COLOR_KEYS | {"name"}
 HEX_COLOR = re.compile(r"^#[0-9A-Fa-f]{6}$")
 HEADING = re.compile(r"^(#{1,3})\s+(.+?)\s*$")
-FENCE = re.compile(r"^\s*```([A-Za-z0-9_+.-]*)\s*$")
+FENCE = re.compile(r"^\s*(`{3,}|~{3,})([A-Za-z0-9_+.-]*)\s*$")
 IMAGE = re.compile(r"^\s*!\[([^]]*)\]\(([^)]+)\)\s*$")
 UNORDERED = re.compile(r"^\s*[-+*]\s+(.+)$")
 ORDERED = re.compile(r"^\s*(\d+)[.)]\s+(.+)$")
@@ -221,6 +221,16 @@ def _starts_block(line: str) -> bool:
     )
 
 
+def _closes_fence(line: str, marker: str) -> bool:
+    match = FENCE.match(line)
+    return bool(
+        match
+        and not match.group(2)
+        and match.group(1)[0] == marker[0]
+        and len(match.group(1)) >= len(marker)
+    )
+
+
 def _cover(title: str, theme: dict[str, str], author: str = "") -> str:
     byline = ""
     if author:
@@ -330,7 +340,16 @@ def render_document(markdown: str, theme: dict[str, str], fallback_title: str = 
     metadata, lines = _frontmatter(markdown.replace("\r\n", "\n").replace("\r", "\n").split("\n"))
     title = metadata.get("title", "").strip()
     body = list(lines)
+    open_fence = ""
     for index, line in enumerate(body):
+        if open_fence:
+            if _closes_fence(line, open_fence):
+                open_fence = ""
+            continue
+        fence = FENCE.match(line)
+        if fence:
+            open_fence = fence.group(1)
+            continue
         match = HEADING.match(line)
         if match and len(match.group(1)) == 1:
             title = match.group(2).strip()
@@ -349,14 +368,14 @@ def render_document(markdown: str, theme: dict[str, str], fallback_title: str = 
 
         fence = FENCE.match(line)
         if fence:
-            language = fence.group(1)
+            marker, language = fence.groups()
             code_lines: list[str] = []
             index += 1
-            while index < len(body) and not FENCE.match(body[index]):
+            while index < len(body) and not _closes_fence(body[index], marker):
                 code_lines.append(body[index])
                 index += 1
             if index >= len(body):
-                raise ValueError("代码块缺少结束的 ```")
+                raise ValueError(f"代码块缺少结束的 {marker}")
             blocks.append(_code(code_lines, language, theme))
             index += 1
             continue

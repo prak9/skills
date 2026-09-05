@@ -1,6 +1,6 @@
 ---
 name: eli5
-description: "Explain any topic, code, concept, or error tailored to a specific audience's level of understanding. Use this skill whenever the user says 'explain like I am', 'ELI5', 'explain this to my', 'break this down for', 'dumb it down', 'simplify this for', or asks you to explain something to a specific person or audience type (e.g., 'explain this to a manager', 'how would I explain this to my mom', 'make this understandable for a 5th grader'). Also trigger when the user mentions wanting to understand something at a particular level, or asks for an explanation targeting a non-technical audience. Even partial matches like 'explain to my wife' or 'tell my boss' should trigger this skill."
+description: "Explain a topic, code, concept, or error at a requested level or for a stated audience. Use for ELI5, 'explain like I am', 'break this down for', or explanations adapted to someone's background. Merely drafting or relaying a message such as 'tell my boss I will be late' is not an explanation task."
 ---
 
 # Explain Like I Am... (ELI5)
@@ -9,45 +9,20 @@ You are an expert at taking complex topics and making them accessible to any aud
 
 ## Step 1: Identify the Audience
 
-Parse the user's request to determine who the explanation is for. The audience falls into one of these categories:
+Use the audience's stated knowledge, the question they need answered, and any requested
+reading level. A job title or family relationship does not establish technical ability,
+interests, or preferred analogies. A manager may be a domain expert; an engineer may be
+new to this subject. Education in another field is not evidence of topic expertise.
 
-### Ages
-| Audience | Style |
-|----------|-------|
-| Age 5 | Super simple words. Use fun analogies with toys, animals, candy, playground. Short sentences. "Imagine you have a box of crayons..." |
-| Age 10 | Elementary school level. Can handle basic cause-and-effect. Use school, sports, video game analogies. |
-| Age 15 | Teenager. Can handle some abstraction. Use social media, phone, gaming references. Be slightly casual. |
-| Age 20-30 | Young adult. Clear and direct. Real-world analogies from daily life, work, money. |
-| Age 40+ | Mature adult. Respectful tone. Analogies from home ownership, career, family management. |
+For a requested child or school reading level, use familiar words, concrete examples,
+and shorter steps. For stated topic expertise, retain useful terminology and focus on
+the requested mechanisms, tradeoffs, or limits. Choose examples from interests the user
+actually supplied or from broadly familiar situations.
 
-### Grade / Education Levels
-| Audience | Style |
-|----------|-------|
-| 5th grade | Simple vocabulary, concrete examples, avoid jargon entirely. "Think of it like..." |
-| Middle school | Can introduce basic terminology with definitions. Step-by-step logic. |
-| Senior High | Can handle moderate complexity. Introduce proper terms but explain them. SAT-level vocabulary OK. |
-| College Student | Academic framing. Can use technical terms with brief context. Theory + practical application. |
-| Graduate school | Assume strong foundational knowledge. Focus on nuance, trade-offs, edge cases, and deeper implications. Be precise. |
-
-### Job Roles
-| Audience | They care about... | Frame explanations around... |
-|----------|-------------------|------------------------------|
-| Manager | Impact, timeline, risk, cost | Business outcomes, team implications, what decisions need to be made |
-| Engineer | How it works, architecture, trade-offs | Technical details, implementation, performance, maintainability |
-| Designer | User experience, visual impact, flow | How it affects the user, interaction patterns, accessibility |
-| Director | Strategy, ROI, competitive advantage | Big picture, market position, resource allocation |
-| Colleague | Practical context, shared work | How it affects their work, what they need to know to collaborate |
-| Product Manager | User value, priorities, scope | Feature impact, user stories, what to build vs. skip |
-
-### Relationships
-| Audience | Tone | Analogy style |
-|----------|------|---------------|
-| Wife / Husband / Partner | Warm, conversational, patient | Household tasks, shared experiences, daily routines |
-| Father / Mother / Parents | Respectful, clear, no condescension | Familiar technology they use, home analogies, generational bridges |
-| Kids / Children | Playful, encouraging, short | Games, cartoons, school, animals |
-| Friend | Casual, maybe humorous | Pop culture, shared interests, "you know how..." |
-
-If the audience isn't explicitly stated, default to "Age 5" (classic ELI5).
+When no audience is stated, explicit ELI5 requests default to a beginner explanation.
+Otherwise use plain language at the level suggested by the question; do not automatically
+adopt a child's voice. Ask about background only if the missing information would
+materially change the explanation.
 
 ## Step 2: Read the Source Material
 
@@ -70,19 +45,19 @@ Follow these principles, scaled to the audience:
 
 ### Language Calibration
 
-For **simple audiences** (young ages, non-technical roles, family):
+For **audiences new to the topic** or a requested simple reading level:
 - No jargon. Zero. If a technical term is essential, define it immediately.
 - One idea per sentence.
 - Concrete over abstract. "The server is like a waiter at a restaurant" beats "the server handles client-server communication."
 - Use "you" and "your" — make it personal.
 
-For **technical audiences** (engineers, grad students):
+For **audiences with stated topic expertise**:
 - Use proper terminology — they'll feel patronized without it.
 - Focus on the *interesting* parts: trade-offs, edge cases, design decisions.
 - Compare to things they already know: "It's like a hash map but with X difference."
 - Be concise — respect their existing knowledge.
 
-For **business audiences** (managers, directors):
+For **requests focused on business decisions**:
 - Lead with impact and outcomes.
 - Quantify where possible.
 - Skip implementation details unless asked.
@@ -92,12 +67,12 @@ For **business audiences** (managers, directors):
 - Ages 5-10: Enthusiastic, like a favorite teacher. "Oh, this is a cool one!"
 - Teenagers: Slightly casual but not cringey. No "fellow kids" energy.
 - Professionals: Confident and clear. Respect their intelligence while bridging knowledge gaps.
-- Family: Patient, warm, conversational. Like explaining over dinner.
+- Relationships: Follow the requested tone without inferring knowledge or interests from family status.
 
 ## Examples
 
 **User says**: "ELI5 what a database index is"
-**Audience**: Age 5 (default)
+**Audience**: Beginner (default for ELI5)
 **Response style**: "Imagine you have a huuuge book with thousands of pages. Now, if I asked you to find the page about dinosaurs, you could flip through every single page... or you could look at the table of contents at the front! A database index is like that table of contents. It helps the computer find things really fast without looking through everything."
 
 **User says**: "Explain this API rate limiting to my manager"
@@ -112,5 +87,5 @@ For **business audiences** (managers, directors):
 
 - Never talk down to anyone. A 5-year-old explanation should feel delightful, not dumbing-down. A manager explanation should feel empowering, not dismissive of their intelligence.
 - When explaining code, always explain the *purpose* first, then the mechanism. Nobody cares about syntax until they know why it exists.
-- If the topic is genuinely complex and the audience is very non-technical, it's OK to simplify ruthlessly. Getting the core idea across at 80% accuracy is better than a 100% accurate explanation that loses the audience.
+- Simplify by omitting optional detail while keeping the core accurate. Preserve causality, negation, uncertainty, and conditions that would change the conclusion. If an analogy would mislead on one of these, state its relevant limit or use a direct explanation.
 - Match the length to the audience: short and sweet for young kids, more detailed for technical audiences who want depth.

@@ -3,19 +3,19 @@
 
 ### Phase 1 — Collect hot cache lines
 
-Use **Building block: c2c hot cache lines** (Part 4).
+Use [Building block: c2c hot cache lines](building-blocks.md#building-block-c2c-hot-cache-lines).
 
 This produces the recording, the `c2c_report.txt` file, and the summary table of hot cache lines. Pass the threshold and N from the user's request to the building block.
 
 ### Phase 2 — Map access locations per cache line
 
-For each cache line above the threshold, use **Building block: c2c access map for a cache line** (Part 4).
+For each cache line above the threshold, use [Building block: c2c access map for a cache line](building-blocks.md#building-block-c2c-access-map-for-a-cache-line).
 
 This extracts which code locations are accessing the cache line, classifies the sharing pattern (false vs true) via the Offset column, and returns a per-line access table.
 
 ### Phase 3 — Gather source code
 
-Use **Building block: resolve address to source** (Part 4) if source lines are not already populated from the Pareto output — treat it as a fallback.
+Use [Building block: resolve address to source](building-blocks.md#building-block-resolve-address-to-source) if source lines are not already populated from the Pareto output — treat it as a fallback.
 
 Gather the source code for:
 - the functions that access the cache line under contention
@@ -139,7 +139,7 @@ Called from:
 
 Different fields (`written_a_lot` vs `read_a_lot`) at different offsets (0x00 vs 0x08) → **false sharing**.
 
-Apply **Resolution strategy: Structured false-sharing fix** (Part 5).
+Apply [Structured false-sharing fix](../patterns/false-sharing.md).
 
 ---
 
@@ -167,7 +167,7 @@ void do_something(struct object *obj)
 
 Same field (`refcount`) and offset (0x00) → genuine contention on the same datum → **true sharing**.
 
-**Test-and-Set spin detection** — if the accessor functions contain `cmpxchg` / `lock cmpxchg` in a loop, this may be a Test-and-Set spin pattern rather than plain data contention. Every waiter competes for exclusive ownership of the cache line, including threads that currently have no chance of acquiring the lock — which also steals the line from the holder. Apply **Resolution strategy: Test-and-Test-and-Set** (Part 5) before considering other strategies.
+**Test-and-Set spin detection** — if the accessor functions contain `cmpxchg` / `lock cmpxchg` in a loop, this may be a Test-and-Set spin pattern rather than plain data contention. Every waiter competes for exclusive ownership of the cache line, including threads that currently have no chance of acquiring the lock — which also steals the line from the holder. Apply [Test-and-Test-and-Set](../patterns/ttas.md) before considering other strategies.
 
 Common resolution strategies for true sharing without the spin pattern:
 - **Atomic / lock-free** — `std::atomic` or `_Atomic` for counters or flags (may already be in use here)

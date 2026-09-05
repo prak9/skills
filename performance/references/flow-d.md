@@ -8,13 +8,13 @@ more cores produces little or no throughput gain, or performance actually regres
 
 ## Phase 0 — Optional: threading pre-check and scaling sweep
 
-Before diving into function-level profiling, a scaling sweep can reveal whether the
-workload is actually threaded and where its scaling ceiling is. The threading check
-runs immediately (it's just static inspection); the actual sweep is offered to the user.
+Before diving into function-level profiling, a scaling sweep can show where throughput
+stops improving. Inspect source/library clues and runtime thread activity separately;
+throughput scaling alone cannot establish whether a workload is threaded.
 
 ### Step 0a — Threading inspection (always run)
 
-Check whether the binary links a threading library:
+Check whether the binary links a threading library as a preliminary clue:
 
 ```bash
 ldd <binary> | grep -E 'libpthread|libgomp|libtbb|libomp'
@@ -27,8 +27,13 @@ grep -r 'OMP_NUM_THREADS\|pthread_create\|tbb::\|std::thread\|#pragma omp' \
     <source_dir> 2>/dev/null | head -5
 ```
 
-Summarize what you found — e.g., *"Binary links libgomp (OpenMP)"* or *"No threading
-library found; source shows no pthread/OMP usage either."*
+Summarize what you found — e.g., *"Binary links libgomp (OpenMP)"* or *"No separate
+threading library or source usage found; runtime threading remains unverified."*
+Static linkage, runtime-loaded libraries, and threading APIs in libc can make `ldd`
+inconclusive. When a representative run is available, inspect worker counts, thread
+states and per-thread CPU use during its timed region (for example `ps -L -p <pid>`
+and `pidstat -t -p <pid> 1`, if available). Distinguish created threads from active
+workers; record affinity and CPU quota that could limit their execution.
 
 ### Offer the sweep (informed by Step 0a)
 
@@ -40,10 +45,8 @@ Present the threading findings, then ask:
 > again. This takes a few minutes — shall I run it, or shall we go straight to
 > function-level profiling?"*
 
-If the workload appears unthreaded, note that explicitly:
-> *"The binary doesn't appear to link any threading library. The sweep will likely
-> confirm flat scaling — but it can still be useful to rule out environmental threading
-> (e.g., OpenBLAS auto-threading). Shall I run it anyway?"*
+If only static clues are available, report threading as unverified; do not use the
+absence of a separate threading library to predict or diagnose flat scaling.
 
 If the user declines, skip to Phase 1.
 
@@ -79,9 +82,22 @@ taskset -c 0-<N-1> perf record -g -o perf_ncore.data -- <command>
 Note: the throughput run and the perf record run are separate — `perf record` adds
 overhead that would skew the sweep numbers.
 
-If the 1-vs-N throughput ratio is < 1.05 (within 5%), the workload is almost certainly
-not threaded. Report this clearly and **do not continue the sweep** — there is nothing
-for this flow to diagnose until threading is enabled.
+If the N-vs-1 throughput ratio is < 1.05, report **no meaningful scaling observed;
+cause not yet established**, accounting for measurement noise. This is not evidence
+that threads are absent. Use the runtime evidence to choose the next investigation:
+
+- Workers blocked in `pthread_mutex_lock`/futex waits: measure lock wait/hold time
+  and inspect the protecting critical section and call chain. CPU samples alone can
+  miss sleeping waiters; do not prescribe rwlock or TTAS without the access pattern.
+- Multiple busy workers with little lock waiting: check memory bandwidth against
+  the machine's measured sustainable bandwidth, working-set/access patterns, and
+  relevant NUMA evidence. Low IPC or cache misses alone do not prove saturation.
+- Only one active worker: check thread configuration, work distribution, and CPU
+  limits before concluding the workload is serial.
+
+Continue the relevant diagnostic path for a threaded workload even if the ratio is
+near one or falls below one. Narrow or stop extra sweep points only when they add no
+useful evidence or exceed the agreed runtime; do not stop diagnosis at a ratio cutoff.
 
 ### Step 0c — Format the sweep table
 
@@ -115,13 +131,13 @@ below **0.80**. This is the primary target for Phase 1 profiling.
 
 ## Phase 1 — Dual-profile collection
 
-Run **Building block: Ensure debug symbols** (Part 4) on the binary **before** Phase 1 recording. The dual-profile recordings must use the same binary as any later `perf annotate` passes — recompiling after recording invalidates the perf.data files.
+Run **Building block: Ensure debug symbols** in [building-blocks.md](building-blocks.md#building-block-ensure-debug-symbols) on the binary **before** Phase 1 recording. The dual-profile recordings must use the same binary as any later `perf annotate` passes — recompiling after recording invalidates the perf.data files.
 
 **If Phase 0 was completed**, `perf_1core.data` and `perf_ncore.data` are already
 available — skip straight to the Dual-profile comparison building block using those
 files. Only re-record if the binary was recompiled for debug symbols after Phase 0.
 
-Use **Building block: Dual-profile comparison** (Part 4).
+Use [Building block: Dual-profile comparison](building-blocks.md#building-block-dual-profile-comparison).
 
 This runs the workload at 1 core (`taskset -c 0`) and at all cores, collects the
 top-15 hottest functions from each, and produces a delta table with rank-change (Rank Δ)
@@ -144,7 +160,7 @@ For each jumper function identified in Phase 1:
 ### 2a. Collect the source
 
 Use **Building block: Top-N lines within a function** to find the hot lines, and
-collect the full source of the function using the source display rules from Part 4
+collect the full source of the function using the source display rules in [Flow C](flow-c.md#annotation-conventions-used-throughout-the-report)
 (≤ 20 lines: show in full; > 20 lines: show signature + context around hot lines).
 
 ### 2b. Check for inlining
@@ -170,8 +186,11 @@ report.
 
 ## Phase 3 — Focused c2c
 
-Run the full workload with `perf c2c` collection (use **Building block: c2c hot cache
-lines**, Part 4), then filter the presentation to the functions from Phase 2.
+When the evidence suggests cache-line sharing, use [Building block: c2c hot cache
+lines](building-blocks.md#building-block-c2c-hot-cache-lines), then filter the
+presentation to the functions from Phase 2. For blocked mutex waiters or suspected
+bandwidth saturation, use the matching wait-time or bandwidth measurements from
+Phase 0b; c2c is not required to investigate those mechanisms.
 
 ### 3a. Collect and generate the full c2c report
 
@@ -195,9 +214,10 @@ Present the filtered table:
 | 0x...   | 9.1%     | `update_counter`                  | True sharing |
 ```
 
-If a jumping function does not appear in any hot cache line, note it: the bottleneck
-for that function may be compute or branch-miss rather than cache contention — revisit
-with **Flow B** for that function specifically.
+If a jumping function does not appear in a hot cache line, report the evidence limit.
+Absence of HITM does not exclude sleeping lock waiters, bandwidth saturation, or NUMA
+effects. Choose wait-time, bandwidth, or **Flow B** compute/branch investigation from
+the runtime evidence rather than inferring the cause from missing c2c entries.
 
 ---
 
@@ -208,11 +228,11 @@ bottleneck into one of these patterns:
 
 | Pattern | Signals | Resolution strategy |
 |---------|---------|---------------------|
-| **False sharing** | Jumping function writes to one struct field; another function (different thread) writes a different field on the same cache line (different offsets in c2c Offset column) | **RS: Structured false-sharing fix** (Part 5) |
-| **cmpxchg / Test-and-Set spin** | `lock cmpxchg` / `lock xchg` in hot path; function name contains `spin_lock`, `mutex`, `cas`, `try_lock`. To confirm: run **Building block: Annotate pattern scan** (Part 4) — the "Lock CAS / TAS" pattern will identify the specific instruction and its % | **RS: Test-and-Test-and-Set (TTAS)** (Part 5) |
-| **True sharing — statistics** | Contended field is a counter or accumulator (`atomic_inc`, `++`, `atomic_add`); no compare-exchange loop | **RS: Per-CPU statistics aggregation** (Part 5) |
+| **False sharing** | Jumping function writes to one struct field; another function (different thread) writes a different field on the same cache line (different offsets in c2c Offset column) | [Structured false-sharing fix](../patterns/false-sharing.md) |
+| **cmpxchg / Test-and-Set spin** | `lock cmpxchg` / `lock xchg` in hot path; function name contains `spin_lock`, `mutex`, `cas`, `try_lock`. Confirm the retry loop with [Annotate pattern scan](building-blocks.md#building-block-annotate-pattern-scan) | [Test-and-Test-and-Set (TTAS)](../patterns/ttas.md) |
+| **True sharing — statistics** | Contended field is a counter or accumulator (`atomic_inc`, `++`, `atomic_add`); no compare-exchange loop | [Per-CPU statistics aggregation](../patterns/per-cpu-stats.md) |
 | **True sharing — data** | Contended field is genuine shared data (not a counter, not a lock) | Consider atomics, RCU, finer lock granularity, or R/W primitives (see Flow C true-sharing guidance) |
-| **No c2c signal** | Function jumps in profile but does not appear in c2c top cache lines | Run **Flow B** on this function specifically to investigate compute or branch patterns |
+| **No c2c signal** | Function jumps in profile but does not appear in c2c top cache lines | Use observed worker states, lock waits and bandwidth to select the next sensor; use **Flow B** for supported compute/branch hypotheses |
 
 Document the diagnosis clearly before applying any fix. If multiple jumpers fall into
 different categories, address them in order of HITM percentage (highest first).
@@ -221,7 +241,8 @@ different categories, address them in order of HITM percentage (highest first).
 
 ## Phase 5 — Apply resolution
 
-Apply the resolution strategy named in the Phase 4 table. Detailed fix guidance lives in **Part 5** of `SKILL.md`, which delegates to the corresponding pattern in this skill.
+Apply the pattern linked in the Phase 4 table after confirming its mechanism. Other
+profile-to-pattern mappings are in [triggers/from-profile.md](../triggers/from-profile.md).
 
 Follow the "Presenting this to the user" section of the relevant strategy — show the
 affected struct or code, explain the problem, propose the fix, and wait for the user's

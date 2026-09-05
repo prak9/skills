@@ -74,6 +74,8 @@ description: 当文本本身是主要交付物时，进行中文或英文写作�
 5. 先做语义保真检查，再修文风：逐项核对主体、数字、否定、条件、因果强度、可能性和来源归属，最后修段落、句子与冗词。含高风险标记的编辑可用 `scripts/check_semantic_fidelity.py` 暴露表面漂移，但不得把脚本通过当作语义等价证明。
 6. 按任务交付。写作、改写、翻译默认只给成品；审阅按影响排序给出问题、原因和可执行修法。
 
+`check_semantic_fidelity.py` 的 JSON 保留 `status`、`findings`、`limitations`，另提供 `coverage`：中文词表覆盖原有标记，英文只探测否定、条件、情态词。已知语言可传 `--source-language zh|en|other` 与 `--revision-language zh|en|other`；默认 `auto` 只按文字范围选词表，不能可靠识别语言。未确认的拉丁文本、跨语言或不支持输入在无发现时返回 `not_evaluated`；数字或保护词漂移仍返回 `review_required`。`pass` 仅表示已覆盖的词面检查未发现差异；翻译、隐含意义和未覆盖项仍需语义复核。CLI 继续输出 JSON 并正常退出，不以退出码代表保真通过。
+
 ## 任务规则
 
 ### 从零写作
