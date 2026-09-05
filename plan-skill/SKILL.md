@@ -38,7 +38,7 @@ Never create a second hand-maintained view of state that can be derived from an 
 5. Read `references/unknowns-contract.md` when the territory is unfamiliar, important preferences are tacit, or implementation is likely to reveal constraints the prompt cannot contain.
 6. Read `references/preference-contract.md` when valid solutions differ materially, a preference must be inferred, or a requested method may conflict with its objective.
 7. Read `references/pre-execution-grill.md` only when unresolved judgment or evidence could change scope, method, risk, or whether to proceed.
-8. Read `references/foundation-contract.md` when an agent may act repeatedly or without line-by-line supervision, a change slice is broader than its verifier, or the work includes irreversible effects. Loop mode always reads it.
+8. Read `references/foundation-contract.md` for Loop mode, unattended repeated jobs, or material effects whose verification or recovery needs an explicit control contract. Ordinary autonomous editing and testing do not trigger it.
 9. Read `references/executable-spec-contract.md` for parallel agent work, ports, rewrites, migrations, preserving reference behavior, or a changed public/Agent-facing workflow whose delivery documentation forms part of acceptance.
 10. For Loop, read `references/loop-contract.md` before drafting its program and task state.
 11. Initialize durable state:
@@ -67,25 +67,25 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - Create later task packages just in time, after their dependencies and acceptance conditions are known.
 - A failed verifier changes the plan, retires an assumption, or triggers escalation; repeating output without new information is not progress.
 - If a checker passes but reality fails, treat it as a foundation defect: reopen acceptance, identify the escaped failure class, and add the cheapest decisive sensor.
-- When Clean becomes due, or before handoff, `待验收`, or `完成`, read `references/clean-contract.md` and compress stale or duplicated state before continuing.
+- When Clean becomes due, or before handoff, `待验收`, or `完成`, apply `references/clean-contract.md`. A short consistency check with a no-op record is sufficient when state is already concise; Clean is not a new approval gate.
 - Before `阻塞`, `待验收`, or `完成`, read `references/status-and-completion.md`.
 - For a shared abstraction change, read `references/abstraction-quality.md`.
 - To audit or repair existing plan state, read `references/audit-checklist.md`.
 
 ## Invariants
 
-- Planning is read-only unless the user also authorizes execution.
+- A plan-only request does not authorize implementation. When the user asks to build, fix, or carry out a plan, planning is part of that authorization: continue through implementation, proportionate verification, and delivery without asking to start again.
 - Every completed node has evidence. Lite and Full Linear record reflection only for material learning; Loop records one evidence-linked reflection per verified attempt. Record decision summaries, not hidden chain-of-thought.
-- Do not silently invent a material preference. Research discoverable facts, state consequential assumptions, and ask only when human judgment can change the plan.
+- Research discoverable facts and choose reversible details within the accepted bounds. Ask only for missing user judgment that materially changes the outcome and cannot be inferred safely; finish independent authorized work first, and do not reopen settled choices.
 - Treat unknowns as continuously discoverable: use the four classes as search lenses, then route each discovered unknown into existing plan state instead of maintaining a parallel unknowns diary.
 - Prefer declarative objectives with explicit bounds; reserve imperative constraints for fragile, high-stakes, or deliberately standardized paths and surface a materially better option without overriding the lock.
 - For behavior-preserving work, treat reference code, translated tests, and differential evidence as specification sources; document intentional differences instead of hiding them behind a broad "equivalent" claim.
-- `完成` and `待验收` require acceptance evidence; written code is not completion.
+- `完成` and `待验收` require acceptance evidence; written code is not completion. Use `待验收` only for an explicitly retained, still-pending owner decision. A template checkpoint, optional review, or the agent's desire for reassurance does not create one.
 - When evidence-validity checking is explicitly enabled, a recorded source, test, config, data, or acceptance change makes only the affected evidence stale. Unrelated unrecorded files do not force a full rerun. Fingerprints cannot substitute for coverage or behavioral verification.
 - The executor's self-report is never terminal evidence. Verification must be finer than the change slice and expose a path from acceptance condition to raw evidence.
 - A blocked item names the missing input, owner or external condition, and unblock action.
 - Loop mode has a finite budget, bounded execution scope, independent checker, sensor stack, granularity alignment, calibration rule, reflect trigger, and stop/escalation condition.
-- Preserve user constraints and existing project conventions; escalate before changing scope or acceptance criteria.
+- Preserve user constraints and existing project conventions. Escalate before changing a locked bound or adding unauthorized effects, not for ordinary method changes within the accepted task. Existing applicable authorization counts; pause only the dependent action.
 - Store historical facts only when they will change future execution; do not duplicate ordinary progress or Git history.
 - Clean may compress Markdown state but must preserve stable IDs, evidence links, and raw facts.
 - Boundary and handoff: `decision` owns the choice; `plan-skill` owns durable execution state; `invest` supplies investment research; `writing` shapes expression. Preserve confirmed goals, constraints, and conclusions; do not rerun upstream work unless they are missing or contradictory, and do not invoke all four by default.

@@ -134,7 +134,9 @@ papering over it with padding.
 2. Show the fields involved from the `perf c2c` Offset column and explain why
    they conflict even though the data is unrelated.
 3. Apply Step 1 (generous padding) and show the modified struct.
-4. Ask the user to rebuild and rerun — **do not skip to Step 3 without Step 2
-   confirmation**; the padding may be wrong.
-5. After the user confirms HITM dropped, propose the optimized layout and show
-   the new struct with grouping comments.
+4. In an authorized optimization, rebuild and rerun yourself — **do not skip to
+   Step 3 without Step 2 evidence**; the padding may be wrong. If the required
+   environment is unavailable, name that specific blocker rather than delegating
+   routine verification to the user.
+5. After measured HITM and throughput support the fix, refine the layout only when
+   its footprint matters to acceptance; show the final layout and verification.

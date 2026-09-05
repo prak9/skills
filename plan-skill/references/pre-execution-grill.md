@@ -6,14 +6,16 @@ Use this gate only when an unresolved judgment or evidence gap could change scop
 
 Use `Not required: <reason>` when the specification is accepted, behavior is directly observable, and no hidden decision is material.
 
-Set readiness to `Blocked` when at least one of these is true:
+Investigate readiness when one of these is material:
 
 - the claim, comparison, pass/fail evidence, or data-generating process is unclear;
 - cost, capacity, safety, irreversibility, or an external commitment could change the decision;
 - a polished artifact or local metric could look successful without answering the real question;
 - a domain owner retains judgment that cannot be recovered from code, documents, or data.
 
-Research discoverable facts before asking the user. Ask only for judgment that cannot be inferred safely, and stop as soon as the decisive uncertainty is bounded.
+Set `Blocked` only when the next dependent action cannot proceed within existing authorization and bounded uncertainty. A missing fact is not automatically a user question: research it or make the cheapest authorized diagnostic the next node. A ready diagnostic does not authorize a later gated action.
+
+Ask only for missing judgment that cannot be inferred safely, after useful independent work. End questioning as soon as the decisive uncertainty is bounded and continue the authorized task; readiness is not a request for another approval.
 
 ## Run The Grill
 

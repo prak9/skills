@@ -64,7 +64,7 @@ Report the tier as a one-liner: *"CPU vector width tier: AVX-512 (avx512f + avx5
 
 ## Building block: Ensure debug symbols
 
-Check whether the binary has DWARF debug info and, if it doesn't, offer to recompile with `-g` before any expensive perf collection begins. Running this check first avoids wasted time: a `perf annotate` pass on a stripped binary yields only assembly addresses, not source line numbers, making the results harder to act on.
+Check whether the binary has DWARF debug info before expensive collection. If absent, use an authorized isolated rebuild or the assembly fallback below; source-line mapping is useful but not a reason to restart an approval conversation.
 
 **Run this building block before `perf record` in any flow that will reach `perf annotate`.**
 
@@ -86,17 +86,13 @@ Also check whether the binary is stripped (no symbol names at all):
 nm <binary> 2>/dev/null | head -3 || echo "stripped"
 ```
 
-### Step 3 — Offer to recompile (if DWARF absent)
+### Step 3 — Rebuild or use assembly (if DWARF absent)
 
-> ⛔ **If the workload is `pts/<name>`, STOP here.** Do not attempt any manual recompilation. This `performance` workflow MUST handle the rebuild — it owns source extraction, `-g` injection, and binary deployment for all PTS tests.
+For `pts/<name>`, route to Part 1 of this skill for the source extraction and rebuild, then resume collection; do not stop the task or manually bypass the benchmark's build layout.
 
-For all other workloads, **check for a build skill first** (see priority table below). If
-no skill is available, ask the user:
-> *"The binary has no debug info (`-g` was not used at compile time), so `perf annotate` will show assembly addresses only — no source line numbers. Would you like me to recompile with `-g` for better annotation? (I'll re-run the profiling after.)"*
+For other workloads, inspect the existing build command. An isolated diagnostic build or rebuild already covered by the task can proceed with only `-g` added. Do not replace a live/system binary. If rebuilding would require new permission or unavailable context, continue with assembly and request only the missing decision when source mapping is essential.
 
-If the user declines, note in the final report that source line mapping is unavailable and proceed.
-
-**If the user agrees, recompile — use a skill if one is available:**
+Use a relevant build skill when available; its absence is not itself a blocker:
 
 | Priority | Workload type | Recompile approach |
 |---|---|---|
@@ -112,7 +108,7 @@ After recompiling, verify the DWARF is now present by re-running Step 2.
 
 If DWARF was present or has been added: *"Binary has debug symbols — source line annotation is available."*
 
-If DWARF is absent and user declined recompile: *"Proceeding without debug symbols. `perf annotate` will show assembly only; source line numbers will not be available in the report."*
+If DWARF remains absent: *"Proceeding without debug symbols. `perf annotate` will show assembly only; source line numbers will not be available in the report."*
 
 **Note**: after recompiling with `-g`, any existing `perf.data` is stale (the addresses no longer match). The calling flow must re-record before annotating.
 
@@ -161,7 +157,7 @@ Capture a performance recording. All flows and blocks that need a `perf.data` fi
 
 **Parameters:**
 - **command / workload** — what to profile
-- **call graphs** — whether to capture caller chains (needed for Top-N functions, Flow B interpretation); ask the user if not specified
+- **call graphs** — capture caller chains when needed for attribution; choose the unwinder and sampling rate from available symbols, stack support, and recording overhead. Ask only if the required collection exceeds authorized runtime or scope.
 
 ### Invocation
 
@@ -249,7 +245,7 @@ addr2line -e <binary> -f -i <code_address>
 objdump -d --no-show-raw-insn <binary> | grep -A 60 "<function_name>:"
 ```
 
-Correlate the target address against the instruction offsets in the disassembly manually. Offer to recompile with `-g` if the source is available — it's faster and more reliable.
+Correlate the target address against instruction offsets in the disassembly, or follow the authorized rebuild path in **Ensure debug symbols** when source mapping is needed.
 
 ### For kernel code (`[kernel.kallsyms]`)
 
@@ -403,7 +399,7 @@ Include a one-line header: profiled command + sample count (from "Samples: N of 
 
 Given a known-hot function, pinpoint which source lines consume cycles. Returns source file + line numbers — no assembly analysis, no cross-skill calls.
 
-**Prerequisite**: binary compiled with `-g`. If stripped, offer to recompile first.
+**Prerequisite**: source-line mapping needs debug symbols. If absent, use **Ensure debug symbols**; do not invent source lines from assembly.
 
 **N is a parameter:**
 - Specified (e.g. "top 5 lines") → hard limit
@@ -887,7 +883,7 @@ The agent should inject these extra flags into the project's build command. The 
 | `make` | `make CFLAGS="$CFLAGS -fdump-tree-profile_estimate-lineno -dumpdir dump/" ...` |
 | CMake | `cmake -DCMAKE_C_FLAGS="... -fdump-tree-profile_estimate-lineno -dumpdir dump/" ...` |
 | Meson | Add to `c_args` in `meson.build` or pass `--cflags-override` depending on project |
-| Custom build | Ask the user for the correct flag injection method |
+| Custom build | Inspect its scripts/docs for flag injection; ask only when the method cannot be established safely |
 
 The flags to inject:
 ```

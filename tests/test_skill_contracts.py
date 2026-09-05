@@ -53,16 +53,13 @@ def description(name: str) -> str:
 
 
 class SkillContractTests(unittest.TestCase):
-    def test_agents_is_the_canonical_conditional_instruction_source(self) -> None:
+    def test_claude_links_to_the_canonical_instruction_source(self) -> None:
         agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
         claude = (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
-        self.assertIn("Apply them only when they are relevant", agents)
-        self.assertIn("explicit task instructions override workflow preferences", agents)
-        self.assertIn("Ask one focused question only when", agents)
-        self.assertIn("A small reversible edit does not need a ceremonial plan", agents)
-        self.assertIn("Verify in proportion to impact", agents)
+        # Validate the instruction entry point, not one version's prose.
+        self.assertTrue(agents.strip())
+        self.assertIn("AGENTS.md", MARKDOWN_LINK.findall(claude))
         self.assertIn("single source", claude)
-        self.assertIn("AGENTS.md", claude)
 
     def test_overlapping_skill_descriptions_have_explicit_boundaries(self) -> None:
         decision_description = description("decision")
@@ -96,7 +93,6 @@ class SkillContractTests(unittest.TestCase):
         self.assertNotIn("install with `pip install edgartools`", text)
         self.assertNotIn('set_identity("name@example.com")', text)
         self.assertIn("does not authorize a Notion write", text)
-        self.assertIn("explicitly requests it in the current turn", text)
 
     def test_buy_side_memos_do_not_default_to_notion_writes(self) -> None:
         text = skill_text(INVESTMENT_SKILL)

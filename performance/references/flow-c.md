@@ -176,7 +176,7 @@ Common resolution strategies for true sharing without the spin pattern:
 - **Finer lock granularity** — split a coarse lock so fewer threads compete
 - **Convert to a R/W primitive** — if reads dominate, a reader/writer lock reduces exclusive contention
 
-Recommend the best fit based on data type and access pattern, then stop and ask the user for further direction.
+Select the best supported fit from the data type and access pattern. For diagnosis-only requests, report it; for an authorized fix, implement and verify it. Ask only if the choice changes an unresolved semantic or resource constraint.
 ````
 
 ### Phase 5 — If no significant entries found

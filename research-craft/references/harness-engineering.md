@@ -30,7 +30,7 @@ Regression anchors and rollback:
 Human checkpoints:
 ```
 
-Ask for human judgment at goals, taste, material risk, and acceptance boundaries. Do not require approval for every safe, ordinary step inside an agreed contract.
+Ask for human judgment only when an unresolved goal, taste choice, material risk, or reserved acceptance decision cannot be settled from the agreed contract. Reuse prior answers and applicable authorization; do not require approval for ordinary steps or manufacture a final sign-off. Prepare independent authorized work before pausing the affected branch.
 
 ## Close the verifier loop before scaling
 
@@ -144,7 +144,7 @@ If the evaluator is fuzzy, slow, leaked, or gameable, improve it before increasi
 
 ## Earn autonomy by task class
 
-Autonomy belongs to a tested task class and evidence regime, not to an agent identity. Advance one rung at a time:
+Standing unattended autonomy belongs to a tested task class and evidence regime, not to an agent identity. The tiers separate authority; they are not sequential approval rituals for a task the user has already authorized:
 
 | Tier | Authority |
 |---|---|

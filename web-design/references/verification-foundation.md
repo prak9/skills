@@ -10,7 +10,7 @@ Use this contract to prevent a design loop from becoming a fast producer of plau
 | Actuator | Files, components, tokens, assets, tools, and external effects the implementation may change. |
 | Sensors | Independent structural, behavioral, rendered, performance, and human checks. |
 | State | Current slice, frozen fixtures, screenshots, test output, decisions, and evidence-linked reflection. |
-| Controller | Finite iteration budget, revision rule, stop/escalation condition, and approval gate. |
+| Controller | Acceptance, proportionate iteration, actual resource limits, and any task-specific approval boundary. |
 
 The maker may run the sensors, but “I implemented it” or “it looks polished” is never terminal evidence.
 
@@ -20,7 +20,7 @@ Create this map privately for material acceptance conditions:
 
 | Claim | Plausible failure | Cheapest decisive sensor | Raw evidence | Owner / gate |
 |---|---|---|---|---|
-| Primary task is clear | competing hierarchy or hidden action | rendered first-viewport review | screenshot | independent visual reviewer |
+| Primary task is clear | competing hierarchy or hidden action | rendered first-viewport review | screenshot | evidence-based visual review; independent pass when valuable |
 | Flow works | dead end, stale state, wrong navigation | interaction test | trace or test output | deterministic checker |
 | Accessible | unlabeled or keyboard-inoperable control | semantic/accessibility check plus keyboard run | DOM report and scenario | deterministic checker |
 | Responsive | clipping, overflow, unusable density | narrow and wide render | screenshots | visual checker |
@@ -47,9 +47,9 @@ Use the cheapest layer that can actually decide the claim:
 4. Runtime probes for latency, layout shift, hydration, and network behavior.
 5. Rendered screenshots across representative viewports, states, and themes.
 6. Independent visual/rubric review for hierarchy, composition, density, and brand fit.
-7. Human approval for taste, policy, commercial meaning, and high-consequence tradeoffs.
+7. Human judgment for material unresolved taste, policy, commercial meaning, or high-consequence tradeoffs that the user has not already settled or delegated.
 
-Automation can find missing names and overflow; it cannot fully decide whether the page has the right focal relationship. Human taste cannot replace a keyboard test. Route each bug to its layer.
+Automation can find missing names and overflow; it cannot fully decide whether the page has the right focal relationship. Human taste cannot replace a keyboard test. Route each bug to its layer. Independence means checking against evidence rather than the maker's assertion; it does not require another agent or human sign-off on every page. Use the supplied brand contract for routine choices.
 
 ## Freeze The Evaluator
 
@@ -80,11 +80,16 @@ Inspect screenshots at actual size, not only thumbnails. Check hierarchy, alignm
 
 Fix one highest-impact systemic defect per pass. Preserve what the evidence says is working. A failed render changes the composition, implementation, fixture, or explicit acceptance contract; repeating cosmetic tweaks without a new hypothesis is not progress.
 
-Stop when:
+Complete when the requested scope is implemented, declared acceptance has supporting
+evidence, and no known material defect remains in the tested matrix. These conditions
+are conjunctive, not alternative reasons to stop.
 
-- declared acceptance and evidence paths pass;
-- no known material defect remains in the tested matrix;
-- the finite iteration budget is exhausted; or
-- an unresolved brand, taste, content, or product judgment requires its human owner.
+An iteration checkpoint triggers reassessment, not automatic completion. Continue
+useful in-scope work while a safe next step exists; do not keep polishing after the
+acceptance bar is met. If an actual resource limit, unavailable required sensor, or
+material human-only decision prevents completion, report the precise remaining gap
+and deliver the verified portion without calling the whole task complete.
 
-Completion reports the implementation, evidence, untested cases, and retained judgment. Keep the internal scorecard and process log out of the user-facing artifact unless requested.
+Completion reports the implementation, evidence, untested cases, and any genuinely
+retained judgment. Keep the internal scorecard and process log out of the user-facing
+artifact unless requested.

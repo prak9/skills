@@ -16,7 +16,7 @@ Create interfaces that are specific to the user's job, content, brand, and const
 5. Make every important state keyboard-usable, responsive, accessible, and recoverable.
 6. Refine detail and delight only after structure, behavior, and verification are sound.
 
-Ask only when missing human judgment can materially change the audience, content meaning, brand direction, primary flow, or acceptance bar. Research code and references before asking. When taste is tacit, show cheap contrasting directions instead of asking the user to describe an aesthetic vocabulary they do not have.
+Ask only when missing human judgment materially changes the result and cannot be inferred from the supplied brief, product, or references. Otherwise choose a reversible direction and proceed. Cheap contrasting directions can inform that choice; they are not a mandatory user-selection gate.
 
 ## Inspect Before Designing
 
@@ -25,7 +25,7 @@ Ask only when missing human judgment can materially change the audience, content
 - Inventory content, actions, states, evidence, unknowns, and constraints. Distinguish supplied facts from invented placeholder copy.
 - Inspect supplied references directly. Extract hierarchy, rhythm, geometry, typography, interaction, and density; do not copy brand assets or surface decoration blindly.
 - In an existing product, reuse its primitives before adding new ones. In a greenfield task, choose the smallest runnable stack; semantic HTML, CSS, and small JavaScript are the fallback.
-- Do not add a framework, component library, icon set, font service, analytics package, or animation dependency unless it earns its cost and the user authorizes it.
+- Reuse existing dependencies. Add a justified task-local dependency when covered by the requested implementation, and explain its value; do not ask again for ordinary setup. A new paid service, external data transfer, tracking, or material architecture commitment outside the brief needs its own authorization.
 
 ## Establish The Design Direction
 
@@ -87,7 +87,7 @@ Review in this order:
 7. **Trust:** Are semantics, contrast, labels, sources, privacy, and claims sound?
 8. **Restraint:** Can any card, border, pill, icon, effect, label, or paragraph be removed without losing meaning or affordance? Remove it.
 
-Fix the highest-impact systemic defect, render again, and stop only when acceptance passes, the finite iteration budget is reached, or a retained human judgment is needed. Keep critique and iteration notes internal unless requested.
+Fix material defects and rerun the affected checks until the requested interface passes acceptance. A vertical slice or first successful build is not the end of a broader implementation request. Stop polishing once acceptance passes; a self-imposed iteration count is a checkpoint, not permission to abandon unfinished work. At a real limit or necessary human decision, report the incomplete portion accurately. Keep critique notes internal unless requested.
 
 ## Deliver The Result
 

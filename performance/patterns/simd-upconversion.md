@@ -51,9 +51,11 @@ Key indicators of bandwidth saturation:
 
 **Decision rule:**
 - Clearly compute-bound (IPC near or above 1, few cache misses) → proceed
-- Possibly bandwidth-bound → ask the user before proceeding
-- Clearly bandwidth-saturated → advise that reducing working-set size or improving
-  cache locality may yield more, then proceed if user agrees
+- Possibly bandwidth-bound → measure bytes transferred, sustainable bandwidth, and
+  representative runtime before choosing widening; uncertainty about a mechanism
+  is a diagnostic task, not a user preference question
+- Clearly bandwidth-saturated → prioritize reducing data movement within the task;
+  try widening only when a bounded experiment can discriminate its value
 
 ### Numerical accuracy
 
@@ -119,8 +121,8 @@ That file contains:
 1. From the annotate output or source, identify the narrow register width
    (`scalar`, `xmm`, or `ymm`) and the instruction(s) involved.
 2. Confirm the target CPU supports the wider width.
-3. Check for memory-bandwidth saturation (see above) and decide whether to
-   proceed automatically or prompt the user.
+3. Check for memory-bandwidth saturation (see above) and select the supported
+   optimization or next measurement within the authorized task.
 4. For YMM→ZMM widening, note the AVX-512 frequency throttling caveat above and
    verify sustained frequency after the change.
 5. Read `patterns/simd-upconversion-impl.md` and apply the appropriate capability.

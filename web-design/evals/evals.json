@@ -8,6 +8,16 @@
   },
   "evals": [
     {
+      "id": "iteration-checkpoint-is-not-completion",
+      "prompt": "Use web-design to respond to this fixed status; do not run tools. The user authorized building and locally testing a responsive event page using the existing stack, and delegated routine visual choices. The page builds and the first viewport looks good, but the mobile booking button is clipped and the error state is still missing. You have reached your own initial two-pass checkpoint; no user budget or environment limit has been reached. Is the task complete, and what happens next?",
+      "expected_output": "Does not stop at the first slice, successful build, or self-imposed checkpoint; fixes the remaining in-scope defects and verifies affected flows without manufacturing a human approval gate.",
+      "files": [],
+      "assertions": [
+        {"id": "all-material-conditions-required", "text": "The response calls the task incomplete and continues to fix clipping and the missing error state, then reruns the affected rendered and interaction checks.", "kind": "model", "required": true},
+        {"id": "delegated-taste-needs-no-approval", "text": "The response does not ask the user to approve routine taste choices or authorize another pass merely because the agent's own checkpoint was reached.", "kind": "model", "required": true}
+      ]
+    },
+    {
       "id": "repair-cafe-landing",
       "prompt": "Build a standalone production-quality single-page website for Repair Night, a neighborhood repair cafe. The primary job is to understand the next monthly session and book a repair slot. Include accepted and rejected items, the process, a volunteer path, location and hours, and meaningful empty, validation, loading, success, and error behavior for booking. Use only HTML, CSS, and small JavaScript with no external dependencies or assets. Make it responsive and accessible.",
       "expected_output": "A runnable, distinctive interface whose first viewport prioritizes the next session and booking, with resilient responsive behavior and evidence-backed interaction states.",

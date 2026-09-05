@@ -33,6 +33,8 @@ Choose the lightest mode that protects the claim:
 
 Do not force exploratory work into fake precision. Increase control as soon as the work makes a comparative, causal, performance, safety, or deployment claim.
 
+Treat the following workflow as decision criteria, not a required sequence of forms or approvals. Use the minimum contract that can evaluate this request. Reuse supplied goals, budgets, and permission boundaries; clarify only consequential gaps that inspection cannot resolve. A request to implement an experiment or instruction change authorizes its scoped local work, not deployment or an external publication.
+
 ## 1. Choose the question backward from the outcome
 
 - State the outcome that should exist if the research succeeds; reason backward to the evidence and experiments needed to produce it.
@@ -139,7 +141,7 @@ Require the gates relevant to the claim:
 - **Anti-Goodhart:** check whether the candidate learned the judge, leakage, artifact format, or benchmark quirks instead of the objective.
 - **Operational validity:** account for execution friction, capacity, latency, permissions, maintainability, and downstream ownership.
 
-If a required gate fails, reject the claim even when the headline metric improves.
+If a required gate fails, reject the claim even when the headline metric improves. This does not automatically end an authorized iteration task: continue with a supported correction or discriminating probe within its budget. Stop when the requested outcome is reached, the agreed budget is exhausted, or a real blocker requires new input or authority.
 
 ## 8. Turn every run into durable learning
 
@@ -169,7 +171,7 @@ Maintain three separations:
 
 - Spend more compute, data, capital, or autonomy only after the small version works and the protocol survives replay.
 - Ablate until the component carrying the result is known.
-- Re-run the strongest disconfirming test before promotion.
+- Before promotion, require current evidence from the strongest disconfirming test. Reuse a valid result for the same candidate and protocol; rerun when relevant changes or unresolved concerns invalidate it.
 - Explain the work clearly enough that another person can reproduce the setup, understand negative results, and challenge the inference.
 - Wander into adjacent fields when the current framing stalls; breadth is insurance against a saturated local optimum.
 - Expose provisional ideas to trusted critics early enough that they can kill weak work cheaply.
@@ -177,7 +179,7 @@ Maintain three separations:
 
 ## Decision-first handoff
 
-End substantial work with:
+End substantial work with the applicable fields below; omit empty fields and do not invent a human checkpoint or another experiment after the requested result is supported:
 
 ```text
 Decision and confidence:

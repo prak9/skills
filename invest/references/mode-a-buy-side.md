@@ -12,7 +12,7 @@ Use this mode for a bare ticker, a general stock-analysis request, an investment
 
 ## Common Workflow
 
-1. **Define the security and boundary.** Confirm company, exchange, ticker, fiscal year, reporting currency, business/segment structure, latest source set, and disclosure limits. Ask only when ambiguity could select the wrong security.
+1. **Define the security and boundary.** Resolve company, exchange, ticker, fiscal year, reporting currency, business/segment structure, latest source set, and disclosure limits from context and sources. This is a research check, not a user confirmation step; ask only when unresolved ambiguity could select the wrong security.
 2. **Lead with the investment view.** State rating bias, horizon, current price, valuation range or qualitative bracket, implied upside/downside when verified, core thesis, market debate, variant perception, and the breakpoint that would force a downgrade or re-underwriting.
 3. **Map industry economics.** Locate the company in its value chain; identify suppliers, customers, substitutes, scarce inputs, bargaining power, profit pool, supply/demand cycle, and structural versus cyclical drivers.
 4. **Assess competition and moat direction.** Compare share direction, margins, pricing power, switching costs, scale, network/data/R&D advantages, customer concentration, entrants, and substitutes. Say whether the moat is widening or narrowing.

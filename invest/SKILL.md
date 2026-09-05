@@ -39,6 +39,8 @@ Do not trigger Modes B, C, or E from a bare ticker or generic stock-analysis req
 
 Depth controls evidence breadth and model detail, not truthfulness. A Quick result must expose missing inputs; a Full result must not pad length with irrelevant history.
 
+Proceed with the selected depth without asking the user to approve the route or supply facts available through authorized research. Ask only for a user-owned choice that materially changes the task and cannot be resolved from context. Missing consensus, history, or a model input narrows the claim; it does not automatically block all useful research. Complete the requested checks that remain possible and name any undelivered component instead of silently replacing Full research with Quick.
+
 ## Shared Source Discipline
 
 For time-sensitive prices, market cap, filings, guidance, consensus, multiples, earnings calls, presentations, catalysts, technical data, or regulation, verify current information before using it.
@@ -77,13 +79,13 @@ Monitoring must classify observations as no change, confidence update, valuation
 
 An analysis, full memo, monitoring request, or material thesis change **does not authorize a Notion write**.
 
-Write only when the user explicitly requests it in the current turn, or when an existing, unrevoked standing authorization clearly covers both this research type and the exact target. A personal default belongs in user configuration, not this shared skill. Material change does not expand authorization.
+Write only when the user explicitly requests it for the current task (including an earlier turn of that same unfinished task), or when an existing, unrevoked standing authorization clearly covers both this research type and the exact target. Reuse that authorization without asking again; revocation or a material scope/target change requires reevaluation. An unrelated prior write request is not standing authorization. A personal default belongs in user configuration, not this shared skill. Material change does not expand authorization.
 
 When authorized:
 
-- resolve exactly one target; do not guess among multiple pages/databases;
+- resolve exactly one target from the request, task context, and read-only search; ask only if multiple plausible destinations remain. Do not make the user repeat a target already resolved;
 - preserve the as-of date, decision, crux, scenarios, citations, and falsifiers;
 - for a monitoring update, append to the resolved prior thesis page rather than creating duplicates; a `no thesis change` entry is written only when the standing authorization explicitly includes routine logging;
-- require a returned Notion page URL or ID before claiming success.
+- require a returned Notion page URL or ID and a proportionate readback of the destination/parent and expected content before claiming success. Report the direct link; a creation receipt alone does not establish that the complete report reached the requested location. If a write response is uncertain, check for the existing page before retrying to avoid duplicates.
 
-If the authorized target is unavailable, ambiguous, or unauthenticated, deliver the complete result and state `Notion archive pending`.
+If delivery is genuinely blocked after available in-scope resolution checks, deliver the research completed so far, distinguish research completeness from archive status, state `Notion archive pending`, and name the exact missing target or access. Do not call the overall task complete merely because the text is ready; continue an authorized archive when its blocker is resolved.

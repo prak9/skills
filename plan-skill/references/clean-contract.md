@@ -7,13 +7,13 @@ Clean is a periodic compression and alignment pass over durable planning state. 
 Set `Clean state` to `Due` when any of these occurs:
 
 - before a handoff, long pause, or transition to `待验收` or `完成`;
-- after three completed nodes or five consequential runs awaiting distillation since the last Clean;
+- when accumulated nodes or consequential runs make recovery materially harder; use a numeric cadence only if the project explicitly sets one;
 - when `program.md`, the active task, `memory.md`, or referenced living docs duplicate, contradict, or obscure the current state;
 - when a plan exceeds its context budget or added concepts no longer earn their maintenance cost;
 - when generated output is no longer traceable from intent through change and evidence, or the owner cannot explain the active system well enough to re-judge it;
 - during Loop `Reflect` when stale hypotheses or repeated attempts make the next action harder to recover.
 
-Do not run Clean on every update. If none of the triggers fired, leave the state alone.
+Do not run Clean on every update. If none of the triggers fired, leave the state alone. At a handoff or terminal transition, an already concise and consistent plan needs only a brief check and `Last clean: N/A: <concrete reason>`; do not manufacture rewrites, reflections, or approval work.
 
 ## Procedure
 

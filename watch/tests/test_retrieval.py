@@ -155,6 +155,35 @@ class RetrievalTests(unittest.TestCase):
 
 
 class SetupCliTests(unittest.TestCase):
+    def test_keyless_first_run_is_ready_without_install_or_config_write(self):
+        with patch.object(setup, "_check_binaries", return_value=[]), patch.object(
+            setup, "_have_api_key", return_value=(False, None)
+        ), patch.object(setup, "is_first_run", return_value=True), patch.object(
+            setup, "get_config", return_value={"detail": "balanced"}
+        ), patch.object(setup, "_scaffold_env") as scaffold, contextlib.redirect_stderr(io.StringIO()) as stderr:
+            self.assertTrue(setup._status()["can_proceed"])
+            self.assertEqual(0, setup.cmd_check())
+            self.assertEqual("", stderr.getvalue())
+            scaffold.assert_not_called()
+
+    def test_missing_binaries_remain_a_blocker_without_an_api_key(self):
+        with patch.object(setup, "_check_binaries", return_value=["ffmpeg"]), patch.object(
+            setup, "_have_api_key", return_value=(False, None)
+        ), patch.object(setup, "is_first_run", return_value=True), patch.object(
+            setup, "get_config", return_value={"detail": "balanced"}
+        ), contextlib.redirect_stderr(io.StringIO()):
+            self.assertFalse(setup._status()["can_proceed"])
+            self.assertEqual(2, setup.cmd_check())
+
+    def test_keyless_install_completes_without_requesting_a_secret(self):
+        with tempfile.TemporaryDirectory() as directory, patch.object(
+            setup, "CONFIG_DIR", Path(directory)
+        ), patch.object(setup, "CONFIG_FILE", Path(directory) / ".env"), patch.object(
+            setup, "_check_binaries", return_value=[]
+        ), patch.object(setup, "_have_api_key", return_value=(False, None)), contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(0, setup.cmd_install())
+            self.assertIn("SETUP_COMPLETE=true", setup.CONFIG_FILE.read_text())
+
     def test_help_and_bad_arguments_never_install(self):
         for argv, code in ((["--help"], 0), (["--chekc"], 2), (["--check", "oops"], 2)):
             with self.subTest(argv=argv), patch.object(sys, "argv", ["setup.py", *argv]), patch.object(

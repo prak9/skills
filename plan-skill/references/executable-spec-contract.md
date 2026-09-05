@@ -62,7 +62,7 @@ Align granularity: the task slice must be smaller than the verifier's ability to
 
 Do not call the specification ready until:
 
-- for delegated work, independent executor and checker interpretations agree on the required behavior and scope;
+- for delegated work, the packet is clear enough to execute and its evidence can be checked independently; resolve a material disagreement when it appears, but do not require an acknowledgment round before starting;
 - each agent packet, when used, has explicit inputs, outputs, ownership, and acceptance evidence;
 - authoritative references and their limits are named;
 - behavior-preserving work has a translated or differential verification path;

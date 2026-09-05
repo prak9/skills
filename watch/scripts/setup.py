@@ -2,7 +2,7 @@
 """Setup / preflight for /watch.
 
 Modes:
-  setup.py --check      Silent preflight. Exit 0 if ready, 2/3/4 on failure.
+  setup.py --check      Silent preflight. Exit 0 if ready, 2 if binaries are missing.
   setup.py --json       Machine-readable status for the agent to parse.
   setup.py              Installer. Auto-installs deps, scaffolds .env, marks SETUP_COMPLETE.
 
@@ -53,7 +53,7 @@ ENV_TEMPLATE = """# /watch API configuration
 GROQ_API_KEY=
 OPENAI_API_KEY=
 
-# Default watch behavior (the /watch first-run wizard sets this for you).
+# Optional persistent default; task-specific --detail does not change it.
 # Allowed values: transcript | efficient | balanced | token-burner
 # Keep the value on its own line with no trailing comment.
 # WATCH_DETAIL=balanced
@@ -143,7 +143,7 @@ def _scaffold_env() -> bool:
 def _write_setup_complete() -> None:
     """Idempotently append SETUP_COMPLETE=true to .env.
 
-    Used only after a fully successful install (deps + key). Future sessions
+    Used after dependencies are ready; an API key is optional. Future sessions
     detect this marker to skip wizard-style UI and stay silent.
     """
     CONFIG_DIR.mkdir(parents=True, exist_ok=True)
@@ -218,14 +218,9 @@ def _install_hint_windows(missing: list[str]) -> str:
 def _status() -> dict:
     """Structured preflight snapshot.
 
-    `status` describes the *ideal* state (a Whisper key is encouraged), so a
-    keyless install still reports `needs_key` on the very first run — that's
-    the agent's cue to encourage adding one.
-
-    `can_proceed` is the operational gate: /watch can run as long as the
-    binaries are present AND the user has either set a key or already finished
-    setup (consciously opting out of Whisper). A keyless user who completed
-    setup is NOT nagged on every call.
+    `status` retains the legacy key-availability labels for callers. They are
+    informational: only missing binaries block `can_proceed`. Captions and
+    frames do not require a Whisper account or a completed setup wizard.
     """
     missing = _check_binaries()
     has_key, backend = _have_api_key()
@@ -240,7 +235,7 @@ def _status() -> dict:
     else:
         status = "needs_key"
 
-    can_proceed = (not missing) and (has_key or setup_complete)
+    can_proceed = not missing
 
     cfg = get_config()
     return {
@@ -260,14 +255,8 @@ def _status() -> dict:
 def cmd_check() -> int:
     """Silent-on-success preflight.
 
-    Exit 0 with no output when /watch can run. A keyless user who already
-    finished setup (SETUP_COMPLETE=true) counts as ready — Whisper is
-    encouraged, not required — so they are never nagged on follow-up calls.
-
-    On a state that blocks /watch, print one actionable line to stderr:
-      2 → binaries missing
-      3 → genuine first run with no API key (encourage one)
-      4 → both missing
+    Exit 0 without a config file or API key when binaries are present.
+    Otherwise print the missing dependencies and return 2; never install.
     """
     s = _status()
     if s["can_proceed"]:
@@ -276,8 +265,6 @@ def cmd_check() -> int:
     parts = []
     if s["missing_binaries"]:
         parts.append(f"missing binaries: {', '.join(s['missing_binaries'])}")
-    if not s["has_api_key"] and not s["setup_complete"]:
-        parts.append("no Whisper API key (GROQ_API_KEY or OPENAI_API_KEY)")
     installer = Path(__file__).resolve()
     sys.stderr.write(
         f"[watch] setup incomplete ({'; '.join(parts)}). "
@@ -285,11 +272,7 @@ def cmd_check() -> int:
     )
     sys.stderr.flush()
 
-    if s["missing_binaries"] and not s["has_api_key"]:
-        return 4
-    if s["missing_binaries"]:
-        return 2
-    return 3
+    return 2
 
 
 def cmd_json() -> int:
@@ -333,22 +316,15 @@ def cmd_install() -> int:
         print(f"[setup] config exists: {CONFIG_FILE}")
 
     has_key, backend = _have_api_key()
+    _write_setup_complete()
     if has_key:
-        _write_setup_complete()
         print(f"[setup] ready. whisper backend: {backend}")
         if installed_deps:
             print("[setup] installed dependencies; /watch is fully set up.")
         return 0
 
-    print("")
-    print("[setup] one step left: add a Whisper API key.")
-    print("")
-    print(f"  Edit {CONFIG_FILE} and set either:")
-    print("    GROQ_API_KEY=...    (preferred — cheaper, faster; get one at console.groq.com/keys)")
-    print("    OPENAI_API_KEY=...  (fallback; get one at platform.openai.com/api-keys)")
-    print("")
-    print("  Without a key, /watch still works but videos without captions come back frames-only.")
-    return 3
+    print("[setup] ready without Whisper; native captions and frames remain available.")
+    return 0
 
 
 def main() -> int:

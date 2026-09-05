@@ -3,13 +3,13 @@
 
 ### Phase 0 — Ensure debug symbols
 
-Run [Building block: Ensure debug symbols](building-blocks.md#building-block-ensure-debug-symbols) on the binary before recording. If the binary lacks DWARF and the user agrees to recompile, do so now — before Phase 1 — so that the recording and annotation use the same binary. If the user declines, note the limitation and proceed.
+Run [Building block: Ensure debug symbols](building-blocks.md#building-block-ensure-debug-symbols) before recording. Complete any authorized rebuild now so recording and annotation use the same binary; otherwise note the assembly-only limitation and proceed.
 
 ### Phase 1 — Record
 
 Use [Building block: perf record](building-blocks.md#building-block-perf-record).
 
-**After proposing this, ask the user:** *"Would you also like call graph data? It shows why functions are hot (the callers that led to them), not just which functions are hot."* If the prompt is already clear on this, skip the question. If the user agrees, pass `--call-graph dwarf`.
+Include call graphs when caller attribution matters and the recording overhead fits the task. Select `--call-graph dwarf` or a supported lower-overhead unwinder; do not ask the user to choose an ordinary diagnostic flag.
 
 ### Phase 2 — Report
 

@@ -1,0 +1,2 @@
+{"id":"default-polish-no-mode-approval","prompt":"优化文字：这个方案能能在周五交付，前提是接口按时开放。","expected_behavior":"deliver_polished_text_directly","must_include":["周五","前提是接口按时开放"],"must_not_include":["请选择编辑档位","是否需要我开始","提纲"]}
+{"id":"full-translation-not-outline","prompt":"翻译全文为中文：The pilot may improve retention. It has not established causality. We will test the effect again next quarter.","expected_behavior":"deliver_entire_translation_with_conditions","must_include":["可能","尚未","因果","下季度"],"must_not_include":["是否继续翻译","以下是翻译提纲","只给第一句"]}

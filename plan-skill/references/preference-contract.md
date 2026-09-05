@@ -7,7 +7,7 @@ Use this contract when several valid solutions differ on a tradeoff, an inferred
 1. Read repository instructions, rules, skills, specs, and accepted decisions before asking for preferences already recorded there.
 2. Identify the one to three decisions or assumptions that could materially change architecture, cost, latency, safety, scope, acceptance, or whether to proceed.
 3. Separate discoverable facts from human preferences. Research facts; ask only for judgment that cannot be inferred safely.
-4. When judgment is missing, ask one Socratic question at a time and present the concrete tradeoff. Stop when the solution space is bounded enough to proceed.
+4. For a consequential unresolved user choice, present the concrete tradeoff and ask the smallest useful question. Prefer a reviewable example when it can be produced within scope. Do not interview about reversible implementation details or already accepted choices; continue once the solution space is bounded enough.
 
 Do not turn preference discovery into a questionnaire. If two choices lead to effectively the same implementation, the preference is not planning state.
 
@@ -37,7 +37,7 @@ Record the smallest useful preference contract:
 - **Imperative bounds:** non-negotiable method, interface, threshold, or process, paired with its rationale.
 - **Negotiable space:** choices the agent may make without approval.
 - **Material assumptions:** inferred preferences whose failure would change the plan.
-- **Escalate when:** a preference conflicts, a bound must move, or evidence reveals an option materially better at the stated objective.
+- **Escalate when:** an authoritative preference conflicts or a locked bound must move. A better option inside negotiable space may be adopted and recorded without another approval.
 
 Use stable `PREF-*` IDs in Full only when tasks must reference several preferences or a preference decision must survive handoff. Keep a Lite contract inline.
 

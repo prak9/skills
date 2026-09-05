@@ -27,74 +27,37 @@ if [ ! -f "$SKILL_DIR/scripts/watch.py" ]; then
 fi
 ```
 
-## Step 0 — Setup preflight (runs every `/watch` invocation, silent on success)
+## Step 0 — Check prerequisites without a setup interview
 
 **Python interpreter:** every `python3 ...` command in this skill is for macOS/Linux. On **Windows**, substitute `python` — the `python3` command on Windows is the Microsoft Store stub and will not run the script.
 
-On the first `/watch` invocation in a session, use structured preflight so you can detect first-run setup:
+On the first invocation in a session, inspect prerequisites without installing or writing configuration:
 
 ```bash
 python3 "${SKILL_DIR}/scripts/setup.py" --json
 ```
 
-Branch on two fields:
+- **`can_proceed: true`** → continue, even on a keyless first run. Use native captions and `--no-whisper`; no API-key decision or config file is required. If a configured backend is authorized for this source, it may be used instead.
+- **Missing binaries** → inspect existing tools and isolated runtimes first. If a task-local dependency install is allowed by the current environment and request, perform it and verify the binaries. A system-wide install or privilege change outside existing authorization requires approval; do not repeat an already applicable approval. The installer auto-runs Homebrew on macOS but only prints Linux/Windows commands: execute applicable authorized commands yourself, rather than automatically handing installation back to the user.
+- **No authorized way to obtain a dependency** → use available captions or supplied media/text where possible, then name the specific remaining blocker. Never replace a requested spoken transcript with guessed text from frames.
 
-- **`can_proceed: true` and `first_run: false`** → setup is already done (the user may have deliberately skipped a Whisper key — that's allowed). Proceed to Step 1 without comment.
-- **`first_run: true`** → genuine first-time setup. Do these in order:
-  1. If `missing_binaries` is non-empty, report the missing dependencies. Ask before running the installer on macOS because it invokes Homebrew and changes the system; on Linux or Windows, give the commands printed by the installer for the user to run. Confirm the binaries land before continuing.
-  2. Run the installer once more if needed so it scaffolds `~/.config/watch/.env` (it only writes the template when the file is absent, so let it create the file *before* you write any values into it).
-  3. Explain the optional Whisper fallback and offer the watch preference below. Never ask the user to paste an API key into chat; tell them to set it themselves in the config file or process environment. Write only the non-secret preference and `SETUP_COMPLETE=true` after the user has chosen whether to configure Whisper.
-- **`can_proceed: false` and `first_run: false`** → setup was finished before but the environment regressed (e.g. `missing_binaries` after an OS change). Request authorization before any system installation, remediate, then proceed. Do not re-ask preferences.
-
-A missing Whisper key is *encouraged to fix, not required*: on a genuine first run `status` will read `needs_key` even when binaries are present — that's your cue to encourage a key, not a blocker.
-
-On follow-up `/watch` calls in the same session, use the silent check:
+Reuse the preflight result during the session; recheck only after an environment change or a dependency failure:
 
 ```bash
 python3 "${SKILL_DIR}/scripts/setup.py" --check
 ```
 
-This is a <100ms lookup. Exit 0 means /watch can run — this **includes a user who finished setup without a Whisper key** (keyless is allowed). On exit 0 the script emits **nothing** — proceed to Step 1 without comment. **Do NOT announce "setup is complete" to the user** — they don't need a status message on every turn. The only acceptable user-visible output from Step 0 is when remediation is required.
+Exit `0` means ready and is silent; exit `2` means binaries are missing. `--json` retains legacy `status` labels such as `needs_key` as information, not blockers. For older installations returning `3` or `4`, inspect `missing_binaries` rather than treating an optional key as required.
 
-On non-zero exit, follow the table:
-
-| Exit | Meaning | Action |
-|------|---------|--------|
-| `2` | Missing binaries (`ffmpeg` / `ffprobe` / `yt-dlp`) | Report them and request authorization before any system installation |
-| `3` | Genuine first run with no Whisper API key | Run installer to scaffold `.env`, then encourage a key (the user may decline — proceed with `--no-whisper`) |
-| `4` | Both missing | Handle missing binaries first, then explain the optional key |
-
-Exit `3` only fires before the user has completed setup. Once `SETUP_COMPLETE=true` is written, a keyless install returns exit 0 and is never nagged again.
-
-The installer is idempotent — safe to re-run:
+Run the installer only when its environment changes are authorized and needed:
 
 ```bash
 python3 "${SKILL_DIR}/scripts/setup.py"
 ```
 
-On macOS with Homebrew, it auto-installs `ffmpeg` and `yt-dlp`. On Linux/Windows, it prints the exact install commands for the user to run. It scaffolds `~/.config/watch/.env` with commented placeholders and default watch settings at `0600` perms.
+It creates an absent `~/.config/watch/.env` at `0600` and records completed setup once dependencies are ready. Never request, echo, or write an API key; if transcription actually needs one, the user can configure it privately. A configured key is not permission to upload private/local media to a new provider: use `--no-whisper` until that transfer is authorized.
 
-**If an API key is still missing after install:** tell the user they may set `GROQ_API_KEY` (preferred) or `OPENAI_API_KEY` in `~/.config/watch/.env` or the process environment. Never request, echo, or write the secret yourself. If they decline, proceed with `--no-whisper` and explain that videos without native captions will be frames-only.
-
-**First-run watch preference:** after the installer has scaffolded `~/.config/watch/.env`, offer one choice. If the user has no preference, keep `balanced` and continue:
-
-- Default detail, lightest to heaviest:
-  - `transcript` — no frames at all, transcript only (skips video download when captions exist).
-  - `efficient` — fast keyframe pass (cap 50).
-  - `balanced` (recommended) — scene-aware frames (cap 100, default).
-  - `token-burner` — scene-aware, uncapped (maximum fidelity; high token cost).
-
-Write the answer directly into `~/.config/watch/.env` by setting the bare key on its own line — **no trailing inline comment** (a `# note` after the value can break parsing):
-
-```bash
-WATCH_DETAIL=balanced
-```
-
-Use the user's selected value. If they skip the question, keep the recommended default. Once dependencies, the API-key choice, and this preference are handled, write or update `SETUP_COMPLETE=true` in the same file. Do not ask this preference question again when `SETUP_COMPLETE=true`.
-
-**Structured mode (optional):** `python3 "${SKILL_DIR}/scripts/setup.py" --json` emits `{status, can_proceed, first_run, setup_complete, missing_binaries, whisper_backend, has_api_key, config_file, watch_detail, platform}` where `status` is one of `ready | needs_install | needs_key | needs_install_and_key`. `status` describes the *ideal* state (a key is encouraged, so a keyless first run reads `needs_key`); `can_proceed` is the operational gate (binaries present AND a key is set OR setup was already completed). Branch on `can_proceed`/`first_run` to decide whether to run; use `status` to decide what to encourage.
-
-Within a single session, you can skip Step 0 on follow-up `/watch` calls — once `--check` returned 0, nothing about the environment changes between turns.
+Choose detail from the task: `transcript` for spoken-content extraction, `efficient` for a light visual pass, `balanced` for general visual analysis. Respect an explicit preference; do not ask a first-run preference question or persist a new default unless requested. Use `token-burner` only when the requested fidelity justifies its unbounded frame cost.
 
 ## Recommended limits
 
@@ -112,7 +75,7 @@ Within a single session, you can skip Step 0 on follow-up `/watch` calls — onc
   - 1-3min → ~60 frames
   - 3-10min → ~80 frames
   - \>10min → up to the detail cap, sparsely spaced (warning printed)
-- If the user hands you a long video, consider asking whether they want a specific section before burning tokens on a sparse scan.
+- For a long video, start with captions and target relevant sections or cue frames. Ask about scope only when the user's intent is genuinely ambiguous and materially changes the work; a request for the whole video already answers that question.
 
 ## How to invoke
 
@@ -174,7 +137,7 @@ python3 "${SKILL_DIR}/scripts/watch.py" "$URL" --start 1:12:00
 
 If the user asked a specific question, answer it directly citing timestamps. If they didn't ask anything, summarize what happens in the video — structure, key moments, notable visuals, spoken content.
 
-This holds for `transcript` detail too: even with no frames, produce a **summary** like the other modes — do not paste the full transcript into chat. Synthesize structure, key moments, and spoken content with timestamps; quote only the lines that matter. Offer the raw transcript only if the user explicitly asks for it.
+Detail selects evidence acquisition, not the deliverable. Default to a timestamped summary; when the user requests a transcript, translation, or authorized archive, deliver that requested artifact with its provenance and completeness instead of substituting a summary. Follow applicable content-reproduction limits.
 
 **Step 5 — retain or clean up safely.** Keep the working directory while follow-ups are plausible. Delete it only when cleanup is authorized; resolve the exact printed path first, verify it is the script-created `watch-*` directory under the system temp directory, and never delete through an unverified variable, glob, or broad path.
 
@@ -217,8 +180,8 @@ Both keys live in `~/.config/watch/.env`. The script prefers Groq when both are 
 
 ## Failure modes and handling
 
-- **Setup preflight failed** → report missing binaries and request authorization before a macOS Homebrew install; on Linux or Windows, relay the install commands. Scaffold `.env` only as part of setup, and let the user configure any API key privately.
-- **No transcript available** → captions missing AND (no Whisper key OR Whisper API failed). Script prints a hint pointing to setup. Proceed frames-only and tell the user.
+- **Setup preflight failed** → follow Step 0's existing-runtime, authorized-install, or partial-evidence path. An optional key is not a blocker.
+- **No transcript available** → captions missing AND (no authorized Whisper backend OR API failed). Use frames for visual questions; for spoken-content requests, return usable evidence and the missing-transcript boundary rather than claiming completion.
 - **Long video warning printed** → acknowledge it in your answer. Offer to re-run focused on a specific section via `--start`/`--end` rather than a sparse full-video scan.
 - **Download fails** → yt-dlp's error goes to stderr. If it's a login-required or region-locked video, tell the user plainly; do not keep retrying.
 - **Whisper request fails** → the error is printed to stderr (likely: invalid key or rate limit). Audio over the API's 25 MB upload cap is split into chunks. Failed chunks remain explicit missing intervals in the report and `transcript.json`; a partial transcript must not be presented as complete. If every chunk fails or no speech segments are returned, the report says "none available". You can retry with `--whisper openai` if Groq failed (or vice versa).
@@ -230,7 +193,7 @@ This skill burns tokens primarily on frames. Order of magnitude:
 - The transcript is cheap (a few thousand tokens at most for a 10-minute video).
 - Bumping `--resolution` to 1024 roughly quadruples the image tokens per frame. Only do it when necessary.
 
-If you already watched a video this session and the user asks a follow-up, do **not** re-run the script — you already have the frames and transcript in context. Just answer from what you have.
+For follow-ups, reuse existing evidence. Re-run only the relevant range when the question needs missing frames, text, or resolution; prior inspection is not proof that every later question is answerable.
 
 ## Security & Permissions
 

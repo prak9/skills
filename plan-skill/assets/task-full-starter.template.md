@@ -45,8 +45,8 @@
 
 ## Risks And Escalation
 
-- Discovered unknowns / deviations: None. If one changes scope, acceptance, risk, or a locked constraint, stop and update the program before continuing.
-- Stop when acceptance criteria or a locked constraint must change.
+- Discovered unknowns / deviations: None. Resolve facts and update the method within authorized bounds; continue independent work while a dependent action is blocked.
+- Ask only before changing accepted scope, acceptance criteria, or a locked constraint, or adding an unauthorized effect. Existing applicable approval remains valid.
 
 ## Completion Review
 

@@ -97,6 +97,7 @@ class InitPlanTests(unittest.TestCase):
         self.assertIn("- Clean state: `Not due`", program)
         self.assertIn("- Last clean: `Not run`", program)
         self.assertIn("## Execution Readiness Gate", program)
+        self.assertRegex(program, r"\| CP-001 \| NODE-001 \| [^\n]+ \| no \|")
         self.assertNotRegex(program, r"(?m)^##\s+\d+\.")
         self.assertIn("## Outcome", program)
         self.assertIn("- Strategic defaults:", program)

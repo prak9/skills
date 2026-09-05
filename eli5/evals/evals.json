@@ -32,6 +32,16 @@
       ]
     },
     {
+      "id": "error-explanation-with-unknown-root-cause",
+      "prompt": "ELI5 in two sentences: connection refused when connecting to localhost:8080. I only need to understand what this error tells me; I do not have logs or want you to fix the service.",
+      "expected_output": "Explains that the connection was rejected rather than accepted, names an inactive listener as one possible cause, and does not claim a confirmed root cause or require logs before explaining.",
+      "files": [],
+      "assertions": [
+        {"id": "explains-known-without-blocking", "text": "The response directly explains connection refused in two beginner-readable sentences; it does not ask for logs or permission to diagnose or repair.", "kind": "model", "required": true},
+        {"id": "bounds-diagnosis", "text": "It does not assert that the service is definitely crashed, and any cause named is conditional rather than proven by the error alone.", "kind": "model", "required": true}
+      ]
+    },
+    {
       "id": "tell-boss-is-not-an-explanation",
       "prompt": "Write a one-line note to tell my boss I'll be ten minutes late. No explanation needed.",
       "expected_output": "Produces only a brief lateness note, without invoking an audience explanation workflow or sending a message.",

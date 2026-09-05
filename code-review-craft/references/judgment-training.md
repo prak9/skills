@@ -67,7 +67,7 @@ Inspect disagreements rather than trusting the aggregate score. An alleged false
 
 ## Calibrate autonomy by consequence
 
-Autonomy attaches to a tested task class and evidence regime, not to an Agent identity. Advance one rung at a time:
+For standing unattended authority, autonomy attaches to a tested task class and evidence regime, not to an Agent identity. These are distinct authority levels, not mandatory pauses within an already authorized task:
 
 ```text
 observe / suggest -> edit -> open PR -> self-verified PR -> auto-merge low-risk
@@ -82,6 +82,8 @@ Choose the least supervision that preserves judgment and safety:
 | Ordinary product change | Moderate impact, partial evaluator | Agent executes; human reviews evidence |
 | Public API, migration, concurrency, billing | Expensive or cross-system | Human owns spec and independent review |
 | Auth, privacy, destructive operation, architecture | Hard to reverse; judgment-heavy | Low; explicit human approval required |
+
+The table governs delegation of ongoing release authority, not permission to inspect, propose, or implement an already requested local fix. Use existing, unrevoked approval within its scope. A task mentioning a high-consequence domain does not by itself create a new human checkpoint; unresolved tradeoffs, changed authority, and actual release gates do.
 
 Increase autonomy only after repeated representative and held-out evidence shows high defect recall, low false confidence, adequate verifier coverage, reliable rollback or recovery, acceptable reviewer burden, bounded blast radius, and a usable audit trail in that task class. Preserve sampled human review after promotion. Reduce autonomy after a surprise, evaluator gap, failed recovery, or material change in system context.
 

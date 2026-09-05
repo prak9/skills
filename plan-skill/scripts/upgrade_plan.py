@@ -196,6 +196,10 @@ def prepare_reflection_rows(
 
     for node in nodes:
         references = re.findall(r"\bR-\d{3}\b", node["reflection"])
+        if not references and re.fullmatch(
+            r"None\s*:\s*(.+)", node["reflection"], flags=re.IGNORECASE
+        ):
+            continue
         if not references and node["status"] == "完成":
             references = [allocate()]
             node["reflection"] = references[0]
@@ -367,6 +371,17 @@ def upgrade_inline_lite(
         f"{acceptance['verification']} => {acceptance['pass condition']}",
         1,
     )
+    next_human_decision = metadata_value(text, "Next human decision") or "None"
+    program = program.replace(
+        "- Next human decision: None",
+        f"- Next human decision: {next_human_decision}",
+        1,
+    )
+    if next_human_decision.lower() != "none":
+        checkpoints = markdown_heading_section(program, "Checkpoints") or ""
+        program = replace_h2_body(
+            program, "Checkpoints", checkpoints.replace("| no |", "| yes |", 1)
+        )
     node_rows = [
         "| Node | Task package | Dependencies | Acceptance |",
         "|---|---|---|---|",
@@ -604,7 +619,7 @@ Not applicable.
 
 | Checkpoint | Position | Verification requirements | Human review |
 |---|---|---|---|
-| CP-001 | Next boundary | <tests and acceptance evidence> | yes |
+| CP-001 | Next boundary | <tests and acceptance evidence> | inherited; no new approval gate |
 
 ## Optional State
 
@@ -684,7 +699,7 @@ def upgrade_task(text: str, today: str, change_id: str) -> str:
 - ID: `CP-001`
 - Covers: `N-001`
 - Requirement: acceptance evidence
-- Human review: yes
+- Human review: inherited; no new approval gate
 
 ## Current Loop Attempt
 

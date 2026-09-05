@@ -14,6 +14,13 @@ PLAN_SKILL_ROOT = Path(__file__).resolve().parents[1]
 INITIALIZER = PLAN_SKILL_ROOT / "scripts" / "init_plan.py"
 UPGRADER = PLAN_SKILL_ROOT / "scripts" / "upgrade_plan.py"
 VALIDATOR = PLAN_SKILL_ROOT / "scripts" / "validate_plan.py"
+sys.path.insert(0, str(PLAN_SKILL_ROOT / "scripts"))
+
+from upgrade_plan import (  # noqa: E402
+    inline_node_records,
+    prepare_reflection_rows,
+    validate_project,
+)
 
 
 class UpgradePlanTests(unittest.TestCase):
@@ -136,6 +143,29 @@ class UpgradePlanTests(unittest.TestCase):
         self.assertEqual("Full", result["profile"])
         self.assertEqual([], result["errors"])
 
+    def test_upgrade_does_not_add_a_human_approval(self) -> None:
+        process = self.run_upgrader()
+
+        self.assertEqual(0, process.returncode, process.stdout + process.stderr)
+        program = (self.root / "program.md").read_text(encoding="utf-8")
+        self.assertRegex(program, r"\| CP-001 \| NODE-001 \| [^\n]+ \| no \|")
+
+    def test_upgrade_preserves_an_explicit_pending_human_decision(self) -> None:
+        self.replace(
+            self.root / "program.md",
+            "- Next human decision: `None`",
+            "- Next human decision: `Owner must approve the release after verification`",
+        )
+
+        process = self.run_upgrader()
+
+        self.assertEqual(0, process.returncode, process.stdout + process.stderr)
+        program = (self.root / "program.md").read_text(encoding="utf-8")
+        self.assertIn(
+            "Next human decision: Owner must approve the release after verification", program
+        )
+        self.assertRegex(program, r"\| CP-001 \| NODE-001 \| [^\n]+ \| yes \|")
+
     def test_upgrade_creates_task_from_inline_node(self) -> None:
         program_path = self.root / "program.md"
         self.replace(
@@ -215,6 +245,41 @@ class UpgradePlanTests(unittest.TestCase):
 
 
 class UpgradePlanExampleTests(unittest.TestCase):
+    def test_valid_lite_routine_completion_does_not_gain_a_reflection(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "lite-change"
+            shutil.copytree(PLAN_SKILL_ROOT / "examples" / "lite-change", root)
+            program_path = root / "program.md"
+            no_trigger = "None: routine pass produced no durable learning"
+            text = program_path.read_text(encoding="utf-8").replace(
+                "\n\n## Reflection Log",
+                "\n| NODE-002 | `完成` | Verify the existing timeout parser | "
+                "pytest tests/test_cli.py -k timeout | Fixture test run: 4 passed | "
+                f"{no_trigger} |\n\n## Reflection Log",
+            )
+            program_path.write_text(text, encoding="utf-8")
+            self.assertEqual([], validate_project(root)["errors"])
+            nodes = inline_node_records(text)
+
+            rows = prepare_reflection_rows(nodes, text, None, "2026-09-05")
+
+            self.assertEqual([], rows)
+            self.assertEqual(no_trigger, nodes[1]["reflection"])
+
+    def test_legacy_missing_reflection_keeps_compatibility_record(self) -> None:
+        nodes = [{
+            "node": "NODE-001",
+            "status": "完成",
+            "reflection": "Pending",
+            "evidence": "legacy run",
+        }]
+
+        rows = prepare_reflection_rows(nodes, "", None, "2026-09-05")
+
+        self.assertEqual("R-001", nodes[0]["reflection"])
+        self.assertEqual(1, len(rows))
+        self.assertIn("Legacy Lite reflection details were not recorded", rows[0])
+
     def test_filled_lite_example_upgrades_without_losing_domain_content(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "lite-change"

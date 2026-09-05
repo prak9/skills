@@ -32,7 +32,7 @@ The script prints structured JSON containing `work_dir`, `manifest`, note metada
 - `--html-file FILE` to parse a page the user saved locally when direct retrieval is unavailable.
 - `--metadata-only` for parser diagnosis without downloading images; this is not successful OCR evidence.
 
-The fetcher requires the Python `yt_dlp` module for robust parsing of Xiaohongshu's JavaScript state. If it is absent, report that dependency; do not silently install software.
+The fetcher requires the Python `yt_dlp` module for robust parsing of Xiaohongshu's JavaScript state. If absent, first check existing isolated interpreters. Use an announced task-local install when covered by the request and environment; ask only if installation needs new permission. If unavailable, use supplied HTML/screenshots where possible rather than ending at an install instruction. Do not alter system packages or access a browser account merely because public retrieval failed.
 
 ## Authorized liked-post collection
 

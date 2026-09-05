@@ -7,7 +7,7 @@ Use this contract when the map in the request, prompt, or plan may omit territor
 | Lens | Meaning | Route |
 |---|---|---|
 | Known knowns | Explicit facts, preferences, and accepted evidence | Put only execution-relevant items in context, constraints, or acceptance; verify drift-prone claims. |
-| Known unknowns | Questions already recognized but unanswered | Resolve from evidence, assign the cheapest validation node, or name the missing human judgment and block. |
+| Known unknowns | Questions already recognized but unanswered | Resolve from evidence, assign the cheapest validation node, or name missing human judgment and block only its dependent action. |
 | Unknown knowns | Tacit criteria someone recognizes when shown but cannot yet state | Surface them with contrasting prototypes, concrete references, or one-at-a-time interviews. |
 | Unknown unknowns | Relevant factors nobody has considered yet | Run a blind-spot pass across the real territory; once found, reclassify and route them. |
 
@@ -32,7 +32,7 @@ When implementation exposes an edge case, constraint, or contradiction:
 1. Classify it as a discoverable fact, human preference, or new risk.
 2. Investigate facts in the territory before guessing.
 3. If the choice is reversible and inside negotiable space, take the conservative option and record the assumption, evidence, and reversal condition in the active node.
-4. If it can change scope, architecture, acceptance, risk, an imperative bound, or an external commitment, stop or update the plan and escalate the retained human decision.
+4. Update the plan and continue for technical or architectural choices inside the authorized bounds. Pause the dependent action only if resolution needs a changed scope, acceptance criterion, locked bound, unauthorized effect, or genuinely retained human judgment; complete independent work first.
 5. Close the attempt with an `R-*` reflection that records the deviation and the next operational rule.
 
 In Lite, use `program.md`; in Full or Loop, use the active task package and `memory.md`. Do not create a parallel `implementation-notes.md` when those artifacts already own the state. A temporary note is acceptable only outside a durable plan and must be distilled or discarded before handoff.

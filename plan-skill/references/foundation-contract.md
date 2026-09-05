@@ -1,6 +1,6 @@
 # Foundation Engineering Contract
 
-Use this contract when an agent or process can act repeatedly, make a broad change, or continue without line-by-line supervision. A loop is ready only when its foundation makes a wrong result observable, recoverable, and reviewable.
+Use this contract for Loop mode, unattended repeated jobs, or material effects that need explicit verification and recovery controls. Not having line-by-line supervision does not by itself trigger this contract. Reuse existing bounds and evidence instead of creating a second control document.
 
 ## Define The Closed Loop
 
@@ -14,7 +14,7 @@ Map the work to five parts before execution:
 | State | Current attempt plus append-only events needed to resume and re-judge it. |
 | Controller | Finite budget, iterate rule, stop/escalation rule, and irreversible-action gate. |
 
-The executor may run a checker, but its own claim that work is complete is never terminal evidence. If any part is missing, narrow the work or keep execution blocked.
+The executor may run a checker, but its own claim that work is complete is never terminal evidence. If a material part is missing, bound or block the affected action while continuing authorized discovery and independent work.
 
 ## Prevent Blind Loops
 
@@ -59,8 +59,8 @@ More sensors are not automatically better. Build a **judgment coverage map** onl
 
 ## Bound Failure And Irreversibility
 
-- Declare allowed files, tools, commands, networks, and external writes before the attempt; deny undeclared reach.
-- Put a human gate before deletion, production mutation, publication, payment, credential change, or another hard-to-reverse action.
+- Bound the change surface and side effects using the request and applicable permissions. Ordinary commands and files needed inside that scope do not require individual preapproval unless the environment enforces an allowlist.
+- Before a consequential external or hard-to-reverse action, verify that existing authorization covers its target and effect. Ask only when it does not, or when an explicit final gate remains. Cleanup of task-owned disposable files does not create a new human gate.
 - Define timeout, retry, rollback, and escalation behavior before execution. A failure without a handling path is an unplanned outcome.
 - Archive or remove task-local state after terminal transitions so stale attempts cannot steer the next task.
 
@@ -75,4 +75,4 @@ More sensors are not automatically better. Build a **judgment coverage map** onl
 
 A system is not safely owned when its output grows faster than the owner's ability to explain and re-judge it. Preserve a replayable line from intent to change to sensor to evidence to residual risk.
 
-Require an explainer or teach-back when a human must approve, operate, debug, or inherit the result. This is an ownership gate, not a substitute for verification. Completion must state what remains unverified and who retains that judgment.
+Provide the concise explanation needed to approve, operate, debug, or inherit the result. Use a teach-back only when explicitly required or when a concrete comprehension gap prevents safe operation; ordinary handoff does not require a quiz or a new owner acknowledgment. State material unverified behavior and any genuinely retained decision.

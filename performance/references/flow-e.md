@@ -10,9 +10,8 @@ Markdown document.
 ## Phase 0 — Ensure debug symbols
 
 Run [Building block: Ensure debug symbols](building-blocks.md#building-block-ensure-debug-symbols) on the binary before recording.
-If the binary lacks DWARF and the user agrees to recompile, do so now — before Phase 1 —
-so that the recording and annotation use the same binary. If the user declines, note the
-limitation; source-unavailable fallback format applies in Phase 4a.
+Complete an authorized rebuild before Phase 1 so recording and annotation use the
+same binary. Otherwise note the limitation and use the Phase 4a assembly fallback.
 
 ---
 
@@ -21,8 +20,9 @@ limitation; source-unavailable fallback format applies in Phase 4a.
 Use [Building block: perf record](building-blocks.md#building-block-perf-record). Note the wall-clock duration of the
 recording — it determines whether to run `perf stat` in Phase 2.
 
-If a `perf.data` file already exists, do not ask if you know it is valid based on the session:
-> *"I found an existing perf.data file. Should I use it, or re-record?"*
+Reuse existing `perf.data` when its workload, binary, and collection scope match.
+Inspect metadata before asking; re-record only when current evidence is insufficient
+and collection is authorized.
 
 Call graphs are not required for this flow (percentages come from annotate, not call
 chains), but if the user has already recorded with `--call-graph dwarf`, that data can
@@ -225,8 +225,9 @@ omit the Suggested RS column (this is a reporting flow, not a prescriptive one).
 
 If no patterns are detected, omit this section.
 
-**Do not prescribe fixes.** Name the pattern only. If the user wants to act on an
-observation, they can invoke the appropriate flow or resolution strategy separately.
+For a report-only request, describe supported observations without editing code.
+If this report is part of a broader fix/optimize task, return its evidence to that
+workflow and continue the already-authorized implementation and verification.
 
 ---
 
@@ -234,12 +235,9 @@ observation, they can invoke the appropriate flow or resolution strategy separat
 
 Print the complete report to the terminal in Markdown.
 
-**Save prompt** — only if this flow was invoked directly by a user (not called from
-another flow or agent). After printing, ask:
-> *"Would you like to save this report to `hotspot-report-<appname>.md`?"*
-
-If yes, write the file. If the session is non-interactive (invoked programmatically),
-skip this prompt entirely.
+If a file was requested, write it to the specified destination or a clearly named
+local output file and return the path. Otherwise deliver in chat without a mandatory
+save prompt. External publication remains governed by its own authorization.
 
 ---
 

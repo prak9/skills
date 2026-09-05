@@ -21,15 +21,16 @@ actually supplied or from broadly familiar situations.
 
 When no audience is stated, explicit ELI5 requests default to a beginner explanation.
 Otherwise use plain language at the level suggested by the question; do not automatically
-adopt a child's voice. Ask about background only if the missing information would
-materially change the explanation.
+adopt a child's voice. Use the supplied context and these defaults without asking
+for approval. Ask only if missing background would materially change the answer and
+cannot reasonably be inferred; otherwise explain directly and let the user request more depth.
 
 ## Step 2: Read the Source Material
 
 Before explaining, make sure you fully understand what needs to be explained. This could be:
 - **Code**: Read the relevant code files. Understand what the code does at a high level before translating.
 - **A concept**: Break it into its core components.
-- **An error message**: Understand the root cause, not just the surface text.
+- **An error message**: Inspect available evidence for the mechanism and cause. If the cause cannot be established, explain what the error proves and what remains uncertain; do not invent a diagnosis or withhold the useful explanation.
 - **A technical document**: Extract the key points that matter.
 - **Anything else**: Identify the essential "what" and "why."
 
@@ -39,7 +40,7 @@ Follow these principles, scaled to the audience:
 
 ### Structure
 1. **Start with the "what"** — one sentence that captures the essence
-2. **Use an analogy** — connect to something the audience already knows
+2. **Use an analogy when helpful** — connect to something the audience already knows; omit it when a direct explanation is clearer
 3. **Fill in details** — add layers only as appropriate for the audience level
 4. **End with the "so what"** — why does this matter to them specifically?
 

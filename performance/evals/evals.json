@@ -8,6 +8,16 @@
   },
   "evals": [
     {
+      "id": "authorized-fix-continues-through-verification",
+      "prompt": "Use performance to decide your next actions from this fixed snapshot; do not execute commands. I asked you to fix the local benchmark's false sharing and verify throughput, with isolated source edits, rebuilds, and runs up to 5 minutes already authorized. Source access patterns and perf c2c prove the independent counters share a cache line. The build is known, each run takes 3 seconds, and no production binary is involved. What do you do next, and where would you stop?",
+      "expected_output": "Continues the authorized local fix, rebuild, c2c and comparable throughput verification without asking the user to approve or run routine steps, then stops at the requested acceptance rather than eliminating every hotspot.",
+      "files": [],
+      "assertions": [
+        {"id": "no-repeat-approval", "text": "The response proceeds with the in-scope change and verification; it does not ask whether to apply the fix, collect routine call graphs, rebuild, or run the before/after comparison.", "kind": "model", "required": true},
+        {"id": "evidence-completes-task", "text": "It requires comparable correctness, contention, and throughput evidence and treats acceptance, not first code output or absence of all hotspots, as completion.", "kind": "model", "required": true}
+      ]
+    },
+    {
       "id": "flat-scaling-with-mutex-waiters",
       "prompt": "Use Flow D to interpret this fixed diagnostic snapshot; do not execute commands or change code. The same workload measures 100,000 ops/s at 1 core and 102,000 at 32 cores. Thirty-two worker threads were observed during the timed region; most repeatedly sleep in futex_wait from pthread_mutex_lock. The lock protects a shared lookup; its read/write mix has not been measured. Available CPUs and CPU quota both permit 32 cores. ldd shows no separate libpthread. What should we investigate next?",
       "expected_output": "Recognizes observed multithreading despite a 1.02 throughput ratio and no separate threading library, investigates serialization with lock wait/hold evidence, and does not prescribe an unverified lock replacement.",

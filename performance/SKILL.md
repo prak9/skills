@@ -16,6 +16,14 @@ metadata:
 Unified entry for performance work: Linux `perf` profiling and reporting,
 Phoronix benchmark handling, and performance-pattern guided code optimization.
 
+The user's task determines the stopping point: diagnosis/report requests return
+evidence and recommendations without source edits; fix/optimize requests continue
+through in-scope changes and comparable verification. A flow or pattern does not
+introduce a second approval gate for work already authorized. Ask only for a
+material unknown, expanded scope, unapproved system/production change, or resource
+cost beyond the task's bounds. Technical choices such as call graphs are yours to
+make from the evidence and overhead, not preference questions for the user.
+
 ---
 
 ## How to use this skill
@@ -82,7 +90,7 @@ Quickly check:
 - debug symbols (`-g`) presence for `perf annotate`
 - command context (who owns build, expected baseline, acceptable runtime)
 
-- If debug symbols are missing and workload is non-PTS, ask permission to rebuild with only `-g` added.
+- If debug symbols are missing, follow the scoped rebuild or assembly fallback in `references/building-blocks.md`; do not stop an authorized local optimization merely to reconfirm its build step.
 
 ### Step 2 — Choose a flow
 

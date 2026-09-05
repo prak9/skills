@@ -1,43 +1,30 @@
-# AGENTS.md: Field Notes on Code Worth Keeping
+# AGENTS.md
 
-These are repository-wide engineering defaults. Apply them only when they are relevant to the current task and its risk. The user's explicit task instructions override workflow preferences here; actual permission and safety boundaries remain in force. Task-specific skills add specialized guidance. Do not turn a past model failure into a universal workflow.
+面向 GPT-6 Astra 等高能力模型：约定目标、边界和验收，不规定每一步姿势。本文件只在本仓库生效；`CLAUDE.md` 仅作兼容入口。
 
-## Read before writing
+## 沟通与优先级
 
-Read the files you will change and enough callers, tests, configuration, and history to understand the behavior you are preserving. Follow established project patterns and dependencies. If no pattern exists, investigate first. Ask one focused question only when the unresolved choice could materially change behavior, risk, or acceptance and cannot be inferred safely; otherwise state the assumption and proceed.
+- 默认简体中文，代码、命令和技术标识保留英文。先给结论与影响，只保留有助于判断或复现的细节。
+- 遵守系统、平台与实际权限边界；用户当前明确要求优先于 Skill、历史记忆和工作流偏好。Skill 只补充领域约束，不重新索要已经明确的目标或授权。
 
-## Define the contract when it matters
+## 自主执行与澄清
 
-For nontrivial, cross-file, high-risk, or hard-to-reverse work, identify the intended outcome, authorized change surface, completion evidence, and conditions that require stopping or user judgment. A small reversible edit does not need a ceremonial plan.
+- 区分询问与行动请求：分析、诊断、审阅不自动授权修改；要求实现或修复，就持续完成相关实现、检查和交付，不停在计划、第一版或“可以继续”。
+- 先读相关文件、调用和测试，用证据解决可查问题；普通缺口作合理假设后继续。仅当缺失信息会改变结果、范围或真实风险，且无法自行查明时，才向用户提问。
+- 提问前完成不依赖该答案的已授权工作。不要反复确认已回答的问题；有新的实质冲突时指出具体差异。建议偏离目标时直接说明，不为假想风险增加警告或审批流程。
 
-## Keep the solution simple and surgical
+## 批准边界
 
-Write the minimum code that satisfies the current contract. Reuse existing configuration and abstractions. Add a new abstraction, option, dependency, or error path only for a present requirement or realistic failure mode, not a hypothetical future.
+- 同一任务中明确、未撤销且范围未变的授权持续有效。必要的相关本地修改与验证不逐步请示；发布、推送、外部写入和生产变更必须落在用户授权内，不能仅凭工具可用或“持续推进”推断。
+- 需要新权限或用户保留的决定时，先准备可检查的结果、证据与具体待批准动作，只暂停受影响部分。评审结论不等于合并授权，技术验证通过也不代替明确保留的人工验收。
 
-Keep the diff as small as the task allows. Match the existing style, avoid unrelated cleanup and reformatting, and be able to connect every changed line to the requested outcome.
+## 实现与协作
 
-## Verify in proportion to impact
+- 做最小有效改动，复用现有模式与依赖；不顺手重构、不预建未来抽象。复杂变更先明确目标、边界和完成证据；小型可逆修改不强制计划文件或架构评审。
+- 只读取当前分支所需的 Skill 参考，不默认串行运行多套流程。只委派可独立验收且能节省时间或提升质量的工作，明确输入、输出和边界；主 Agent 负责整合与验证。
 
-Use the narrowest meaningful check that can fail when the intended behavior is wrong. For a bug, establish a failing reproduction before changing code when practical, and add a regression test when it protects observable behavior. Broaden verification for public interfaces, data, security, concurrency, migrations, production behavior, or wide blast radius. Do not add implementation-mirroring tests or rerun broad checks after the relevant evidence is already decisive unless a new change, failure, or unresolved concern justifies it.
+## 验证与完成
 
-If something is difficult to verify, treat that as design information. State what was verified, what was not, and why.
-
-## Debug from evidence
-
-Read the full error and stack trace, reproduce the problem, form a testable hypothesis, and change one relevant variable at a time. Do not hide an unexplained failure with a defensive check; find the cause or explicitly bound the remaining uncertainty.
-
-## Treat dependencies as lasting commitments
-
-Before adding a dependency, check whether the standard library or an existing project dependency already solves the problem. If a new dependency is justified, state the concrete value and relevant maintenance, security, or operational cost.
-
-## Communicate decisions and uncertainty
-
-Report what changed, why, the verification evidence, and any material residual risk. Distinguish known facts from assumptions. Raise concerns that affect correctness or the user's decision; omit speculative warnings and process narration that do not change the result.
-
-## Correct scope drift without abandoning the task
-
-Watch for the Kitchen Sink, Wrong Abstraction, Optimistic Path, and Runaway Refactor. When one appears, stop expanding the change, return to the smallest valid solution, and continue. Stop the task itself only for a real blocker, a required permission, or a choice that materially changes scope.
-
-## Establish engineering context selectively
-
-For material architecture, data, AI-application, or production changes, establish the project phase and the workload, latency, availability, consistency, cost, security, data-lifecycle, observability, degradation, and rollback constraints that can change the design. Choose the simplest architecture that satisfies the current contract and name the measured condition that would justify evolving it.
+- 修复先建立可复现证据；测试保护会出错的行为，不复述实现。按影响检查相关路径；必要检查通过后，仅因新改动、新失败或未解决疑点扩大或重复验证。
+- 完成意味着请求的成果已交付、必要检查有证据、授权内没有遗留必做项；不要求凑满模板、复盘或建议。可选改进不阻挡收尾，已授权的下一步骤不另等一句“继续”。
+- 真正阻塞时交付已有成果，指出缺什么、谁能解决及恢复动作，不冒称完成。收尾只清理本次产生且不再需要的临时文件，保留用户文件与必要证据。

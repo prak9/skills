@@ -27,7 +27,7 @@
 
 ## Execution Readiness Gate
 
-Keep `Blocked` only while a missing judgment or evidence gap could change scope, method, risk, or whether to proceed. Use `Not required` with a concrete reason for a directly verifiable specification.
+Resolve this scaffold state before execution: use `Not required` for accepted, directly verifiable work, or `Ready` with the authorized diagnostic as the first node. Keep `Blocked` only for a real unmet prerequisite; no additional approval is implied.
 
 | Field | Content |
 |---|---|
@@ -75,7 +75,7 @@ Not applicable (Linear). For Loop mode, replace this section using `references/l
 
 | Checkpoint | After | Requirement | Human review |
 |---|---|---|---|
-| CP-001 | NODE-001 | <acceptance evidence> | yes |
+| CP-001 | NODE-001 | <acceptance evidence> | no |
 
 ## Current Status
 

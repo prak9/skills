@@ -35,22 +35,19 @@ states and per-thread CPU use during its timed region (for example `ps -L -p <pi
 and `pidstat -t -p <pid> 1`, if available). Distinguish created threads from active
 workers; record affinity and CPU quota that could limit their execution.
 
-### Offer the sweep (informed by Step 0a)
+### Choose the sweep (informed by Step 0a)
 
-Present the threading findings, then ask:
-
-> *"[Threading summary from Step 0a.] A scaling sweep (running at 1, N/2, and N cores
-> plus a few intermediate points) can show exactly where performance caps out — and the
-> profiles collected will be reused for Phase 1, so we won't need to run the workload
-> again. This takes a few minutes — shall I run it, or shall we go straight to
-> function-level profiling?"*
+Use a bounded sweep when the scaling curve will change the diagnosis and fits the
+task's runtime and resource bounds. Reuse matching profiles; otherwise start with
+function-level evidence. Ask only if collection needs a material resource commitment
+or environment change outside the authorized task.
 
 If only static clues are available, report threading as unverified; do not use the
 absence of a separate threading library to predict or diagnose flat scaling.
 
-If the user declines, skip to Phase 1.
+If the sweep is unnecessary or out of scope, skip to Phase 1.
 
-### Step 0b — Sweep and profile collection (after user agrees)
+### Step 0b — Sweep and profile collection
 
 Run the workload at a bisecting sequence of core counts. Use `taskset -c 0-<N-1>` to
 pin to the first N logical CPUs.
@@ -147,7 +144,7 @@ Identify the **jumper** functions using the thresholds defined in the building b
 (rank rose ≥ 3, % ratio ≥ 2×, absolute gain ≥ 3%, or new entrant ≥ 2%).
 
 **If the delta is overwhelming** (more than ~7 functions jump significantly, making
-prioritization unclear): offer to collect a midpoint profile at N/2 cores (see
+prioritization unclear): collect a midpoint profile at N/2 cores within the task's bounds (see
 Building block: Dual-profile comparison, Step 3) and use the midpoint vs N-core
 delta instead to get a shorter, more actionable list.
 
@@ -244,9 +241,10 @@ different categories, address them in order of HITM percentage (highest first).
 Apply the pattern linked in the Phase 4 table after confirming its mechanism. Other
 profile-to-pattern mappings are in [triggers/from-profile.md](../triggers/from-profile.md).
 
-Follow the "Presenting this to the user" section of the relevant strategy — show the
-affected struct or code, explain the problem, propose the fix, and wait for the user's
-go-ahead before modifying source files.
+For an authorized optimization, explain the supported change briefly and apply it
+without another go-ahead. Diagnosis-only requests stop at the evidenced recommendation,
+not at an invitation to perform unrequested edits. A semantic, production, or scope
+change outside the task still requires the corresponding authorization.
 
 After the fix is applied, rebuild the workload and run a quick `perf stat` (use
 **Building block: perf stat**) to confirm the workload's overall throughput improved.
@@ -258,29 +256,26 @@ After the fix is applied, rebuild the workload and run a quick `perf stat` (use
 Multiple bottlenecks almost always exist simultaneously. When one bottleneck dominates,
 it masks the others: fixing it reveals the next one in the profile.
 
-**Always iterate**:
+**Iterate only while the requested acceptance remains unmet and new evidence supports
+another in-scope improvement**:
 
 1. After applying and verifying a fix, go back to **Phase 1** with the updated binary.
 2. Collect fresh 1-core and N-core profiles.
 3. Identify the new top jumper.
 4. Update the Phase 7 report with the new iteration's findings (add the next
    "Iteration N" section and update the Solutions section).
-5. Repeat until either no function jumps by more than the threshold, or the workload
-   scales acceptably.
+5. Stop optimization when acceptance is met; profile thresholds alone are not a
+   requirement to eliminate every remaining hotspot. If a real resource limit or
+   blocker prevents acceptance, report the achieved result and outstanding gap.
 
 Note: the ordering of the remaining bottlenecks may change after each fix — a function
 that appeared minor before may become the new dominant issue. Do not assume the Phase 1
 list from the first iteration is still valid.
 
-**When iteration is complete**, offer a final scaling sweep (only if Phase 0 was done):
-
-> *"All identified bottlenecks have been addressed. Since we ran a scaling sweep
-> earlier, I can run the same sweep again on the optimized binary to measure the total
-> improvement. Shall I do that before generating the report?"*
-
-If the user agrees, re-run the same core counts from Phase 0. Record the optimized
-scores alongside the original scores — they will appear as a second column in the
-Phase 7 report table and graph.
+**Before claiming the requested scaling improvement**, compare the changed binary
+against the relevant baseline core counts. This is part of verification, not a new
+approval step. Reuse current matching results and omit extra sweep points that would
+not change acceptance. Record unavailable measurements rather than claiming success.
 
 Then proceed to **Phase 7 — Final report**.
 
@@ -288,19 +283,13 @@ Then proceed to **Phase 7 — Final report**.
 
 ## Phase 7 — Final report
 
-Generate the report after the **first** completed iteration and update it after each
-subsequent one — don't wait until all iterations are done. This gives the user a
-living document that grows as each bottleneck is diagnosed and fixed.
+Retain each accepted iteration's evidence and update a requested report as work
+progresses. Do not repeatedly print the full report or create a living document for
+a short task that only needs a concise result. Distinguish proposed changes from
+implemented and verified ones.
 
-After each iteration: add the next "Iteration N" section, update the Solutions section
-(promoting `Proposed:` to `Implemented:` as fixes land), and reprint or save.
-
-Print the current report to the terminal after each update, then offer to save:
-
-> *"Report printed above. Save to `scaling-report-<workload>-<YYYYMMDD>.md`?"*
-
-Only offer to save when running interactively (not when invoked as a sub-flow by
-another skill).
+Keep a requested report file current and return its path with the final result.
+Otherwise summarize in chat; do not force a separate save-confirmation turn.
 
 **If a graphing skill is available** (check the session context), note it to the user
 after printing the sweep table:
@@ -319,7 +308,7 @@ cores,baseline_score[,optimized_score]
 
 ### Report template
 
-Use this template exactly. Omit sections that have no data (e.g., omit the scaling
+Use this template for a full report, trimming it to the requested depth. Omit sections that have no data (e.g., omit the scaling
 table if Phase 0 was skipped; omit "Optimized" columns if no second sweep was done).
 
 ````markdown

@@ -33,7 +33,7 @@ Before judging the code:
 5. Check reviewability: the change should be one coherent, independently safe step with related tests. If mixed behavior, refactoring, generated churn, or sheer breadth prevents reliable review, say so early and propose concrete split boundaries.
 6. Infer missing intent from callers, tests, docs, schemas, history, and existing patterns. State any material assumption; do not invent a specification.
 
-Do not modify code during a review unless the user also asks for a fix. Run read-only inspection and relevant diagnostics; treat generated caches or test artifacts as incidental, not as permission to change source.
+Do not modify code during a review unless the user also asks for a fix. Run read-only inspection and relevant diagnostics; treat generated caches or test artifacts as incidental, not as permission to change source. If fixes are requested, continue through the supported in-scope corrections and verification without waiting for a second approval of each finding. A review verdict does not authorize merging or publishing.
 
 ## Apply the approval standard
 
@@ -175,4 +175,4 @@ If no qualifying findings remain, say so plainly. State what was inspected and a
 
 ## Preserve accountability
 
-Recommend an approval state only when the evidence supports it. Treat auto-merge as an earned, task-class-specific privilege, never an agent-wide capability or throughput target. Require an explicit human checkpoint for expensive or hard-to-reverse decisions such as architecture, security boundaries, destructive migrations, billing, compliance, and public compatibility. Make the uncertainty and owner decision visible; never imply that tool output has accepted the consequence for them.
+Recommend an approval state only when the evidence supports it. Treat auto-merge as an earned, task-class-specific privilege, never an agent-wide capability or throughput target. Separate local implementation, technical review, and authority to release. Honor existing approval for its exact scope; ask at an unresolved consequential choice, a reserved human gate, or a new side effect—not merely because a task mentions architecture, auth, or compatibility. Prepare authorized analysis, fixes, and verification before that gate. Make the outstanding owner decision visible; never imply that tool output has accepted the consequence for them.

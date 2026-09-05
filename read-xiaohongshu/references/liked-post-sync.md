@@ -18,7 +18,7 @@ Check first:
 python3 "$SKILL_DIR/scripts/setup_browser.py" --check
 ```
 
-Installation changes the local environment and downloads a Chromium build. Run it only after explicit approval:
+Installation changes the local environment and downloads a Chromium build. Use an existing suitable runtime first. Run installation when explicitly approved, including an applicable setup authorization already in the current request; do not ask for the same approval twice:
 
 ```bash
 python3 "$SKILL_DIR/scripts/setup_browser.py" --install
@@ -68,4 +68,4 @@ For each manifest item:
    - page body: source description, ordered image transcript or timestamped video summary, limitations, and sync time
 5. Record the Notion page ID and source note ID in the local append-only sync ledger only after the Notion create call succeeds.
 
-Use a bounded first batch and inspect the resulting pages before expanding. Stop after repeated retrieval failures, schema drift, authentication loss, rate limiting, or any destination mismatch.
+Use a bounded first batch and inspect the resulting pages before expanding within the authorized collection scope; the batch is a verification checkpoint, not a mandatory reapproval. Stop after repeated retrieval failures, schema drift, authentication loss, rate limiting, or any destination mismatch. Report collected, skipped, and failed counts separately; a successful sample does not mean a requested full synchronization is complete.
