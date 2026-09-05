@@ -1,4 +1,4 @@
 interface:
   display_name: "Research Craft"
-  short_description: "Run rigorous, eval-driven research loops"
-  default_prompt: "Use $research-craft to turn this problem into a falsifiable, instrumented research loop with durable evidence."
+  short_description: "Evaluate research, prompts, skills, models, and agent harnesses"
+  default_prompt: "Use $research-craft to compare this research, prompt, skill, model, or agent-harness change against a fixed baseline with durable evidence."

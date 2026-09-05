@@ -1,6 +1,6 @@
 ---
 name: research-craft
-description: 兼容项。决策实验与证据验证已并入 `decision` 的闭环中；本技能保留用于复杂研究编排，以及 agent harness、verification closure、可观测并行工作、自我改进与按任务类型校准自治。
+description: 设计和评估可证伪的研究或 Agent Harness 实验，包括 Prompt、Skill、AGENTS、模型迁移、自我改进与自动化研究；用于需要固定基线、可观测证据和接受门槛的比较，不用于普通事实检索、一次性解释或仅需做选择的决策。
 ---
 
 # Research Craft
@@ -26,6 +26,7 @@ Choose the lightest mode that protects the claim:
 - **Exploration:** map an unfamiliar problem, inspect raw material, compare explanations, and identify the next discriminating observation. Keep hypotheses provisional.
 - **Controlled experiment:** compare a candidate against a baseline under a fixed protocol and explicit acceptance gates.
 - **Artifact iteration:** edit code, prompts, rules, or configuration through a bounded propose-evaluate-accept loop. Freeze the evaluator before optimizing the candidate.
+- **Instruction or model migration:** read `references/instruction-migration.md` before changing an `AGENTS.md`, skill, system prompt, or model-specific guidance because the base model, harness, or tool behavior changed.
 - **Agent or self-improving harness:** read `references/harness-engineering.md` before designing runtime control flow, persistent memory, feature maps, verification closure, subagents, permissions, self-edits, or autonomy scaling.
 - **Automated scientific or engineering discovery:** read `references/automated-discovery.md` before decomposing a problem into parallel experiments, optimizing iteration throughput, designing a multimodal research system, or extracting reusable infrastructure from a narrow-domain loop.
 - **Quantitative or trading strategy:** read `references/quant-strategy-iteration.md` before changing a strategy, backtest, scorer, data split, promotion gate, or distributed experiment wrapper.

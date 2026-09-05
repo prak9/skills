@@ -1,6 +1,6 @@
 interface:
   display_name: "高质量决策"
-  short_description: "把复杂选择转化为可行性、事实、情景、评分与可验证行动"
+  short_description: "复杂行动选择、可行性判断与最小验证"
   default_prompt: "请使用 $decision 分析这个选择，区分事实与假设，比较机会成本，推演匹配实际周期的场景和失败路径，必要时评分，并给出明确下一步。"
 policy:
   allow_implicit_invocation: true

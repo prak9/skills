@@ -1,4 +1,4 @@
 interface:
   display_name: "Code Review Craft"
-  short_description: "深读代码、区分阻塞项并校准审批结论"
+  short_description: "审查代码行为、证据化缺陷与审批结论"
   default_prompt: "使用 $code-review-craft 重建这组代码的行为，给出有证据、意图标签清晰的 findings，并提出校准后的审批结论。"

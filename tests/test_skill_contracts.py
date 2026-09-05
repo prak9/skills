@@ -53,6 +53,35 @@ def description(name: str) -> str:
 
 
 class SkillContractTests(unittest.TestCase):
+    def test_agents_is_the_canonical_conditional_instruction_source(self) -> None:
+        agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")
+        claude = (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
+        self.assertIn("Apply them only when they are relevant", agents)
+        self.assertIn("explicit task instructions override workflow preferences", agents)
+        self.assertIn("Ask one focused question only when", agents)
+        self.assertIn("A small reversible edit does not need a ceremonial plan", agents)
+        self.assertIn("Verify in proportion to impact", agents)
+        self.assertIn("single source", claude)
+        self.assertIn("AGENTS.md", claude)
+
+    def test_overlapping_skill_descriptions_have_explicit_boundaries(self) -> None:
+        decision_description = description("decision")
+        writing_description = description("writing")
+        review_description = description("code-review-craft")
+        research_description = description("research-craft")
+
+        self.assertIn("不用于普通股票研究", decision_description)
+        self.assertIn("文本本身是主要交付物", writing_description)
+        self.assertIn("不要仅因其他领域任务", writing_description)
+        self.assertIn("do not invoke merely because", review_description)
+        self.assertIn("模型迁移", research_description)
+        self.assertIn("不用于普通事实检索", research_description)
+
+    def test_code_comprehension_avoids_duplicate_instruction_contracts(self) -> None:
+        protocol = reference_text("code-review-craft", "comprehension-protocol.md")
+        self.assertIn("applicable instruction chain once", protocol)
+        self.assertIn("do not read duplicate aliases", protocol)
+
     def test_specialized_equity_modes_do_not_claim_bare_tickers(self) -> None:
         text = skill_text(INVESTMENT_SKILL)
         gf_dma = reference_text(INVESTMENT_SKILL, "mode-c-gf-dma.md")
@@ -176,6 +205,28 @@ class SkillContractTests(unittest.TestCase):
             all_cases.extend(cases)
         self.assertEqual(24, len(all_cases))
         self.assertEqual(24, len({case["id"] for case in all_cases}))
+
+    def test_instruction_migration_suite_has_routing_negatives_and_holdouts(self) -> None:
+        path = ROOT / "tests" / "instruction-migration-cases.jsonl"
+        cases = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+
+        self.assertEqual(8, len(cases))
+        self.assertEqual(2, sum(case["split"] == "acceptance" for case in cases))
+        self.assertTrue(all("expected_behavior" in case for case in cases))
+        self.assertTrue(all("cost_limits" in case for case in cases))
+        self.assertTrue(any(case.get("required_skills") for case in cases))
+        self.assertTrue(any(case.get("forbidden_skills") for case in cases))
+
+    def test_research_craft_routes_model_instruction_migrations_on_demand(self) -> None:
+        skill = skill_text("research-craft")
+        migration = reference_text("research-craft", "instruction-migration.md")
+
+        self.assertIn("references/instruction-migration.md", skill)
+        self.assertIn("Model-only baseline", migration)
+        self.assertIn("Instruction candidate", migration)
+        self.assertIn("required and forbidden skill activation", migration)
+        self.assertIn("retirement trigger", migration)
+        self.assertIn("before every task", migration)
 
     def test_decision_eval_cases_cover_observable_multi_turn_paths(self) -> None:
         path = ROOT / "decision" / "evals" / "cases.jsonl"

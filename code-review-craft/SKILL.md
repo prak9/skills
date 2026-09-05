@@ -1,6 +1,6 @@
 ---
 name: code-review-craft
-description: Read unfamiliar code and diffs, reconstruct behavior and invariants, evaluate correctness, maintainability, efficiency, security, operability, and tests, then produce evidence-backed findings and a calibrated approval decision. Use when Codex needs to explain a code path, understand a repository or subsystem, review a PR/diff/commit, audit AI-generated code, run a strict maintainability or structural-quality audit, assess an architectural change, find edge cases or failure modes, judge whether code is safe to approve, communicate review comments, train and evaluate code-review judgment, or calibrate automated review and merge autonomy. Work review-first and do not implement fixes unless the user explicitly asks.
+description: Review a code change or subsystem to reconstruct behavior, find evidence-backed defects, and give a calibrated approval decision. Use for a PR, diff, commit, explicit code audit, architectural review, or requested code-path explanation; do not invoke merely because an implementation task touches code, and do not implement fixes unless requested.
 ---
 
 # Code Review Craft

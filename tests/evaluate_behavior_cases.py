@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Evaluate recorded model/tool runs against the 24 core skill cases."""
+"""Evaluate versioned model/tool runs against skill behavior case suites."""
 
 from __future__ import annotations
 
@@ -11,7 +11,23 @@ from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILLS = ("decision", "writing", "invest", "plan-skill")
+CORE_SKILLS = ("decision", "writing", "invest", "plan-skill")
+SUITE_VERSIONS = {
+    "core": "core-v1",
+    "instruction-migration": "instruction-migration-v1",
+    "all": "all-v1",
+}
+RUN_CONTEXT_FIELDS = (
+    "model",
+    "reasoning_effort",
+    "harness",
+    "instruction_revision",
+    "skill_revision",
+    "case_set_version",
+    "run_at",
+    "evaluator",
+)
+RUN_IDENTITY_FIELDS = tuple(field for field in RUN_CONTEXT_FIELDS if field != "run_at")
 METRIC_TO_LIMIT = {
     "reference_reads": "max_reference_reads",
     "followup_questions": "max_followup_questions",
@@ -44,11 +60,14 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
     return records
 
 
-def load_cases(split: str) -> list[dict[str, Any]]:
+def load_cases(split: str, suite: str) -> list[dict[str, Any]]:
     cases: list[dict[str, Any]] = []
-    for skill in SKILLS:
-        path = ROOT / skill / "evals" / "behavior-cases.jsonl"
-        cases.extend(load_jsonl(path))
+    if suite in ("core", "all"):
+        for skill in CORE_SKILLS:
+            path = ROOT / skill / "evals" / "behavior-cases.jsonl"
+            cases.extend(load_jsonl(path))
+    if suite in ("instruction-migration", "all"):
+        cases.extend(load_jsonl(ROOT / "tests" / "instruction-migration-cases.jsonl"))
     if split != "all":
         cases = [case for case in cases if case.get("split") == split]
     return cases
@@ -70,6 +89,21 @@ def nonnegative_number(value: Any) -> bool:
     return isinstance(value, (int, float)) and not isinstance(value, bool) and value >= 0
 
 
+def validate_run_context(record: dict[str, Any], failures: list[str]) -> dict[str, Any]:
+    if record.get("schema_version") != 2:
+        failures.append("schema_version must be 2")
+
+    context = record.get("run_context")
+    if not isinstance(context, dict):
+        failures.append("run_context must be an object")
+        return {}
+    for field in RUN_CONTEXT_FIELDS:
+        value = context.get(field)
+        if not isinstance(value, str) or not value.strip():
+            failures.append(f"run_context.{field} must be a non-empty string")
+    return context
+
+
 def evaluate_case(case: dict[str, Any], record: dict[str, Any] | None) -> dict[str, Any]:
     failures: list[str] = []
     observed_costs: dict[str, Any] = {}
@@ -82,6 +116,8 @@ def evaluate_case(case: dict[str, Any], record: dict[str, Any] | None) -> dict[s
             "failures": ["missing result record"],
             "observed_costs": observed_costs,
         }
+
+    run_context = validate_run_context(record, failures)
 
     output = record.get("output")
     if not isinstance(output, str):
@@ -104,6 +140,22 @@ def evaluate_case(case: dict[str, Any], record: dict[str, Any] | None) -> dict[s
     for prefix in case.get("forbidden_tool_prefixes", []):
         if any(tool.startswith(prefix) for tool in tool_calls):
             failures.append(f"forbidden tool prefix observed: {prefix}")
+
+    skills_loaded = record.get("skills_loaded")
+    if not isinstance(skills_loaded, list) or not all(
+        isinstance(item, str) and item for item in skills_loaded
+    ):
+        failures.append("skills_loaded must be an array of non-empty skill names")
+        skills_loaded = []
+    required_skills = case.get("required_skills")
+    if required_skills is None and case.get("skill") in CORE_SKILLS:
+        required_skills = [case["skill"]]
+    for skill in required_skills or []:
+        if skill not in skills_loaded:
+            failures.append(f"required skill not observed: {skill}")
+    for skill in case.get("forbidden_skills", []):
+        if skill in skills_loaded:
+            failures.append(f"forbidden skill observed: {skill}")
 
     metrics = record.get("metrics")
     if not isinstance(metrics, dict):
@@ -130,20 +182,66 @@ def evaluate_case(case: dict[str, Any], record: dict[str, Any] | None) -> dict[s
         "passed": not failures,
         "failures": failures,
         "observed_costs": observed_costs,
+        "run_context": run_context,
+        "skills_loaded": skills_loaded,
     }
 
 
+def mark_mixed_run_contexts(evaluations: list[dict[str, Any]]) -> None:
+    groups: dict[tuple[str, ...], list[dict[str, Any]]] = {}
+    for evaluation in evaluations:
+        context = evaluation.get("run_context", {})
+        values = tuple(context.get(field) for field in RUN_IDENTITY_FIELDS)
+        if not all(isinstance(value, str) and value.strip() for value in values):
+            continue
+        groups.setdefault(values, []).append(evaluation)
+
+    if len(groups) <= 1:
+        return
+    baseline = max(groups.values(), key=len)
+    baseline_ids = {id(evaluation) for evaluation in baseline}
+    for evaluation in evaluations:
+        if id(evaluation) in baseline_ids:
+            continue
+        evaluation["failures"].append(
+            "run_context model, reasoning, harness, instruction, skill, case-set, and "
+            "evaluator identity must match the rest of the selected run"
+        )
+        evaluation["passed"] = False
+
+
+def require_case_set_version(evaluations: list[dict[str, Any]], suite: str) -> None:
+    expected = SUITE_VERSIONS[suite]
+    for evaluation in evaluations:
+        context = evaluation.get("run_context", {})
+        observed = context.get("case_set_version")
+        if observed == expected:
+            continue
+        evaluation["failures"].append(
+            f"run_context.case_set_version must be {expected}, got {observed!r}"
+        )
+        evaluation["passed"] = False
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Evaluate core skill behavior-run records.")
+    parser = argparse.ArgumentParser(description="Evaluate versioned skill behavior-run records.")
     parser.add_argument("results", type=Path, help="JSONL run records keyed by behavior case id")
     parser.add_argument("--split", choices=("development", "acceptance", "all"), default="all")
+    parser.add_argument(
+        "--suite",
+        choices=("core", "instruction-migration", "all"),
+        default="core",
+    )
     args = parser.parse_args()
 
-    cases = load_cases(args.split)
+    cases = load_cases(args.split, args.suite)
     results = index_results(load_jsonl(args.results))
     evaluations = [evaluate_case(case, results.get(case["id"])) for case in cases]
+    mark_mixed_run_contexts(evaluations)
+    require_case_set_version(evaluations, args.suite)
     passed = sum(item["passed"] for item in evaluations)
     report = {
+        "suite": args.suite,
         "split": args.split,
         "summary": {"total": len(evaluations), "passed": passed, "failed": len(evaluations) - passed},
         "acceptance": "pass" if passed == len(evaluations) else "fail",

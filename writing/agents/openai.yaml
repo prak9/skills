@@ -1,4 +1,4 @@
 interface:
   display_name: "Writing"
-  short_description: "写作、改写、翻译与审阅：清楚、准确、具体、简洁、有说服力"
+  short_description: "文本写作、编辑、翻译与语义保真审阅"
   default_prompt: "使用 $writing 按合适体裁写作或翻译：编辑时先判断校对、润色、重组或重写档位，保护语义与声音；译文选择合适的保真模式。"
