@@ -15,6 +15,8 @@ All rates and divergences are decimals (`0.10` means 10%); scores are 0–100.
 - `price_daily_slope_5d = (price_t / price_t-5 - 1) / 5` and `dma50_daily_slope_5d = (SMA50_t / SMA50_t-5 - 1) / 5`.
 - `revenue_30d` and `eps_30d` are 30-calendar-day changes in the same forward consensus estimate; `guide_vs_consensus` is guidance midpoint / pre-release consensus - 1.
 
+For positive prices and SMAs, every `dX` must be strictly greater than `-1`, and each normalized five-day daily slope must be strictly greater than `-0.2`. `d20` and `z20` must share the same sign, including zero, because their denominators are positive. The calculator returns a null module score with a reason for violations; present it as `N/A`. These checks cannot detect every percentage/decimal mix-up or verify adjustment basis: use decimal inputs and retain source prices, SMAs, ATR, and windows for verification. Do not impose a guessed growth/revision domain when its required window or sign basis is unavailable.
+
 Record whether prices are split-adjusted, which consensus period is used, the time zone/as-of timestamp, `k`, and any fallback. If comparable history is unavailable, do not guess.
 
 ## Fundamental Speed

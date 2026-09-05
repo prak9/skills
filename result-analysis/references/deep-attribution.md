@@ -67,12 +67,13 @@ regime 只改变某类机制的先验，不直接证明模型或执行原因。�
 ### 标签与预测
 
 ```python
+import numpy as np
 g = signals.groupby(["sym", "dorn"])
 label_mass = g.r_dfactor.apply(lambda x: x.abs().sum())
 hit = g.apply(lambda x: ((x.dfactor * x.r_dfactor) > 0).mean())
 ic = g.apply(lambda x: x.dfactor.corr(x.r_dfactor, method="spearman"))
 direction_capture = g.apply(
-    lambda x: (x.r_dfactor * x.dfactor.sign()).sum() / x.r_dfactor.abs().sum()
+    lambda x: (x.r_dfactor * np.sign(x.dfactor)).sum() / x.r_dfactor.abs().sum()
 )
 slope = g.apply(
     lambda x: (x.dfactor * x.r_dfactor).sum() / (x.dfactor * x.dfactor).sum()

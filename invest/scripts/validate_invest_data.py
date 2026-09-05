@@ -3,6 +3,7 @@
 
 The validator checks metadata, arithmetic, and point-in-time availability. It
 cannot determine whether a cited source actually supports the recorded value.
+CLI exit 0 means a report was generated; callers must check JSON status == "pass".
 """
 
 from __future__ import annotations
@@ -112,7 +113,7 @@ def validate_metric(
             location=f"{location}.currency",
         )
     classification = metric.get("classification")
-    if classification not in CLASSIFICATIONS:
+    if not isinstance(classification, str) or classification not in CLASSIFICATIONS:
         add_finding(
             findings,
             "invalid_classification",
@@ -214,7 +215,13 @@ def resolve_metrics(
 
 
 def comparable(metrics: list[dict[str, Any]], fields: tuple[str, ...]) -> bool:
-    return all(len({metric.get(field) for metric in metrics}) == 1 for field in fields)
+    for field in fields:
+        values = [metric.get(field) for metric in metrics]
+        if not all(nonempty_string(value) or (field == "currency" and value is None) for value in values):
+            return False
+        if any(value != values[0] for value in values[1:]):
+            return False
+    return True
 
 
 def tolerance(check: dict[str, Any], findings: list[dict[str, Any]], location: str) -> float | None:
@@ -411,7 +418,8 @@ def check_basis_groups(
 
 def validate(data: dict[str, Any]) -> dict[str, Any]:
     findings: list[dict[str, Any]] = []
-    if data.get("schema_version", 1) != 1:
+    version = data.get("schema_version", 1)
+    if isinstance(version, bool) or not isinstance(version, int) or version != 1:
         add_finding(findings, "unsupported_schema", "schema_version must be 1", location="schema_version")
     decision_time = None
     if "decision_time" in data:

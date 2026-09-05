@@ -147,6 +147,14 @@ def divergence(data: dict[str, Any]) -> dict[str, Any]:
     d200 = numbers["d200"]
     z20 = numbers["z20"]
     assert None not in (d20, d50, d100, d200, z20)
+    invalid = [name for name in names[:-1] if numbers[name] <= -1.0]
+    if invalid:
+        return unavailable(
+            "positive price and SMA require decimal divergence > -1: " + ", ".join(invalid),
+            numbers,
+        )
+    if (d20 > 0) != (z20 > 0) or (d20 < 0) != (z20 < 0):
+        return unavailable("d20 and z20 must have the same sign, including zero, for positive SMA20/ATR20", numbers)
 
     penalties = {
         "d20": d20_penalty(d20),
@@ -195,6 +203,12 @@ def parallel(data: dict[str, Any]) -> dict[str, Any]:
         "price_daily_slope_5d": price_slope,
         "dma50_daily_slope_5d": dma_slope,
     }
+    invalid = [name for name, value in observations.items() if value <= -0.2]
+    if invalid:
+        return unavailable(
+            "positive price and SMA require normalized five-day daily slope > -0.2: " + ", ".join(invalid),
+            observations,
+        )
     if abs(dma_slope) <= SLOPE_EPSILON:
         return unavailable("50DMA daily slope is near zero; EscapeRatio is unstable", observations)
     if dma_slope < 0:

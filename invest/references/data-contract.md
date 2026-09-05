@@ -74,4 +74,6 @@ Run:
 python scripts/validate_invest_data.py path/to/data-contract.json
 ```
 
+For compatibility, exit code `0` means that a JSON report was produced, even when its `status` is `fail`. Automation must parse the JSON and require `status == "pass"`; checking the process exit code alone does not validate the data. File/JSON loading errors still exit nonzero.
+
 Treat every finding as a model-input issue to resolve or expose. The validator's two explicit limits remain in force: timestamps only validate the recorded evidence set, and arithmetic consistency cannot establish source support, economic comparability, or forecast quality.

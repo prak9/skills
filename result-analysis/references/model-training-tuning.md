@@ -62,6 +62,8 @@
 
 发现最新完整的 daily bundle；排除周报和 `_trade` 重复文件，避免同一天重复计权。默认查看最近 20 个交易日报：
 
+脚本兼容根目录 CSV、旧的一层子目录与 `YYYYMM/artifacts/`。存在同范围 `bundle_*.json` 时只接受 `READY`；同日的相同文件副本只计一次，内容冲突时需指定只含目标报告身份的根目录。manifest 的路径与状态检查不等于完整身份验证：输出仍标 `identity_unverified`，需核查报告时模型/config 与 L1/L3 target/horizon。缺失 `pot` 或跨日样本不足返回 `insufficient`，不会解释成经济性弱。
+
 ```bash
 python <result-analysis>/scripts/model_tuning_diagnostics.py \
   --results-root /home/x/www/results --account dce_t1 --real-account dce_ht1028 \

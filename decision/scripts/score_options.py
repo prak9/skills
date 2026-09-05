@@ -69,6 +69,8 @@ def validate_vetoes(
             fail(f"{path}[{index}] must be an object")
         if not isinstance(veto.get("name"), str) or not veto["name"].strip():
             fail(f"{path}[{index}].name must be a non-empty string")
+        if "triggered" not in veto:
+            fail(f"{path}[{index}].triggered is required; use null explicitly for an unresolved v2 veto")
         triggered = veto.get("triggered")
         valid = isinstance(triggered, bool) or (allow_unresolved and triggered is None)
         if not valid:
@@ -573,11 +575,22 @@ def to_markdown(result: dict[str, Any]) -> str:
         lines.extend(["", "## 稳定性", ""])
         if stability["status"] == "not_tested":
             lines.append("未提供有依据的权重或成本情景；稳定性未测试。")
-        elif stability["preference_flips"]:
+        else:
+            if stability["stable_under_tested_scenarios"] is None:
+                lines.append("稳定性无法判定：基础首选或至少一个已测情景的首选未决。")
+            elif stability["stable_under_tested_scenarios"]:
+                lines.append("所有已测情景均保持首选。")
+            else:
+                lines.append("已测情景出现首选翻转。")
+            lines.append("")
             for flip in stability["preference_flips"]:
                 lines.append(f"- {flip['scenario']}：首选从 {flip['from']} 变为 {flip['to']}")
-        else:
-            lines.append("已测情景未发现首选翻转。")
+            for scenario in stability["scenarios"]:
+                preference = scenario["preferred_option"]
+                outcome = f"首选 {preference}" if preference is not None else "首选未决"
+                lines.append(
+                    f"- {scenario['name']}：{outcome}（{scenario['status']}）；依据：{scenario['basis']}"
+                )
         action = result["next_validation_action"]
         if action:
             lines.extend(["", "## 下一步最低成本验证", "", f"- {action['action']}"])

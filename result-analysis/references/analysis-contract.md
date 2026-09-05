@@ -4,7 +4,7 @@
 
 ## 1. 输入与优先级
 
-默认目录：`/home/x/www/results/YYYYMM/`。
+默认结构化数据目录：`/home/x/www/results/YYYYMM/artifacts/`；兼容旧的 `YYYYMM/` 直接存放 CSV，PDF 通常仍在月份目录。
 
 | 文件 | 粒度 | 用途 | 优先级 |
 |---|---|---|---|

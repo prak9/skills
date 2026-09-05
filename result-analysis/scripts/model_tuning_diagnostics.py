@@ -35,7 +35,11 @@ def _date(value: str) -> datetime:
 def discover_bundles(root: Path, end: str | None, lookback: int) -> list[dict[str, Any]]:
     cutoff = _date(end) if end else None
     bundles: list[dict[str, Any]] = []
-    for trades in root.glob("*/trades_*.csv"):
+    paths = {
+        path for pattern in ("trades_*.csv", "*/trades_*.csv", "*/artifacts/trades_*.csv")
+        for path in root.glob(pattern)
+    }
+    for trades in sorted(paths):
         match = DAILY_RE.match(trades.name)
         if not match:
             continue
@@ -45,6 +49,13 @@ def discover_bundles(root: Path, end: str | None, lookback: int) -> list[dict[st
             continue
         winress = trades.with_name(f"winress_{start_raw}-{end_raw}.csv")
         if winress.exists():
+            manifest = trades.with_name(f"bundle_{start_raw}-{end_raw}.json")
+            if manifest.exists():
+                metadata = json.loads(manifest.read_text(encoding="utf-8"))
+                if not isinstance(metadata, dict) or metadata.get("range") != f"{start_raw}-{end_raw}":
+                    raise ValueError(f"{manifest}: invalid bundle range")
+                if metadata.get("status") != "READY":
+                    continue
             signals = trades.with_name(f"signals_{start_raw}-{end_raw}.csv")
             bundles.append({
                 "date": start_raw,
@@ -52,9 +63,24 @@ def discover_bundles(root: Path, end: str | None, lookback: int) -> list[dict[st
                 "trades": trades,
                 "winress": winress,
                 "signals": signals if signals.exists() else None,
+                "manifest": manifest if manifest.exists() else None,
             })
-    bundles.sort(key=lambda item: item["date"])
-    return bundles[-lookback:]
+    by_date: dict[str, dict[str, Any]] = {}
+    for bundle in sorted(bundles, key=lambda item: (
+            bool(item["manifest"]), bool(item["signals"]), item["trades"].parent.name == "artifacts"),
+            reverse=True):
+        previous = by_date.get(bundle["date"])
+        if previous is not None:
+            # Only exact copies can share a date without an identity decision.
+            for key in ("trades", "winress", "signals"):
+                if previous[key] is not None and bundle[key] is not None and _sha256(previous[key]) != _sha256(bundle[key]):
+                    raise ValueError(
+                        f"conflicting bundles for {bundle['date']}: {previous[key]} and {bundle[key]}; "
+                        "select a root containing one report identity"
+                    )
+        else:
+            by_date[bundle["date"]] = bundle
+    return [by_date[date] for date in sorted(by_date)[-lookback:]]
 
 
 def _numeric(frame: pd.DataFrame, columns: tuple[str, ...] | list[str]) -> None:
@@ -313,16 +339,27 @@ def _route(summary: dict[str, Any], min_days: int, min_trades: int) -> tuple[str
     basis = summary["prediction_basis"]
     if summary["prediction_days"] < min_days or summary["prediction_n"] < min_trades:
         return "insufficient", f"同合同日期或 {basis} 预测样本不足"
-    weak = summary["route_prediction_weak_day_rate"]
-    strong = summary["route_prediction_strong_day_rate"]
-    pot = summary["sim_pot_median"]
-    pot_pos = summary["sim_pot_positive_day_rate"]
-    sim_good = np.isfinite(pot) and pot > 0 and np.isfinite(pot_pos) and pot_pos >= 0.6
-    if np.isfinite(weak) and weak >= 0.6:
-        if basis == "all_tick":
-            return "model_or_label_candidate", "全 tick 预测跨日偏弱"
+    trade_status = summary["trade_prediction_status"]
+    if trade_status in ("missing", "insufficient"):
+        return "insufficient", "L3 完成交易预测证据缺失或跨日样本不足"
+    economics = summary["sim_economics_status"]
+    if economics in ("missing", "insufficient"):
+        return "insufficient", "SIM pot 经济性证据缺失或跨日样本不足，不能判为经济性弱"
+    if basis == "all_tick":
+        all_tick_status = summary["all_tick_prediction_status"]
+        if all_tick_status == "weak" and trade_status == "weak":
+            return "model_or_label_candidate", "L1 全 tick 与 L3 完成交易预测均跨日偏弱"
+        if all_tick_status == "weak" and trade_status == "healthy":
+            return "inspect_gate_coverage_capacity", "L1 全 tick 弱、L3 完成交易强；先核查 gate 选择、可交易覆盖与容量"
+        if all_tick_status == "healthy" and trade_status == "weak":
+            return "inspect_policy_cost_exit", "L1 全 tick 强、L3 完成交易弱；核查 eligibility、方向映射、持有/退出与费用"
+        prediction_good = all_tick_status == "healthy" and trade_status == "healthy"
+    else:
+        prediction_good = trade_status == "healthy"
+    if basis == "completed_trade" and trade_status == "weak":
         return "verify_model_or_label_on_all_tick", "完成交易子集预测跨日偏弱，先用全 tick 验证是否同源"
-    if np.isfinite(strong) and strong >= 0.6 and not sim_good:
+    sim_good = economics == "healthy"
+    if prediction_good and economics == "weak":
         return "inspect_policy_cost_exit", f"{basis} 预测健康但 SIM 成本后经济性弱"
     real_days = summary["real_days"]
     real_dret = summary["real_dret_median"]
@@ -331,11 +368,22 @@ def _route(summary: dict[str, Any], min_days: int, min_trades: int) -> tuple[str
         (np.isfinite(real_dret) and real_dret <= 0)
         or (np.isfinite(real_pos) and real_pos < 0.5)
     )
-    if np.isfinite(strong) and strong >= 0.6 and sim_good and real_weak:
+    if prediction_good and sim_good and real_weak:
         return "deployment_gap_unresolved", f"{basis} 预测与 SIM 经济性健康但 REAL 弱；需要逐决策 telemetry"
-    if np.isfinite(strong) and strong >= 0.6 and sim_good:
+    if prediction_good and sim_good:
         return "monitor_no_model_change", f"{basis} 预测与 SIM 成本后经济性均健康，没有日报证据支持改模型"
     return "mixed_more_data", "预测与经济证据冲突或稳定性不足"
+
+
+def _prediction_status(days: int, samples: int, weak: float, strong: float,
+                       min_days: int, min_trades: int) -> str:
+    if not days or not np.isfinite(weak) or not np.isfinite(strong):
+        return "missing"
+    if days < min_days or samples < min_trades:
+        return "insufficient"
+    if weak >= 0.6:
+        return "weak"
+    return "healthy" if strong >= 0.6 else "mixed"
 
 
 def summarize_cells(daily: pd.DataFrame, min_days: int, min_trades: int) -> list[dict[str, Any]]:
@@ -345,9 +393,13 @@ def summarize_cells(daily: pd.DataFrame, min_days: int, min_trades: int) -> list
         daily["observable_contract"] = "unknown"
     for (sym, session, contract), group in daily.groupby(
             ["sym", "session", "observable_contract"], sort=True):
+        if "sim_pot" in group:
+            group = group.copy()
+            group["sim_pot"] = pd.to_numeric(group["sim_pot"], errors="coerce").replace([np.inf, -np.inf], np.nan)
         pnl_abs = pd.to_numeric(group["sim_pnl"], errors="coerce").abs().dropna()
         concentration = _safe_ratio(float(pnl_abs.max()), float(pnl_abs.sum())) if len(pnl_abs) else np.nan
-        signal_valid = group[pd.to_numeric(group["signal_trade_n"], errors="coerce").gt(0)].copy()
+        signal_valid = group[pd.to_numeric(group["signal_trade_n"], errors="coerce").gt(0)].dropna(
+            subset=["trade_hit", "trade_spearman", "direction_capture"]).copy()
         weak_mask = (
             pd.to_numeric(signal_valid["trade_hit"], errors="coerce").lt(0.55)
             | pd.to_numeric(signal_valid["trade_spearman"], errors="coerce").le(0)
@@ -361,6 +413,9 @@ def summarize_cells(daily: pd.DataFrame, min_days: int, min_trades: int) -> list
         all_tick_valid = group[pd.to_numeric(
             group.get("all_tick_n", pd.Series(index=group.index, dtype=float)),
             errors="coerce").gt(0)].copy()
+        if len(all_tick_valid):
+            all_tick_valid = all_tick_valid.dropna(subset=[
+                "all_tick_nonzero_hit", "all_tick_spearman", "all_tick_direction_capture"])
         all_tick_weak = (
             pd.to_numeric(all_tick_valid.get("all_tick_nonzero_hit"), errors="coerce").le(0.5)
             | pd.to_numeric(all_tick_valid.get("all_tick_spearman"), errors="coerce").le(0)
@@ -384,6 +439,7 @@ def summarize_cells(daily: pd.DataFrame, min_days: int, min_trades: int) -> list
             "sym": str(sym),
             "session": str(session),
             "observable_contract": str(contract),
+            "identity_status": "identity_unverified",
             "n_days": int(group["date"].nunique()),
             "dates": sorted(group["date"].astype(str).unique().tolist()),
             "sim_trade_n": int(pd.to_numeric(group["sim_trade_n"], errors="coerce").fillna(0).sum()),
@@ -392,7 +448,9 @@ def summarize_cells(daily: pd.DataFrame, min_days: int, min_trades: int) -> list
             "real_trade_n": int(pd.to_numeric(group.get("real_trade_n"), errors="coerce").fillna(0).sum())
                 if "real_trade_n" in group else 0,
             "prediction_basis": prediction_basis,
-            "prediction_days": int(len(all_tick_valid) if use_all_tick else len(signal_valid)),
+            "prediction_days": int((all_tick_valid if use_all_tick else signal_valid)["date"].nunique()),
+            "trade_prediction_days": int(signal_valid["date"].nunique()),
+            "trade_prediction_n": int(signal_valid["signal_trade_n"].sum()),
             "prediction_n": prediction_n,
             "evidence_tier": "explore_candidate" if group["date"].nunique() >= 5
                 else "early_candidate" if group["date"].nunique() >= 3 else "observation",
@@ -403,6 +461,8 @@ def summarize_cells(daily: pd.DataFrame, min_days: int, min_trades: int) -> list
             "calibration_slope_median": _median(group, "calibration_slope"),
             "abs_scale_ratio_median": _median(group, "abs_scale_ratio"),
             "sim_pot_median": _median(group, "sim_pot"),
+            "sim_pot_days": int(group.loc[pd.to_numeric(group["sim_pot"], errors="coerce").notna(), "date"].nunique())
+                if "sim_pot" in group else 0,
             "sim_pot_positive_day_rate": _positive_rate(group, "sim_pot"),
             "sim_pot_loo_min_median": _loo_min_median(group, "sim_pot"),
             "sim_dret_median": _median(group, "sim_dret"),
@@ -443,6 +503,21 @@ def summarize_cells(daily: pd.DataFrame, min_days: int, min_trades: int) -> list
             "route_prediction_weak_day_rate": float(route_weak.mean()) if len(route_weak) else np.nan,
             "route_prediction_strong_day_rate": float(route_strong.mean()) if len(route_strong) else np.nan,
         }
+        summary["trade_prediction_status"] = _prediction_status(
+            summary["trade_prediction_days"], summary["trade_prediction_n"],
+            summary["prediction_weak_day_rate"], summary["prediction_strong_day_rate"],
+            min_days, min_trades)
+        summary["all_tick_prediction_status"] = _prediction_status(
+            int(all_tick_valid["date"].nunique()),
+            int(all_tick_valid["all_tick_n"].sum()) if len(all_tick_valid) else 0,
+            summary["all_tick_prediction_weak_day_rate"], summary["all_tick_prediction_strong_day_rate"],
+            min_days, min_trades)
+        summary["sim_economics_status"] = (
+            "missing" if not summary["sim_pot_days"] else
+            "insufficient" if summary["sim_pot_days"] < min_days else
+            "healthy" if summary["sim_pot_median"] > 0 and summary["sim_pot_positive_day_rate"] >= 0.6 else
+            "weak"
+        )
         if "sim_pot" in group and pd.to_numeric(group["sim_pot"], errors="coerce").notna().any():
             worst_index = pd.to_numeric(group["sim_pot"], errors="coerce").idxmin()
             summary["worst_sim_pot_date"] = str(group.loc[worst_index, "date"])
@@ -572,7 +647,8 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
             "real_account": args.real_account,
             "bundle_count": len(bundles),
             "dates": [bundle["date"] for bundle in bundles],
-            "identity_status": (
+            "identity_status": "identity_unverified",
+            "identity_detail": (
                 "grouped by report y/fg/sg; current artifact hashes attached, report-time hashes unavailable"
                 if args.model_root else
                 "grouped by report y/fg/sg; model artifact hashes not checked"
@@ -591,7 +667,9 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
                 "real_sim_trade_ratio is a non-paired completed-trade count ratio, not coverage",
                 "REAL/SIM capture values are descriptive and do not identify execution causes",
                 "rows are split by observable y/fg/sg; verify model artifact/config hashes before decisions",
+                "identity_unverified: report-time model/config identity and cross-layer target/horizon alignment are not verified; downgrade cross-day conclusions",
                 "model-root artifacts are current files and may post-date historical report bundles",
+                "signals are read in chunks but all matching account rows are retained for exact rank/quantile diagnostics; memory is not bounded by chunk size",
                 "routes generate hypotheses only; fixed held-out evaluator decides parameters",
             ],
         },

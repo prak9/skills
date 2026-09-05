@@ -89,6 +89,43 @@ class GfDmaCalculatorTests(unittest.TestCase):
         self.assertIsNone(result["modules"]["parallel"]["score"])
         self.assertIn("near zero", result["modules"]["parallel"]["reason"])
 
+    def test_impossible_price_divergences_return_na(self) -> None:
+        for field in ("d20", "d50", "d100", "d200"):
+            for value in (-1.0, -1.1):
+                with self.subTest(field=field, value=value):
+                    data = self.valid_input()
+                    data["divergence"][field] = value
+                    module = self.run_score(data)["modules"]["divergence"]
+                    self.assertIsNone(module["score"])
+                    self.assertIn(field, module["reason"])
+
+    def test_divergence_and_atr_distance_must_share_sign_and_zero(self) -> None:
+        for d20, z20 in ((0.04, -1.5), (-0.04, 1.5), (0, 1.5), (0.04, 0)):
+            with self.subTest(d20=d20, z20=z20):
+                data = self.valid_input()
+                data["divergence"].update(d20=d20, z20=z20)
+                module = self.run_score(data)["modules"]["divergence"]
+                self.assertIsNone(module["score"])
+                self.assertIn("d20", module["reason"])
+                self.assertIn("z20", module["reason"])
+
+    def test_valid_negative_and_zero_divergence_are_scorable(self) -> None:
+        for d20, z20 in ((-0.99, -100), (0, 0)):
+            with self.subTest(d20=d20, z20=z20):
+                data = self.valid_input()
+                data["divergence"].update(d20=d20, z20=z20)
+                self.assertIsNotNone(self.run_score(data)["modules"]["divergence"]["score"])
+
+    def test_five_day_slopes_cannot_represent_zero_or_negative_prices(self) -> None:
+        for field in ("price_daily_slope_5d", "dma50_daily_slope_5d"):
+            for value in (-0.2, -0.3):
+                with self.subTest(field=field, value=value):
+                    data = self.valid_input()
+                    data["parallel"][field] = value
+                    module = self.run_score(data)["modules"]["parallel"]
+                    self.assertIsNone(module["score"])
+                    self.assertIn(field, module["reason"])
+
 
 if __name__ == "__main__":
     unittest.main()

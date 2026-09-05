@@ -13,6 +13,15 @@ SCRIPT = SKILL_ROOT / "scripts" / "score_options.py"
 
 
 class ScoreOptionsTests(unittest.TestCase):
+    def run_cli(self, data: dict) -> subprocess.CompletedProcess:
+        with tempfile.TemporaryDirectory() as directory:
+            input_path = Path(directory) / "input.json"
+            input_path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+            return subprocess.run(
+                [sys.executable, "-B", str(SCRIPT), str(input_path)],
+                check=False, capture_output=True, text=True,
+            )
+
     def run_score(self, data: dict) -> dict:
         with tempfile.TemporaryDirectory() as directory:
             input_path = Path(directory) / "input.json"
@@ -194,6 +203,44 @@ class ScoreOptionsTests(unittest.TestCase):
 
         self.assertEqual(2, process.returncode)
         self.assertIn("must be numeric", process.stderr)
+
+    def test_markdown_reports_all_stability_states_and_scenario_basis(self) -> None:
+        for score, expected in ((None, "无法判定"), (5, "保持首选"), (2, "首选从 A 变为 B")):
+            with self.subTest(score=score):
+                data = {
+                    "schema_version": 2,
+                    "criteria": [{"name": "价值", "weight": 100}],
+                    "options": [
+                        {"name": "A", "scores": {"价值": 5}},
+                        {"name": "B", "scores": {"价值": 4}},
+                    ],
+                    "scenarios": [{
+                        "name": "供应商成本变化", "basis": "已收到供应商报价范围",
+                        "score_overrides": {"A": {"价值": score}},
+                    }],
+                }
+                process = self.run_cli(data)
+                self.assertEqual(0, process.returncode, process.stderr)
+                self.assertIn(expected, process.stdout)
+                self.assertIn("供应商成本变化", process.stdout)
+                self.assertIn("已收到供应商报价范围", process.stdout)
+                if score is None:
+                    self.assertIn("unresolved_score_ranges", process.stdout)
+                    self.assertNotIn("未发现首选翻转", process.stdout)
+                data["scenarios"] = []
+                self.assertIn("稳定性未测试", self.run_cli(data).stdout)
+
+    def test_missing_veto_triggered_fails_validation_without_traceback(self) -> None:
+        for scope in ("global", "option"):
+            with self.subTest(scope=scope):
+                data = self.base_input()
+                data["schema_version"] = 2
+                target = data if scope == "global" else data["options"][0]
+                target["vetoes"] = [{"name": "审批状态"}]
+                process = self.run_cli(data)
+                self.assertEqual(2, process.returncode)
+                self.assertIn("triggered", process.stderr)
+                self.assertNotIn("Traceback", process.stderr)
 
 
 if __name__ == "__main__":

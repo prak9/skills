@@ -149,6 +149,29 @@ class InvestDataContractTests(unittest.TestCase):
         self.assertEqual("fail", result["status"])
         self.assertTrue(any(item["code"] == "incompatible_basis" for item in result["findings"]))
 
+    def test_bad_metric_types_return_structured_failures_in_linked_checks(self) -> None:
+        for field in ("classification", "unit", "currency", "period", "basis"):
+            for value in ([], {}):
+                with self.subTest(field=field, value=value):
+                    bad = self.metric("component", 100)
+                    bad[field] = value
+                    result = self.run_validation({
+                        "metrics": [bad, self.metric("total", 100)],
+                        "checks": {
+                            "sums": [{"components": ["component"], "total": "total"}],
+                            "basis_groups": [{"items": ["component", "total"], "fields": [field]}],
+                        },
+                    })
+                    self.assertEqual("fail", result["status"])
+                    self.assertTrue(any(item["code"] == f"invalid_{field}" for item in result["findings"]))
+
+    def test_schema_version_requires_integer_one(self) -> None:
+        for version in (True, 1.0, [], {}):
+            with self.subTest(version=version):
+                result = self.run_validation({"schema_version": version, "metrics": [self.metric("x", 1)]})
+                self.assertEqual("fail", result["status"])
+                self.assertTrue(any(item["code"] == "unsupported_schema" for item in result["findings"]))
+
 
 if __name__ == "__main__":
     unittest.main()
