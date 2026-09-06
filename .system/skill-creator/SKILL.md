@@ -45,6 +45,10 @@ Match the level of specificity to the task's fragility and variability:
 
 Think of Codex as exploring a path: a narrow bridge with cliffs needs specific guardrails (low freedom), while an open field allows many routes (high freedom).
 
+### Put Guidance in the Strongest Appropriate Layer
+
+Before adding prose to a skill, classify the rule. Keep one-run goals and choices in the task prompt; stable repository facts in project guidance or authoritative documentation; reusable task-specific judgment in a skill; repeated deterministic mechanics in a script; and machine-decidable invariants in types, lint, tests, CI, or runtime guards. Reserve a human gate for consequential judgment that evidence cannot settle. Do not duplicate a harder constraint as a universal soft rule, and do not expand an ordinary skill update into unrelated platform work merely because stronger enforcement is possible.
+
 ### Keep a Stable Kernel and Explicit Extensions
 
 - Keep the smallest coherent, dependable workflow in `SKILL.md`; route optional depth to named references, scripts, or separate skills.

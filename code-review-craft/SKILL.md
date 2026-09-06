@@ -96,6 +96,12 @@ Treat every verdict as a compact argument: the approval claim depends on support
 - A plausible concern is not a finding until its premises and trigger are evidenced; absence of an observed failure is not proof of safety.
 - Before approving or reporting, try the strongest counterexample and state the residual boundary that remains unverified.
 
+## Convert recurring review work into enforcement
+
+When the same evidence-backed `Required` finding recurs, or one high-consequence systemic defect exposes a stable invariant, identify the earliest maintainable layer that can prevent or reject it: state or ownership design, types and module boundaries, compiler or static analysis, lint or architecture checks, deterministic regression tests, then runtime guards. Keep project guidance and review rules for contextual judgment that cannot be decided reliably by code.
+
+Keep the current finding and the hardening opportunity separate. Do not block a focused PR on building general infrastructure unless the absent guard makes that revision unsafe, and do not infer recurrence from one example. A proposed guard should name its target failure, clean negative, false-positive cost, owner, and condition for narrowing or retirement.
+
 ## Allocate attention by cost of late change
 
 Review from the base of this pyramid upward. Spend the most human judgment where a mistake becomes most expensive to change later:

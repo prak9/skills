@@ -66,6 +66,18 @@ Freshness source / last verified:
 
 Generate or reconcile entries from routes, tests, ownership, and telemetry where possible. Keep the map local enough to maintain, test its navigation and evidence links, and mark missing or stale coverage explicitly; a giant stale inventory creates false confidence.
 
+## Design a paved path agents will copy
+
+Agents tend to imitate the nearest working pattern and choose the shortest visible implementation path. Make that path the valid one:
+
+- co-locate a feature's ordinary code, tests, and verification entry points when that reduces search and boundary mistakes
+- keep one authoritative, complete, and simple example or scaffold for recurring work; retire competing near-duplicates
+- expose narrow stable interfaces and make invalid cross-boundary access fail close to the edit
+- ensure generated defaults satisfy the same checks as hand-written changes
+- measure divergence and defect escape before promoting a local convention into a shared framework
+
+Do not standardize an uncertain prototype merely to make it uniform. The paved path should encode a demonstrated contract while leaving implementation choices open where several designs are valid.
+
 ## Make the data boundary observable
 
 An agent cannot recover information that its data path never exposes. Treat data architecture as part of the harness contract, not as passive storage:
@@ -128,6 +140,20 @@ failure evidence
 ```
 
 Promote only a recurring failure or one high-consequence systemic failure whose cause, reusable boundary, and affected task class are clear. Require target cases, held-out regressions, clean negatives, preserved passing behavior, an owner, and a retirement trigger. Keep one-off symptoms in the error ledger. Retire or narrow a rule when it creates false positives, stale context, duplicated policy, or evaluator gaming.
+
+## Put constraints in the strongest maintainable layer
+
+Do not ask an agent to remember an invariant that the environment can make impossible or reject deterministically. After establishing the root cause and a regression, choose the earliest decisive layer that fits the claim:
+
+| Claim | Preferred enforcement |
+|---|---|
+| An invalid state can be eliminated | Data model, type, ownership, module, or API boundary |
+| A violation is statically decidable | Compiler, static analysis, lint, architecture test, or CI |
+| Correctness is visible only in execution | Deterministic verifier, runtime guard, contract test, or monitor |
+| The choice depends on context or professional judgment | Skill, project guidance, review rubric, or retained human gate |
+| The instruction applies only to this run | Task prompt |
+
+Prefer prevention over repeated detection, but require useful failure messages, low false-positive cost, and a tested escape or migration path where the constraint can block legitimate work. Keep a soft rule when the judgment is not stable enough to encode. Do not expand an ordinary fix into platform work solely to add enforcement; separate the current correction from a justified hardening follow-up unless the missing guard makes the fix unsafe.
 
 ## Choose the lowest effective optimization level
 
