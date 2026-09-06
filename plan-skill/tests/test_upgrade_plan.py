@@ -245,6 +245,113 @@ class UpgradePlanTests(unittest.TestCase):
 
 
 class UpgradePlanExampleTests(unittest.TestCase):
+    def test_completed_lite_plan_upgrades_to_valid_completed_full_plan(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "lite-change"
+            shutil.copytree(PLAN_SKILL_ROOT / "examples" / "lite-change", root)
+            program_path = root / "program.md"
+            text = program_path.read_text(encoding="utf-8")
+            for old, new in (
+                ("- Overall status: `进行中`", "- Overall status: `完成`"),
+                ("- Active plan node: `NODE-001`", "- Active plan node: `None`"),
+                ("- Latest evidence: `None`", "- Latest evidence: `RUN-001`"),
+                ("- Next step: `NODE-001`", "- Next step: `None`"),
+                ("| NODE-001 | `进行中` |", "| NODE-001 | `完成` |"),
+                (
+                    "| None | Pending |",
+                    "| RUN-001 | None: verifier passed with no material learning |",
+                ),
+            ):
+                self.assertIn(old, text)
+                text = text.replace(old, new)
+            program_path.write_text(text, encoding="utf-8")
+            self.assertEqual([], validate_project(root)["errors"])
+
+            process = subprocess.run(
+                [sys.executable, "-B", str(UPGRADER), str(root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(0, process.returncode, process.stdout + process.stderr)
+            validation = subprocess.run(
+                [
+                    sys.executable,
+                    "-B",
+                    str(VALIDATOR),
+                    str(root),
+                    "--strict",
+                    "--json",
+                ],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(0, validation.returncode, validation.stdout + validation.stderr)
+            self.assertEqual([], json.loads(validation.stdout)["errors"])
+            program = program_path.read_text(encoding="utf-8")
+            task = (root / "tasks" / "TASK-001-cli-timeout-validation.md").read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("- Overall status: `完成`", program)
+            self.assertIn("- Active task package: `None`", program)
+            self.assertIn("- Next step: `None`", program)
+            self.assertIn("- Next checkpoint: `None`", program)
+            self.assertIn("- Last clean: `N/A: Lite plan predates Clean metadata", program)
+            self.assertIn("- Status: `完成`", task)
+            self.assertEqual(2, task.count("- [x]"))
+            self.assertIn("- Evidence: RUN-001", task)
+            self.assertIn("- Remaining work: None", task)
+            self.assertRegex(task, r"- Completed: \d{4}-\d{2}-\d{2}")
+
+    def test_waiting_acceptance_lite_plan_preserves_pending_owner_decision(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "lite-change"
+            shutil.copytree(PLAN_SKILL_ROOT / "examples" / "lite-change", root)
+            program_path = root / "program.md"
+            text = program_path.read_text(encoding="utf-8")
+            for old, new in (
+                ("- Overall status: `进行中`", "- Overall status: `待验收`"),
+                ("- Latest evidence: `None`", "- Latest evidence: `RUN-001`"),
+                ("- Next checkpoint: `None`", "- Next checkpoint: `CP-001`"),
+                (
+                    "- Next human decision: `None`",
+                    "- Next human decision: `Owner must accept the verified CLI behavior`",
+                ),
+                ("| NODE-001 | `进行中` |", "| NODE-001 | `待验收` |"),
+                (
+                    "| None | Pending |",
+                    "| RUN-001 | None: verifier passed with no material learning |",
+                ),
+            ):
+                self.assertIn(old, text)
+                text = text.replace(old, new)
+            program_path.write_text(text, encoding="utf-8")
+            self.assertEqual([], validate_project(root)["errors"])
+
+            process = subprocess.run(
+                [sys.executable, "-B", str(UPGRADER), str(root)],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+
+            self.assertEqual(0, process.returncode, process.stdout + process.stderr)
+            validation = subprocess.run(
+                [sys.executable, "-B", str(VALIDATOR), str(root), "--strict", "--json"],
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(0, validation.returncode, validation.stdout + validation.stderr)
+            task = (root / "tasks" / "TASK-001-cli-timeout-validation.md").read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("- Status: `待验收`", task)
+            self.assertEqual(2, task.count("- [x]"))
+            self.assertIn("- Completed: pending explicit owner decision", task)
+
     def test_valid_lite_routine_completion_does_not_gain_a_reflection(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "lite-change"

@@ -318,6 +318,9 @@ def upgrade_inline_lite(
         bullet_field(constraints, "Escalate when")
         or "A preference conflicts or a better option requires changing a bound."
     )
+    overall_status = metadata_value(text, "Overall status") or "待开始"
+    evidence_complete = overall_status in {"待验收", "完成"}
+    terminal = overall_status in {"完成", "已取消"}
     project_slug = slugify(title)
 
     task_specs: list[tuple[dict[str, str], str]] = []
@@ -328,7 +331,7 @@ def upgrade_inline_lite(
     program = render_full_program(title, first_stem, owner, today)
     program = program.replace(
         "- Overall status: `待开始`",
-        f"- Overall status: `{metadata_value(text, 'Overall status') or '待开始'}`",
+        f"- Overall status: `{overall_status}`",
         1,
     )
     program = program.replace(
@@ -412,6 +415,28 @@ def upgrade_inline_lite(
             count=1,
             flags=re.MULTILINE,
         )
+    next_step = "None" if terminal else (
+        f"{active_stem} / N-001"
+        if active_stem is not None
+        else metadata_value(text, "Next step") or "None"
+    )
+    program = re.sub(
+        r"^- Next step:.*$",
+        f"- Next step: `{next_step}`",
+        program,
+        count=1,
+        flags=re.MULTILINE,
+    )
+    next_checkpoint = (
+        "None" if terminal else metadata_value(text, "Next checkpoint") or "None"
+    )
+    program = re.sub(
+        r"^- Next checkpoint:.*$",
+        f"- Next checkpoint: `{next_checkpoint}`",
+        program,
+        count=1,
+        flags=re.MULTILINE,
+    )
     latest_evidence = metadata_value(text, "Latest evidence") or "None"
     program = re.sub(
         r"^- Latest evidence:.*$",
@@ -428,9 +453,37 @@ def upgrade_inline_lite(
         count=1,
         flags=re.MULTILINE,
     )
+    clean_state = metadata_value(text, "Clean state")
+    last_clean = metadata_value(text, "Last clean")
+    if clean_state is not None:
+        program = re.sub(
+            r"^- Clean state:.*$",
+            f"- Clean state: `{clean_state}`",
+            program,
+            count=1,
+            flags=re.MULTILINE,
+        )
+    if last_clean is not None:
+        program = re.sub(
+            r"^- Last clean:.*$",
+            f"- Last clean: `{last_clean}`",
+            program,
+            count=1,
+            flags=re.MULTILINE,
+        )
+    elif evidence_complete:
+        program = re.sub(
+            r"^- Last clean:.*$",
+            "- Last clean: `N/A: Lite plan predates Clean metadata; profile migration changed structure only`",
+            program,
+            count=1,
+            flags=re.MULTILINE,
+        )
 
     tasks: dict[Path, str] = {}
     for node, task_stem in task_specs:
+        node_evidence_complete = node["status"] in {"待验收", "完成"}
+        checkbox = "x" if node_evidence_complete else " "
         task = render_task("full", title, task_stem, owner, today)
         task = task.replace("- Status: `待开始`", f"- Status: `{node['status']}`", 1)
         task = task.replace("- Plan node: `NODE-001`", f"- Plan node: `{node['node']}`", 1)
@@ -441,12 +494,12 @@ def upgrade_inline_lite(
         )
         task = task.replace(
             "- [ ] <specific testable condition>",
-            f"- [ ] {acceptance['condition']}",
+            f"- [{checkbox}] {acceptance['condition']}",
             1,
         )
         task = task.replace(
             "- [ ] <command or scenario with a clear pass condition>",
-            f"- [ ] {acceptance['verification']} => {acceptance['pass condition']}",
+            f"- [{checkbox}] {acceptance['verification']} => {acceptance['pass condition']}",
             1,
         )
         task = task.replace(
@@ -461,12 +514,42 @@ def upgrade_inline_lite(
         )
         task = task.replace("<smallest useful action>", node["action"], 1)
         task = task.replace("<command or scenario>", node["verification"], 1)
-        task = task.replace("| N-001 | `待开始` |", f"| N-001 | `{node['status']}` |", 1)
+        atomic_status = "完成" if node_evidence_complete else node["status"]
+        task = task.replace("| N-001 | `待开始` |", f"| N-001 | `{atomic_status}` |", 1)
         task = task.replace(
             "| None | Pending; on completion use `R-*` or `None: routine pass produced no durable learning` |",
             f"| {node['evidence']} | {node['reflection']} |",
             1,
         )
+        if node_evidence_complete:
+            result_state = "completed" if node["status"] == "完成" else "passed verification"
+            task = task.replace(
+                "- Final result: pending",
+                f"- Final result: Lite node {node['node']} {result_state}; "
+                f"accepted result: {success}",
+                1,
+            )
+            task = task.replace("- Evidence: pending", f"- Evidence: {node['evidence']}", 1)
+            task = task.replace(
+                "- Unverified / residual risk: pending",
+                "- Unverified / residual risk: Profile migration did not rerun verification; "
+                f"validity remains bounded to the preserved Lite evidence `{node['evidence']}`.",
+                1,
+            )
+            task = task.replace(
+                "- Memory writeback: pending: add `R-*`, `D-*`, or `F-*` only for triggered durable learning",
+                "- Memory writeback: N/A: Profile migration introduced no new durable learning "
+                "beyond the preserved Lite state.",
+                1,
+            )
+            remaining = (
+                "None"
+                if node["status"] == "完成"
+                else "Explicit owner decision recorded in program.md"
+            )
+            task = task.replace("- Remaining work: N-001", f"- Remaining work: {remaining}", 1)
+            completed = today if node["status"] == "完成" else "pending explicit owner decision"
+            task = task.replace("- Completed: pending", f"- Completed: {completed}", 1)
         tasks[Path(f"{task_stem}.md")] = task
 
     memory, decision_id = upgrade_lean_memory(memory_text, title, today)
