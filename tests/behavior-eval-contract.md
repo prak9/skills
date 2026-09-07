@@ -49,3 +49,11 @@ A split passes only when every selected case passes. The evaluator checks requir
 When a new rule raises reads, questions, or operations, compare it with the frozen baseline on the same cases. Keep the extra cost only if the changed cases show a material correctness, fidelity, authorization, or recoverability gain; record that comparison outside the holdout outputs so the holdouts remain usable.
 
 The deterministic evaluator and its unit-test fixtures validate the result envelope; they are not model runs. A model or instruction migration is not verified until real harness records with raw outputs and observed actions have been graded.
+
+## Principle-Transfer Development Packet
+
+`principle-transfer-cases.jsonl` is a supplementary `principle-transfer-v1` packet for timing decisions, abstraction fidelity, resource tradeoffs, completion boundaries, and audience-aware writing. All cases are visible development cases, not new holdouts. Keep the core and instruction-migration suites unchanged.
+
+Freeze this packet before editing candidate instructions. A forward executor receives only each `prompt`, the selected skill, and necessary source artifacts, not the expected behavior or criteria. Grade actual responses and actions against every criterion, including clean negatives; matching a phrase is insufficient. Use isolated contexts and fixed model/harness settings for comparisons, and preserve raw outputs, tool actions, revisions, and the cost metrics defined above. Record unavailable metadata as unknown and narrow comparative claims accordingly.
+
+The deterministic evaluator does not load this packet or accept its case-set version. Review its run records separately rather than reporting an unsupported automated pass. Parsing fixtures or inspecting instructions checks their structure, not model behavior; without actual recorded executions these cases remain unrun. Do not extend the evaluator or require a model benchmark for ordinary unrelated edits merely because the packet exists.

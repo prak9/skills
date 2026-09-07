@@ -13,16 +13,26 @@ Use this mode for a bare ticker, a general stock-analysis request, an investment
 ## Common Workflow
 
 1. **Define the security and boundary.** Resolve company, exchange, ticker, fiscal year, reporting currency, business/segment structure, latest source set, and disclosure limits from context and sources. This is a research check, not a user confirmation step; ask only when unresolved ambiguity could select the wrong security.
-2. **Lead with the investment view.** State rating bias, horizon, current price, valuation range or qualitative bracket, implied upside/downside when verified, core thesis, market debate, variant perception, and the breakpoint that would force a downgrade or re-underwriting.
+2. **Lead with the investment view.** State horizon, current price, valuation range or qualitative bracket, and supported upside/downside. Connect the price-implied operating hurdle to an independently supported variant, its per-share value effect, and the breakpoint that would force re-underwriting. Good business performance alone does not establish an attractive price.
 3. **Map industry economics.** Locate the company in its value chain; identify suppliers, customers, substitutes, scarce inputs, bargaining power, profit pool, supply/demand cycle, and structural versus cyclical drivers.
 4. **Assess competition and moat direction.** Compare share direction, margins, pricing power, switching costs, scale, network/data/R&D advantages, customer concentration, entrants, and substitutes. Say whether the moat is widening or narrowing.
 5. **Rebuild only the economics required by the chosen depth.** Separate reported history, management guidance, sell-side consensus, and analyst assumptions. Link operating drivers to revenue, margins, reinvestment, FCF, dilution, and per-share value. For linked calculations or historical reconstruction, follow [the material data contract](data-contract.md) and run its validator. Full research uses the longitudinal underwriting reference; Quick research names missing history rather than inventing it.
-6. **Name 3–7 value drivers.** For each, give past direction, market expectation, management view, valuation sensitivity, and the observation that would confirm or falsify it.
+6. **Concentrate on the decisive value drivers.** Usually one or two dominate; keep additional jointly necessary conditions when the economics require them, not to fill a quota. For each, distinguish observed consensus, conditional price-implied requirements, and the analyst forecast; show valuation sensitivity, source evidence, and the next discriminating observation. Revenue, costs, or capital investment can be decisive.
 7. **Value and reconcile.** Use SOTP when segments deserve different economics; otherwise choose DCF, normalized earnings, reverse DCF, EV/revenue, EV/EBITDA, P/E, P/FCF, NAV, or milestone valuation as appropriate. Full research triangulates rather than mechanically averaging methods. Always expose the assumptions that drive the range.
 8. **Run Bull/Base/Bear and oppose the thesis.** Show probabilities, operating assumptions, valuation, return, and triggers. Identify the dominant thesis-killer with a threshold and deadline, or the smallest honest weakest-link set.
 9. **Define catalysts and monitoring.** Track only events connected to model lines, market-implied hurdles, falsifiers, or decision gates. Separate thesis confidence, valuation attractiveness, and exposure posture.
 
-Classify the asset as *mean-reverting*, *paradigm-shifting*, or *mixed*. State what consensus believes and what price already embeds. A divergent view is useful only if it is checkably more accurate, not already priced, executable, and bounded by an edge half-life and falsifier.
+Classify the asset as *mean-reverting*, *paradigm-shifting*, or *mixed*. A divergent view is useful only if evidence supports its accuracy and incomplete pricing, with a plausible realization path, edge half-life, and falsifier. Being non-consensus is not itself an edge.
+
+## Expectations And Research Allocation
+
+Keep sell-side consensus (an observed, dated estimate), price-implied requirements (conditional inverse-model solutions), and the analyst forecast (an evidence-backed hypothesis) separate. Missing consensus stays missing; it does not prevent a conditional reverse valuation. Show which assumptions are held fixed, and do not infer a unique growth rate or market probability distribution from one price. Quick research may state a qualitative hurdle when numeric inputs are insufficient.
+
+Use reverse valuation to locate the hurdle, not to tune the independent forecast until the desired mispricing appears. Trace the variant to primary evidence, its strongest rival explanation, and the observation/date that would resolve it. Forward and reverse models sharing assumptions are not independent confirmations.
+
+Separate research commitment from capital commitment. After the requested scope is complete, prefer the cheapest additional evidence that could change the decision; defer low-information interviews or more background reading. Complete useful analysis now, state the unresolved condition and review trigger, and do not buy merely to justify exploration. In repeated research, preserve dated shortlisted and unchosen opportunities so selection can be reviewed without hindsight. Use existing `decision` or `research-craft` outputs when supplied; do not require another skill or ledger for a one-off memo.
+
+Treat positive FCF, accelerating revenue, founder ownership, or a ten-year runway as strategy-specific filters or evidence, not universal inclusion rules. Mature cash distributions, cyclical normalization, and investment-phase losses require different economics. Fixed PE bands and percentage discounts are user strategy parameters when explicitly chosen, not fair-value laws; translate them into conditional net returns and test the underlying assumptions. A risk-free yield is not the equity discount rate. Long-term moat analysis does not imply precise annual profit forecasts for a decade.
 
 ## Optional Specialist Lenses
 
@@ -44,7 +54,8 @@ Load another mode only when it resolves the crux:
 
 ## Evidence That Matters
 - Latest reported facts and guidance
-- Consensus/market expectation
+- Dated sell-side consensus, if available
+- Conditional price-implied requirements versus the independent forecast
 - Independent or contradictory evidence
 
 ## Economics And Valuation
@@ -57,7 +68,7 @@ Load another mode only when it resolves the crux:
 - Dominant falsifier, threshold, and deadline
 
 ## Catalysts And Next Checks
-- Near-term events, exact metrics, and next review point
+- Cheapest decision-changing check, exact metric, and next review point
 
 ## Sources And Missing Inputs
 ```
@@ -81,10 +92,11 @@ Load another mode only when it resolves the crux:
 ## 3. Financial Model
 - Revenue and segment drivers
 - Gross/operating margin, capex, working capital, FCF, dilution
+- Material capital uses, incremental returns, and competitive-advantage fade
 - Reported / guidance / consensus / analyst reconciliation
 
 ## 4. Key Value Drivers
-- Driver, evidence, sensitivity, expected range, falsifier
+- Decisive driver, consensus, price hurdle, independent range, sensitivity, falsifier
 
 ## 5. Valuation Triangulation
 - SOTP or appropriate primary method
@@ -96,7 +108,7 @@ Load another mode only when it resolves the crux:
 |---|---:|---|---:|---:|---|
 
 ## 7. Variant Perception And Dominant Thesis-Killer
-- Consensus gap, edge half-life, falsifier, threshold, deadline
+- Price-expectation gap and supporting evidence, edge half-life, falsifier, threshold, deadline
 
 ## 8. Catalysts, Risks, And Monitoring
 - Event, timing, expected evidence, decision effect

@@ -1,41 +1,43 @@
 # Mode B — Bayesian Intrinsic Growth Valuation
 
-Use only when the user explicitly asks for Bayesian valuation, intrinsic versus implied growth, posterior growth hypotheses, or FOMO versus fundamentals. Do not trigger from a bare ticker.
+Use when explicitly requested for Bayesian valuation, intrinsic versus implied growth, posterior growth hypotheses, or FOMO versus fundamentals, or for a clearly stated Mode A crux requiring this lens. Do not trigger from a bare ticker.
 
-The decision question is whether a sourced probability distribution for 3–5 year growth and margins is better or worse than the joint assumptions embedded in the current enterprise value.
+The decision question is whether evidence-backed joint operating scenarios offer attractive value and net returns relative to the requirements of the current price. Choose a horizon appropriate to the business and decision; 3–5 years is an example, not a universal forecast window.
 
 ## Inputs
 
 Use verified company fundamentals, industry cycle, demand/supply, historical and guided growth, TAM and penetration, competitive position, valuation, price/multiple changes, consensus revisions, and the new information being evaluated. Mark missing inputs instead of manufacturing precision.
 
-## Growth Hypotheses
+## Joint Hypotheses
 
-| Hypothesis | Label | 3–5Y revenue CAGR | Suggested midpoint |
-|---|---|---:|---:|
-| H0 | contraction | <0% | -5% |
-| H1 | mature slow growth | 0%–5% | 2.5% |
-| H2 | steady growth | 5%–12% | 8.5% |
-| H3 | high-cycle growth | 12%–25% | 18.5% |
-| H4 | structural breakout | 25%–50% | 37.5% |
-| H5 | platform expansion | >50% | 60% or scenario-specific |
+Define scenarios from the company's actual mechanisms—contraction, normalization, share gain, or expansion as relevant. Do not assign universal growth buckets or midpoint values. Each scenario links growth path and duration, margins, reinvestment/incremental returns, financing/dilution, and terminal conditions. Preserve material dependencies; high growth and low reinvestment cannot be combined without an economic explanation.
+
+Value each coherent scenario before aggregation:
+
+```text
+scenario inputs -> dated cash flows -> scenario equity value and net investor payoff
+probability-weighted value = sum(p_s * V_s)
+```
+
+Use common valuation dates, currency, security basis, and return horizons. Growth-rate means may summarize the distribution but cannot replace it: generally `V(E[g]) != E[V(g)]`. State whether a scenario persists across years or transitions; those are different models. Withhold numeric values when the required inputs are absent rather than converting a growth midpoint into a target price. Probability-weighted values remain conditional on the valuation model and are not uniquely inferred market prices.
 
 ## Workflow
 
-1. **Set a conservative prior.** Use base rates, company economics, cycle, TAM, and competition. Market excitement alone does not justify H4/H5.
+1. **Set a conservative prior.** Use relevant base rates, company economics, cycle, TAM, and competition. Market excitement alone does not justify an expansion scenario.
 2. **Map each observation to a latent variable.** Write `observed signal -> latent growth/margin variable -> rival explanation -> disclosure lag`. Cluster observations caused by the same event; they are not independent confirmations.
 3. **Update probabilities.** Show prior, likelihood interpretation, and posterior as ranges. Cyclical, one-off, or backlog-timing signals should not automatically raise long-run growth. If the mechanism or reporting entity changes, rebuild the model rather than force an update.
-4. **Calculate weighted intrinsic growth.** Use the posterior and declared midpoints; show sensitivity rather than decimal-level confidence.
-5. **Reverse-engineer the price.** Treat market-implied growth as an inverse problem, not a unique observable. Show combinations of growth duration, steady-state margin, reinvestment/ROIC, dilution, discount rate, and terminal value consistent with price.
-6. **Compare intrinsic and implied distributions.** Label the valuation low, aligned, expensive-but-tradable, or bubble-like; do not call a high-quality company cheap merely because growth is high.
+4. **Value the joint scenarios.** Calculate scenario cash flows, equity values, and net investor payoffs before applying posterior probabilities. Show sensitivity and tail outcomes, not just weighted growth or an average target. Apply the shared numeric-data rules, including the direct-arithmetic path for wholly hypothetical examples; a data validator does not validate the economic model.
+5. **Reverse-engineer the price.** Treat market-implied growth as an inverse problem, not a unique observable. Show combinations of growth duration, steady-state margin, reinvestment/ROIC, dilution, discount rate, and terminal value consistent with price. Name fixed assumptions and free variables. A price alone identifies neither a unique joint forecast nor scenario probabilities; do not present these solutions as observed sell-side consensus.
+6. **Compare evidence with price requirements.** Identify the material gap, its value/return sensitivity, strongest rival, and why it may remain incompletely priced. Keep the operating forecast independently evidenced rather than fitting it to a preferred verdict. Conclude attractive, unattractive, or unresolved only to the extent supported by the scenarios and estimation error.
 7. **Measure price/fundamental divergence.** Separate changes in operating expectations from multiple expansion, liquidity, theme crowding, short squeeze, and index flow.
-8. **Define verification.** Name the next 1–4 quarter evidence, posterior-changing threshold, and falsifier.
+8. **Define verification.** Name the next decision-relevant disclosure or observation, posterior-changing threshold, and falsifier.
 
 ## Output
 
 ```markdown
 ## Company And Decision
-## Prior And Posterior Growth Table
-## Weighted Intrinsic Growth Range
+## Prior And Posterior Joint Scenarios
+## Scenario Cash Flows, Values, Net Returns, And Tail
 ## Reverse-DCF / Market-Implied Joint Assumptions
 ## Price Versus Fundamental Update
 ## Valuation State And Scenario Range

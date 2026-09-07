@@ -47,6 +47,27 @@ At minimum, make these bridges explicit when material:
 
 Keep reported history, management guidance, consensus, and the analyst model in separate columns or clearly labeled layers. Preserve formulas and assumptions needed for another analyst to reproduce the result.
 
+### Capital Allocation And Franchise Fade
+
+For material uses of capital, connect cash committed, timing, incremental cash generated, and the alternative use. Separate maintenance from growth investment, organic expansion from acquisitions, and operating cash generation from financing. Trace dividends, debt reduction, retained cash, and buybacks through the same cash balance; neither financing proceeds nor returned capital create a second source of operating value.
+
+- **Incremental economics:** distinguish legacy average ROIC from prospective incremental returns. ROIC is not a profit margin: on a consistent non-financial operating basis it combines after-tax operating margin and invested-capital turnover. Under stable definitions and investment-driven growth, `NOPAT growth ≈ net reinvestment / NOPAT × incremental ROIC`; separately model efficiency gains on existing assets. Use aligned periods, after-tax amounts, and the applicable capital cost. Financial firms need an equity/regulatory-capital framework rather than a forced industrial ROIC formula.
+- **Measurement limits:** explain material intangible capitalization, goodwill, cycle, or investment-lag adjustments. A tiny/negative denominator or incomparable periods makes a mechanical incremental-ROIC ratio unreliable; mark it undefined and use a multi-period investment cohort or project NPV. An acquisition's value depends on the price paid and future incremental cash flows, not EPS accretion alone.
+- **Management evidence:** compare promised allocation with realized investment outcomes, dilution, incentives, and responses to failed projects. Founder ownership, culture labels, or an expert's conviction do not substitute for sourced behavior and rival explanations.
+- **Buybacks:** reconcile cash spent, repurchase price versus conditional intrinsic value, issuance/SBC, and net diluted shares. A repurchase that offsets employee issuance does not give continuing holders an extra gross-buyback-yield return. Avoid both ignoring and charging the same SBC dilution twice.
+- **Three durations:** distinguish the remaining advantage of existing assets, the runway for attractive incremental reinvestment, and the investor's informational edge. Model competitive responses and fade in the ROIC spread/margin where supported; do not convert “strong moat” into indefinite high growth or a second quality premium.
+
+### Investor Return Bridge
+
+Compute returns from the price actually paid, not business growth alone. For comparable positive EPS and matching multiple definitions:
+
+```text
+1 + price return = (EPS_H / EPS_0) * (PE_H / PE_0)
+holding-period total return = (P_H + sum(cash dividends received) - P_0) / P_0
+```
+
+The second identity assumes a continuously held, split-adjusted share, no reinvestment of dividends, no additional contributions, and no taxes/fees; include actual frictions when relevant. EPS already incorporates the modeled net share count, so do not add gross buyback yield again. Use dated investor cash flows for IRR when well-defined; otherwise report NPV or horizon wealth. Keep cumulative and annualized returns distinct, and do not call a probability-weighted scenario IRR the return of the expected cash-flow path. Maintenance, organic growth, and active investment are causal components of value, not automatically disjoint additive shareholder returns.
+
 ## 3. Triangulate Valuation
 
 Use multiple methods to reveal assumption risk, not to manufacture agreement.
@@ -57,7 +78,7 @@ Use multiple methods to reveal assumption risk, not to manufacture agreement.
 
 Add SOTP, NAV, EV/revenue, EV/EBITDA, P/FCF, or milestone valuation only when the business requires it. Do not average incompatible methods mechanically. Explain why values diverge and which assumption causes the divergence.
 
-The reverse DCF is a market-expectations test, not a unique forecast. Report a joint sensitivity because the same price can imply several combinations of growth, margin, reinvestment, and duration.
+The reverse DCF is a market-expectations test, not a unique forecast or an observed consensus series. Report a joint sensitivity with fixed assumptions because the same price can imply several combinations of growth, margin, reinvestment, and duration. Compare these requirements with independently sourced operating scenarios; forward/reverse agreement under shared assumptions is not independent evidence. Calculate each coherent scenario's value and net payoff before probability-weighting, not a valuation of average growth inputs.
 
 ## 4. Run A Cross-Forecast Consistency Audit
 
@@ -69,10 +90,13 @@ Before accepting Bull/Base/Bear outputs, check whether all forecasts can be true
 | Revenue -> gross margin | Price/mix assumptions conflict with competition, utilization, or input costs |
 | Growth -> opex | Rapid expansion assumes no sales, support, R&D, or compliance burden |
 | Earnings -> FCF | EPS rises while capex, working capital, cash taxes, or SBC are ignored |
+| Growth -> capital allocation | Legacy high ROIC is used to justify low-return expansion or unfunded growth |
+| Cash/earnings -> shareholder return | Buybacks are counted both in net shares/EPS and as an extra payout; multiple contraction is omitted |
 | Capacity -> capex/depreciation | Output expands without funding, construction lag, or depreciation |
 | TAM/share -> competition | Several firms simultaneously gain more share than the market permits |
 | Guidance/consensus -> model | The analyst forecast differs without a named, testable reason |
 | Terminal value -> normalized economics | Terminal margins, ROIC, or growth exceed durable competitive conditions |
+| Scenarios -> expected value | Marginal growth/margin averages replace coherent joint scenario cash flows |
 
 For every material conflict, show the conflicting assumptions, the financial line affected, and the resolution. If evidence cannot resolve it, lower confidence, widen the scenario range, or label the model `internally inconsistent`; do not hide the contradiction in an average target price.
 
@@ -116,7 +140,7 @@ Create a versioned baseline before monitoring:
 
 | Field | Required content |
 | --- | --- |
-| Core assumptions | 3-7 causal variables that drive long-term cash flow |
+| Core assumptions | Usually 1-2 decisive causal variables; retain additional jointly necessary conditions when material |
 | Expected range | Base range and scenario bounds for each variable |
 | Market-implied hurdle | Growth, margin, duration, or return assumptions embedded in price |
 | Dominant falsifier | Threshold and deadline from the red-team step |
@@ -142,3 +166,9 @@ Every material-change report should answer:
 5. What decision state follows, and what is the next validation point?
 
 Do not claim to monitor continuously, create an external alert, or mutate a watchlist unless the user authorized that action and the required persistent tooling is available. Otherwise deliver the baseline, thresholds, sources, and proposed cadence as a monitoring specification.
+
+## Method Sources
+
+- [Expectations Investing](https://www.expectationsinvesting.com/about): conditional price requirements, value-sensitive research, and net opportunity costs.
+- [Damodaran on growth](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valquestions/growth.htm): reinvestment-driven growth versus efficiency gains.
+- [Return on invested capital](https://www.morganstanley.com/im/publication/insights/articles/article_returnoninvestedcapital.pdf) and [total shareholder returns](https://www.morganstanley.com/im/publication/insights/articles/article_totalshareholderreturns.pdf): capital-return definitions and per-share return attribution.

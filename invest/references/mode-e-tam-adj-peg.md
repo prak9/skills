@@ -1,6 +1,8 @@
 # Mode E — TAM-Adjusted PEG
 
-Use only when the user explicitly requests TAM-Adj-PEG, TAM-supported valuation, runway-adjusted PEG, or a quality-adjusted growth valuation. Do not trigger from a bare ticker.
+Use when explicitly requested for TAM-Adj-PEG, TAM-supported valuation, runway-adjusted PEG, or a quality-adjusted growth valuation, or for a clearly stated Mode A crux requiring this lens. Do not trigger from a bare ticker.
+
+This is an **uncalibrated screening heuristic**, not a fair-value model or a standalone trade signal. Its factors and legacy bands have no demonstrated out-of-sample calibration here. Report that status with any calculation; a lower adjusted PEG alone does not establish cheapness.
 
 ## Formula And Units
 
@@ -9,13 +11,13 @@ Adjusted Growth = EPS CAGR x TAM Runway Factor x Quality Factor
 TAM-Adj-PEG = Forward PE / Adjusted Growth
 ```
 
-Use EPS CAGR as a percentage number: Forward PE 40 and adjusted growth 50% produce 0.8. Do not add TAM CAGR to EPS CAGR. TAM mainly modifies duration and confidence, and each factor must add information not already embedded in the EPS forecast.
+Use EPS CAGR as a percentage number: Forward PE 40 and adjusted growth 50% produce 0.8. Show ordinary PEG alongside the adjusted result, with the factor inputs and their provenance. “Adjusted Growth” is an index denominator, not a forecast EPS growth rate. Do not add TAM CAGR to EPS CAGR. TAM mainly modifies duration and confidence, and each factor must add information not already embedded in the EPS forecast.
 
 If PE or EPS CAGR is not meaningful, mark the method inapplicable and use normalized earnings, EV/revenue, milestone scenarios, or an option-style framework.
 
 ## TAM Runway Factor
 
-Use `sqrt(high-growth duration / 5)` as a starting heuristic, capped at 2.0, then explain the evidence for duration.
+When a supported duration estimate is available, `sqrt(high-growth duration / 5)`, capped at 2.0, is an optional heuristic. Declare the formula or user-supplied convention used and retain precision until final rounding; the table below is approximate. If duration is unsupported, leave the factor and adjusted result `N/A`, or calculate an explicitly hypothetical sensitivity rather than filling a default.
 
 | Duration | Factor |
 |---:|---:|
@@ -31,7 +33,9 @@ Do not assign runway from a sector label. Test penetration, TAM growth, share du
 
 ## Quality Factor
 
-| Factor | Evidence state |
+These legacy ranges are illustrative parameter choices, not calibrated mappings from business quality to value. Prefer an explicit user-supplied factor or a disclosed sensitivity; unsupported quality factors leave the adjusted result `N/A`.
+
+| Illustrative factor | Assumed evidence state |
 |---:|---|
 | 0.3–0.5 | early, loss-making, unproven, or high dilution |
 | 0.5–0.7 | cyclical, concentrated, or high execution risk |
@@ -45,16 +49,9 @@ Evaluate accrual of TAM to the company, pricing power, customer concentration, t
 
 ## Interpretation
 
-| TAM-Adj-PEG | View |
-|---:|---|
-| <0.5 | apparently very cheap; audit forecast optimism |
-| 0.5–0.8 | attractive |
-| 0.8–1.2 | reasonable to slightly cheap |
-| 1.2–1.8 | reasonable to slightly expensive |
-| 1.8–2.5 | expensive absent exceptional runway |
-| >2.5 | very expensive or distorted inputs |
+Report supported or explicitly hypothetical Low/Base/High factor combinations. If a plausible parameter change materially alters the screening result, label the conclusion `model-sensitive`; do not turn a band crossing into a buy/sell rule. An explicitly requested legacy or personal band may be reported as that convention, not as independently established fair value.
 
-Report Low/Base/High factor combinations. If a small plausible change in runway or quality crosses more than one band, label the conclusion `model-sensitive` and avoid a strong point estimate. Do not double-count moat, margins, cyclicality, or TAM already present in consensus EPS.
+Do not double-count moat, margins, cyclicality, or TAM already present in the forecast. Explain how much of the result comes only from changing factors. For example, PE 40 / EPS growth 20 gives ordinary PEG 2; user-specified factors 1.4 and 1.4 lower it to about 1.02 without adding cash-flow evidence. Put durable advantages into margin, incremental return, reinvestment duration/fade, or scenario probabilities in a cash-flow model instead of awarding another quality premium for the same effect. If those economics cannot be checked, conclude `valuation unresolved`, not “cheap.”
 
 Special cases:
 
@@ -71,7 +68,7 @@ Special cases:
 ## Runway Factor: Low / Base / High
 ## Quality Factor: Low / Base / High
 ## Calculation And Sensitivity
-## Valuation Band And Model Sensitivity
+## Calibration Status, Model Sensitivity, And Cash-Flow Cross-Check
 ## Upside Requirements, Risks, And Milestones
 ## Conditional Position Type
 ## Sources And Missing Inputs

@@ -47,6 +47,25 @@ Distinguish setup code, application hot paths, and reusable library code. A smal
 local inefficiency in a widely reused library can become material even when no
 single caller can fix it easily.
 
+## Distinguish Cost Removal From Cost Transfer
+
+For a material optimization, name the exploitable structure, the cost reduced,
+any cost shifted elsewhere, and the workload or resource condition under which
+the advantage may disappear. Use only the dimensions relevant to the change:
+
+| Mechanism | Potential saving | Cost or constraint to check |
+| --- | --- | --- |
+| Cache repeated work | computation or retrieval latency | memory, invalidation, freshness, hit rate |
+| Parallelize independent work | wall-clock time | total CPU, contention, coordination, tail latency |
+| Prefetch predictable access | exposed memory/I/O wait | bandwidth, cache pollution, unused fetches |
+
+A faster response does not establish lower total compute cost, nor does higher
+resource use alone invalidate a change that satisfies the user's objective and
+bounds. Compare against that contract, not an invented composite score. State
+which measurements support the tradeoff and which assumptions remain untested;
+reuse decisive same-revision evidence instead of adding benchmark work merely
+to fill the table.
+
 ## Treat APIs as performance commitments
 
 - Offer bulk operations when callers otherwise repeat a fixed boundary cost.

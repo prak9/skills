@@ -24,10 +24,10 @@ Load only the selected mode and the references it explicitly requires.
 | Trigger | Route |
 |---|---|
 | bare ticker, “analyze this stock,” buy-side view, IC memo, full re-underwriting, or thesis update | [Mode A — Buy-Side Equity Research](references/mode-a-buy-side.md) |
-| explicit Bayesian valuation, intrinsic versus implied growth, posterior update, or FOMO versus fundamentals | [Mode B — Bayesian Growth](references/mode-b-bayesian-growth.md) |
+| explicit Bayesian valuation, intrinsic versus implied growth, posterior update, or FOMO versus fundamentals | [Mode B — Bayesian Joint Scenarios](references/mode-b-bayesian-growth.md) |
 | explicit GF-DMA, DMA/ATR health, price/DMA divergence, or EscapeRatio | [Mode C — GF-DMA](references/mode-c-gf-dma.md) |
 | news, product/procurement/supply-chain signal, financial-statement transmission, or small-cap beneficiary search | [Mode D — Serenity Alpha](references/mode-d-serenity-alpha.md) |
-| explicit TAM-Adj-PEG, runway-adjusted PEG, or quality-adjusted growth valuation | [Mode E — TAM-Adj-PEG](references/mode-e-tam-adj-peg.md) |
+| explicit TAM-Adj-PEG, runway-adjusted PEG, or quality-adjusted growth valuation | [Mode E — TAM-Adj-PEG Screening](references/mode-e-tam-adj-peg.md) |
 
 Do not trigger Modes B, C, or E from a bare ticker or generic stock-analysis request. They require an explicit request or a clearly stated Mode A crux. Do not load all modes for completeness.
 
@@ -60,6 +60,8 @@ For every material number or claim, preserve source, document type, publication/
 - analyst inference.
 
 For each material numeric input also preserve value, unit, currency, period, accounting/estimate basis, first-available timestamp, and an explicit missing reason. Use the [material investment data contract](references/data-contract.md) for linked calculations, model reconstruction, or historical evaluation, and validate it with `scripts/validate_invest_data.py`. A Quick memo may use a compact table with the same semantics. Unknown is never zero; passing arithmetic checks does not prove that the source supports the claim.
+
+For self-contained hypothetical arithmetic supplied by the user, state the premises, units, and relative horizon and verify the formulas directly. Do not build a sourced-data ledger or require publication timestamps for invented companies or assumed scenarios. This exception does not cover real-company model reconstruction, sourced inputs, or historical point-in-time claims; retain the data contract for those portions of a mixed task.
 
 Do not let current estimates, later restatements, or known outcomes leak into a historical decision reconstruction. Cluster evidence sharing one underlying event rather than counting it as independent confirmation.
 

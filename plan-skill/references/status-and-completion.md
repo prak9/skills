@@ -18,6 +18,14 @@ In Full plans, each task package owns its status. `program.md` links task packag
 
 Do not cross a required readiness gate while it is `Blocked`. Authorized investigation and independent work can continue. If the current program represents only gated work, keep that program blocked; if an authorized diagnostic is the next node, scope the readiness contract to that diagnostic and mark it `Ready` without treating the downstream mutation as authorized.
 
+## Deliberate Waiting And Task Scope
+
+A task whose deliverable is a decision analysis can be `完成` after its acceptance evidence is satisfied, even if its conclusion is to defer commitment. This completes the analysis, not the proposed future action or anyone's approval of it. Preserve a genuinely retained owner decision as `待验收` when applicable.
+
+An authorized implementation awaiting a missing external prerequisite is `阻塞` only for the dependent work. In its existing task/blocker fields, record the condition, source or owner, next event/checkpoint, and the action on resolution or a missed checkpoint. A promised date is a review point, not evidence the prerequisite will arrive. Continue independent authorized work; do not add a parallel waiting ledger or new status vocabulary.
+
+If the requested outcome is ongoing monitoring or waiting until an event, a quiet observation period is normal active work, not completion or a blocker by itself. Keep the task active and use the existing authorized persistent mechanism/cadence until its actual stop condition; do not replace it with a waiting recommendation, increase polling without reason, or ask again for unchanged authorization.
+
 ## Completion Bar
 
 For every task:

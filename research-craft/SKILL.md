@@ -98,6 +98,14 @@ For an automated discovery portfolio, append the loop under change, frozen depen
 - Shrink the problem until it is cheap: one batch, one trace, one symbol, one regime, one failing case, or one minimal reproduction.
 - Tune the strongest honest baseline before claiming improvement.
 
+### Check What A Smaller Model Preserves
+
+When a proposed abstraction or simplification carries the conclusion, test a contrastive pair: two cases the model treats as equivalent but that might require different predictions or actions. Select the pair from observed cases or a clearly labeled hypothetical; do not force a counterexample when the distinction is immaterial to the contract.
+
+Check whether compression preserved the relevant outcome, timing, constraints, interactions, and evidence needed to choose an action. For example, a non-idempotent operation that never executed and one that executed but lost its reply cannot safely share an unconditional retry policy. A bounded read-only retry may legitimately treat different errors alike when recovery behavior and diagnostic evidence remain adequate.
+
+Keep the simpler model when it preserves the required distinctions; add only the variable, state, or boundary needed by an evidenced failure. Fewer concepts or a fixed variable count is not proof of quality, and a hand-picked pair is not proof of general validity. Before transfer to a new setting, identify the mechanism and boundary that must still hold. Use analogy, reframing, or backward reasoning as optional probes when stuck, not a mandatory sequence or substitute for evidence.
+
 ## 5. Build only the harness the claim requires
 
 Make evidence easy to produce and hard to counterfeit:

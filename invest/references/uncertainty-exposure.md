@@ -43,7 +43,15 @@ Net EV = sum(scenario probability * scenario net return)
 
 Report the probability-weighted result together with downside severity, drawdown path, time horizon, and the assumptions that dominate the value. Do not let a positive average override a low-probability loss that violates the user's stated survival constraint or an explicit risk budget.
 
-Treat the current market price as an information-bearing prior, not as truth. State which probability or payoff estimate differs from the market and why that difference is not already priced.
+Treat the current market price as information, not as truth or a uniquely identified probability distribution. State which independently supported operating/payoff estimate differs from the conditional requirements of price. If a prior already incorporates a news event through price, do not count the same event again as an independent update.
+
+### Entry, Exit, And Opportunity Cost
+
+Compare a proposed switch with keeping the current holding and the best relevant feasible alternative, including cash when appropriate, on the same horizon and net-wealth basis. Deduct immediate sale taxes, fees, and financing costs before applying returns to the capital that can actually be redeployed. Include relevant liquidity, correlated tail risk, and estimation error; a slightly higher gross target return does not establish a robust switching advantage. Missing portfolio or tax inputs limits the switch recommendation, not the standalone stock research.
+
+Entry/exit gates should reflect conservative scenario returns, survival constraints, and value relative to alternatives, not universal PE levels or fixed price discounts. Respect an explicitly chosen personal strategy as such while showing its economic assumptions. Distinguish a discount to today's intrinsic value from a discount to an uncertain future value; translate the latter into horizon return and cash distributions rather than calling it guaranteed margin of safety.
+
+A price fall alone proves neither cheapness nor thesis failure: separate the new price from changes in cash flows, financing, and the falsifier. Likewise, unchanged fundamentals can merit a `valuation-only change` report when a price move crosses an agreed return gate. Waiting for a price/evidence trigger is a conditional posture with a review point, not proof the opportunity will eventually pay off. It does not authorize trading, alerts, or external records.
 
 ## 4. Bound Exposure Robustly
 
