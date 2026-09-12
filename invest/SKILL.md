@@ -15,6 +15,10 @@ Replace point certainty with conditional scenarios. Keep these judgments separat
 - price/valuation attractiveness;
 - exposure size and survivability.
 
+Depth means resolving the causal and pricing dispute, not producing more sections or a more elaborate spreadsheet. A material investment claim needs a traceable chain: operating mechanism -> discriminating evidence -> independently supported forecast -> conditional price requirements -> per-share payoff -> observable falsifier. A source for a number is not automatically evidence for the inference built on it.
+
+Distinguish a supported investment case, an illustrative valuation sensitivity, and an unresolved underwriting question. `No demonstrated edge` and `Too Hard at present` are valid conclusions, not reasons to abandon requested research. Complete accessible checks, identify the unsupported link and what would resolve it; do not invent a variant, target or probability to fill a template.
+
 Treat every output as research analysis, not personalized investment advice. Never invent unavailable data. Mark it `未核验`, name the source that would confirm it, and narrow the conclusion.
 
 ## Route By Request

@@ -4,6 +4,8 @@ Use this contract when linked calculations depend on three or more material numb
 
 The contract prevents unknown values from becoming zero, estimates from becoming facts, incompatible bases from being added, and later information from leaking into a historical view. It does not prove that a source supports a number; compare every material claim with the cited original passage.
 
+Maintain two different checks: **input integrity** (this schema and calculator) and **underwriting support** (why a premise/range is justified and whether it supports the inference). For a load-bearing analyst assumption, retain its derivation, supporting observations/reference class, range and failure condition in the model or memo. `source.reference` pointing to that model is not independent support for its growth or margin. A validator pass, a large metric count or reproducible DCF cannot be presented as proof of investment depth or forecast reliability. These semantic checks do not add required JSON fields or change the v1 schema.
+
 ## Metric record
 
 Each material number is one item in `metrics`:

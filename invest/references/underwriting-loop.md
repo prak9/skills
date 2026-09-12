@@ -23,6 +23,43 @@ If a point-in-time consensus snapshot or prior judgment cannot be recovered, mar
 
 Normalize before comparing periods: fiscal calendars, currencies, acquisitions and disposals, discontinued operations, segment changes, accounting-policy changes, stock splits, GAAP/non-GAAP definitions, and one-time items. State when periods remain incomparable.
 
+### Investigate The Mechanism, Not Just The Metric
+
+Start with competing explanations for the opportunity. Reconstruct the relevant history: what changed in customer behavior, pricing, competition, capital use or reporting; what management previously promised; what actually happened; and why the stock could rationally deserve its current valuation. Select a window that exposes both favorable and adverse episodes, not just the period supporting the thesis. A long time series without an explanation of the turning points is not deep research.
+
+Follow the uncertain links that can move value. Use the following as investigative lenses, not mandatory sector checklists:
+
+| Claim | Mechanism to uncover | Evidence that can distinguish rivals |
+|---|---|---|
+| Demand or share is accelerating | Replacement vs new demand; customer budgets, inventory, channel loading, mix and price elasticity | Customer purchases/usage, sell-through, cancellations, competitors' response; not bookings or TAM alone |
+| Retention or network effects improve economics | Same-cohort survival, monetization, acquisition/subsidy and incremental service cost | Comparable cohort contribution over a mature window; aggregate engagement may hide mix or weaker new cohorts |
+| Margin expansion is durable | Price/cost pass-through, utilization, product mix, labor and supplier bargaining, true incremental margins | Unit economics, price lists, capacity and cost evidence; not extrapolation from a peak quarter |
+| Growth creates shareholder value | Who captures incremental surplus: customer, creator, distributor, supplier, employee or shareholder | Net cash after required reinvestment and dilution; higher gross volume can reduce retained profit |
+| Moat or management protects returns | Concrete switching friction, renewal behavior, capital allocation, incentive and competitor constraints | Actual retained customers, realized project returns and failed promises; labels and founder ownership are not mechanisms |
+
+For the selected crux, preserve enough operating detail to explain outcomes and counterexamples. Define the denominator, population, duration, unit and accounting recognition. Name ratios by what they measure: cash retained is not customer retention, and a threshold for preserving prior profit is not zero-profit break-even. A leading KPI, reported revenue, cash collection and shareholder cash are different objects; trace the lag and bridge rather than interchange them. Decompose before/after or cohort/segment differences, then recombine material interactions. Few variables do not justify discarding a countervailing cost or jointly necessary condition.
+
+### Make Evidence Carry A Specific Claim
+
+Embed a compact argument record in the existing memo/model; do not create a second ledger by default:
+
+```text
+Crux and economic mechanism:
+Claim / independently forecast range:
+Original observation, source date and precise locator:
+What the observation establishes, inference added, and what remains unknown:
+Source origin / population / selection and reporting limits:
+Strongest contrary evidence and rival explanation:
+Discriminating observation available now or at a named later point:
+Effect on model line, per-share value and verdict:
+```
+
+Compare explanations rather than merely collecting confirmation. Company commentary can establish management's intent, not the causal effect of its initiative; a customer case can establish that customer's behavior, not market-wide adoption. A supplier quote may constrain cost but not establish final demand. Reprints, analyst notes citing management and several metrics from the same campaign do not create independent evidence. External origin helps only when measurement, population and incentives fit the claim.
+
+Trace surprising claims to the underlying filing footnote, contract terms, data or call exchange; inspect counterevidence and missing denominators. Check feasible customer, competitor, supplier or regulator evidence where it can discriminate; document inability to obtain it instead of pretending the company narrative was independently confirmed. Never invent an expert interview or assume access to private data. Public-information research does not authorize contacting counterparties or acquiring material nonpublic information.
+
+Allocate effort by potential value impact, uncertainty and whether evidence can resolve it; no numeric composite score is required. Read the accessible primary material that could change the decision before deferring it. Stop a branch when rivals no longer change the action within defensible bounds, or the decisive evidence is unavailable and its consequence is explicitly bounded. A source list is not a substitute for this work.
+
 ## 2. Rebuild The Economic Model
 
 Link the operating assumptions to earnings and cash rather than forecasting each line independently. Use only the detail supported by the business and available evidence.
@@ -46,6 +83,14 @@ At minimum, make these bridges explicit when material:
 - **Per-share economics:** debt and cash, SBC, options, convertibles, issuance, buybacks, and fully diluted share count.
 
 Keep reported history, management guidance, consensus, and the analyst model in separate columns or clearly labeled layers. Preserve formulas and assumptions needed for another analyst to reproduce the result.
+
+### Justify The Forecast Before Trusting The Valuation
+
+For load-bearing growth, mature margin, reinvestment, SBC/dilution, discount rate and terminal assumptions, give the evidence anchor, derivation or relevant reference class, plausible range, economic prerequisites and confidence limit. A named `analyst_assumption` or a link to one's own model provides reproducibility, not empirical support. An unobserved parameter is unknown; a scenario value for it is a conditional assumption, not a replacement fact.
+
+Use a useful decomposition rather than independently guessing every financial line. Reconcile the starting run rate, guidance changes, deferred items and operating cohorts; connect near-term milestones to later scale, margins and reinvestment. Explain why a mature peer's economics would transfer before borrowing them. Unsupported long-run parameters may appear in a labeled hurdle/sensitivity calculation, but cannot alone support a central fair value, precise target or high-conviction verdict.
+
+Show the estimated part and the unidentifiable part separately. If cash-flow timing, cohorts or capital needs are missing, use honest bounds, break-even requirements or a suitable alternative method, and disclose which requested model cannot be completed. Do not silently substitute a toy earnings bridge for a fully reconstructed model. A partial model can still decisively reject an implausible price requirement without establishing a precise intrinsic value.
 
 ### Capital Allocation And Franchise Fade
 
@@ -79,6 +124,28 @@ Use multiple methods to reveal assumption risk, not to manufacture agreement.
 Add SOTP, NAV, EV/revenue, EV/EBITDA, P/FCF, or milestone valuation only when the business requires it. Do not average incompatible methods mechanically. Explain why values diverge and which assumption causes the divergence.
 
 The reverse DCF is a market-expectations test, not a unique forecast or an observed consensus series. Report a joint sensitivity with fixed assumptions because the same price can imply several combinations of growth, margin, reinvestment, and duration. Compare these requirements with independently sourced operating scenarios; forward/reverse agreement under shared assumptions is not independent evidence. Calculate each coherent scenario's value and net payoff before probability-weighting, not a valuation of average growth inputs.
+
+### Establish The Variant And Attribute The Price Gap
+
+Maintain three separate columns for each decisive dispute: dated observed expectations, conditional price-implied requirements, and an independently supported forecast. When consensus is unavailable or inconsistent, try an appropriate same-period primary/alternative estimate source if accessible; otherwise mark it missing. Do not replace it with a narrative about what “the market” supposedly believes. A target-price average is neither an operating forecast nor evidence of neglect.
+
+A variant can concern a fact, interpretation, duration, cash conversion, capital allocation or risk—not only a higher revenue forecast. State precisely what is different, what the comparison view already includes, and why the available evidence favors one interpretation. Explain a plausible mispricing mechanism, such as segment aggregation, accounting lag, cycle misclassification or horizon mismatch, only with supporting observations; low coverage or a popular story alone is not proof. Public facts can support an analytical edge, but their availability makes “nobody knows this” an especially demanding claim.
+
+Build a bridge on a consistent valuation date and basis:
+
+```text
+observed quote / conditional baseline value
+-> supported change in operating assumption or duration
+-> incremental net cash flows after offsets, reinvestment and dilution
+-> discounted per-share value difference
+-> residual gap, estimation uncertainty and realization path
+```
+
+Hold common valuation assumptions fixed to expose what the operating variant contributes; then separately stress discount rates, terminal choices and correlated operating changes. One-at-a-time effects are diagnostics and need not add when interactions exist; report the coherent joint result and any residual. Do not imply a smooth spreadsheet from current to optimistic margins is evidence of the transition. Do not project a contract, temporary tax benefit, capacity shortage or subsidy beyond its supported duration.
+
+Ask whether the apparent advantage survives the strongest reasonable rival case and parameter error, not merely whether the bull case exceeds today's price. Report terminal-value dependence and the value requiring unproven businesses or far-future economics. If a small unsupported assumption change reverses the verdict, label it assumption-dependent rather than a demonstrated pricing error. Subjective scenario weights cannot repair weak operating evidence; show unweighted outcomes or probability sensitivity rather than forced 25/50/25 weights.
+
+Finish with a supported positive/negative conditional gap, no demonstrated edge, or an unresolved essential link. The best rebuttal may be that the market is rationally pricing risk, that the good news is already in forecasts, or that the value cannot reach common shareholders. A realization path can be cash distribution or gradual compounding, not necessarily an imminent rerating. Do not demand proof of every investor's beliefs to report a well-bounded conditional opportunity.
 
 ## 4. Run A Cross-Forecast Consistency Audit
 
@@ -121,6 +188,24 @@ State:
 
 Do not force a false single-variable story when the thesis depends on several jointly necessary conditions. In that case, name the smallest weakest-link set and explain the interaction.
 
+### Make The Falsifier Observable And Decision-Relevant
+
+Design the test from the mechanism before choosing a convenient KPI:
+
+| Field | Requirement |
+|---|---|
+| Competing predictions | What should be observed if our mechanism is right versus the strongest rival? Include evidence that would overturn a bearish/no-edge view as well as a bullish one. |
+| Measurement | Exact metric, denominator, population/cohort, accounting basis, source and sampling limitations. Do not promote a proxy such as DAU into net lifetime contribution. |
+| Breakpoint | Economic break-even or valuation/action threshold derived from the model, contract or historical variability. If unsupported, use a qualitative boundary or range, not an invented percentage. |
+| Window | When the effect matures, when data is published and when review is due; distinguish all three. |
+| Decision consequence | Confidence update, new valuation, reject the causal thesis or re-underwrite. A share-price move alone does not falsify an operating mechanism. |
+
+Keep these updates sequential: new operating evidence may resolve a forecast gap; only the completed per-share valuation compared with the then-current price can establish a pricing advantage. Neither improved business evidence nor a falsified bearish mechanism alone overturns a `no demonstrated edge` verdict.
+
+If the decisive metric is not disclosed, test what can be bounded with accessible components, proxy evidence or a natural comparison. State what that test cannot distinguish. “Wait for a metric nobody publishes” is not an executable verification plan. Missing disclosure or a not-yet-mature cohort is an evidence limitation, not proof of business failure; prolonged unverifiability can still reduce warranted conviction or research priority.
+
+Separate a statistical fluctuation, timing miss, loss of visibility and structural breach. Predeclare economically justified tolerance and lag where possible; do not move the goalposts after contrary results. A source access failure should produce the best available conditional conclusion and named missing evidence, not a fabricated test pass or abandonment of feasible work.
+
 ## 6. Preserve A Decision Journal
 
 Version the thesis instead of rewriting history after results are known. Preserve:
@@ -130,6 +215,7 @@ Version the thesis instead of rewriting history after results are known. Preserv
 - core assumptions and scenario probabilities;
 - current price, market-implied assumptions, and decision posture;
 - dominant falsifier and expected validation date;
+- evidence state of each load-bearing claim, unresolved rival and reason an opportunity was rejected or deferred;
 - actual outcome and error attribution when the horizon closes.
 
 Separate data surprise, model error, timing error, valuation/multiple error, and decision/exposure error. A profitable result does not prove the thesis was sound, and a loss does not prove the process was wrong.
@@ -144,6 +230,7 @@ Create a versioned baseline before monitoring:
 | Expected range | Base range and scenario bounds for each variable |
 | Market-implied hurdle | Growth, margin, duration, or return assumptions embedded in price |
 | Dominant falsifier | Threshold and deadline from the red-team step |
+| Observation route | Source, actual metric, cohort/basis, economic maturity and disclosure lag; proxy limits if direct evidence is unavailable |
 | Decision state | Watch / own / add-after-proof / reduce / exit, stated conditionally |
 | Next scheduled review | Earnings, filing, catalyst, or explicit calendar date |
 
