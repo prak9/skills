@@ -8,12 +8,19 @@ from pathlib import Path
 
 
 PACKET = Path(__file__).resolve().parents[1] / "evals" / "diligence-cases.jsonl"
+SOURCE_PACKET = PACKET.with_name("source-diligence-cases.jsonl")
+DAYU_PACKET = PACKET.with_name("dayu-diligence-cases.jsonl")
+EARNINGS_PACKET = PACKET.with_name("earnings-continuity-cases.jsonl")
 
 
 class DiligenceFixtureTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        cls.cases = [json.loads(line) for line in PACKET.read_text().splitlines()]
+        cls.cases = [
+            json.loads(line)
+            for packet in (PACKET, SOURCE_PACKET, DAYU_PACKET, EARNINGS_PACKET)
+            for line in packet.read_text().splitlines()
+        ]
         cls.by_id = {case["id"]: case for case in cls.cases}
 
     def test_packet_has_unique_development_cases_and_semantic_criteria(self) -> None:
@@ -69,6 +76,47 @@ class DiligenceFixtureTests(unittest.TestCase):
         self.assert_numeric("depth-negative-variant", {
             "conditional_value": value,
             "value_gap": value / 50 - 1,
+        })
+
+    def test_cloud_cost_oracle_uses_billed_hours_not_mfu(self) -> None:
+        capacity_hours = 100 * 100
+        billed_hours = capacity_hours * .60
+        revenue = billed_hours * 2
+        ebitda = revenue - billed_hours * .2 - 9000
+        ebit = ebitda - 3000
+        pretax = ebit - 1000
+        self.assert_numeric("source-ai-cloud-cost-bases", {
+            "revenue": revenue,
+            "ebitda": ebitda,
+            "ebit": ebit,
+            "pretax_profit": pretax,
+            "pretax_breakeven_billed_utilization": (
+                (9000 + 3000 + 1000) / (capacity_hours * (2 - .2))
+            ),
+        })
+
+    def test_source_repair_preserves_a_valid_derived_ratio(self) -> None:
+        self.assert_numeric("dayu-repair-locator-preserve-analysis", {
+            "gross_margin": 300 / 1000,
+        })
+
+    def test_extracted_period_and_scale_require_original_context(self) -> None:
+        q3_revenue_millions = 900 - 500
+        self.assert_numeric("dayu-extraction-confidence-is-not-evidence", {
+            "q3_revenue_millions": q3_revenue_millions,
+            "q3_revenue_billions": q3_revenue_millions / 1000,
+        })
+
+    def test_four_quarter_oracle_tracks_profit_and_cash_not_just_revenue(self) -> None:
+        revenue = [100, 120, 130, 150]
+        gross_profit = [40, 42, 39, 42]
+        cfo = [30, 26, 20, 18]
+        cash_capex = [25, 40, 65, 80]
+        self.assert_numeric("earnings-four-periods-not-five-documents", {
+            "fy_revenue": sum(revenue),
+            "fy_gross_margin": sum(gross_profit) / sum(revenue),
+            "fy_cfo_less_cash_capex": sum(cfo) - sum(cash_capex),
+            "q4_gross_margin": gross_profit[-1] / revenue[-1],
         })
 
 

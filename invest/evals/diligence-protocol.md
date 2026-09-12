@@ -2,6 +2,12 @@
 
 `diligence-cases.jsonl` is the supplementary `invest-diligence-v1` development packet. These eight cases are visible development cases, not unseen holdouts. Preserve the frozen core and expectations suites. The packet is deliberately mixed: unsupported alpha, a supported positive gap, a negative gap, uncertain valuation, observable falsification, and a complexity clean negative.
 
+`source-diligence-cases.jsonl` is a separate three-case development supplement for source-date/access boundaries, claim-level original citations and AI cloud cost bases. Its supplied URLs and companies are fictional; do not fetch them. Use the same execution and semantic grading rules below without changing the original eight-case packet. These cases do not replace an actual search/retrieval check or prove source coverage on the open web.
+
+`dayu-diligence-cases.jsonl` adds four visible development cases: preserve a derived claim while repairing its citation, reject unsupported factual joins and their valuation effects, ground extracted units/periods/document-local refs, and distinguish companies sharing a sector label. The same fictional-source boundary applies. These cases test the adapted mechanisms, not Dayu runtime integration; freeze them before the instruction edits and grade actual behavior separately from fixture integrity.
+
+`earnings-continuity-cases.jsonl` adds two visible development cases for four-quarter extraction, guidance/commitment changes, Q&A attribution, annual/Q4 deduplication and missing calls or mixed reporting cadence. Keep the quarterly operating window distinct from the external three-month discovery window. These self-contained cases require no live retrieval and follow the same grading limits.
+
 ## Execution
 
 Freeze the skill snapshot, packet and criteria before candidate edits. Give the executor only each ID and prompt, the selected skill entry and routed resources, not criteria, expected behavior, numeric checks, a diff or prior findings. Inputs are self-contained hypotheticals; no live stock search, external mutation or invented source is needed. Local arithmetic is allowed. Keep model/effort, tool access and inputs fixed; record unavailable metadata as unknown, not an invented version.

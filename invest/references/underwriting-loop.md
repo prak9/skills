@@ -23,6 +23,38 @@ If a point-in-time consensus snapshot or prior judgment cannot be recovered, mar
 
 Normalize before comparing periods: fiscal calendars, currencies, acquisitions and disposals, discontinued operations, segment changes, accounting-policy changes, stock splits, GAAP/non-GAAP definitions, and one-time items. State when periods remain incomparable.
 
+### Extract The Last Four Earnings Cycles
+
+Start the recent operating narrative with the last four reported quarters, using each release/filing and available original call transcript or recording. Pair Q4 with the annual report without double-counting it, and retain relevant footnotes outside the earnings release. For semiannual or irregular issuers, state the actual coverage and compare equal-duration periods; never fabricate quarterly figures or unavailable calls. This four-period focus does not replace the longer history when cycle, accounting or management credibility requires it.
+
+Use a compact period-by-period comparison in the memo or working evidence record:
+
+| Per-period extraction | What to distinguish |
+|---|---|
+| Results and economic drivers | Revenue, margins, cash, reinvestment and the business-specific KPI that explains them; comparable periods, cohort/mix and one-off effects |
+| Guidance and expectations | Previous dated guide/consensus vs actual; new revenue/profit/capex/KPI ranges and delivery dates; raise/cut/reaffirm/withdraw with the original basis |
+| Management explanation and commitments | What management says caused the change; promised vs delivered operating milestones, investments and capital allocation; do independent observations support that explanation? |
+| Prepared remarks and Q&A | Speaker, question, actual answer and locator; first disclosure, changed explanation, caveat or lack of a direct answer—not a tone-based truth judgment |
+| Research consequence | New evidence, continuing trend or inflection; model line, price-implied hurdle, confidence or falsifier affected; unresolved gap and obtainable next observation |
+
+Read beyond the prepared narrative where Q&A can test the crux. Follow a material exchange through the follow-up answer; do not strip qualifications, convert a question's premise into management confirmation, or infer that an omitted topic no longer matters. Distinguish a genuine withdrawal/revision from absence of repeated guidance. Record unavailable transcripts or partial coverage; an original prepared statement, a third-party recap and a complete Q&A are different evidence.
+
+Synthesize the sequence, not four unrelated summaries: identify persistent deterioration, improving economics or a genuine turning point, and test alternatives such as seasonality, mix, recognition timing or perimeter changes. Trace important misses or changing explanations back to the prior dated commitment. Do not calculate a precise guidance hit rate from incomparable ranges or infer a non-consensus opportunity from management surprise alone. Show what the four-period evidence changes in the independent forecast, conditional valuation and observable thesis-killer; missing point-in-time consensus stays missing.
+
+### Discover Recent High-Information Research And Interviews
+
+For Full research, actively search the internet for the latest three calendar months ending on the research as-of date, unless the user specifies another window. State the exact dates; historical work uses the historical cutoff. This is a targeted discovery pass, not an instruction to ignore older decisive contracts, filings or methods, or to inflate Quick requests into Full research. Keep older material as labeled background and distinguish original publication, interview recording, data observation and later repost/update dates. A new upload or recently crawled page does not make its underlying data current; never use post-cutoff material in a historical judgment.
+
+Search from unresolved economic questions, not only the ticker: combine the company/value chain with a driver, unit, rival explanation and report/interview/transcript terms. Search relevant local-language and English sources where the business spans them. Follow promising citations to the author's original report, specialist research site, public conference/earnings Q&A, customer/operator interview, technical measurement or supplier document. A recurring author or outlet is a discovery lead, not an endorsed answer or mandatory source list.
+
+Select information density by decision value: original observations, reproducible cost breakdowns, explicit samples/methods, contract detail, operational experience, a discriminating counterexample or a meaningful forecast revision. Length, recency, prestige and confidence are not substitutes. Read the substantive relevant sections and their assumptions/footnotes, not just an executive summary. Seek the strongest accessible conflicting explanation and reconcile scope/date/unit differences rather than average incompatible estimates.
+
+For retained material, extend the existing evidence record with title/author, direct original link, publication and observation dates, page/section/timecode, access scope (`relevant passage read`, `abstract only`, `secondary only`, or `unavailable`), original observation versus author inference, incentives/sample limits, and the specific model assumption or falsifier it changes. Do not create a second ledger. Interview access to operations is useful only within the speaker's actual role, period and sample; sponsorship, positions or commercial interests matter when relevant. A researcher's proprietary survey is that researcher's evidence, not independently verified customer data.
+
+Open the original whenever feasible, and retain the claim-level citation in the delivered report. If only video/audio exists, extract a timestamped transcript using the available media workflow before relying on detailed claims; mark uncertain transcription and do not invent quotes. If a paywall or access restriction prevents verification, record what was actually read, use available legitimate alternatives and continue the supported analysis; do not purchase access, bypass controls or reconstruct unseen tables. Mark material source gaps rather than claim an exhaustive search.
+
+End the pass with what the selected recent material adds, contradicts or leaves unresolved, and how that affects the forecast, conditional price gap or next test. A reading list alone is not the deliverable. Stop expanding search when additional sources are duplicates or cannot change the decision within defensible bounds, or when the decisive remaining data is genuinely inaccessible; do not postpone an accessible check or require a quota of reports/interviews. For AI cloud/compute investment costs, read [ai-cloud-costs.md](ai-cloud-costs.md) to select the relevant cost and utilization boundaries.
+
 ### Investigate The Mechanism, Not Just The Metric
 
 Start with competing explanations for the opportunity. Reconstruct the relevant history: what changed in customer behavior, pricing, competition, capital use or reporting; what management previously promised; what actually happened; and why the stock could rationally deserve its current valuation. Select a window that exposes both favorable and adverse episodes, not just the period supporting the thesis. A long time series without an explanation of the turning points is not deep research.

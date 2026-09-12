@@ -4,11 +4,17 @@ Use this mode for a bare ticker, a general stock-analysis request, an investment
 
 ## Select The Research Depth
 
-**Quick research is the default for a bare ticker or ordinary “analyze this stock” request.** Use the latest annual filing, latest quarter, latest earnings call or official guidance, current price/valuation, current consensus when available, and only the peer or industry evidence needed to resolve the investment crux. Deliver a decision-useful view; do not simulate a ten-year underwriting exercise with missing data.
+**Quick research is the default for a bare ticker or ordinary “analyze this stock” request.** Use the recent-four-period backbone below, latest annual filing, current price/valuation, current consensus when available, and only the peer or industry evidence needed to resolve the investment crux. Quick extracts the decision-changing passages and trends rather than exhaustive chapter summaries. Deliver a decision-useful view; do not simulate a ten-year underwriting exercise with missing data.
 
-**Full research** applies when the user asks for deep/comprehensive research, an IC memo, a long historical reconstruction, a financial model, DCF/normalized EPS/reverse DCF, or re-underwriting. Read [underwriting-loop.md](underwriting-loop.md) for mechanism-level diligence, evidence-backed variants, assumption provenance, valuation attribution and observable falsification. Full means investigating the load-bearing claims, not filling a longer report outline.
+**Full research** applies when the user asks for deep/comprehensive research, an IC memo, a long historical reconstruction, a financial model, DCF/normalized EPS/reverse DCF, or re-underwriting. Read [underwriting-loop.md](underwriting-loop.md) for recent-three-month specialist-report/interview discovery, mechanism-level diligence, evidence-backed variants, assumption provenance, valuation attribution and observable falsification. Full means investigating the load-bearing claims, not filling a longer report outline.
 
 **Monitoring** applies when the user asks what changed since a prior memo or requests material-change alerts. Use the prior versioned baseline when available and return only the delta. If nothing material changed, say `no thesis change`, name the evidence window checked, and do not regenerate background.
+
+## Recent Four Earnings Periods
+
+For a new company underwriting, prioritize the latest four reported fiscal quarters and each period's earnings materials and call: prepared remarks **and** Q&A when available. Count economic periods, not documents; a Q4 release/call and the annual filing covering it are complementary evidence, not a fifth quarter. Use the actual reporting cadence for non-quarterly issuers, label unequal periods and missing quarters/calls, and do not invent a complete four-quarter series. This operating-history window is separate from the recent-three-month external research/interview search; older necessary earnings materials remain in scope.
+
+Extract what changed across periods: the decisive operating/economic metrics, prior guidance versus realized results, new guidance/revisions, management commitments and delivery dates, and revealing Q&A exchanges. Separate facts, management explanations and the analyst's inference. An analyst's question is not company guidance; an unanswered question is neither confirmation nor proof of failure. Compare actuals with the contemporaneous guide and consensus, not later revised expectations. Link each material delta to its original period/section and model or falsifier impact. Full uses the quarter-by-quarter comparison in [underwriting-loop.md](underwriting-loop.md); Quick may compress it into the few changes that drive the verdict. A valid existing four-period baseline can be rolled forward during monitoring rather than reread in full.
 
 ## Common Workflow
 
@@ -23,6 +29,8 @@ Use this mode for a bare ticker, a general stock-analysis request, an investment
 9. **Define catalysts and monitoring.** Track only events connected to model lines, market-implied hurdles, falsifiers, or decision gates. Separate thesis confidence, valuation attractiveness, and exposure posture.
 
 Classify the asset as *mean-reverting*, *paradigm-shifting*, or *mixed*. A divergent view is useful only if evidence supports its accuracy and incomplete pricing, with a plausible realization path, edge half-life, and falsifier. Being non-consensus is not itself an edge.
+
+Select the research lens from the actual business model **and company-specific binding constraints**, not the sector label. Identify who pays, the charging unit, assets/capital at risk and the constraint that changes cash capture. Two “AI cloud” companies may be a debt-funded GPU owner awaiting acceptance and a capital-light software vendor dependent on one distributor; investigate their different bottlenecks. Retain multiple segments or jointly necessary conditions when material, without a fixed tag limit or mandatory classification stage. Omit irrelevant template branches, not requested analysis or inconvenient evidence.
 
 ## Expectations And Research Allocation
 
@@ -127,8 +135,11 @@ Probability may be N/A. Distinguish present-value gaps from dated holding-period
 - Versioned assumptions and prior forecast-versus-actual calibration
 
 ## 9. Sources And Unverified Inputs
+- Recent research/interview search window, selected original sources, their incremental evidence and access limits; retain claim-level citations throughout the memo
 ```
 
 ## Quality Bar
 
 Do not replace analysis with a news summary, context dump or unsupported spreadsheet. Can the reader trace the decisive claim from raw evidence to net per-share economics, identify what the comparison view already knows, and specify an observation that would change the verdict? If not, expose the failed link rather than add confident prose. Do not extrapolate historical growth mechanically. Reconcile demand, capacity, revenue, margins, opex, capex, working capital, FCF, dilution and terminal value. Preserve prior forecasts instead of rewriting them with hindsight. Use the output sections as an adaptable structure, not evidence that diligence is complete.
+
+Before delivering Full research, apply [financial-evidence.md](financial-evidence.md) to the material claims and their source/derivation links. Synthesize the executive view from the verified analysis; do not add unsupported facts or let caveats disappear in compression. If an evidence correction changes a model input, propagate it to affected scenarios, value, verdict and summary. Repair only affected content; a citation correction alone is not a reason to rerun all research.

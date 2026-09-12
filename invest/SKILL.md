@@ -56,6 +56,8 @@ Prioritize sources in this order:
 3. customer, supplier, competitor, regulator, and industry-association disclosures;
 4. reputable market-data/estimate providers and mainstream financial reporting.
 
+Also actively discover original specialist research, public expert/customer interviews and technical fieldwork relevant to the crux. Use them for mechanisms, competing interpretations and missing operating detail; their authority does not turn an estimate into a reported fact. Full research includes the recent-three-month discovery pass in the underwriting reference.
+
 For every material number or claim, preserve source, document type, publication/filing date, access date, and section/page when available. Distinguish:
 
 - reported fact;
@@ -63,7 +65,11 @@ For every material number or claim, preserve source, document type, publication/
 - point-in-time consensus/third-party estimate;
 - analyst inference.
 
+Attach original-source citations next to material facts, numbers, quotations and thesis-bearing claims, including in tables; a bibliography alone is insufficient. Link the actual filing, report or interview, not a homepage or search result, with the date and page/section/timecode where available. Trace a report's borrowed claim to the original evidence; if inaccessible, cite the intermediary explicitly as `二手转引，原始证据未核验`. For original research or interviews, attribute the author's estimate or speaker's view and disclose inaccessible underlying data. A transcript proves what was said, not that the assertion is true. Label own calculations/inferences, cite their inputs and show the bridge; never attach a source as if it endorsed an analyst-derived target. Do not invent locators or imply full-text access from a snippet. Preserve these claim-to-source links in any authorized archive.
+
 For each material numeric input also preserve value, unit, currency, period, accounting/estimate basis, first-available timestamp, and an explicit missing reason. Use the [material investment data contract](references/data-contract.md) for linked calculations, model reconstruction, or historical evaluation, and validate it with `scripts/validate_invest_data.py`. A Quick memo may use a compact table with the same semantics. Unknown is never zero; passing arithmetic checks does not prove that the source supports the claim.
+
+For filing extraction, disputed source support or citation repair, read [financial evidence and claim audit](references/financial-evidence.md). Ground each locator in its document, check material extracted values against the original context, and distinguish a broken citation from an unsupported claim. Full research uses this audit before delivery; a supported Quick answer does not require a separate audit pipeline.
 
 For self-contained hypothetical arithmetic supplied by the user, state the premises, units, and relative horizon and verify the formulas directly. Do not build a sourced-data ledger or require publication timestamps for invented companies or assumed scenarios. This exception does not cover real-company model reconstruction, sourced inputs, or historical point-in-time claims; retain the data contract for those portions of a mixed task.
 

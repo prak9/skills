@@ -343,7 +343,10 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("inverse problem, not a unique observable", invest)
         self.assertIn("GrowthMatch gate", invest)
         self.assertIn("aggregate score is disabled", invest.lower())
-        self.assertIn("latent demand hypothesis", invest)
+        # Mode D also covers cost/regulatory signals, not only latent demand.
+        signal = reference_text(INVESTMENT_SKILL, "mode-d-serenity-alpha.md")
+        self.assertIn("observed signal -> economic hypothesis -> rival explanations", signal)
+        self.assertIn("Keep an unverified benefit as a research hypothesis", signal)
         self.assertIn("label the conclusion `model-sensitive`", invest)
 
     def test_result_analysis_daily_loop_keeps_live_and_research_gates_separate(
