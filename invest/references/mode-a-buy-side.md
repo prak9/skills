@@ -52,6 +52,7 @@ Treat positive FCF, accelerating revenue, founder ownership, or a ten-year runwa
 
 Load another mode only when it resolves the crux:
 
+- [pe-implied-growth.md](pe-implied-growth.md) for a conditional base-PE/EPS-growth hurdle, forward price, terminal dependence and growth/reinvestment consistency check; use the deterministic calculator, without requiring Mode B;
 - [mode-b-bayesian-growth.md](mode-b-bayesian-growth.md) for intrinsic versus market-implied growth;
 - [mode-c-gf-dma.md](mode-c-gf-dma.md) for a requested trend/entry-health calculation with adequate technical data;
 - [mode-d-serenity-alpha.md](mode-d-serenity-alpha.md) for news, procurement, product, or supply-chain transmission;

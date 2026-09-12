@@ -33,6 +33,8 @@ Load only the selected mode and the references it explicitly requires.
 | news, product/procurement/supply-chain signal, financial-statement transmission, or small-cap beneficiary search | [Mode D — Serenity Alpha](references/mode-d-serenity-alpha.md) |
 | explicit TAM-Adj-PEG, runway-adjusted PEG, or quality-adjusted growth valuation | [Mode E — TAM-Adj-PEG Screening](references/mode-e-tam-adj-peg.md) |
 
+For a narrowly requested PE-to-EPS-growth hurdle or its forward price calculation, load [conditional PE implied growth](references/pe-implied-growth.md) directly. This optional calculator does not require Mode B, a full company report, or a new probability model.
+
 Do not trigger Modes B, C, or E from a bare ticker or generic stock-analysis request. They require an explicit request or a clearly stated Mode A crux. Do not load all modes for completeness.
 
 ## Select Depth Inside Mode A

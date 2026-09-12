@@ -4,6 +4,8 @@ Use when explicitly requested for Bayesian valuation, intrinsic versus implied g
 
 The decision question is whether evidence-backed joint operating scenarios offer attractive value and net returns relative to the requirements of the current price. Choose a horizon appropriate to the business and decision; 3–5 years is an example, not a universal forecast window.
 
+When the reverse-valuation question specifically uses PE and normalized EPS, [conditional PE implied growth](pe-implied-growth.md) provides an optional deterministic calculation. It produces neither priors nor posteriors and does not replace coherent joint scenarios.
+
 ## Inputs
 
 Use verified company fundamentals, industry cycle, demand/supply, historical and guided growth, TAM and penetration, competitive position, valuation, price/multiple changes, consensus revisions, and the new information being evaluated. Mark missing inputs instead of manufacturing precision.
