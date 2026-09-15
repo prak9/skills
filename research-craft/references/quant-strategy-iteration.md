@@ -32,6 +32,14 @@ Record:
 
 When the evaluator is missing or unstable, repair and verify it as harness work. Refreeze it before strategy comparison.
 
+When forming an unresolved mechanism, use [hypothesis formation](hypothesis-formation.md); for probability outputs or stochastic simulators, use [prediction validation](prediction-validation.md). These are conditional reads, not mandatory additions to every backtest.
+
+## Preserve Research-To-Runtime Semantics
+
+When porting, integrating or replacing a research implementation, compare the same recorded inputs and initial state across both paths. Trace material intermediate features, availability times, units, missing/zero values, precision/threshold boundaries and final decisions. Include relevant ordering, duplicate-event and restart behavior. Predeclare justified numeric tolerances; similar aggregate P&L does not establish equivalent decisions or state transitions.
+
+Keep a minimal differential reproduction for material mismatches, reconcile intentional differences against the accepted contract, and preserve the regression evidence. Do not widen tolerances just to hide a failure. If paired inputs or state cannot be recovered, mark parity unresolved. Use the existing behavior-preservation contract when engineering work needs it; do not create a new approval step or execute live orders to demonstrate parity.
+
 ## Keep the evaluator authoritative
 
 An evaluator such as `backtest.py` may orchestrate distributed jobs, but it must:

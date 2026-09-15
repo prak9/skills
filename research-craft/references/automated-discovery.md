@@ -102,6 +102,14 @@ Never let a candidate edit the test that promotes it in the same round. Persist 
 
 The sequence is: solve one real problem, expose the stable boundary, prove transfer, then generalize.
 
+### Preserve A Reusable Capability Only When It Pays
+
+Distinguish a knowledge result (what was learned) from a reusable executable check (what others can now do without repeating the investigation). Consider extraction after repeated analysis or a demonstrated downstream user; one-off work may end with its result and method. Optional tooling is not a completion gate.
+
+Before introducing a tool, inspect existing helpers. Prefer a small function or script over a framework. Its contract should name inputs, units, selection/time assumptions, outputs, dependencies and unsupported cases. Verify the original result, a meaningfully different representative case and rejection or explicit limitation of invalid input. A second case supports only the tested scope, not universal transfer. Remove hidden machine/session state and undocumented manual steps from the reproduction path.
+
+Keep the tool only if it measurably reduces repeated effort or error at acceptable maintenance cost; record that evidence when available rather than declaring leverage from code volume. Preserve stable IDs and authoritative evidence in the existing ledger. Publish or change a shared interface only within the authorized scope.
+
 ## Reconcile A Multi-Agent Experiment
 
 For each subproblem, require:

@@ -33,6 +33,8 @@ Cluster earnings, management commentary, supplier orders, and analyst revisions 
 
 For repeated forecasts, preserve the forecast, horizon, information set, and outcome so calibration can later be checked. For one-off investments, use probability bands and sensitivity analysis instead of claiming an objective posterior.
 
+Before assigning probabilities, define the event, population, horizon and resolution criterion. Coexisting mechanisms are not mutually exclusive scenarios and need not sum to one. If stochastic valuation or repeated probability scoring is requested, apply [prediction validation](../../research-craft/references/prediction-validation.md); an ordinary deterministic DCF does not require it. Distinguish simulation sampling error, parameter uncertainty and structural misspecification. A million draws from arbitrary growth/margin distributions can estimate that assumed model precisely without establishing a real-world upside probability. Preserve dependent inputs and evidence for their distributions; otherwise report conditional sensitivities, not calibrated investment odds.
+
 ## 3. Compute Net Expected Value Without Hiding The Tail
 
 Use scenario returns after dilution, financing, taxes when relevant, transaction costs, and a plausible exit multiple or terminal value:

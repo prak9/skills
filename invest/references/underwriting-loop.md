@@ -59,6 +59,8 @@ End the pass with what the selected recent material adds, contradicts or leaves 
 
 Start with competing explanations for the opportunity. Reconstruct the relevant history: what changed in customer behavior, pricing, competition, capital use or reporting; what management previously promised; what actually happened; and why the stock could rationally deserve its current valuation. Select a window that exposes both favorable and adverse episodes, not just the period supporting the thesis. A long time series without an explanation of the turning points is not deep research.
 
+When the starting mechanism is unclear, a label carries the thesis, or current evidence fits several explanations, use [hypothesis formation](../../research-craft/references/hypothesis-formation.md). Compare differential predictions rather than decorative bull/bear stories. For each load-bearing proxy, consider whether selection, task difficulty or reporting could improve the metric without improving the claimed capability. If available evidence cannot distinguish rivals, retain that ambiguity instead of picking the more fluent narrative.
+
 Follow the uncertain links that can move value. Use the following as investigative lenses, not mandatory sector checklists:
 
 | Claim | Mechanism to uncover | Evidence that can distinguish rivals |
@@ -238,6 +240,12 @@ If the decisive metric is not disclosed, test what can be bounded with accessibl
 
 Separate a statistical fluctuation, timing miss, loss of visibility and structural breach. Predeclare economically justified tolerance and lag where possible; do not move the goalposts after contrary results. A source access failure should produce the best available conditional conclusion and named missing evidence, not a fabricated test pass or abandonment of feasible work.
 
+### Classify Intermediate Milestones
+
+For long-horizon claims, select nearer observable milestones only where the mechanism supports them. Label each as a **necessary condition** for the named causal path, a **supportive indicator**, or an **alternative path**; record its claim ID, measurement/source, maturity and disclosure lag, review point and valuation consequence in the existing thesis. Do not invent a year-by-year roadmap or treat a preferred route as the only possible route.
+
+A failed necessary link weakens that path; absent supportive evidence or an unpublished metric does not automatically falsify the business. If an alternative becomes credible, re-underwrite its costs, cash flows and price requirements, preserving the original miss instead of rewriting it as success. Do not multiply dependent milestone probabilities or force coexisting mechanisms into mutually exclusive weights.
+
 ## 6. Preserve A Decision Journal
 
 Version the thesis instead of rewriting history after results are known. Preserve:
@@ -251,6 +259,8 @@ Version the thesis instead of rewriting history after results are known. Preserv
 - actual outcome and error attribution when the horizon closes.
 
 Separate data surprise, model error, timing error, valuation/multiple error, and decision/exposure error. A profitable result does not prove the thesis was sound, and a loss does not prove the process was wrong.
+
+For consequential predictions being tracked, reuse stable claim IDs in this journal; keep the original event definition, dated forecast, resolution source/date and updates. Resolve forecast accuracy, causal support and shareholder payoff separately, including `unresolved` where causes cannot be identified. Sales may meet a forecast while cost synergy fails and multiple expansion produces a gain; the gain cannot settle all three claims as correct. Do not create a duplicate Bet Book or new persistent monitoring without authorization.
 
 ## 7. Monitor By Thesis Change, Not News Volume
 

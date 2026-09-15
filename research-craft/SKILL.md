@@ -24,6 +24,8 @@ The governing principle is: **research speed is the speed at which you discover 
 Choose the lightest mode that protects the claim:
 
 - **Exploration:** map an unfamiliar problem, inspect raw material, compare explanations, and identify the next discriminating observation. Keep hypotheses provisional.
+- When an unfamiliar mechanism, ambiguous concept or observational tie carries the decision, read [hypothesis formation](references/hypothesis-formation.md). Do not load it for settled arithmetic or routine execution.
+- For probability forecasts or stochastic simulators, read [prediction and simulation validation](references/prediction-validation.md). A point estimate, deterministic calculation or ordinary report does not trigger this adapter by itself.
 - **Controlled experiment:** compare a candidate against a baseline under a fixed protocol and explicit acceptance gates.
 - **Artifact iteration:** edit code, prompts, rules, or configuration through a bounded propose-evaluate-accept loop. Freeze the evaluator before optimizing the candidate.
 - **Instruction or model migration:** read `references/instruction-migration.md` before changing an `AGENTS.md`, skill, system prompt, or model-specific guidance because the base model, harness, or tool behavior changed.
