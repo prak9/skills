@@ -25,6 +25,10 @@ Keep a compact comparison in the existing research record:
 
 Choose the cheapest feasible observation that can change the judgment. If both explanations predict the same available evidence, report them as observationally unresolved; do not award the result to the better story. A discriminating association can inform a hypothesis without proving a causal effect; causal claims still need an identification argument and its limits.
 
+Before a consequential test, specify the decision-relevant effect size, tolerance and evidence needed to distinguish explanations, using the existing contract rather than a new form. Separate **support**, **contradiction**, and **inconclusive**: support need not eliminate rivals; contradiction requires a sufficiently informative test of a necessary prediction within its stated domain; wide uncertainty or a nonsignificant result alone does not establish absence. A precise estimate excluding the required effect can reject that claim even when a smaller effect remains possible. Do not rescue a failed prediction by redefining its domain after seeing the result.
+
+Choose controls by their place in the proposed mechanism and their availability time, not just correlation. Conditioning on an outcome, a mediator, or a selection event can change the question or introduce bias; explain what the adjusted comparison can identify. Stress tests should challenge plausible conditions within the declared use case, not require a conditional mechanism to work in every environment. Post-hoc slices generate future tests rather than independent confirmation.
+
 Example: falling unit cost after vertical integration is compatible with integration synergy and an industry-wide component-price decline. Compare appropriately matched cost components, timing and external benchmarks before assigning credit. If comparable evidence is unavailable, bound the claim instead of inventing a test result.
 
 ## Operationalize Without Replacing The Concept
@@ -44,6 +48,8 @@ Use probabilities only for sufficiently defined, resolvable events and disclose 
 When a forecast journal is requested or already authorized, reuse it. Give consequential claims stable IDs and retain the original information set, prediction, settlement rule/date/source, dependencies, observation and reason for any update. Resolve event accuracy, mechanism support and decision payoff separately. A winner does not identify its cause; unresolved is a legitimate result. Version changed definitions or alternative paths instead of retroactively declaring the original prediction successful.
 
 One miss can be compatible with a probabilistic forecast. Examine predeclared tolerances, comparable resolved cases and structured errors before changing the model. Before interpreting residuals as a new mechanism, check data identity, labels, leakage, selection, implementation and chance variation. Use residuals to propose a new test on fresh evidence, not to fit an exception to the same failure.
+
+When a result changes the explanation, record the specific link that changed: original premise → predicted intermediate behavior → observed mismatch → supported revision or unresolved rival → next discriminating check if needed. Reuse the existing log when writing is authorized. Do not convert one failed implementation into rejection of the whole mechanism, force a weekly lesson without new evidence, or treat a revised story as already validated.
 
 This adapter neither creates a new ledger nor authorizes monitoring, contact, trading or other external actions. A supported negative or unresolved finding can complete the requested research.
 

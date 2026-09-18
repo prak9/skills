@@ -1,6 +1,6 @@
 # Quant Edge Development Cases
 
-`quant-edge-cases.jsonl` contains six visible development cases for the incremental-information, observation-boundary, realization, decay and research-budget instruction changes. They are not untouched holdouts. Existing frozen suites remain unchanged.
+`quant-edge-cases.jsonl` contains nine visible development cases for the incremental-information, observation-boundary, realization, decay, research-budget and discriminating-hypothesis instruction changes. The original six prompts are unchanged; three additions cover inconclusive versus contradicted claims, post-decision selection, and domain-specific failure learning. They are not untouched holdouts. Existing frozen suites remain unchanged.
 
 Baseline checks before editing: 42 repository tests and 12 result-analysis tests passed. These establish structural/script health, not model behavior. The cases were authored with the instruction change, so no independent behavioral improvement may be inferred from their existence or manual inspection.
 
