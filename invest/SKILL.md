@@ -1,17 +1,18 @@
 ---
 name: invest
-description: Generate source-backed buy-side equity research and thesis-change monitoring from a ticker or market signal. Routes between quick/full underwriting, Bayesian intrinsic-vs-implied growth, deterministic GF-DMA trend health, news-to-alpha transmission, and TAM-adjusted PEG; use for stock analysis, IC memos, valuation, thesis updates, catalysts, risks, or explicit specialist-lens requests.
+description: Generate source-backed business understanding, business-quality assessment, buy-side equity research and thesis monitoring. Use for company economics, customers, competition, management, quality signals, stock analysis, valuation or thesis updates; routes to specialist valuation and trend lenses only when relevant.
 ---
 
 # Invest
 
 ## Decision Contract
 
-Start with the investment decision, not company background or a news digest. Turn the input into a decision-useful thesis, valuation range, probability update, trend-health result, or monitoring delta, with the evidence and threshold that could prove it wrong.
+Start with the user's research question. For fundamental company research, understand how the business actually works and establish its quality before settling an investment verdict: customer value -> commercial and operating system -> sustainable economics -> evidence and limits -> price when requested. Do not replace this with corporate history or a news digest. A business-only request can end with a well-supported understanding and quality assessment, without a target price, rating or invented pricing dispute. Narrow valuation, technical and monitoring requests retain their scope.
 
 Replace point certainty with conditional scenarios. Keep these judgments separate:
 
-- thesis quality and evidence;
+- business quality, direction of change and strength of evidence;
+- investment thesis quality and evidence;
 - price/valuation attractiveness;
 - exposure size and survivability.
 
@@ -27,7 +28,7 @@ Load only the selected mode and the references it explicitly requires.
 
 | Trigger | Route |
 |---|---|
-| bare ticker, “analyze this stock,” buy-side view, IC memo, full re-underwriting, or thesis update | [Mode A — Buy-Side Equity Research](references/mode-a-buy-side.md) |
+| business model/quality, customer or competitive economics, bare ticker, “analyze this stock,” buy-side view, IC memo, full re-underwriting, or thesis update | [Mode A — Buy-Side Equity Research](references/mode-a-buy-side.md) |
 | explicit Bayesian valuation, intrinsic versus implied growth, posterior update, or FOMO versus fundamentals | [Mode B — Bayesian Joint Scenarios](references/mode-b-bayesian-growth.md) |
 | explicit GF-DMA, DMA/ATR health, price/DMA divergence, or EscapeRatio | [Mode C — GF-DMA](references/mode-c-gf-dma.md) |
 | news, product/procurement/supply-chain signal, financial-statement transmission, or small-cap beneficiary search | [Mode D — Serenity Alpha](references/mode-d-serenity-alpha.md) |

@@ -1,6 +1,8 @@
 # Mode A — Buy-Side Equity Research
 
-Use this mode for a bare ticker, a general stock-analysis request, an investment-committee memo, full re-underwriting, or a thesis-change update.
+Use this mode for business understanding/quality, a bare ticker, a general stock-analysis request, an investment-committee memo, full re-underwriting, or a thesis-change update.
+
+For new fundamental company research, read [business understanding and quality](business-quality.md). Establish the material business system before narrowing to valuation-sensitive drivers. Full examines the material dimensions; Quick compresses them and exposes gaps rather than declaring quality from a few ratios. Monitoring reuses the existing map and revisits affected links only. Business-only requests omit valuation, positioning and catalysts unless needed to answer the question; do not force an investment verdict.
 
 ## Select The Research Depth
 
@@ -19,7 +21,7 @@ Extract what changed across periods: the decisive operating/economic metrics, pr
 ## Common Workflow
 
 1. **Define the security and boundary.** Resolve company, exchange, ticker, fiscal year, reporting currency, business/segment structure, latest source set, and disclosure limits from context and sources. This is a research check, not a user confirmation step; ask only when unresolved ambiguity could select the wrong security.
-2. **Form a provisional investment question.** Identify the price hurdle and rival explanations, then update the view through diligence; do not select a verdict and fit the model to it. Lead the final answer with horizon, current price, supported value/return range or qualitative bracket, the demonstrated gap (if any), and the breakpoint. Good business performance alone does not establish an attractive price.
+2. **Form a provisional research question.** Map who uses, chooses and pays, what problem the product solves, and how delivery becomes collected cash before selecting decisive drivers. For investment requests, identify the price hurdle without using it to fit the operating forecast. Lead with the supported business-quality judgment and its evidence limits, then the requested horizon, price, value/return range and breakpoint. Good business performance alone does not establish an attractive price.
 3. **Map industry economics.** Locate the company in its value chain; identify suppliers, customers, substitutes, scarce inputs, bargaining power, profit pool, supply/demand cycle, and structural versus cyclical drivers. Explain who pays, why they cannot readily switch, who captures each incremental dollar, and what capacity, competition or incentive limits that capture.
 4. **Assess competition and moat direction.** Compare share direction, margins, pricing power, switching costs, scale, network/data/R&D advantages, customer concentration, entrants, and substitutes. Say whether the moat is widening or narrowing.
 5. **Rebuild only the economics required by the chosen depth.** Separate reported history, management guidance, sell-side consensus, and analyst assumptions. Link operating drivers to revenue, margins, reinvestment, FCF, dilution, and per-share value. For linked calculations or historical reconstruction, follow [the material data contract](data-contract.md) and run its validator. Full research uses the longitudinal underwriting reference; Quick research names missing history rather than inventing it.
@@ -68,6 +70,7 @@ Load another mode only when it resolves the crux:
 - Core thesis, market-implied expectation, confidence, and breakpoint
 
 ## Evidence That Matters
+- How the business works; concrete quality signals, counterevidence and unresolved dimensions
 - Latest reported facts and guidance
 - Dated sell-side consensus, if available
 - Conditional price-implied requirements versus the independent forecast
@@ -98,11 +101,14 @@ Load another mode only when it resolves the crux:
 - Core thesis, debate, variant perception, confidence, thesis breakpoint
 
 ## 1. Company And Source Boundary
-- Business/segment/geography/customer mix
+- Customer problem, user/buyer/payer, product alternatives and purchase/renewal process
+- Business/segment/geography/customer mix; contract, delivery and cash-collection path
 - Reporting basis and latest point-in-time source set
 
 ## 2. Industry Chain And Competition
 - Value chain, profit pool, bargaining power, cycle, moat direction
+- Business-quality evidence by material dimension: current level, trend, peer/cohort comparison, rival explanation and unknowns
+- Customer value versus shareholder capture; operating fragility, management behavior and capital allocation
 
 ## 3. Financial Model
 - Revenue and segment drivers
