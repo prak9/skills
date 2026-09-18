@@ -98,7 +98,7 @@ For an automated discovery portfolio, append the loop under change, frozen depen
 - Diversify beyond the current feed; use old and cross-field work to escape synchronized conclusions.
 - Inspect raw samples by hand before building abstractions. Silent data or labeling errors often produce plausible but false theories.
 - Shrink the problem until it is cheap: one batch, one trace, one symbol, one regime, one failing case, or one minimal reproduction.
-- Tune the strongest honest baseline before claiming improvement.
+- Tune the strongest honest baseline before claiming improvement. For comparative claims, predeclare comparable search/tuning budgets and record actual trials, compute and human intervention for both arms; unequal resources limit attribution, even if the resulting system is useful.
 
 ### Check What A Smaller Model Preserves
 
@@ -142,14 +142,14 @@ Require the gates relevant to the claim:
 - **Protocol integrity:** evaluator, data, split, costs, seed, and objective remained fixed during candidate comparison.
 - **Argument integrity:** the evidence supports the stated premises, the inference connects them to the conclusion, key terms remain stable, and the strongest plausible rival has not been ignored.
 - **Baseline strength:** the candidate beats a tuned, reproducible baseline rather than a weak straw man.
-- **Held-out confirmation:** validation or truth data vetoes promotion; repeated exposure is contamination, not free evidence.
+- **Held-out confirmation:** distinguish tuning data from untouched acceptance data. Validation used to choose candidates cannot also be independent confirmation; repeated acceptance exposure is contamination, not free evidence.
 - **Sample and uncertainty:** the effective sample supports the claimed precision; show ranges or sensitivity when it does not.
 - **Model validity:** material assumptions about measurement, independence, linearity, interactions, feedback, stationarity, and adaptation are stated; test predeclared plausible in-scope rival data-generating processes and structural-break signals, then narrow, condition, or reject claims that exceed the supported scope.
 - **Raw-evidence check:** inspect actual failures, traces, trades, or outputs instead of trusting an aggregate alone.
 - **Replay and regression:** preserve known useful behavior and unrelated passing cases.
 - **Mechanism and simplicity:** prefer smooth, legible, causal or economic explanations over fragmented exceptions.
 - **Anti-Goodhart:** check whether the candidate learned the judge, leakage, artifact format, or benchmark quirks instead of the objective.
-- **Operational validity:** account for execution friction, capacity, latency, permissions, maintainability, and downstream ownership.
+- **Operational validity:** account for execution friction, capacity, latency, permissions, maintainability, and downstream ownership. Require added complexity to earn its measured benefit under the declared guardrails; neither a higher isolated score nor fewer lines alone establishes improvement.
 
 If a required gate fails, reject the claim even when the headline metric improves. This does not automatically end an authorized iteration task: continue with a supported correction or discriminating probe within its budget. Stop when the requested outcome is reached, the agreed budget is exhausted, or a real blocker requires new input or authority.
 

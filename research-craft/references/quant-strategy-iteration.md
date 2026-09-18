@@ -26,6 +26,7 @@ Record:
 - data ranges, symbols, fees, slippage, fill assumptions, seed, and dependencies
 - train/validation, screening/verify/truth, walk-forward, or other holdout protocol
 - minimum effective trade count or statistical power floor
+- baseline/candidate tuning budgets, attempted candidates (including failures), and cumulative split exposure
 - replay anchors and prior capability that must remain true
 - artifact manifest, expected tasks/rows/keys, and scorer command
 - approval gates for truth data, production replacement, or live/sim trading changes
@@ -81,7 +82,7 @@ Do not silently rescore, widen a grid, remove failed arms, change a split, or re
 
 When operating in the Ridge HFT research repository, map the generic gates to its existing contract:
 
-- **EDGE candidates:** use paired held-out simulated `dret` for promotion, `avgnwt` as the second north star, `promotion_gate.py`, four-layer detail, relative deltas, search-count accounting, and regime balance.
+- **EDGE candidates:** use the primary metric and gate frozen in the current `program.md` and active TASK, with paired held-out comparisons, four-layer detail, relative deltas, search-count accounting, and regime balance. Where the contract selects `pot`, `dret/avgnwt` cannot replace it. Historical metric preferences or a script named `promotion_gate.py` do not override the active contract; unresolved contract conflicts block promotion, not read-only diagnosis.
 - **RISK candidates:** require the offline ledger oracle, adverse-fill stress, and M0 decision metrics before sim/verify. Judge deployable money with the task's `M` proxy rather than headline `dret` alone.
 - **Diagnostic or audit tasks:** do not promote. Freeze measurement, validate artifacts, produce the requested map or report, and route high-gradient findings into a new pre-registered task.
 - **Truth lockbox:** never use truth for exploration. Pre-register, obtain the required approval, consume the allowed peek once, and record it without iterative retries.
@@ -94,6 +95,8 @@ champion and candidate:
 hypothesis and market mechanism:
 changed surface:
 protocol snapshot:
+baseline / candidate search budget and actual use:
+cumulative trials / failed runs / split exposure:
 train / holdout / gap:
 trade count / drawdown / costs:
 regime and sensitivity:
