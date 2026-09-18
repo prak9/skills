@@ -57,3 +57,7 @@ The deterministic evaluator and its unit-test fixtures validate the result envel
 Freeze this packet before editing candidate instructions. A forward executor receives only each `prompt`, the selected skill, and necessary source artifacts, not the expected behavior or criteria. Grade actual responses and actions against every criterion, including clean negatives; matching a phrase is insufficient. Use isolated contexts and fixed model/harness settings for comparisons, and preserve raw outputs, tool actions, revisions, and the cost metrics defined above. Record unavailable metadata as unknown and narrow comparative claims accordingly.
 
 The deterministic evaluator does not load this packet or accept its case-set version. Review its run records separately rather than reporting an unsupported automated pass. Parsing fixtures or inspecting instructions checks their structure, not model behavior; without actual recorded executions these cases remain unrun. Do not extend the evaluator or require a model benchmark for ordinary unrelated edits merely because the packet exists.
+
+## Trace Attribution Development Packet
+
+`trace-attribution-cases.jsonl` contains six visible development cases for trace attribution, interrupted recovery and data-moat claims. Apply the same isolated execution, raw-record and independent criterion grading protocol above; it is not a holdout or a suite supported by the deterministic evaluator. Record actual behavior and cost before claiming improvement. JSON parsing and repository tests do not execute these cases.

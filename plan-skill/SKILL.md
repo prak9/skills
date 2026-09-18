@@ -71,6 +71,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 - Before `阻塞`, `待验收`, or `完成`, read `references/status-and-completion.md`.
 - For a shared abstraction change, read `references/abstraction-quality.md`.
 - To audit or repair existing plan state, read `references/audit-checklist.md`.
+- When designing or changing cross-session recovery, use the interruption probe in `references/audit-checklist.md`; structural validation alone does not prove correct resumption. Ordinary resumes do not require a new recovery experiment.
 
 ## Invariants
 

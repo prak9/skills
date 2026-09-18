@@ -41,5 +41,15 @@ Audit the plan by checking authority, usefulness, and evidence rather than templ
 
 ## Validation
 
+### Interruption Probe For Recovery Changes
+
+When recovery behavior is being designed or changed, test a representative interruption in an isolated copy using only project artifacts, without prior chat. The executor must recover the objective, current node, completed effects, evidence validity, applicable authorization and next action. Compare actual actions with the contract, not just its ability to recite the plan.
+
+Include the consequential boundary: a tool succeeded but its reply or plan update was lost. Check authoritative receipts/state before retrying; use an idempotent path where supported. If the effect cannot be resolved safely, report that uncertainty rather than blindly repeating it. Also test relevant source changes invalidating old evidence when evidence-validity checking is enabled. Do not add snapshots to legacy plans merely for this probe.
+
+Passing means no duplicate external effect, no skipped unfinished node, no stale evidence treated as current, and no unnecessary reconfirmation of recorded authorization. Run with fixtures or a sandbox, not live publication. A Markdown validator cannot certify these behaviors. Fix the smallest missing state or recovery rule; do not add a parallel ledger or require a probe for every ordinary task.
+
+### Structural Checks
+
 - `scripts/validate_plan.py --strict <project-root>` passes.
 - Every checked task is referenced, IDs are unique, Markdown tables are valid, and no unresolved placeholder remains.

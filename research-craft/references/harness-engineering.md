@@ -115,12 +115,12 @@ Parallelism is useful only when outputs have independent acceptance and merge co
 
 ## Run self-improvement as research
 
-1. **Mine weaknesses:** collect traces and verifier failures; distinguish symptoms such as timeout from causes such as context loss or bad planning.
+1. **Mine weaknesses:** collect traces and verifier failures; distinguish symptoms such as timeout from causes such as context loss or bad planning. Use [trace-based attribution](trace-attribution.md) when competing causes would change the intervention; do not infer cause from the last error or an agent's retrospective explanation.
 2. **Bound edits:** name the prompts, workflow nodes, retrieval rules, tools, or scripts allowed to change.
 3. **Propose narrowly:** target a recurring failure and list passing behaviors that must remain true.
 4. **Evaluate:** use held-in cases for the target weakness and held-out cases for regression.
 5. **Accept or reject:** require evidence, preserve rejected candidates and reasons, and keep rollback possible.
-6. **Update memory:** promote only causal, reusable findings; do not turn one noisy win into a permanent rule.
+6. **Update memory:** distinguish replicated empirical improvements from supported causal findings; preserve their tested scope and unresolved mechanism. Neither one noisy win nor an unexplained gain establishes a permanent rule or general capability.
 
 Do not call a loop self-improving if it merely retries without persistent failure attribution, an editable boundary, or an acceptance criterion.
 

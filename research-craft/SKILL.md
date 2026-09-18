@@ -28,6 +28,7 @@ Choose the lightest mode that protects the claim:
 - For probability forecasts or stochastic simulators, read [prediction and simulation validation](references/prediction-validation.md). A point estimate, deterministic calculation or ordinary report does not trigger this adapter by itself.
 - **Controlled experiment:** compare a candidate against a baseline under a fixed protocol and explicit acceptance gates.
 - **Artifact iteration:** edit code, prompts, rules, or configuration through a bounded propose-evaluate-accept loop. Freeze the evaluator before optimizing the candidate.
+- For recurring failures, unexplained regressions or diminishing optimization returns, read [trace-based attribution](references/trace-attribution.md) before choosing the next intervention. Routine successful runs do not require a trace audit.
 - **Instruction or model migration:** read `references/instruction-migration.md` before changing an `AGENTS.md`, skill, system prompt, or model-specific guidance because the base model, harness, or tool behavior changed.
 - **Agent or self-improving harness:** read `references/harness-engineering.md` before designing runtime control flow, persistent memory, feature maps, verification closure, subagents, permissions, self-edits, or autonomy scaling.
 - **Automated scientific or engineering discovery:** read `references/automated-discovery.md` before decomposing a problem into parallel experiments, optimizing iteration throughput, designing a multimodal research system, or extracting reusable infrastructure from a narrow-domain loop.

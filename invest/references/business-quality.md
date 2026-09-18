@@ -38,6 +38,14 @@ Distinguish technical demonstration, authorized operating domain, permits, deplo
 
 Show competing paths—direct integration, partnership or a mixed market—when each is plausible, with observable implications for customer acquisition, supplier dependence, utilization, take rate and capital intensity. Do not infer a rival's terminal business model from fundraising size, a product launch or a single quote. Current cash generation and future franchise durability may diverge; connect the threat to specific economics and time horizons rather than treating a share-price decline as proof of its cause.
 
+## When Data Is Claimed As A Moat
+
+For a thesis that depends on proprietary data or feedback, trace real customer demand -> usable observations -> trustworthy labels/feedback -> out-of-sample improvement -> customer economics -> cash retained by the company. Data volume, exclusivity and collection difficulty alone establish none of the later links.
+
+Separate task realism from verification difficulty: a realistic workflow may have ambiguous outcomes, while an easy-to-score benchmark may miss customer value. Examine coverage, freshness, selection bias, lawful use/retention rights, expert adjudication and cleaning costs. Ask whether competitors can buy, synthesize or collect substitutes. Do not treat weak disclosure as proof the moat does not exist.
+
+Seek incremental evidence under comparable models, compute, task mix and human assistance; isolate data gains from model upgrades or hidden manual service. Distinguish familiar-task coverage from transfer to new customers, periods or workflows. Connect measured gains to retention, realized pricing or delivery cost after acquisition, labeling, inference and support expenses. If public evidence cannot separate these effects, mark the data-moat claim unresolved rather than invent an ablation or assign an automatic valuation premium. This branch is not required for unrelated businesses.
+
 ## Make Quality Judgments Auditable
 
 For each load-bearing quality claim, record the observation and original source/date, metric definition and population, history and relevant comparator, interpretation, strongest plausible rival, and the observation that would change the judgment. Reuse the existing evidence table; no new ledger is required. Separate the current quality level, improvement/deterioration and confidence in measurement. Do not invent a universal quality score or fixed metric threshold.
