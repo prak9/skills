@@ -359,6 +359,7 @@ class SkillContractTests(unittest.TestCase):
             / "references"
             / "daily-decision-loop.md"
         ).read_text(encoding="utf-8")
+        policy = reference_text("result-analysis", "project-policy.md")
 
         self.assertIn("references/daily-decision-loop.md", skill)
         self.assertIn("PREAPPROVED_LIVE", daily)
@@ -366,7 +367,8 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("POSTHOC_CANDIDATE", daily)
         self.assertIn("KEEP_CURRENT", daily)
         self.assertIn("日报不能凭单日 SIM 盈利新增实盘品种", daily)
-        self.assertIn("1 个同身份日：只能 `OBSERVE/MEASURE`", daily)
+        self.assertIn("references/project-policy.md", skill)
+        self.assertIn("1 个同身份日：只能 `OBSERVE/MEASURE`", policy)
         self.assertIn("policy-conditional cohort", daily)
         self.assertIn("不自动落盘", daily)
 

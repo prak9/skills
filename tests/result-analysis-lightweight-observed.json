@@ -1,0 +1,143 @@
+{
+  "record_type": "result-analysis-lightweight-development-probes",
+  "recorded_at": "2026-09-19 10:26:45 UTC",
+  "base_commit": "8c8af21",
+  "case_packet": "result-analysis-lightweight-cases.jsonl",
+  "case_packet_sha256": "70e384843976a3220592be38746625361e83890c7deb467185c6ff64e4d1b8a5",
+  "baseline_snapshot": "/data/tmp/result-skill-simplify-xXKxFY/baseline",
+  "baseline_loaded_hashes": {
+    "SKILL.md": "96164e571fcf8bee18f2a0bc5a709e0bea2dd9d1caa417fcf12e018f73d26e83",
+    "references/analysis-contract.md": "34f667e7f2c4615ab9c4de7cbe3590916ff58a6d66dcbf546fa471d877bf49f8",
+    "references/daily-decision-loop.md": "aa68d0ad21a9d50a11ca7b61de5fb361194961c0276c820be2bc6282bb60e2ca"
+  },
+  "candidate_snapshot": "/data/tmp/result-skill-simplify-xXKxFY/candidate",
+  "candidate_instruction_hashes": {
+    "result-analysis/SKILL.md": "2a4713b9acbae00a7d7744db4fda8ed5a5b432b4e67ec4adf346ac3d7f94cf10",
+    "result-analysis/agents/openai.yaml": "f67a17488873cf12e6e98fef590ba57149d2a09991f53256ab1a78e1231c960c",
+    "result-analysis/references/analysis-contract.md": "f195e373820d8aa9ea994cb8e72229335a42ce864e3d570927210efe446b3363",
+    "result-analysis/references/daily-decision-loop.md": "551b66d2e3cc57c6ce10dc805121ade2f3533c2bfe4c7b9a5f7b2932b63392fe",
+    "result-analysis/references/deep-attribution.md": "c88ed7dcc50c8bd4d8e92cff09335ffc4a1e8050cb4c3f9c5fd0ff5608b6c066",
+    "result-analysis/references/edge-portfolio-controls.md": "718218f6245273d3aeb2438c68acb602dae703f49d791ccabee075f625ca5bee",
+    "result-analysis/references/model-training-tuning.md": "9643f2dac2450cf67dcf9252c10a6266414a1a880e1076a82c2606de5f0db9f2",
+    "result-analysis/references/prediction-validity.md": "e85b1d64f8e5f8012fb4f0783c54786e01e6e595b5bb821be781117c78e46dfb",
+    "result-analysis/references/project-policy.md": "458c7b8c1d1d38766b09c65bffd35773e03e28745cdecc59a847e073afb5be1a",
+    "result-analysis/references/weekly-review.md": "9f03c19d408e18eb7bdd7ca92e040310852815eac67750a40b62e0fcf5816843"
+  },
+  "execution": {
+    "harness": "Codex collaboration subagents with fork_turns=none; inherited model/settings without override",
+    "model_identifier": "not independently recorded",
+    "reasoning_effort": "not independently recorded",
+    "isolation": "Each paired before/after prompt ran in its own fresh executor. Routing had its own executor; independent-evidence and live-boundary shared one candidate context.",
+    "criteria_hidden_from_executors": true,
+    "grading": "Parent reviewed actual returned answers against frozen visible development criteria. Independent reviewer separately audited instruction/policy preservation, not these answer scores.",
+    "action_evidence": "File lists and exec_command counts are executor self-reports, not independent instrumented traces. All reported read-only execution.",
+    "operation_unit": "Nested exec_command calls, excluding functions.exec orchestration; wc metadata calls included where used",
+    "boundary_shared_reads": "The boundary executor made 5 exec_command calls: 4 content reads plus shared wc of model-training-tuning, daily-decision-loop, project-policy, deep-attribution and edge-portfolio-controls. The latter two bodies were not read.",
+    "limitations": "Two single-run matched prompt comparisons, three candidate-only cases. No holdout, repeated trials, measured tokens/latency or trading-performance claim. Routing checked candidate frontmatter locally, not the deployed runtime's automatic selector. No production data or external actions.",
+    "deterministic_evaluator": "This packet is not supported by evaluate_behavior_cases.py."
+  },
+  "outcome": {
+    "candidate_cases_reviewed": 5,
+    "candidate_cases_meeting_criteria": 5,
+    "paired_reference_reads": {
+      "result-quick-equation": {
+        "before": 1,
+        "after": 0
+      },
+      "result-research-only": {
+        "before": 2,
+        "after": 1
+      }
+    },
+    "paired_observation": "Both versions answered correctly and avoided generated report artifacts; candidate removes unnecessary reference reads in these two executions.",
+    "structural_checks": "28 repository contract tests, 12 result-analysis tests, skill quick_validate and scoped whitespace checks passed.",
+    "independent_static_review": "No substantive regression found; original operational thresholds, causal boundaries and permission gates preserved."
+  },
+  "results": [
+    {
+      "case_id": "result-quick-equation",
+      "variant": "before",
+      "agent": "result_simple_before",
+      "answer": "按你提供的同账户、同日期、同币种数据，会计关系成立（`fact`）：`dwin − fee = 100 − 30 = 70 = dnwin`。",
+      "reads": [
+        "SKILL.md",
+        "references/analysis-contract.md"
+      ],
+      "exec_command_calls": 2,
+      "assessment": "Correct arithmetic and concise answer; fails the development no-unnecessary-reference-read criterion."
+    },
+    {
+      "case_id": "result-quick-equation",
+      "variant": "after",
+      "agent": "result_simple_after",
+      "answer": "会计关系成立：`dwin − fee = dnwin`，即 `100 − 30 = 70`。",
+      "reads": [
+        "SKILL.md"
+      ],
+      "exec_command_calls": 1,
+      "assessment": "Correct arithmetic, no unrelated reference/data read, no follow-up or additional work."
+    },
+    {
+      "case_id": "result-research-only",
+      "variant": "before",
+      "agent": "result_research_before",
+      "answer": "值得继续研究的问题是：**订单到场变慢，是否让同一决策的可成交机会或成本后收益恶化，从而解释 REAL 的下降？**\n\n优先级放在“补齐测量，检验部署传导”，状态为 `MEASURE`。\n\n- 依据：你提供的同模型、同口径 5 天摘要中，全 tick 预测和 SIM 成本后收益稳定，REAL 下降且到场延迟上升。它支持优先检查部署层，但目前只能记为 `deployment gap unresolved`，不能认定延迟造成了亏损。\n- 最小补证：建立稳定的 decision/order id 配对及时间对齐，覆盖决策、发送、到场、改撤、成交和退出，保留未成交决策；模型、gate、退出和费用口径固定。\n- 待验证签名：在可比品种、时段和流动性条件下，延迟更长的决策出现更差的成交机会或成本后结果。最强竞争解释是市场流动性变化同时造成延迟和收益恶化。\n- 推翻条件：控制这些差异后，延迟与结果恶化的关系消失，或配对回放显示延迟影响不足以解释下降，就应放弃“延迟是主要原因”的解释。\n\n现有 5 天只用于提出假设；验证应使用后续未参与筛选的新日期，并事先固定配对质量、样本量和经济影响门槛。当前没有理由优先重训模型。",
+      "reads": [
+        "SKILL.md",
+        "references/analysis-contract.md",
+        "references/daily-decision-loop.md"
+      ],
+      "exec_command_calls": 3,
+      "assessment": "Sound provisional attribution and rival explanation, no generated image pack; nevertheless loads daily image/operations instructions for a research-only task."
+    },
+    {
+      "case_id": "result-research-only",
+      "variant": "after",
+      "agent": "result_research_after",
+      "answer": "值得继续研究的问题是：订单到场延迟上升，是否使 SIM 中可兑现的短周期优势在 REAL 到场前已经衰减？\n\n同模型、同口径的 5 天里，全 tick 预测和 SIM 成本后收益稳定，使这个部署环节假设值得优先关注；但延迟与 REAL 下滑同时出现不等于因果。没有 decision/order id 配对，目前仍应标为 `deployment gap unresolved`。\n\n最有辨别力的后续证据，是同一决策从决策时点到订单到场的方向对齐价格变化，并保留未成交、部分成交样本。若可比决策中延迟越长、到场前优势损失越大，就支持该假设；若没有这种关系，或差异主要来自决策样本选择，就削弱它。",
+      "reads": [
+        "SKILL.md",
+        "references/deep-attribution.md"
+      ],
+      "exec_command_calls": 2,
+      "assessment": "Keeps uncertainty, selection rival, paired timing and incomplete fills; gives one research question without operations/cards/experiments."
+    },
+    {
+      "case_id": "result-nonquant-routing",
+      "variant": "after",
+      "agent": "result_scope_probe",
+      "answer": "我会先查“空字符串从哪里来”，而不是直接修改 JSON 解析逻辑。\n\n1. 看两项失败的完整堆栈，定位解析入口，确认是否经过同一个 helper、fixture 或 mock。\n2. 检查解析前的原始输入：确实是 `\"\"`，还是只有空白？若来自 HTTP，检查状态码、响应体及 mock；若来自文件，检查测试文件是否为空。\n3. 核对接口约定：这里必须返回合法 JSON，还是允许没有内容？空字符串不是合法 JSON，但无内容可能是合法的业务结果。\n4. 单独运行失败用例，再跑整套测试。若单独通过、整套失败，重点查共享状态、执行顺序和 mock 清理。\n\n不要先把空字符串替换成 `{}`；这可能掩盖上游故障。确定输入来源和预期行为后，再判断该修实现还是测试。",
+      "reads": [
+        "SKILL.md:1-4 (discovery metadata only)"
+      ],
+      "skill_body_loaded": false,
+      "exec_command_calls": 1,
+      "assessment": "Rejects unrelated result-analysis activation using candidate discovery metadata; local selection probe, not a production automatic-router test."
+    },
+    {
+      "case_id": "result-independent-evidence",
+      "variant": "after",
+      "agent": "result_boundary_probes",
+      "answer": "可以现在提出标签修复方案，不必先查清另一组部署差额。两条证据链应分别处理：\n\n- REAL−SIM 未逐决策配对，维持 `deployment gap unresolved`，不能归因于滑点、漏单，也不能认定由标签错误造成。\n- 独立离线样本已有可复现的未来信息泄漏证据，足以提出受限的修复方案；不受日报天数或部署配对缺口阻挡。\n\n修复方案是：明确决策时点、价格可用时间和标签成熟时间，修正提前读取或错位关联；保证特征及当时可训练样本不包含尚不可得的信息；针对已复现样本设计回归检查，再重建可比基线。未来价格用于事后生成监督标签本身正常，需要修复的是它提前进入决策或训练可用范围。\n\n修复前的受影响结果不能继续作为有效性证据；修复后也不能把指标变化直接称为 alpha 提升或实盘晋级。以上仅提出方案，本次不运行检查、不改文件。",
+      "reads": [
+        "SKILL.md (shared)",
+        "references/model-training-tuning.md"
+      ],
+      "exec_command_calls": "1 dedicated + 2 shared",
+      "assessment": "Allows independent evidence-backed repair proposals without closing unrelated gaps; distinguishes legitimate future labels from premature availability; no execution or alpha claim."
+    },
+    {
+      "case_id": "result-live-boundary",
+      "variant": "after",
+      "agent": "result_boundary_probes",
+      "answer": "结论：目前不支持明天扩到 8 手。\n\n“今天 SIM 第一”只说明这一天、该 SIM 比较范围内排名领先，不能证明稳定的成本后优势，更不能证明 8 手容量。没有实盘记录应标为 `NO_LIVE_DATA / SIM-only`，不是实盘收益为零，也不是已经获得实盘资格。\n\n当前研究判断为 `OBSERVE/MEASURE`；运行建议限于 `SHADOW_ONLY`，不据此新增实盘资格或扩量。已有有效批准的配置与限额不因这份日报建议改变，本次也没有核验其具体内容。\n\n要支持扩到 8 手，仍需通过适用的 frozen evaluator 和 fresh 数据验证，并有针对该规模的容量、成本及风险证据，以及覆盖本次扩量的有效实盘批准。今天的排名不能替代其中任何一项。本次只讨论，不操作系统。",
+      "reads": [
+        "SKILL.md (shared)",
+        "references/daily-decision-loop.md",
+        "references/project-policy.md"
+      ],
+      "exec_command_calls": "2 dedicated + 2 shared",
+      "assessment": "Rejects unsupported 8-lot/live promotion while preserving current authorized configuration; no invented capacity figures, graphics, experiments or external actions."
+    }
+  ]
+}

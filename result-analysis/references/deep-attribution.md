@@ -1,6 +1,6 @@
 # Deep Attribution
 
-只在 Standard 仍无法定位 crux，或用户明确要求逐笔、因子、regime、容量、P&L 瀑布时读取。
+只在当前问题需要逐笔、因子、regime、容量或 P&L 归因方法时读取。各节按需应用，不因读取本文件执行全部分析；代码片段中的账户与参数是例子，不是任务默认值。
 
 ## 1. 从 detail 建立事实层
 
@@ -18,7 +18,7 @@ cells[]:
   signal_realization/when_daily/exec_review/worst_seg
 ```
 
-先产四张最小事实表：
+使用 detail 复盘时可从以下维度建立事实；仅单项归因不必生成四张表：
 
 1. SIM 经济性：按 `pot` 排序，辅以 costcov/dret/tn/avgnwt/尾部
 2. REAL 实况：单列实际交易 cell
@@ -134,7 +134,7 @@ behavior = t.groupby(["account", "sym", "dorn"]).agg(
 
 ## 5. 部署传导证据梯
 
-按顺序增证：
+证据强度可分为：
 
 1. **活动量差**：完成交易数、成交手数、hitr；只描述活动
 2. **结果质量差**：P&L/trade、持有、胜率、盈亏比、尾部；选择与执行仍混合
@@ -174,7 +174,7 @@ E1 观察贡献 × E2 leave-group-out 边际 × E3 孤立 IC
 
 废弃只看 `capacity_replay.best_M` 的旧 `rec_M`：没有 size impact 时 net(M) 单调，常撞网格上限，不能说明可扩量。
 
-使用：
+当前项目的容量诊断示例（实际参数与晋级门槛须核对项目合同）：
 
 ```python
 import analyze.capacity_replay as cr
@@ -192,6 +192,14 @@ lots = cr.recommend_lots(
 
 `M_rec = min(edge_lo, M_depth)`，同时报 binding、日期数和当前部署手数。少于 3 天标低可靠。只有非锁仓、`M_rec` 明显高于当前量且经济性跨日稳定时，才形成扩量候选。
 
+### 容量反事实边界
+
+上述结果依赖冲击函数、可比样本和历史路径假设，不是已经验证的真实扩量反事实。自己的订单可能改变盘口、成交选择和后续价格；在固定历史行情中把手数改小，不能证明真实市场会恢复到原先状态。模型系数不变、无冲击 SIM 稳定，也不能排除这种反馈。
+
+只有扩量后退化或自身冲击是当前 crux 时，补最小辨别证据：同一决策 cohort 的事前流动性/信号状态、自有委托/子单/改撤/成交时序、订单规模相对可见深度或同期流量，以及到场和成交后的方向对齐收益。保留未成交/部分成交，按既有配对规则处理。可比低参与率样本或缩量回放可用于挑战假设，但历史前后对比有状态混杂，回放依赖冲击模型，都不是自动确证；成交价格已包含的冲击不重复扣费。
+
+不能区分自己与外部交易造成的变化时标 `unresolved`，提出最便宜的补证据动作，不把回测容量上限当作扩大真实资金、强制减量试验或重训的授权。
+
 ## 8. Action 排序
 
 按“闭合金额影响 × 可控性 × 证据等级 ÷ 过拟合风险/实现范围”排序：
@@ -202,7 +210,7 @@ lots = cr.recommend_lots(
 4. SIM 健康、REAL 弱：部署 telemetry/配对回放
 5. 因子：观察归因 → FEE/ablation → fresh evaluator
 
-每条 action 写：
+只有需要正式实验交接时才补齐下列字段；普通归因只说明证据、边界及必要的辨别检查：
 
 ```text
 evidence_scope / mechanism / editable_surface / fixed_fields
@@ -210,4 +218,4 @@ predicted_signature / falsifier / screen_split / verify_split
 sample_floor / overfit_risk
 ```
 
-单日只登记观察。没有一个结果能推翻的 action 不是可实验假设。
+单日收益不支持策略晋级；确定性故障可以凭可复现证据诊断。可实验的机制假设应有反证条件，普通算术或已验证操作无需制造实验。

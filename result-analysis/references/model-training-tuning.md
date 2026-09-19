@@ -4,7 +4,7 @@
 
 把日报异常转成**少量、可证伪、可由 fixed evaluator 裁决**的候选。不要把日报本身当训练集，不要用单日后验切片选参数，不要把预测指标改善等同于经济改善。
 
-最终回答四个问题：
+需要形成正式研究提案时回答以下问题；单项诊断或研究想法只回答当前所需部分，不要求完整实验包：
 
 1. 弱点在标签/模型、策略选择、显式成本，还是部署传导？
 2. 证据来自全 tick、eligible 信号、SIM 完成交易还是 REAL？选择条件是什么？
@@ -13,7 +13,7 @@
 
 ## 0. 先冻结身份和研究边界
 
-在比较日期或生成候选前记录：
+核对承重比较所依赖的身份；以下是清单，不要求每次恢复所有字段。给定摘要已足以提出受限假设时可直接分析，不为填表访问真实数据：
 
 - 日报文件 start/end、账户、品种、session、代码 commit/dirty 状态。
 - 模型文件真实路径、mtime、SHA256；params 中的 feature version、target type、horizon、model type、alpha/CV selector、sg/fg、训练日期和样本窗。
@@ -22,7 +22,7 @@
 
 按模型身份分组。若日报之间模型、目标、horizon、feature、gate 或状态机变化，禁止直接汇总；先拆成同身份 cohort。身份拿不到时写 `identity_unverified`，跨日结论降一级。
 
-项目当前边界优先于本参考。通常遵守：held-out `pot` 为 EDGE 北极星；`costcov/dret/tn` 为核心辅助；`precision/IC/R²` 只诊断；默认 Ridge 主范式；session 是最细合法粒度；禁止 per-symbol/per-cell 硬特化；truth lockbox 不用于探索；AI 不自动 launch/stop/promotion/改 production。
+项目当前边界优先于本参考。运行/研究晋级与 Ridge、合法粒度、关闭轴等本地约定见 [py 项目政策](project-policy.md)，不将其推广成所有研究的限制。precision/IC/R² 不替代成本后经济判断；truth lockbox 不用于探索；只读诊断不自动启动实验或改 production。
 
 ## 1. 建立证据梯，禁止越级
 
@@ -64,7 +64,7 @@
 
 ## 3. 跨日证据包
 
-发现最新完整的 daily bundle；排除周报和 `_trade` 重复文件，避免同一天重复计权。默认查看最近 20 个交易日报：
+仅当当前结论需要跨日证据且已有摘要不足时，查找有关 daily bundle；排除周报和 `_trade` 重复文件，避免同一天重复计权。下列脚本是可选批量工具，不是所有训练问题的前置步骤；参数中的账户、窗口、模型路径和 include-signals 按本次问题选择：
 
 脚本兼容根目录 CSV、旧的一层子目录与 `YYYYMM/artifacts/`。存在同范围 `bundle_*.json` 时只接受 `READY`；同日的相同文件副本只计一次，内容冲突时需指定只含目标报告身份的根目录。manifest 的路径与状态检查不等于完整身份验证：输出仍标 `identity_unverified`，需核查报告时模型/config 与 L1/L3 target/horizon。缺失 `pot` 或跨日样本不足返回 `insufficient`，不会解释成经济性弱。
 
@@ -76,27 +76,22 @@ python <result-analysis>/scripts/model_tuning_diagnostics.py \
   --output /tmp/model_tuning_diagnostics.json
 ```
 
-使用以下证据等级：
-
-- 1 日：异常观察，只列待确认项。
-- 3–4 个同身份交易日且完成交易 `n≥100`：早期候选路由，不给具体参数裁决。
-- ≥5 个同身份日期 cluster：可形成 Explore Opportunity；仍需 fresh、预注册 fixed evaluator。
-- 正式 PROMOTE/REJECT：只服从项目 frozen WFA/gate，日报统计不得代替。
+日报样本到研究状态的现有门槛见项目政策；这些门槛不阻止指出可复现的标签/实现错误或提出最小反证实验。正式 PROMOTE/REJECT 只服从项目 frozen WFA/gate，日报统计不得代替。
 
 日不是绝对独立样本；相邻日、同模型和重叠标签存在相关性。把 date/model identity 作为 cluster，披露有效独立单元数。优先报告日级中位数、正日率和 concentration，不让交易笔数多的单日吞掉其他日期。
 
 ## 4. 诊断路由
 
-按以下顺序裁决首要层：
+以下是症状到候选解释的映射，不是必须依次通过的关卡：
 
 1. **L1 全 tick 与 L3 完成交易都跨日弱**：模型/标签/训练候选。
 2. **L1 弱、L3 强**：gate 选择可能掩盖基础模型弱；先看可交易覆盖和容量，不直接重训或宣称健康。
 3. **L1 强、L3 弱**：模型有预测信息，但 eligibility、方向映射、持有/退出或费用未将其货币化。
-4. **L1/L3 与 SIM 经济性都强，REAL 弱**：部署传导问题；先补 paired telemetry，不改模型。
+4. **L1/L3 与 SIM 经济性都强，REAL 弱**：优先检验部署传导，先补 paired telemetry；不把重训当作未经配对的差额解释。
 5. **预测与经济指标方向冲突**：检查标签尺度、样本选择、费用、尾部集中和实现 bug；标 `mixed`。
-6. **证据薄或身份混合**：标 `insufficient`；只说明下一步需补什么。
+6. **证据薄或身份混合**：相关归因标 `insufficient`，说明最小补证据；保留其它独立且已支持的结论。
 
-只选择金额影响最大、可控、证据等级最高的一个瓶颈。不要同时把模型、gate、特征和退出都列为“共同优化”。
+按影响、可控性和证据排序；可以有多个独立问题，不强制唯一瓶颈。独立已复现的标签错误无需等部署差额查清才提修复。不要用“共同优化”掩盖没有隔离变量的实验。
 
 ### 强信号更赚钱：先辨别解释，再改 threshold
 
@@ -139,16 +134,16 @@ python <result-analysis>/scripts/model_tuning_diagnostics.py \
 ## 6. 防止后验过拟合
 
 - 在看 fresh 结果前冻结 hypothesis、唯一主指标、候选值、split、样本地板、falsifier 和停止规则。
-- 每次只改一个 candidate surface；不把标签、特征、alpha、sg、gate 和退出捆成一臂。
+- 需要归因的比较臂隔离一个有意义的 candidate surface；不把标签、特征、alpha、sg、gate 和退出捆成一臂。这不限制提出多个独立假设。
 - 所有看过的日期和参数计入 search exposure。旧日报只 Explore，fresh 独立窗才 Exploit。
 - 报告所有合法 cell、LOO、负窗数和集中度；不只展示赢家切片。
 - 后验 regime/symbol/session 切片只能解释机制或生成下一轮预注册假设。
 - 检查 `program.md` 关闭轴：当前已知 per-cell/per-symbol 硬特化、若干 alpha/标签/剪枝方向有历史反证。无“旧前提失效”的新证据不得重开。
-- 不因日报建议自动修改 conf、模型、champion、production；不自动启动或停止实验。
+- 不因日报建议自动修改 conf、模型、champion、production 或启动/停止实验；明确授权的实验执行另按项目合同完成。
 
 ## 7. 产出一个可执行的假设包
 
-最多给 top-3，明确推荐 top-1。每个候选用以下字段：
+用户需要可执行实验包时使用以下字段；研究方向或单项诊断不强制套表。只保留能区分候选、约束实验和复核结论的字段，按需要排序而不凑数量：
 
 ```text
 diagnosis: 哪一层、哪个瓶颈

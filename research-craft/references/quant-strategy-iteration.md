@@ -35,6 +35,12 @@ When the evaluator is missing or unstable, repair and verify it as harness work.
 
 When forming an unresolved mechanism, use [hypothesis formation](hypothesis-formation.md); for probability outputs or stochastic simulators, use [prediction validation](prediction-validation.md). These are conditional reads, not mandatory additions to every backtest.
 
+## Transfer an observation, not someone else's trade
+
+When a paper, interview, practitioner discussion or intuition supplies a candidate, separate the observed variable, proposed mechanism and trading rule. Record only what matters to transfer: original source, measurement and actual availability time (including release lag and revisions), decision horizon, and market/execution conditions. External results and originality generate hypotheses; neither proves local edge. Ask what the observer noticed, then form a locally testable prediction and its strongest plausible rival using the existing research record.
+
+For example, weekly fund-flow commentary might motivate a native higher-frequency flow source, or a slower state variable available after publication. Neither implies minute-level predictability. Forward-filling a daily value does not create independent observations; backdating its publication or using later revisions leaks information. A high-frequency source also needs its own timestamp, mechanism, horizon and cost checks. Keep the simplest useful probe before expanding a transformation grid; preserve units, sign and economic meaning, fit preprocessing on training data only, and count transformations and failed trials in the existing search budget.
+
 ## Preserve Research-To-Runtime Semantics
 
 When porting, integrating or replacing a research implementation, compare the same recorded inputs and initial state across both paths. Trace material intermediate features, availability times, units, missing/zero values, precision/threshold boundaries and final decisions. Include relevant ordering, duplicate-event and restart behavior. Predeclare justified numeric tolerances; similar aggregate P&L does not establish equivalent decisions or state transitions.
@@ -73,7 +79,8 @@ Do not silently rescore, widen a grid, remove failed arms, change a split, or re
 - **Generalization gap:** reject a train jump with flat or worse holdout performance unless new evidence explains it.
 - **Market rationale:** require a simple mechanism; code-only patterns are not a thesis.
 - **Rule shape:** prefer monotonic, continuous, rounded, and economically smooth rules over jagged sets or false precision.
-- **Sample floor:** reject gains created by shrinking effective trade count below the declared minimum.
+- **Sample floor:** reject gains created by shrinking effective trade count below the declared minimum. More ticks, fills or rows need not mean more independent information. Respect time dependence and label-information overlap in the split; ordinary shuffled CV is not automatically valid for financial sequences.
+- **Evidence coverage:** add a check for a named failure mode, not a vote toward a fixed quota. Heatmaps, CV and stress replay can share the same leaked preprocessing, selected data or optimistic fill assumptions. Agreement then corroborates one pipeline, not independent validity; choose the cheapest check that breaks the shared blind spot before extending the battery.
 - **Replay:** reject headline improvement that destroys known useful behavior.
 - **Cost and execution:** stress fees, fills, latency, capacity, liquidity, and turnover at the level relevant to deployment.
 - **Simplicity:** reject special cases whose only defense is historical fit.
@@ -110,4 +117,4 @@ Classify failures precisely: overfit gap, weak mechanism, insufficient sample, c
 
 End with the decision, champion metrics, holdout behavior, sample size, artifact and replay status, accepted/rejected change, and the ledger's new constraint.
 
-Source: fixed-evaluator auto-research, observable failure learning, and disciplined quantitative validation practice.
+Sources: fixed-evaluator auto-research and observable failure learning. The [Calvin trading interview](https://www.youtube.com/watch?v=diuitUuuM4o) motivates observation transfer and adaptive-market questions, not verified performance claims or universal trading rules. Validation boundaries are supported by [scikit-learn's time-series guidance](https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-of-time-series-data) and [The Probability of Backtest Overfitting](https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf); no additional reading is required unless that boundary is the crux.

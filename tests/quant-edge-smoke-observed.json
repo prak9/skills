@@ -1,0 +1,77 @@
+{
+  "record_type": "targeted_development_smoke",
+  "recorded_at": "2026-09-19T09:52:07Z",
+  "base_commit": "8c8af21",
+  "case_packet": "quant-edge-cases.jsonl",
+  "case_packet_sha256": "fb89ded38b6709f4cd7d90fa85ebc75a4845fa9371496d13ce91807078aabf53",
+  "instruction_hashes": {
+    "research-craft/SKILL.md": "30846e2534aa39f4a4241d03538732eb4266d6c6d3198f30e3cabe323ed9969f",
+    "research-craft/references/quant-strategy-iteration.md": "53c15a2c0a7381c1fe69718d89e3c56fa3daf941ffb2d5b8969562fa1b7ee82c",
+    "research-craft/references/hypothesis-formation.md": "6899f4642a1f9565ffd4e15aae4b214922bb38d09b0f2a0d5e8f69feb7b72bba",
+    "result-analysis/SKILL.md": "96164e571fcf8bee18f2a0bc5a709e0bea2dd9d1caa417fcf12e018f73d26e83",
+    "result-analysis/references/analysis-contract.md": "34f667e7f2c4615ab9c4de7cbe3590916ff58a6d66dcbf546fa471d877bf49f8",
+    "result-analysis/references/deep-attribution.md": "1f4c1d081c5bb8d56d3843267843f70b27212a0086e7011d31eafe2e95784abc",
+    "result-analysis/references/edge-portfolio-controls.md": "73385b4cb12364e01c934139482e035fa89d468e44480817579ab9c6dcfef67b"
+  },
+  "execution": {
+    "harness": "Codex collaboration subagents, fork_turns=none, inherited model/settings",
+    "model_identifier": "not independently recorded",
+    "reasoning_effort": "not independently recorded",
+    "grouping": "Two questions shared the research executor context; three shared the result-analysis executor context. Contexts were isolated from the parent discussion, not from other questions in their batch.",
+    "criteria_hidden_from_executors": true,
+    "grading": "Parent compared returned answers with visible development criteria; not an independent blind grading trial.",
+    "action_evidence": "Executors reported read-only instruction reads, no experiments, external writes or file mutations. Separate instrumented action traces were not captured.",
+    "cost_comparison": "not measured",
+    "limitations": "No matched pre-edit run, no full 13-case run, no production data or trading-performance claim. Five prompt-response smoke checks only; unsupported by the deterministic behavior evaluator."
+  },
+  "results": [
+    {
+      "id": "quant-transfer-information-clock",
+      "executor": "quant_research_forward",
+      "output": "先暂停分钟化和40种变换。周收益的同期解释不等于未来分钟收益可预测；复制每日值不增加独立信息，回填当日还泄漏发布时间与后续修订。\n\n最小方向：把净流量视作发布后才可用的慢变量，只检验一个预先指定、保留经济含义的信号能否预测后续日／周收益。先核查原文变量、单位和收益区间；取得首次发布版本及时间。只有修订终值时，简单滞后一天仍不够，须补历史版本或前瞻留存，否则只能探索关联。固定基线、预测方向、成本和时间切分，区分“流量预示收益”与“既往涨跌引起流量”；按有效日期及依赖结构计算不确定性。这一步有可信增量才考虑扩展。",
+      "verdict": "pass",
+      "evidence": "Distinguishes explanation from prediction, availability/revision leakage and row count from information. Bounds initial search to one probe and a suitable horizon rather than promising minute-level edge; no experiment launched in the answer."
+    },
+    {
+      "id": "quant-validation-shared-blindspot",
+      "executor": "quant_research_forward",
+      "output": "不是三次独立确认，而是同一受污染管线的三种展示；现有结果不能支持样本外有效性，也不能证明策略无效。\n\n最低成本修复先针对共同盲点：在一个小型时间顺序切分上核验，每折标准化仅拟合训练段；依据标签实际未来区间清除跨边界重叠，并设置必要间隔。保留一个冻结候选及基线，先验证时间戳、变换拟合范围和标签边界，不重跑整套热图。\n\n原verify窗已参与选择，只能作为探索数据，改名或重新切分不能恢复独立性。待管线通过核验，再预先固定候选、指标、成本、门槛和试验预算，用真正未接触的新窗口确认；没有新窗口就停留在“未确认”，不晋级。",
+      "verdict": "pass",
+      "evidence": "Identifies shared preprocessing/overlap leakage and contaminated verify; prioritizes pipeline repair and frozen fresh confirmation over an extra validator. Does not discard the mechanism merely because the evidence failed."
+    },
+    {
+      "id": "quant-own-impact-not-exogenous-decay",
+      "executor": "quant_result_forward",
+      "output": "首查容量与部署传导，当前为 deployment gap unresolved，不足以支持直接重训。按同一决策配对核对事前信号、深度、订单规模/同期流量、委托及改撤成交时序、到场与成交后方向收益；保留未成交和部分成交。参与率上升与深度下降同时发生，不能区分自身冲击、外部流动性恶化及成交选择。可比低参与率样本若仍同幅恶化，会削弱纯规模冲击解释。无冲击SIM不刻画自身反馈；固定历史行情改回1手只是依赖模型的反事实，不能保证真实恢复。先列现有记录能配对什么、缺什么，不启动缩量试验。",
+      "verdict": "pass_with_unprobed_detail",
+      "evidence": "Preserves competing own/external mechanisms, pairing and unfilled orders; rejects a guaranteed replay recovery and automatic retraining/live resizing. The answer introduces no duplicate cost subtraction, but did not explicitly discuss that cost-accounting subcriterion."
+    },
+    {
+      "id": "quant-cycle-does-not-waive-risk",
+      "executor": "quant_result_forward",
+      "output": "不支持加倍杠杆。社区讨论量不是实际资本采用量，连续回撤也不能证明拥挤者退出；不存在必然恢复的固定Alpha周期，当前原因 unresolved。既有风险上限已触发，原因未明不构成延后已批准风险处置或放宽上限的理由，应由有权限者依既定合同处理，本次不操作系统。先核验原先盈利必要条件、跨所时间同步和两腿执行，再比较可比状态中的信号兑现、外部同向交易时序与成本。若“退出”解释成立，应出现抢先兑现减弱、成本后收益改善；未出现则削弱该解释。自身冲击与流动性变化仍须区分。",
+      "verdict": "pass",
+      "evidence": "Rejects popularity-based cycle certainty and increased leverage, keeps alternative explanations open, and separates analysis from existing authorized risk handling. No HFT/arbitrage immunity assumed."
+    },
+    {
+      "id": "quant-quick-clean-negative",
+      "executor": "quant_result_forward",
+      "output": "会计关系闭合（fact）：同身份账户 dwin − fee = dnwin，即 100 − 30 = 70，核对差额为0。来源仅为题内三个字段，按所给账户口径直接相减，未额外聚合。日期、单位及原始文件未提供，不影响本次数值核对，但不能据此判断原始数据准确性或收益持续性。无需扩展至因子、仓位或regime分析。",
+      "verdict": "response_pass_read_cost_not_isolated",
+      "evidence": "Answers arithmetic without edge claims or extra experiments. Since earlier questions in the same context required deep references, this does not independently test clean-negative reference-read cost."
+    }
+  ],
+  "executor_read_reports": {
+    "quant_research_forward": [
+      "research-craft/SKILL.md",
+      "research-craft/references/quant-strategy-iteration.md",
+      "research-craft/references/hypothesis-formation.md"
+    ],
+    "quant_result_forward": [
+      "result-analysis/SKILL.md",
+      "result-analysis/references/analysis-contract.md",
+      "result-analysis/references/deep-attribution.md",
+      "result-analysis/references/edge-portfolio-controls.md"
+    ]
+  }
+}

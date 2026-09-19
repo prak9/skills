@@ -1,6 +1,6 @@
 # Result Analysis Contract
 
-所有 Quick、Standard、Deep、Tuning 分析都遵守本合同。
+在需要核对文件、字段、聚合或跨期身份时读取。以下是口径参考与计算示例，不是每次分析的检查清单；仅应用于当前使用的数据和主张。
 
 ## 1. 输入与优先级
 
@@ -8,8 +8,8 @@
 
 | 文件 | 粒度 | 用途 | 优先级 |
 |---|---|---|---|
-| `detail_<b>-<e>.json` | 品种×session 结构化明细 | Standard/Deep 入口；含 sim/real/gap/consensus/when_daily | 1 |
-| `winress_<b>-<e>.csv` | s/t/account/y 聚合 | Quick 入口与聚合口径校验 | 1 |
+| `detail_<b>-<e>.json` | 品种×session 结构化明细 | 含 sim/real/gap/consensus/when_daily | 按问题 |
+| `winress_<b>-<e>.csv` | s/t/account/y 聚合 | 汇总与聚合口径校验 | 按问题 |
 | `winresd_<b>-<e>.csv` | s/t/account/y/date | 跨日中位数、正日率、尾部与集中度 | 2 |
 | `trades_<b>-<e>.csv` | SIM+REAL 逐笔 | P&L、持仓、方向、size、成交时机 | 2 |
 | `signals_<b>-<e>.csv` | 逐信号 | 全 tick/eligible 预测、margin、因子 | 按需 |
@@ -17,11 +17,11 @@
 | `res_<b>-<e>.pdf` | 图表 | 定位指定页或结构化数据缺失 | 最后 |
 | `/data/logs/result/cron_YYMMDD.log` | 运行日志 | 判断实盘比对/数据生成是否跳过 | 异常时 |
 
-先读 `detail.meta.note`。它对代理量、回填和配对边界的声明优先于本参考。字段不存在时降级，不凭空补值。
+使用 detail 时读 `meta.note`。它对代理量、回填和配对边界的声明优先于本参考。字段不存在时降级，不凭空补值；不使用 detail 的任务无需为此寻找它。
 
 ## 2. Bundle 与身份检查
 
-每次记录：
+只核对会影响当前计算、跨期比较或模型判断的身份字段；以下是可用清单，不是缺一不可的表单：
 
 ```text
 date_range / daily_or_weekly / files / account / symbol / session
@@ -60,9 +60,9 @@ model_path / params_mtime / SHA256 / missing_or_backfilled_fields
 
 P&L、盘口深度、`avgnwt`、持仓时长和 size 使用 median/P25/P75/P90，不仅报 mean。比例分母接近零或反号时，报告 numerator、denominator 和差值，不强调 ratio。
 
-## 4. Quick 聚合
+## 4. 聚合示例
 
-先执行：
+需要分析 winress 时，可用以下示例；账户筛选、单位和聚合层级以当前数据为准，不要求全部执行：
 
 ```python
 import pandas as pd
@@ -105,7 +105,7 @@ session = w.pivot_table(
 )
 ```
 
-同时列 top/bottom、样本数、日夜分歧、锁仓和 SIM-only 标记。`win_r=100%` 但样本极少、`sharpe=NaN` 或高 dd/低 |dret| 都属于边界样本。
+排序或比较时保留样本数、锁仓和 SIM-only 边界；按问题选择 top/bottom 或日夜分歧。`win_r=100%` 但样本极少、`sharpe=NaN` 或高 dd/低 |dret| 都属于边界样本。
 
 相关性只作诊断：
 
@@ -152,7 +152,7 @@ hitr         = 成交量 / 委托量
 
 ## 6. 证据标签
 
-给每个结论标一个等级：
+需要表达证据层级时可使用以下标签；普通回答用清楚的自然语言区分也可：
 
 | 标签 | 含义 |
 |---|---|
@@ -162,7 +162,7 @@ hitr         = 成交量 / 委托量
 | `unresolved` | 当前数据不能区分原因 |
 | `decision` | 已通过项目指定 fixed evaluator/人工验收 |
 
-严格使用以下句式：
+例如：
 
 ```text
 观察：REAL 完成交易数低于 SIM（fact）
@@ -171,14 +171,6 @@ hitr         = 成交量 / 委托量
 需要：decision id + 委托/改撤/成交生命周期
 ```
 
-## 7. 最低输出
+## 7. 交付范围
 
-即使是 Quick，也输出：
-
-1. 日期、输入、身份和缺失
-2. 账户/品种/session 表
-3. 首要观察与证据等级
-4. 因果边界
-5. 下一步最小验证
-
-纯 review 不落盘。只有用户明确要求持续追踪时，才更新 review log；写入前先读现有格式。
+只交付请求所需的结论、关键依据与实质边界。单项核对可以一句结束，不强制表格、因果解释或下一步；跨账户/跨日分析才补相关范围与缺失信息。纯分析不落盘；已明确授权的记录沿用项目格式，不新增账本。

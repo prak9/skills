@@ -7,4 +7,4 @@
 - **研究到运行：**读取 [量化研究的一致性检查](../../research-craft/references/quant-strategy-iteration.md#preserve-research-to-runtime-semantics)。用同输入、初始状态、可获得时间和版本配对，定位特征、中间值及决策差异；总 P&L 接近不代替差分证据，没有配对时保留 `unresolved`。
 - **系统性残差：**先核对时间对齐、标签、cohort、样本选择、实现与随机波动。仍有结构时，用 [竞争假设](../../research-craft/references/hypothesis-formation.md) 比较候选机制与其差异预测，在 fresh 数据检验；不得凭后验切片新增专用参数或重开关闭轴。
 
-只交付当前首要瓶颈的证据、能区分解释的最低成本检查、保持不变项及反证条件。预测有所改善但未证明经济价值，可以完成预测分析；沿用 fixed evaluator 才能作正式策略裁决。
+交付与当前问题有关的证据和必要的辨别检查，不强制唯一瓶颈或实验表。预测有所改善但未证明经济价值，可以完成预测分析；沿用 fixed evaluator 才能作正式策略裁决。

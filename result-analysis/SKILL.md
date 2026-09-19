@@ -1,161 +1,40 @@
 ---
 name: result-analysis
-description: 统一分析 py 期货仓库的 result.py 日报、周报与 winress/detail/trades/signals/capacity 数据，从交易所/账户/品种聚合概览逐级下钻到 SIM、REAL、部署传导、信号兑现、P&L 瀑布、逐笔尾部、因子、容量及模型训练调优，并把日报图片、实盘运行建议和研究方向接成可证伪的决策循环。用于“分析报告/PDF/winress”“日报图片/实盘推荐品种/研究方向”“日报/周报复盘”“分品种/逐笔归因”“SIM 与实盘差距”“模型为什么不准”“训练优化/参数调优/下一轮实验”等请求。
+description: 解释 py 期货仓库 result.py 的日报、周报及 winress/detail/trades/signals/capacity 数据，诊断交易结果、SIM/REAL 差异与相关研究问题。仅在需要这些项目数据或指标口径时使用；不用于泛指的结果分析、软件测试结果、普通统计、论文实验或无关模型调优。
 ---
 
 # Result Analysis
 
-把原始 result bundle 转成一个决策优先、证据分层的复盘。先回答“当前最大且可修的损失在哪一层”，再决定是否下钻；不要用更多图表掩盖证据不足。
+提供 py 期货项目的指标语义与证据边界。分析什么、检查多深、如何表达，由当前问题和证据决定，不默认生成完整复盘。
 
-## 核心合同
+## 按问题工作
 
-- 默认只读。用户只要求分析、诊断或建议时，不修改仓库、配置、模型、生产状态或 review log。
-- 每个关键数字都注明 `来源文件/列或代码位置 + 聚合方法 + 口径边界`。
-- 用户未指定日期时，选择最新的完整 bundle，并在开头写明日期范围、账户、文件和缺失项。
-- 单日只给 `观察/假设` 和受限运行建议；不凭单日 SIM 优势新增实盘、扩量、切模型或写 `PROMOTE/DISCARD`。
-- 比较新信号或特征时，只承认其相对当前 baseline 在 fresh OOS 上新增的成本后经济价值；孤立 IC、hit 或相关性不算边际 edge。
-- 只选择一个首要瓶颈。最多给 3 条 action，每条包含机制、验证方法和 falsifier。
+- 已提供的数据足以回答时直接回答；算术核对、单字段解释或已有结论的追问不要求完整 bundle、模型 hash、图表或研究建议。不为补模板索取无关信息。
+- 需要找数据时，用 `rg --files /home/x/www/results` 定位对应日期的结构化文件。用户没有指定日期且需要新报告时才选最新完整 bundle；缺失与真实零值分开。PDF 只查看有关页面，不默认读取整本。
+- 有多个问题时按影响和可验证性排序，可以保留多个独立问题或 `mixed/unresolved`，不强行选唯一原因。仅当更深检查可能改变当前答案时下钻；一条链的证据缺口不阻止另一条独立证据链的研究。
+- 回答有依据且已覆盖请求即可结束。不默认增加监控、实验、运行卡或下一步；提出因果假设时才补最有辨别力的验证与反证。
 
-每次分析先完整读取 [references/analysis-contract.md](references/analysis-contract.md)。分析日报图片、实盘运行建议或研究方向时再读 [references/daily-decision-loop.md](references/daily-decision-loop.md)；分析周报、周复盘或下周运行建议时再读 [references/weekly-review.md](references/weekly-review.md)；只有进入深度归因时再读 [references/deep-attribution.md](references/deep-attribution.md)；只有用户要求模型、标签、训练或参数优化时再读 [references/model-training-tuning.md](references/model-training-tuning.md)；比较新信号的边际价值、组合因子、仓位上限、信号衰减或 regime 风险时再读 [references/edge-portfolio-controls.md](references/edge-portfolio-controls.md)。
+## 不随流程简化的边界
 
-## 深度路由
+- 关键结论可追溯到题内数据或文件/字段及聚合口径。明确事实、代理与假设；不要求每句话加标签或套固定句式。
+- SIM、REAL、回放、全 tick、eligible 与已成交样本不能混作同一总体；跨期比较核对与该结论相关的身份和时间，局部变化只影响相应 cohort。
+- `dwin - fee = dnwin` 是同口径会计关系。`real_sim_trade_ratio` 不是 coverage；`enter_reald-enter_d` 是预测兑现差，不是价格滑点。未逐决策配对的 REAL−SIM 差额原因保持 `deployment gap unresolved`；成交价已反映的成本不重复扣除。
+- IC、hit 或单日收益不能独立证明成本后 edge。策略晋级遵循项目的 frozen evaluator、fresh 数据与风险约束；分析或研究提案本身不等于晋级。
+- 分析默认只读；实验、落盘、外部写入及生产操作遵循当前明确授权和项目保留的批准边界。既有实盘约束不因精简而放宽，也不因 Skill 触发而要求重复审批。
 
-| 模式 | 触发 | 最小输入 | 交付 |
-|---|---|---|---|
-| Quick | “看下日报/周报、按账户或品种汇总” | `winress`，可选 `detail` | 交易所/账户/品种/session 概览、稳定性与异常 |
-| Standard（默认） | “复盘、为什么赚/亏、SIM/REAL 差距” | `detail + winress + trades` | 经济性、预测、策略、部署四层路由与首要瓶颈 |
-| Daily Loop | “深化日报图片、实盘建议、推荐品种、研究方向” | 最新完整日报 + 最近同身份日报；需要实盘建议时加已批准运行卡/配置；`detail + winress`，按 crux 加 `trades/signals` | 决策优先图包、独立 SIM/REAL 瀑布卡、逐品种运行卡、受限实盘建议和 research handoff |
-| Weekly | “本周复盘、模型比较、下周运行建议” | 至少 3 个 READY 日报 bundle | pot-first 模型选择、稳定性过滤、日夜运行卡和调整信号 |
-| Deep | “逐笔/因子/regime/容量/P&L 瀑布” | Standard + 按需 `signals/capacity` | 重尾、行为、因子、容量和证据缺口 |
-| Tuning | “训练优化/标签/正则/gate/参数/实验方向” | 至少 3 个同身份日报束；优先 5+ | 单 editable surface 的可证伪假设包 |
+## 按需参考
 
-从用户要求的最浅模式开始；如果当前证据无法区分模型、策略与部署层，自动加深一层并说明原因。不要默认读取超大 `signals` 或整本 PDF。
+只选当前问题必需的参考；选中后完整读取，不要求每次读取通用合同。已经在当前上下文读过且版本未变的参考可直接沿用。读取参考不等于执行其中全部检查或生成全部交付物。
 
-## 工作流
-
-### 1. 定位完整 bundle
-
-优先用 `rg --files`：
-
-```bash
-rg --files /home/x/www/results \
-  | rg '/(detail|winress|winresd|trades|signals|capacity)_[0-9]{8}-[0-9]{8}\.(json|csv)$' \
-  | sort
-```
-
-同一个 `<begin>-<end>` 至少要有 `winress`；Standard 还要核对 `detail` 与 `trades`。用户只给 PDF 时，先找同范围的 CSV/JSON；只有图表本身是问题或结构化数据缺失时才查看具体 PDF 页。
-
-### 2. 冻结分析身份
-
-记录：
-
-- 日期范围、日报/周报、代码 commit/dirty 状态
-- SIM/REAL 账户、品种、session、锁仓标记
-- `account × y`、`fg/sg`、模型 params/hash；拿不到则标 `identity_unverified`
-- 数据缺失、回填列和 schema caveat
-
-模型、target、horizon、feature、gate 或状态机不同的日报不能直接合并；先拆 cohort。
-
-### 3. 先读 detail，再按问题下钻
-
-存在 `detail_<b>-<e>.json` 时先读 `meta.note`、`meta.recommend` 和 `cells`，建立：
-
-1. SIM 经济性排序
-2. REAL 实况
-3. 描述性的部署传导差
-4. SIM-only、锁仓和数据缺口标记
-
-用 `winress` 校验聚合口径，用 `winresd` 检查逐日稳定性，用 `trades` 看逐笔尾部与行为；仅在因子、全 tick 预测或 margin 问题仍是 crux 时分块读取 `signals`。
-
-### 4. 建立四层事实，禁止越级
-
-| 层 | 问题 | 主要证据 |
-|---|---|---|
-| 数据/身份 | bundle 是否可比、是否泄漏或缺失 | schema、时间、params/hash、回填说明 |
-| 预测/选择 | 全 tick、eligible、完成交易的预测是否健康 | hit/IC/direction capture/slope/scale、margin curve |
-| SIM 经济性 | 信号经 gate、进出场和费用后是否赚钱 | held-out `pot`；辅以 costcov/dret/tn/avgnwt、gross-fee-net |
-| REAL/部署 | 实际结果和 SIM 差多少、能否解释原因 | REAL pot/dret/PnL/hitr、订单生命周期、paired telemetry |
-
-只有 `dwin - fee = dnwin` 是可闭合会计桥。没有稳定 decision/order id 和完整生命周期时，REAL−SIM 原因必须写 `deployment gap unresolved`。
-
-### 5. 路由首要瓶颈
-
-| 证据组合 | 首要路由 |
+| 需要解决的问题 | 参考 |
 |---|---|
-| 全 tick 与 SIM 完成交易预测跨日都弱 | 数据/标签/模型候选 |
-| 全 tick 健康，SIM 经济性弱 | eligibility、gate、方向映射、持有、退出或显式成本 |
-| SIM 预测与经济性健康，REAL 明显弱 | 部署传导；先补订单 telemetry/配对回放 |
-| REAL 与 SIM 都健康 | 不改模型；监控漂移、集中度与容量 |
-| 身份不明、样本薄或证据冲突 | `insufficient/mixed`；先补证据 |
+| bundle/字段含义、聚合或身份比较不清楚 | [数据与指标](references/analysis-contract.md) |
+| 逐笔、部署传导、因子、容量或 P&L 归因 | [深度归因](references/deep-attribution.md) |
+| 标签、模型、训练或参数的专业诊断 | [训练诊断](references/model-training-tuning.md)；只提出相关假设，不自动跑脚本 |
+| 新信号边际价值、组合、仓位、衰减或 regime | [经济与风险边界](references/edge-portfolio-controls.md) |
+| 概率、模拟过程或研究/运行一致性 | [预测有效性](references/prediction-validity.md) |
+| 用户明确要求日报图包或下一时段运行建议 | [日报交付](references/daily-decision-loop.md)；图表与运行建议分别按请求选用 |
+| 跨日周报或下周运行选择 | [周复盘](references/weekly-review.md)；运营回顾不自动进行模型选择 |
+| 实盘候选筛选、研究晋级或运行政策 | [py 项目政策](references/project-policy.md)；数字门槛不是通用统计定律 |
 
-金额影响、可控性和证据等级相同前，不要同时建议改模型、特征、gate 和退出。
-
-若 crux 是概率校准、模拟过程失真或研究实现与运行路径不一致，按需读取 [预测与运行一致性](references/prediction-validity.md)。普通日报不加载；残差模式先排除身份、标签、选择条件和实现错误，再作为新机制候选，不直接调参。
-
-### 6. 形成每日运行卡与研究接力
-
-用户要求日报图片、实盘建议或研究方向时，按 daily decision loop 交付：
-
-1. 以 `D0 + 同身份历史分布` 展示变化，不用单日收益榜替代稳定性。
-2. 盘前批准实盘、当日 REAL 活动和盘后报告候选分角色逐品种出卡；SIM、REAL、回放和 unresolved gap 分栏。
-3. 日报只可建议 `KEEP_CURRENT/WATCH/DIAGNOSE/SHADOW_ONLY/RISK_REVIEW/WEEKLY_REVIEW`；新增实盘、扩量和切模进入周级/fixed-evaluator/人工门禁。
-4. 从唯一首要瓶颈生成 top-1 可证伪研究方向和最多 2 个备选，给出 editable surface、fixed fields、fresh split 与 falsifier。
-5. 只生成 research handoff；用户未授权时不写日志、不启动实验、不改 production。
-
-### 7. 需要调优时运行诊断
-
-完整读取模型调优参考，然后在至少 3 个独立日报束上运行：
-
-```bash
-python <result-analysis>/scripts/model_tuning_diagnostics.py \
-  --results-root /home/x/www/results \
-  --account dce_t1 --real-account dce_ht1028 \
-  --lookback 20 --include-signals \
-  --model-root /home/x/shared_16/models/latest_models_t1 \
-  --output /tmp/model_tuning_diagnostics.json
-```
-
-脚本只生成候选路由，不选择参数。结合 `/home/x/py/docs/research/program.md`、`memory.md` 和 active TASK 检查关闭轴、固定 evaluator 与 fresh split；不得自动启动实验或修改 production。
-
-## 输出合同
-
-按实际深度裁剪，保留以下顺序：
-
-1. **决策摘要**：首要瓶颈、证据等级、现在该做与不该做
-2. **范围与数据健康**：bundle、身份、样本、缺失和 caveat
-3. **聚合概览**：账户/品种/session，SIM 与 REAL 分栏
-4. **Crux 归因**：预测、策略经济性、部署传导中损失最大的层
-5. **证据缺口**：哪些只可描述、哪些已闭合
-6. **Action**：最多 3 条；每条写机制、editable surface、固定项、验证 split、falsifier
-7. **监控项**：下个日报最少需要观察的指标
-
-Quick 模式可省略深层章节，但仍要给证据边界。Tuning 模式最后给 top-1 主候选和最多 2 个备选，不用日报替代 fixed evaluator 的正式裁决。
-
-Daily Loop 模式还要给决策首页、品种 × session 运行矩阵、当前实盘及推荐候选的逐品种深度卡、分开的 SIM 会计瀑布与 REAL 结果/代理瀑布、受限实盘建议表和 research handoff。图片标题写结论，并携带日期、身份、D/n、证据标签、触发器和因果边界。
-
-## 禁止事项
-
-- 不整本读取数百页 PDF；优先结构化数据。
-- 不把跨账户同号称为“真信号”；它最多提高稳定性先验，且要求合同可比。
-- 不把 `real_sim_trade_ratio` 当 coverage，不把 `enter_reald-enter_d` 当滑点。
-- 不把 REAL−SIM 差额自动归因于执行，不混用 dret capture 与原始 P&L capture。
-- 不把 IC、R²、hit 或漂亮图表当作成本后 edge。
-- 不把多个品种或策略名称当作分散；未检查共同因子、风险贡献和压力相关性时，只能报告名义分散。
-- 不用 full Kelly 或 `mu / variance` 近似自动扩量；模型仓位必须受最大损失、流动性/容量、保证金、集中度、尾部压力和人工门禁约束。
-- 不凭单日、单品种、top_fc 或后验 regime 直接改参数。
-- 不把日报图片、综合分或 SIM 当日排名变成自动实盘指令；不凭单日新增品种、扩量或切模。
-- 不把 `meta.recommend`、当日 REAL 交易和盘前已批准的实盘集合混为一谈；盘后赢家不能改写成盘前推荐。
-- 不在图中混合 SIM 与 REAL 口径、隐藏样本/身份/缺失，或把未配对的 REAL−SIM 画成可归因漏斗。
-- 不使用旧的无 size-impact、经常顶到网格上限的 `rec_M` 作为扩量依据。
-- 不重开研究计划中的关闭轴，不做 per-symbol/per-cell 硬特化，除非新证据明确推翻旧前提。
-- 只有用户明确要求落盘/持续跟踪时，才更新 `/home/x/py/analyze/review_log.md`。
-
-## 资源
-
-- `references/analysis-contract.md`：所有模式必读的数据、指标、聚合和证据边界
-- `references/daily-decision-loop.md`：日报图片、实盘运行建议、研究方向排序与闭环合同
-- `references/weekly-review.md`：Weekly 模式的 cohort、pot-first、资格门槛和运行卡合同
-- `references/deep-attribution.md`：Deep 模式的 regime、P&L、行为、部署、因子和容量方法
-- `references/model-training-tuning.md`：Tuning 模式的身份冻结、证据梯和实验合同
-- `references/edge-portfolio-controls.md`：边际信号价值、组合因子、稳健仓位、衰减与 regime 风险合同
-- `scripts/model_tuning_diagnostics.py`：跨日报、跨证据层的候选路由脚本；先运行 `--self-test`
+`scripts/model_tuning_diagnostics.py` 可辅助跨日报候选路由；仅在需要跨日诊断且输入可用时运行，用法见训练诊断参考。脚本输出不代替项目裁决。
