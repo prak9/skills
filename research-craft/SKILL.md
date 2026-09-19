@@ -155,6 +155,14 @@ Require the gates relevant to the claim:
 
 If a required gate fails, reject the claim even when the headline metric improves. This does not automatically end an authorized iteration task: continue with a supported correction or discriminating probe within its budget. Stop when the requested outcome is reached, the agreed budget is exhausted, or a real blocker requires new input or authority.
 
+### When The Claim Is About Human Learning
+
+Use this lens only when evaluating instruction, training or a tool's effect on the learner. First distinguish the desired result: better assisted output, independent ability, retention over time, or transfer to a new setting. A production workflow can succeed without teaching its user; do not impose learning tests on a task whose claim is only delivery quality or efficiency.
+
+Match evidence to the claim. Assisted product scores measure assisted performance, not unaided competence. For independent ability, use unseen, comparably difficult tasks without the assistance being tested; for retention, specify and actually observe a relevant later interval; for transfer, change the context while retaining the target mechanism. Test only the dimensions claimed. Preserve prerequisite knowledge, baseline ability, allowed aids, exposure time and scoring conditions; differing practice or assistance limits before/after attribution. Causal claims need an appropriate comparison and identification argument, not merely a higher post-test score.
+
+Separate learner-generated explanations, predictions and error corrections from model-supplied work. Satisfaction, confident self-reports and an AI tutor's approval are not substitutes for demonstrated application. If the learner has not attempted the check, report missing evidence rather than a pass. A single exercise supports a narrow observation, not durable mastery or broad cognitive development. Reuse the existing evaluation record; a test design does not authorize recruitment, scheduled follow-up or new external data collection.
+
 ## 8. Turn every run into durable learning
 
 Use the project's existing research log or control documents. Do not create a competing ledger when one already exists. Record failures immediately because memory preferentially keeps convenient evidence.
