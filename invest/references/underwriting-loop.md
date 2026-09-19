@@ -37,7 +37,7 @@ Use a compact period-by-period comparison in the memo or working evidence record
 | Prepared remarks and Q&A | Speaker, question, actual answer and locator; first disclosure, changed explanation, caveat or lack of a direct answer—not a tone-based truth judgment |
 | Research consequence | New evidence, continuing trend or inflection; model line, price-implied hurdle, confidence or falsifier affected; unresolved gap and obtainable next observation |
 
-Read beyond the prepared narrative where Q&A can test the crux. Follow a material exchange through the follow-up answer; do not strip qualifications, convert a question's premise into management confirmation, or infer that an omitted topic no longer matters. Distinguish a genuine withdrawal/revision from absence of repeated guidance. Record unavailable transcripts or partial coverage; an original prepared statement, a third-party recap and a complete Q&A are different evidence.
+For source coverage, complete Q&A exchanges and guidance extraction, use [earnings-transcripts.md](earnings-transcripts.md). Read beyond the prepared narrative where Q&A can test the crux; missing or partial calls remain explicit gaps rather than invented disclosures.
 
 Synthesize the sequence, not four unrelated summaries: identify persistent deterioration, improving economics or a genuine turning point, and test alternatives such as seasonality, mix, recognition timing or perimeter changes. Trace important misses or changing explanations back to the prior dated commitment. Do not calculate a precise guidance hit rate from incomparable ranges or infer a non-consensus opportunity from management surprise alone. Show what the four-period evidence changes in the independent forecast, conditional valuation and observable thesis-killer; missing point-in-time consensus stays missing.
 
@@ -93,6 +93,12 @@ Compare explanations rather than merely collecting confirmation. Company comment
 Trace surprising claims to the underlying filing footnote, contract terms, data or call exchange; inspect counterevidence and missing denominators. Check feasible customer, competitor, supplier or regulator evidence where it can discriminate; document inability to obtain it instead of pretending the company narrative was independently confirmed. Never invent an expert interview or assume access to private data. Public-information research does not authorize contacting counterparties or acquiring material nonpublic information.
 
 Allocate effort by potential value impact, uncertainty and whether evidence can resolve it; no numeric composite score is required. Read the accessible primary material that could change the decision before deferring it. Stop a branch when rivals no longer change the action within defensible bounds, or the decisive evidence is unavailable and its consequence is explicitly bounded. A source list is not a substitute for this work.
+
+### Investigate Material Anomalies
+
+When a mismatch could change the business judgment, close the investigation in the existing argument record: observed discrepancy -> comparable period/accounting/perimeter check -> plausible competing causes -> evidence that distinguishes them -> forecast/value consequence or explicit unresolved link. This tests an explanation of reported behavior, not merely the arithmetic or future consistency of the model. Do not stop at “red flag,” treat management's reassurance as resolution, or invent attribution where evidence only establishes the anomaly.
+
+For example, receivables growing faster than revenue can reflect collection deterioration, late-period sales, changed customer/payment terms or acquired balances. Inspect the relevant notes, aging, comparable seasonal history and subsequent collections available by the research cutoff; identify which receivable cohort was actually collected. Distinguish balance-sheet stocks from period flows and avoid mechanically treating their growth-rate difference as proof. A timing explanation can reduce concern without proving durable demand; aging/default evidence can weaken cash conversion without proving fraudulent revenue. Carry supported effects into working-capital needs, credit losses, revenue quality or uncertainty as appropriate; unavailable evidence remains a named gap with the next discriminating check, not a forced target-price revision.
 
 ## 2. Rebuild The Economic Model
 
@@ -261,6 +267,8 @@ Version the thesis instead of rewriting history after results are known. Preserv
 Separate data surprise, model error, timing error, valuation/multiple error, and decision/exposure error. A profitable result does not prove the thesis was sound, and a loss does not prove the process was wrong.
 
 For consequential predictions being tracked, reuse stable claim IDs in this journal; keep the original event definition, dated forecast, resolution source/date and updates. Resolve forecast accuracy, causal support and shareholder payoff separately, including `unresolved` where causes cannot be identified. Sales may meet a forecast while cost synergy fails and multiple expansion produces a gain; the gain cannot settle all three claims as correct. Do not create a duplicate Bet Book or new persistent monitoring without authorization.
+
+When reconciling an earnings/thesis update or reviewing recurring judgment errors, use [thesis-reconciliation.md](thesis-reconciliation.md) to turn this journal into claim-level comparisons and bounded lessons. Do not add retrospective grading to an initial memo with no prior history.
 
 ## 7. Monitor By Thesis Change, Not News Volume
 

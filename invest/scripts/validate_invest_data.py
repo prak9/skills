@@ -12,7 +12,7 @@ import argparse
 import json
 import math
 import sys
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -80,11 +80,34 @@ def nonempty_string(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
+def source_time_bounds(source: dict, field: str, version: int,
+                       findings: list[dict[str, Any]], location: str) -> tuple | None:
+    value = source.get(field)
+    exact = parse_time(value)
+    if exact is not None:
+        return exact, exact
+    if version == 2 and field in source:
+        if value is None and nonempty_string(source.get("time_missing_reason")):
+            add_finding(findings, "unknown_source_time", f"{field} is unknown",
+                        location=location, severity="warning")
+            return None
+        if isinstance(value, dict):
+            earliest = parse_time(value.get("earliest"))
+            latest = parse_time(value.get("latest"))
+            if earliest is not None and latest is not None and earliest <= latest and nonempty_string(value.get("reason")):
+                return earliest, latest
+    add_finding(findings, f"invalid_{field}",
+                "expected a zoned timestamp; v2 also accepts justified time bounds or explicit unknown",
+                location=location)
+    return None
+
+
 def validate_metric(
     metric: Any,
     index: int,
     decision_time: datetime | None,
     findings: list[dict[str, Any]],
+    version: int = 1,
 ) -> str | None:
     location = f"metrics[{index}]"
     if not isinstance(metric, dict):
@@ -160,36 +183,26 @@ def validate_metric(
             location=f"{location}.source.locator",
         )
 
-    published = parse_time(source.get("published_at"))
-    available = parse_time(source.get("available_at"))
-    if published is None:
-        add_finding(
-            findings,
-            "invalid_published_at",
-            "source.published_at must be an ISO-8601 timestamp with timezone",
-            location=f"{location}.source.published_at",
-        )
-    if available is None:
-        add_finding(
-            findings,
-            "invalid_available_at",
-            "source.available_at must be an ISO-8601 timestamp with timezone",
-            location=f"{location}.source.available_at",
-        )
-    if published is not None and available is not None and available < published:
+    published = source_time_bounds(source, "published_at", version, findings, f"{location}.source.published_at")
+    available = source_time_bounds(source, "available_at", version, findings, f"{location}.source.available_at")
+    if published is not None and available is not None and available[1] < published[0]:
         add_finding(
             findings,
             "availability_before_publication",
             "available_at cannot precede published_at",
             location=f"{location}.source.available_at",
         )
-    if decision_time is not None and available is not None and available > decision_time:
+    # Both the document and the recorded availability must be no later than the cutoff.
+    if decision_time is not None and any(bounds is not None and bounds[0] > decision_time for bounds in (published, available)):
         add_finding(
             findings,
             "point_in_time_violation",
             "source became available after the historical decision time",
             location=f"{location}.source.available_at",
         )
+    elif decision_time is not None and any(bounds is None or bounds[1] > decision_time for bounds in (published, available)):
+        add_finding(findings, "point_in_time_unresolved", "time bounds cannot establish availability by the cutoff",
+                    location=f"{location}.source")
     return str(metric_id)
 
 
@@ -416,11 +429,64 @@ def check_basis_groups(
     return run
 
 
+def check_period_differences(checks: Any, metrics: dict[str, dict[str, Any]],
+                             findings: list[dict[str, Any]]) -> int:
+    if not isinstance(checks, list):
+        add_finding(findings, "invalid_period_differences", "expected an array", location="checks.period_differences")
+        return 0
+    run = 0
+    for index, check in enumerate(checks):
+        location = f"checks.period_differences[{index}]"
+        if not isinstance(check, dict):
+            add_finding(findings, "invalid_difference", "expected an object", location=location)
+            continue
+        ids = [check.get(key) for key in ("cumulative", "prior_cumulative", "result")]
+        rows = resolve_metrics(ids, metrics, findings, location)
+        if rows is None:
+            continue
+        contexts = [row.get("statement") for row in rows]
+        if not all(isinstance(context, dict) for context in contexts):
+            add_finding(findings, "missing_statement_context", "each input/result needs statement context", location=location)
+            continue
+        if any(context.get("kind") != "flow" for context in contexts):
+            add_finding(findings, "nonadditive_difference", "only additive period flows may be subtracted", location=location)
+            continue
+        context_fields = ("concept", "scope", "accounting_standard", "version_basis", "security_basis")
+        if not comparable(rows, ("unit", "currency", "basis", "classification")) or not comparable(contexts, context_fields):
+            add_finding(findings, "incompatible_basis", "difference inputs must share concept, units, scope and accounting/version/security basis", location=location)
+            continue
+        try:
+            periods = [(date.fromisoformat(c["start"]), date.fromisoformat(c["end"])) for c in contexts]
+            (start, end), (prior_start, prior_end), (result_start, result_end) = periods
+            valid = (all(a <= b for a, b in periods) and start == prior_start and prior_end < end
+                     and (result_start - prior_end).days == 1 and result_end == end)
+        except (KeyError, TypeError, ValueError):
+            valid = False
+        if not valid:
+            add_finding(findings, "incompatible_periods", "require shared cumulative start and contiguous result period", location=location)
+            continue
+        if rows[2].get("derivation") != {"operation": "subtract", "inputs": ids[:2]}:
+            add_finding(findings, "missing_derivation", "result must retain subtract operation and ordered source metric IDs", location=location)
+            continue
+        if not all(finite_number(row.get("value")) for row in rows):
+            add_finding(findings, "evidence_missing", "difference contains an unknown/nonfinite value", location=location)
+            continue
+        allowed = tolerance(check, findings, location)
+        if allowed is None:
+            continue
+        calculated = rows[0]["value"] - rows[1]["value"]
+        run += 1
+        if abs(calculated - rows[2]["value"]) > allowed * max(1.0, abs(rows[2]["value"])):
+            add_finding(findings, "difference_mismatch", f"calculated result is {calculated:g}", location=location)
+    return run
+
+
 def validate(data: dict[str, Any]) -> dict[str, Any]:
     findings: list[dict[str, Any]] = []
     version = data.get("schema_version", 1)
-    if isinstance(version, bool) or not isinstance(version, int) or version != 1:
-        add_finding(findings, "unsupported_schema", "schema_version must be 1", location="schema_version")
+    if isinstance(version, bool) or not isinstance(version, int) or version not in (1, 2):
+        add_finding(findings, "unsupported_schema", "schema_version must be 1 or 2", location="schema_version")
+        version = 1
     decision_time = None
     if "decision_time" in data:
         decision_time = parse_time(data["decision_time"])
@@ -445,7 +511,7 @@ def validate(data: dict[str, Any]) -> dict[str, Any]:
         raw_metrics = []
     metrics: dict[str, dict[str, Any]] = {}
     for index, metric in enumerate(raw_metrics):
-        metric_id = validate_metric(metric, index, decision_time, findings)
+        metric_id = validate_metric(metric, index, decision_time, findings, version)
         if metric_id is None or not isinstance(metric, dict):
             continue
         if metric_id in metrics:
@@ -463,8 +529,12 @@ def validate(data: dict[str, Any]) -> dict[str, Any]:
         "probability_groups": check_probabilities(checks.get("probability_groups", []), metrics, findings),
         "basis_groups": check_basis_groups(checks.get("basis_groups", []), metrics, findings),
     }
+    if version == 2:
+        checks_run["period_differences"] = check_period_differences(checks.get("period_differences", []), metrics, findings)
+    elif "period_differences" in checks:
+        add_finding(findings, "unsupported_check", "period_differences requires schema_version 2", location="checks.period_differences")
     return {
-        "schema_version": 1,
+        "schema_version": version,
         "status": "fail" if any(item["severity"] == "error" for item in findings) else "pass",
         "metrics_checked": len(raw_metrics),
         "checks_run": checks_run,

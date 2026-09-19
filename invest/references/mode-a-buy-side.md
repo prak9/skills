@@ -12,6 +12,8 @@ For new fundamental company research, read [business understanding and quality](
 
 **Monitoring** applies when the user asks what changed since a prior memo or requests material-change alerts. Use the prior versioned baseline when available and return only the delta. If nothing material changed, say `no thesis change`, name the evidence window checked, and do not regenerate background.
 
+For an earnings/thesis update, prior-judgment reconciliation or cross-case error review, read [thesis-reconciliation.md](thesis-reconciliation.md). Use the relevant part only; this does not trigger Full research or retrospective scoring for a new-company memo.
+
 ## Recent Four Earnings Periods
 
 For a new company underwriting, prioritize the latest four reported fiscal quarters and each period's earnings materials and call: prepared remarks **and** Q&A when available. Count economic periods, not documents; a Q4 release/call and the annual filing covering it are complementary evidence, not a fifth quarter. Use the actual reporting cadence for non-quarterly issuers, label unequal periods and missing quarters/calls, and do not invent a complete four-quarter series. This operating-history window is separate from the recent-three-month external research/interview search; older necessary earnings materials remain in scope.

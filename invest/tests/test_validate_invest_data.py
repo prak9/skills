@@ -172,6 +172,117 @@ class InvestDataContractTests(unittest.TestCase):
                 self.assertEqual("fail", result["status"])
                 self.assertTrue(any(item["code"] == "unsupported_schema" for item in result["findings"]))
 
+    def test_v2_bounded_publication_time(self) -> None:
+        metric = self.metric("revenue", 100)
+        window = {"earliest": "2024-02-01T00:00:00+08:00",
+                  "latest": "2024-02-02T00:00:00+08:00",
+                  "reason": "Only the Hong Kong publication date is known"}
+        metric["source"].update(published_at=window, available_at=window)
+        for cutoff, expected in (("2024-02-02T01:00:00+08:00", "pass"),
+                                 ("2024-02-01T12:00:00+08:00", "fail"),
+                                 ("2024-01-31T12:00:00+08:00", "fail")):
+            with self.subTest(cutoff=cutoff):
+                result = self.run_validation({"schema_version": 2, "decision_time": cutoff, "metrics": [metric]})
+                self.assertEqual(expected, result["status"])
+        result = self.run_validation({"schema_version": 1, "metrics": [metric]})
+        self.assertEqual("fail", result["status"])
+
+    def test_v2_unknown_time_does_not_fabricate_precision(self) -> None:
+        metric = self.metric("revenue", 100)
+        metric["source"].update(published_at=None, available_at=None,
+                                time_missing_reason="Only an undated original PDF is accessible")
+        data = {"schema_version": 2, "metrics": [metric]}
+        result = self.run_validation(data)
+        self.assertEqual("pass", result["status"])
+        self.assertTrue(any(f["code"] == "unknown_source_time" for f in result["findings"]))
+        data["decision_time"] = "2024-02-02T00:00:00Z"
+        self.assertEqual("fail", self.run_validation(data)["status"])
+        del data["decision_time"]
+        del metric["source"]["time_missing_reason"]
+        self.assertEqual("fail", self.run_validation(data)["status"])
+
+    def test_v2_invalid_time_windows(self) -> None:
+        for window in ({"earliest": "2024-02-02T00:00:00Z", "latest": "2024-02-01T00:00:00Z", "reason": "date"},
+                       {"earliest": "2024-02-01", "latest": "2024-02-02", "reason": "date"},
+                       {"earliest": "2024-02-01T00:00:00Z", "latest": "2024-02-02T00:00:00Z"}):
+            with self.subTest(window=window):
+                metric = self.metric("r", 1)
+                metric["source"]["published_at"] = window
+                self.assertEqual("fail", self.run_validation({"schema_version": 2, "metrics": [metric]})["status"])
+
+    def difference_data(self) -> dict:
+        metrics = [self.metric("ytd9", 90), self.metric("ytd6", 50), self.metric("q3", 40)]
+        for metric, start, end in zip(metrics, ("2023-01-01", "2023-01-01", "2023-07-01"),
+                                      ("2023-09-30", "2023-06-30", "2023-09-30")):
+            metric["period"] = f"{start}/{end}"
+            metric["statement"] = {"concept": "operating_cash_flow", "kind": "flow", "start": start,
+                                   "end": end, "scope": "consolidated", "accounting_standard": "US-GAAP",
+                                   "version_basis": "original-unrestated", "security_basis": "not_applicable"}
+        metrics[2]["derivation"] = {"operation": "subtract", "inputs": ["ytd9", "ytd6"]}
+        return {"schema_version": 2, "metrics": metrics,
+                "checks": {"period_differences": [{"cumulative": "ytd9", "prior_cumulative": "ytd6", "result": "q3"}]}}
+
+    def test_same_basis_cumulative_cash_flow_can_be_differenced(self) -> None:
+        result = self.run_validation(self.difference_data())
+        self.assertEqual("pass", result["status"], result)
+        self.assertEqual(1, result["checks_run"]["period_differences"])
+
+    def test_nonadditive_metrics_cannot_be_differenced(self) -> None:
+        for kind in ("instant", "ratio", "per_share", "weighted_average"):
+            with self.subTest(kind=kind):
+                data = self.difference_data()
+                for metric in data["metrics"]:
+                    metric["statement"]["kind"] = kind
+                result = self.run_validation(data)
+                self.assertEqual("fail", result["status"])
+                self.assertTrue(any(f["code"] == "nonadditive_difference" for f in result["findings"]))
+
+    def test_period_difference_rejects_incompatible_context_and_bad_results(self) -> None:
+        for field, value in (("scope", "segment_a"), ("version_basis", "restated"),
+                             ("security_basis", "ADS"), ("concept", "capex"),
+                             ("accounting_standard", "IFRS"), ("start", "2023-02-01"),
+                             ("end", "2023-12-31"), ("start", "bad-date")):
+            with self.subTest(field=field, value=value):
+                data = self.difference_data()
+                data["metrics"][1]["statement"][field] = value
+                self.assertEqual("fail", self.run_validation(data)["status"])
+        for value in (None, 41):
+            data = self.difference_data()
+            data["metrics"][2]["value"] = value
+            self.assertEqual("fail", self.run_validation(data)["status"])
+        data = self.difference_data()
+        del data["metrics"][2]["derivation"]
+        self.assertEqual("fail", self.run_validation(data)["status"])
+
+    def test_difference_is_not_silently_accepted_under_v1(self) -> None:
+        data = self.difference_data()
+        data["schema_version"] = 1
+        result = self.run_validation(data)
+        self.assertEqual("fail", result["status"])
+        self.assertTrue(any(f["code"] == "unsupported_check" for f in result["findings"]))
+
+    def test_difference_bad_result_window_or_structure_returns_findings(self) -> None:
+        data = self.difference_data()
+        data["metrics"][2]["statement"]["start"] = "2023-06-30"
+        self.assertEqual("fail", self.run_validation(data)["status"])
+        for checks in (None, {}, [None], [{"cumulative": [], "prior_cumulative": "x", "result": "q3"}]):
+            with self.subTest(checks=checks):
+                data = self.difference_data()
+                data["checks"]["period_differences"] = checks
+                self.assertEqual("fail", self.run_validation(data)["status"])
+        for context in (None, [], {"kind": "flow"}):
+            data = self.difference_data()
+            data["metrics"][1]["statement"] = context
+            self.assertEqual("fail", self.run_validation(data)["status"])
+
+    def test_restatement_after_cutoff_cannot_enter_period_difference(self) -> None:
+        data = self.difference_data()
+        data["decision_time"] = "2024-02-02T00:00:00Z"
+        data["metrics"][1]["source"]["available_at"] = "2024-03-01T00:00:00Z"
+        result = self.run_validation(data)
+        self.assertEqual("fail", result["status"])
+        self.assertTrue(any(f["code"] == "point_in_time_violation" for f in result["findings"]))
+
 
 if __name__ == "__main__":
     unittest.main()

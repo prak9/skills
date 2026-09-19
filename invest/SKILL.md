@@ -1,6 +1,6 @@
 ---
 name: invest
-description: Generate source-backed business understanding, business-quality assessment, buy-side equity research and thesis monitoring. Use for company economics, customers, competition, management, quality signals, stock analysis, valuation or thesis updates; routes to specialist valuation and trend lenses only when relevant.
+description: Generate source-backed financial-statement and earnings-call extraction, business understanding, business-quality assessment, buy-side equity research and thesis monitoring. Use for U.S./Hong Kong/A-share reports, earnings transcripts, company economics, stock analysis, valuation or thesis updates; routes to specialist lenses only when relevant.
 ---
 
 # Invest
@@ -38,6 +38,8 @@ For a narrowly requested PE-to-EPS-growth hurdle or its forward price calculatio
 
 Do not trigger Modes B, C, or E from a bare ticker or generic stock-analysis request. They require an explicit request or a clearly stated Mode A crux. Do not load all modes for completeness.
 
+For a standalone U.S./Hong Kong/A-share financial-report extraction request, use [structured financial extraction](references/financial-extraction.md) and its applicable market branch directly. For earnings-call transcripts, use [call extraction](references/earnings-transcripts.md). Deliver the requested extraction without forcing valuation, a Full memo or Notion publication.
+
 ## Select Depth Inside Mode A
 
 - **Quick is the default** for a bare ticker or ordinary stock-analysis request: use current primary evidence and the minimum history needed to bound the crux, valuation, scenarios, thesis-killer, and next checks.
@@ -73,6 +75,8 @@ Attach original-source citations next to material facts, numbers, quotations and
 For each material numeric input also preserve value, unit, currency, period, accounting/estimate basis, first-available timestamp, and an explicit missing reason. Use the [material investment data contract](references/data-contract.md) for linked calculations, model reconstruction, or historical evaluation, and validate it with `scripts/validate_invest_data.py`. A Quick memo may use a compact table with the same semantics. Unknown is never zero; passing arithmetic checks does not prove that the source supports the claim.
 
 For filing extraction, disputed source support or citation repair, read [financial evidence and claim audit](references/financial-evidence.md). Ground each locator in its document, check material extracted values against the original context, and distinguish a broken citation from an unsupported claim. Full research uses this audit before delivery; a supported Quick answer does not require a separate audit pipeline.
+
+When a material PDF cannot be read, use [PDF retrieval and page extraction](references/pdf-retrieval.md) before declaring the original unavailable. Separate web-tool, download and text-layer failures; retain original bytes/page evidence and use a verified alternate original or targeted visual/OCR reading when needed.
 
 For self-contained hypothetical arithmetic supplied by the user, state the premises, units, and relative horizon and verify the formulas directly. Do not build a sourced-data ledger or require publication timestamps for invented companies or assumed scenarios. This exception does not cover real-company model reconstruction, sourced inputs, or historical point-in-time claims; retain the data contract for those portions of a mixed task.
 

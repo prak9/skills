@@ -38,7 +38,7 @@ Required semantics:
 - `value` is a finite number or `null`. Zero is a measured value; unknown is `null` plus a non-empty `missing_reason`.
 - `unit`, `currency`, `period`, and `basis` make the accounting and temporal basis explicit. `currency` may be explicit `null` for ratios, counts, or probabilities.
 - `classification` is exactly one of `reported_fact`, `management_guidance`, `consensus`, or `analyst_assumption`. Do not disguise a forecast as a filing fact.
-- `source.reference` identifies the original document or a clearly named analyst-model artifact. Record `document_type`, exact publication and availability timestamps with time zones, and a page/section `locator` when available; use explicit `null` when no stable locator exists.
+- `source.reference` identifies the original document or a clearly named analyst-model artifact. Record `document_type`, publication and availability timestamps with time zones when known, and a page/section `locator` when available; use explicit `null` when no stable locator exists. v1 requires exact timestamps; use v2 below when only a bounded date or unknown time is supported, never fabricate precision to satisfy v1.
 - `available_at` is the first time the decision-maker could actually have used the item, which may be later than the document's nominal `published_at`.
 
 ## File and checks
@@ -81,3 +81,48 @@ python scripts/validate_invest_data.py path/to/data-contract.json
 For compatibility, exit code `0` means that a JSON report was produced, even when its `status` is `fail`. Automation must parse the JSON and require `status == "pass"`; checking the process exit code alone does not validate the data. File/JSON loading errors still exit nonzero.
 
 Treat every finding as a model-input issue to resolve or expose. The validator's two explicit limits remain in force: timestamps only validate the recorded evidence set, and arithmetic consistency cannot establish source support, economic comparability, or forecast quality.
+
+## Opt-In v2: Time Precision And Cumulative Flows
+
+Existing v1 records and checks remain supported. Set `schema_version: 2` for the following extensions; all other required metric fields and classifications remain unchanged. This is not a requirement to migrate old memos or turn every quick calculation into JSON.
+
+### Source Time Without Invented Precision
+
+Each of `published_at` and `available_at` accepts an exact zoned timestamp, or a justified inclusive bound:
+
+```json
+{"earliest":"2026-09-01T00:00:00+08:00","latest":"2026-09-02T00:00:00+08:00","reason":"Original record shows only the Hong Kong publication date"}
+```
+
+For a date-only source, next midnight is a conservative upper bound, not a claimed release time. Use the source's verified timezone; if neither timezone nor usable bounds can be established, use explicit `null` and `source.time_missing_reason`. A missing key or malformed bound is invalid. Do not infer actual publication from a retrieval time. A verified retrieval can establish an availability upper bound, not an invented first-publication timestamp.
+
+Unknown times produce warnings without a historical cutoff. With `decision_time`, both source-time upper bounds must be at or before the cutoff; overlap with the cutoff or unknown time yields `point_in_time_unresolved` and status `fail`, and a definitely later source yields `point_in_time_violation`. Definite availability before publication is invalid. Overlapping bounds cannot prove the exact chronological order. A nonhistorical `pass` with warnings is not a point-in-time certification.
+
+### Cumulative Flow Derivation
+
+For metrics participating in a `period_differences` check, attach structured `statement` context alongside the human-readable `period` and `basis`:
+
+```json
+{
+  "concept":"operating_cash_flow",
+  "kind":"flow",
+  "start":"2025-01-01",
+  "end":"2025-09-30",
+  "scope":"consolidated; continuing operations",
+  "accounting_standard":"US-GAAP",
+  "version_basis":"original-unrestated; compared notes verified",
+  "security_basis":"not_applicable"
+}
+```
+
+Other economic kinds include `instant`, `ratio`, `per_share`, and `weighted_average`; they cannot be used in this subtraction check. `concept` identifies the same economic metric across inputs, not an arbitrary common label. Match unit, currency, basis, classification, concept, scope, accounting standard, version basis and security basis. The two cumulative intervals must share a start, with the earlier ending before the later. The result starts the day after the earlier end and ends with the later interval. A script cannot establish whether periods were mislabeled or the source supports the chosen common basis.
+
+For existing metric IDs, declare:
+
+```json
+{"period_differences":[{"cumulative":"ocf_9m","prior_cumulative":"ocf_6m","result":"ocf_q3","tolerance":0.001}]}
+```
+
+Put this object inside `checks`. The result metric must retain `derivation: {"operation":"subtract","inputs":["ocf_9m","ocf_6m"]}`. Reported-fact inputs can support a derived historical value with the same classification, but the output must remain labeled **derived**, not directly disclosed. Cite both input sources through their IDs; use a named calculation artifact/locator for the result, and never date its availability earlier than its latest input. Do not describe EPS or balance-sheet subtraction as a derived quarterly flow. Unknown inputs cannot pass the check.
+
+The script validates these contexts only for declared period-difference checks; it does not automatically discover all derivations, version conflicts, duplicate translations, ADS ratios, or financial identities. Use the [extraction guide](financial-extraction.md) for those source-level decisions. The original sums/basis checks still use the original flat fields; do not assume merely attaching `statement` metadata changes their behavior. Add appropriate same-basis checks and inspect original evidence before calling a series comparable.
