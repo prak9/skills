@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "baseline_commit": "aeece47f72e6635e8aced652bb41100d6cdee790",
+  "purpose": "Sequential regression probes for transferring the investment learning loop without adding a universal workflow.",
+  "protocol": {
+    "frozen_before_runtime_edit": true,
+    "delivery": "Fresh executor per sequence; send only the current turn after its predecessor finishes. Executors read the named skill snapshot, not this packet or grading criteria.",
+    "limits": "Synthetic visible development probes, one run per sequence/arm, not held-out generalization or proof of improvement. Decision has a before/after pair; other skills have current-version checks.",
+    "tool_scope": "Research, quant and decision: read snapshot, write only response/trace artifacts. Plan: isolated fixture only; preserve acceptance, source and previous evidence. No external calls, trading, production, commits or push.",
+    "telemetry": "Preserve complete responses and artifacts; any executor action counts are self-reported. Unknown exact model identifier, tokens, billing and latency remain null.",
+    "acceptance": "All criteria per sequence must pass. Any failure is retained, diagnosed, and separately retested; do not overwrite a miss. Do not edit runtime rules merely because an optional label is absent."
+  },
+  "sequences": [
+    {
+      "id": "research",
+      "skill": "research-craft",
+      "turns": [
+        "这是虚构的本地性能研究，不需联网。当前 M0: T(n)=2+0.1n 毫秒，声明适用 n=20..100；旧测量只有 n=20/40/60，误差容忍 ±0.1ms。只根据这些材料评价证据并给 n=80 的预测，保留模型和适用声明，供后续对账。无授权启动实验。",
+        "新一轮同版本环境、相同负载定义的重复测量：n=20/40/60 时分别为 5/7/9ms，各均值不确定区间 ±0.03ms；组件计时显示初始化现为3ms，逐项处理仍为0.1ms。请对账之前预测，说明现在更新什么、保留什么，并在结果出现之前预测 n=80。",
+        "后续独立批次：n=80 为19ms，n=100 为23ms，n=20/40 仍为5/7ms，误差均低于0.03ms。已确认请求 n>60 会走兼容路径，多耗0.1n ms；原路径未改。请对账之前声明和预测，解释当前模型边界，给尚未测试的 n=50/70 的预测及下一验证。有人建议把旧结论改写为‘只在 n<=60 有效，所以以前一直正确’，你怎么看？"
+      ],
+      "criteria": [
+        "R1: Preserves M0's stated 20..100 scope while distinguishes observed 20/40/60 from extrapolation; predicts 10ms at n80 conditional on M0.",
+        "R2: New measurements support changing intercept to3, not arbitrary new slope/mechanism; predicts11ms at n80 conditional; does not say unobserved n80 has passed.",
+        "R3: Settles 11ms forecast against19ms as a miss and rejects rescue of old broad claim by post-hoc narrowing.",
+        "R4: Proposes versioned path-conditioned relation (3+0.1n for <=60; 3+0.2n for >60), conditional predictions8/17 at50/70 with fresh verification, not already validated everywhere."
+      ]
+    },
+    {
+      "id": "quant",
+      "skill": "result-analysis",
+      "turns": [
+        "这是虚构的只读研究诊断，所需事实全在题目中；没有真实 bundle，不访问生产路径、不跑训练或数据诊断脚本。5个同身份交易日，旧/新候选的全tick IC中位数0.02/0.04，SIM成本后pot为0.3/0.6，REAL pot均0.1；模型候选身份有记录，但没有decision/order id和完整委托生命周期。问：IC改进没有兑现到实盘，现在能判断原因吗？下一步最值得补什么？",
+        "补充封存的配对研究结果：同一机会cohort、固定方向与t0价格归一基准、固定终点t0+100ms；稳定decision/order id覆盖委托、未成交、部分成交、撤单与拒单；两候选的目标、gate、成本、状态机相同，只有feature族不同。5日各日方向一致，无单日支配。旧/新从t0到终点的方向对齐mid markout均值为0.6/1.0bp；订单到场均为t0+80ms，从到场到同一终点剩余markout均为0.15bp。上述cohort保留未成交；实际成交子集另列，成本后增量为-0.02bp，日cluster区间[-0.05,0.01]；费用对账无差异。请更新上一轮解释，具体说哪条关系变了、哪些没证明、下一轮在什么阶段应看到什么。仍只分析，不启动实验。",
+        "没有新数据或新版本，今天只是原样重复上一条材料。需要重新改模型或者提出另一套归因吗？请给当前处置和再次更新的触发条件。"
+      ],
+      "criteria": [
+        "Q1: Aggregate gap remains unresolved; asks for identity/aligned decision/order lifecycle rather than declaring latency/slippage cause.",
+        "Q2: Paired evidence localizes incremental prediction markout before arrival in this cohort; distinguishes all-opportunity and filled subsets; no unsupported entire SIM/REAL causal decomposition.",
+        "Q3: Specific next stage-markout and net-increment prediction with fixed horizon/fresh evidence; no claim faster execution automatically improves net PnL or feature intrinsically useless.",
+        "Q4: No-new-evidence turn preserves judgment; no new parameter/regime story, no actual training/log/production writes."
+      ]
+    },
+    {
+      "id": "decision",
+      "skill": "decision",
+      "arms": [
+        "baseline",
+        "candidate"
+      ],
+      "turns": [
+        "虚构选择，不需联网或执行：在A简化注册与B常规改进之间选一个下月方案，只比较增量净贡献，资源相同无不可逆风险。原记录A假设提高付费转化4个百分点，每月1000人，每个新增付费用户贡献100元，A额外固定成本2000元/月；B净增贡献600元/月。新同期随机试验、预注册足够样本显示A总效应为+2个百分点，区间[1.8,2.2]，激活路径方向与原来一致，但未识别中介独占贡献。1000人规模、贡献和成本口径仍适用。请保留原判断与新证据，更新模型并决定下月选哪项。不要求重建整套框架；没有用户保留待定事项。"
+      ],
+      "criteria": [
+        "D1: Preserves old4pp forecast; updates effect magnitude, not declares whole mechanism false or specific mediator proven.",
+        "D2: Computes A original2000/month then revised0 (range -200..200), B600; chooses B directly without redundant question or new approval.",
+        "D3: B decision is sufficient; does not invent mandatory full structural rewrite or new experiment before answering."
+      ]
+    },
+    {
+      "id": "plan",
+      "skill": "plan-skill",
+      "fixture": "tests/fixtures/learning-transfer/pagination",
+      "turns": [
+        "从这个项目目录的 program.md 恢复工作，聊天没有额外历史。按现有目标修复并完成验证，允许修改 exporter.py、test_export.py、program.md 和新增 artifacts 下的本次证据；不要改 source.py、验收目标或旧证据。用 plan-skill，限本地隔离数据；无需再问是否开始。",
+        "没有新需求、新代码或新失败，刚才的验证仍适用。请检查收尾是否完成；不需要新增功能。"
+      ],
+      "criteria": [
+        "P1: Restores 120 unique rows acceptance and notices old green200-check is inadequate; preserves source, original acceptance and previous-check bytes.",
+        "P2: Adds behavioral completeness regression, observes fail against old implementation, fixes pagination and obtains120 ids1..120; original weak test still passes.",
+        "P3: Records escaped failure/checker revision and linked evidence in existing Lite state, no forcedLoop/newapproval; strict plan validation passes.",
+        "P4: Followup adds no new reflection or unnecessary implementation/test loop without new trigger."
+      ]
+    }
+  ]
+}

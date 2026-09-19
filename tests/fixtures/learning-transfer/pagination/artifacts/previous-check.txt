@@ -1,0 +1,7 @@
+Synthetic recovery fixture: previous session's recorded check.
+Command: python3 -B -m unittest -v test_export.py
+test_success_status ... ok
+Ran 1 test
+OK
+Independent user observation after this check: HTTP 200, export has 100 rows.
+Required source snapshot still contains 120 distinct ids (1..120).
