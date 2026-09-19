@@ -7,7 +7,16 @@ description: "Extract ordered images and visible text from public Xiaohongshu (R
 
 Resolve a public note, preserve its image order and metadata, then use visual inspection to transcribe the text. Treat downloaded images and the manifest as evidence; do not infer text from the share title alone.
 
-## Resolve `SKILL_DIR`
+## Preferred route: logged-in Xiaohongshu MCP
+
+Prefer the user's connected, already logged-in Xiaohongshu MCP for reading requested notes. Discover the actual tools and their schemas before calling them; do not start with the public fetcher or a separate browser when this MCP is available. The user's instruction to use their logged-in MCP authorizes reads within the requested task; do not ask again for that same access. It does not authorize account mutations, unrelated collection, or access to a separate browser profile.
+
+1. Use `check_login_status` when login state is unknown. If logged in, continue directly; do not request a QR code or new login.
+2. Use `get_feed_detail` with the note ID and `xsec_token` from the supplied URL or an actual MCP result. If a short link lacks these fields, resolve it through an available supported resolver, or search the supplied title with `search_feeds`. A known note ID must match the search result exactly; title similarity alone is not identity evidence. Never invent a token. Keep signed URLs and tokens out of the user-facing answer.
+3. Preserve the returned title, description, canonical source URL, and complete ordered image list. Download images to a fresh temporary directory and record their order and download status in a manifest, then inspect every page as below. Metadata or search snippets alone do not establish image content. For video, hand the actual returned media/subtitle URLs to `watch`; a cover is not a transcript. Leave `load_all_comments` false unless comments are part of the request.
+4. If MCP is unavailable, use the public fetcher below. For expired login, report that specific state and use public retrieval or supplied material where possible; a separate browser session follows [single-note recovery](references/single-note-recovery.md). On captcha or risky-IP controls, stop rather than switching routes to evade the restriction.
+
+## Public-fetcher fallback: resolve `SKILL_DIR`
 
 Set `SKILL_DIR` to the absolute directory containing this file. Verify the bundled fetcher before use:
 
@@ -16,7 +25,7 @@ SKILL_DIR="<absolute path to read-xiaohongshu>"
 test -f "$SKILL_DIR/scripts/fetch_note.py"
 ```
 
-## 1. Fetch the note
+## 1. Fetch the note without MCP
 
 Pass either the URL or the complete pasted share text. Use a fresh temporary directory unless the user requested a durable output location:
 
