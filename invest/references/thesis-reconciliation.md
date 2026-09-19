@@ -16,6 +16,15 @@ Compare equal periods, units, cohorts and reporting perimeters. A restatement or
 
 Trace material revisions through the affected revenue/cost, reinvestment, cash-flow and per-share assumptions. Distinguish changed business estimates from changed discount/terminal assumptions and the current quote. Hold other inputs fixed for attribution when meaningful, then reconcile interactions in the joint result; do not imply a uniquely additive causal bridge. If a model input is missing, identify the direction or sensitivity and leave numeric value unresolved. Do not manufacture a probability change or target price merely to complete the row.
 
+Make clear what changed in the model, within that same row or explanation:
+
+- **Parameter:** the mechanism remains, but an estimated level, rate, cost or timing changes.
+- **Structure:** evidence supports adding, removing or changing a mechanism, relationship or interaction—not just fitting a new number to the miss.
+- **Boundary:** retain the mechanism only for the supported segment, lifecycle stage or operating conditions; do not generalize a local failure to the whole business.
+- **No warranted revision yet:** noise or insufficient discriminating evidence leaves rival explanations open. Record the miss and uncertainty without inventing a replacement story.
+
+These distinctions can coexist; they are not a required labeling exercise for every update. Tie the smallest warranted revision to the evidence and a changed, observable next prediction (or explain why it does not change). A story fitted to the old residual is only a candidate explanation until later evidence discriminates it. A numerical miss alone does not identify a structural failure, and a numerical hit alone does not validate the mechanism. Preserve the old forecast and its conditions rather than retroactively narrowing it.
+
 An earnings release is a review opportunity, not every claim's settlement date. Keep long-horizon claims open until their own evidence or falsifier warrants resolution; an earlier breached necessary condition can warrant an earlier update. Material off-cycle evidence need not wait for earnings. When no material claim changes, a concise `no thesis change` with the evidence window suffices. Do not rebuild background, all four quarters or an unaffected model solely for this view.
 
 ## Learn Across Comparable Claims, Not Only Winning Stocks

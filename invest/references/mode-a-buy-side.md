@@ -99,6 +99,7 @@ Load another mode only when it resolves the crux:
 # [Company / Ticker] Buy-Side Equity Research Memo
 
 ## 0. Executive Investment View
+- Business in one causal chain: how customer value becomes retained cash, the current binding constraint, why it dominates, and the observable result that would overturn this judgment
 - Rating bias, horizon, target range, current price, implied return
 - Core thesis, debate, variant perception, confidence, thesis breakpoint
 
@@ -151,4 +152,4 @@ Probability may be N/A. Distinguish present-value gaps from dated holding-period
 
 Do not replace analysis with a news summary, context dump or unsupported spreadsheet. Can the reader trace the decisive claim from raw evidence to net per-share economics, identify what the comparison view already knows, and specify an observation that would change the verdict? If not, expose the failed link rather than add confident prose. Do not extrapolate historical growth mechanically. Reconcile demand, capacity, revenue, margins, opex, capex, working capital, FCF, dilution and terminal value. Preserve prior forecasts instead of rewriting them with hindsight. Use the output sections as an adaptable structure, not evidence that diligence is complete.
 
-Before delivering Full research, apply [financial-evidence.md](financial-evidence.md) to the material claims and their source/derivation links. Synthesize the executive view from the verified analysis; do not add unsupported facts or let caveats disappear in compression. If an evidence correction changes a model input, propagate it to affected scenarios, value, verdict and summary. Repair only affected content; a citation correction alone is not a reason to rerun all research.
+Before delivering Full research, apply [financial-evidence.md](financial-evidence.md) to the material claims and their source/derivation links. Synthesize the executive view from the verified analysis; do not add unsupported facts or let caveats disappear in compression. Use compact prose or a useful causal diagram, not a new mandatory section or fixed variable count; retain jointly necessary conditions and say when the binding constraint remains unresolved. If an evidence correction changes a model input, propagate it to affected scenarios, value, verdict and summary. Repair only affected content; a citation correction alone is not a reason to rerun all research.

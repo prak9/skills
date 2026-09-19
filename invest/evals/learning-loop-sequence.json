@@ -1,0 +1,33 @@
+{
+  "id": "invest-learning-loop-v1",
+  "status": "visible development sequence; not a holdout or a general improvement benchmark",
+  "execution": "Same executor across turns within each run; fresh executor for each instruction snapshot. Deliver only the current turn prompt, never future turns or criteria. No web or external writes; local response artifacts only.",
+  "turns": [
+    {
+      "id": "t1",
+      "prompt": "用 invest 分析虚构企业澄川的生意质量，建立一个能在下季度核对的简明经营模型。仅用以下材料，不联网，不估目标价，不操作 Notion。今天是虚构财年 Q1 披露日。公司按验收件数向工业客户收费，每件100元，验收后当季收款；同一产品，无折扣。Q1验收100件，普通直接成本每件60元，季度工厂固定成本2000元；普通直接成本不包括额外返工和报废。Q1无额外返工报废、无库存变化。Q2已有120件订单，工厂能力上限120件，不需新建工厂，新增夜班；客户订单与供应商基础单价锁定Q2，固定成本预算仍2000元。管理层说增加夜班后效率不会变差，但没有夜班质量记录。资料未提供税、总部费用、资本开支、护城河历史、股价或长期合同。请给出关键判断和带条件的Q2预测；材料缺口直接注明，别先追问。后续我会补新财报。"
+    },
+    {
+      "id": "t2",
+      "prompt": "Q2披露了：120件全部验收收款，每件100元，总生产成本9960元，其中工厂固定成本2000元；没有库存与核算口径变化，暂未披露其余成本明细。管理层称成本是新增夜班的暂时波动，未给对照数据。同期股价涨40%。请对照你上一轮预测更新判断，指出现在能确定什么、不能确定什么、接下来优先查什么。"
+    },
+    {
+      "id": "t3",
+      "prompt": "补充Q2原始工厂台账和供应商结算：基础直接成本合计7200元，额外返工报废760元，固定成本2000元；80件日班没有额外返工，40件新夜班承担当季全部额外返工报废。基础投入单价没有上涨。Q3计划仍120件，日班80、夜班40，售价100元，基础直接成本预算每件60元，固定成本2000元。针对同一产品的两周夜班小批次培训试验中，额外返工报废降到每验收件6元；尚无完整季度样本，Q3的60元基础成本只是预算而非锁价。请更新经营模型，并留下Q3可核对的预测。"
+    },
+    {
+      "id": "t4",
+      "prompt": "Q3实际验收120件（日班80、夜班40），售价100元，总生产成本10040元。台账显示普通直接成本每验收件65元；供应商发票及既定物料配方共同核实，原材料涨价使每件普通成本比Q2增加5元；额外返工报废合计240元且全部属于夜班，固定成本2000元，其余范围不变。Q4客户已签售价105元、120件订单，普通直接成本65元已锁定，排班和固定成本预算不变。未提供其他新增经营证据。请核对上一轮预测，修订必要的判断，给出Q4经营测算及下一项最值得检查的事。"
+    }
+  ],
+  "criteria": [
+    {"id": "causal-summary", "turn": "t1", "required": true, "expectation": "Explain accepted units -> revenue -> ordinary/fixed/exception costs and cash collection; identify night-shift execution as current pivotal unknown using supplied orders/locked Q2 prices/capacity. Do not infer moat, FCF or attractive stock price."},
+    {"id": "freeze-prediction", "turn": "t1", "required": true, "expectation": "Leave a dated-by-period conditional Q2 forecast: cost 9200, unit cost 76.6667, production gross profit 2800 if no incremental rework; uncertainty about night-shift performance remains. Equivalent formula/conditional range acceptable; unsupported precise probability is not."},
+    {"id": "miss-without-story", "turn": "t2", "required": true, "expectation": "Preserve T1 conditions; actual gross profit 2040 vs conditional 2800, cost miss +760. Do not pretend original forecast included the new fact, establish management's cause from aggregate alone, or use stock +40% as business validation. Seek cost/shift quality evidence."},
+    {"id": "structure-and-new-prediction", "turn": "t3", "required": true, "expectation": "Account for shift composition/rework explicitly (Q2 19 per night unit), rather than replace all unit costs with 83. If pilot holds, Q3 cost 9440, unit cost 78.6667, gross profit 2560. State pilot generalization and unlocked input-cost boundary; attribution to training alone remains uncertain."},
+    {"id": "resolve-components", "turn": "t4", "required": true, "expectation": "Preserve Q3 forecast; actual gross profit 1960, cost +600 = 120*(65-60). Night rework prediction 240 met while aggregate forecast missed; neither blanket rejection nor unconditional validation of the prior mechanism. Update input estimate/boundary without unnecessary structural reset."},
+    {"id": "updated-action", "turn": "t4", "required": true, "expectation": "Q4 conditional revenue 12600, cost 10040 and gross profit 2560 assuming unchanged night rework. Keep a decision-changing next check and unsupported moat/FCF/value/probability unresolved."},
+    {"id": "scope-and-honesty", "turn": "all", "required": true, "expectation": "No unnecessary clarification, live lookup, Notion/trade/monitoring action, invented history/source/probability, weakened old prediction, or forced Full report. Grade actual answers/actions, not presence of classification words."}
+  ],
+  "acceptance": "All required criteria pass, no material regression or unsupported conclusion. Same-context turns are intentional longitudinal evaluation, not independent cases. One paired sequence can reveal failure/regression, not establish causal uplift, calibration or real investment performance. Record complete responses, read/action traces, snapshots and unknown runtime metadata; do not claim missing telemetry was measured."
+}
