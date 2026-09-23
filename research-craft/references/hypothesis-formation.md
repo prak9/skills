@@ -4,6 +4,10 @@ Use when the task needs an initial explanation of an unfamiliar mechanism, an am
 
 ## Generate Plausible Explanations
 
+When pressure-testing a user's existing thesis, preserve the supplied hypothesis, evidence and stated revision conditions before comparing them with alternatives. Distinguish the user's original judgment from model-proposed explanations and later evidence-driven updates; do not silently strengthen, replace or attribute an inferred position to the user. Reuse the current conversation or authorized research record, not a new mandatory ledger. If the user has no thesis or has not specified revision conditions, help explore and propose testable conditions without blocking on a user-written answer or inventing a prior belief.
+
+Target the weakest load-bearing link whose failure could change the conclusion. A critique may support the original thesis, support the prevailing view or leave the issue unresolved; contrarian novelty and a quota of objections are not acceptance criteria. A claimed non-consensus insight needs an identifiable comparison view and its evidence; if that view is unverified, label the disagreement provisional rather than inventing a consensus. Agreement among models, personas or summaries is not independent confirmation: trace shared underlying sources and assess the observations, not the vote count. This does not require additional agents or model calls.
+
 Start from the outcome, population, horizon and decision already in scope. Look for constraints the system cannot evade; trace intermediate mechanisms, actor choices, costs and feedback. A task's hard constraint is different from an assumed business model or a person's preference.
 
 Draw candidates from constraints, mechanism knowledge, counterexamples, structurally similar problems and systematic residuals. Use whichever source is informative; no universal ordering applies. For an analogy, name the shared causal structure and the boundary that may prevent transfer. Draw feedback through time rather than treating a circular diagram as proof of causation.

@@ -25,7 +25,7 @@ Choose the lightest mode that protects the claim:
 
 - **Exploration:** map an unfamiliar problem, inspect raw material, compare explanations, and identify the next discriminating observation. Keep hypotheses provisional.
 - For open-ended research with a consequential coverage gap, one-sided sources or unresolved source disagreement, use [perspective-driven evidence discovery](references/perspective-discovery.md). Skip it for supplied-material summaries, settled calculations and narrow checks; it does not require personas or additional agents.
-- When an unfamiliar mechanism, ambiguous concept or observational tie carries the decision—or delays, feedback or intermediate constraints can reverse it—read [hypothesis formation](references/hypothesis-formation.md). Do not load it for settled arithmetic or routine execution.
+- When an unfamiliar mechanism, ambiguous concept or observational tie carries the decision—or delays, feedback or intermediate constraints can reverse it—read [hypothesis formation](references/hypothesis-formation.md). Also use it when pressure-testing a user's research thesis or claimed non-consensus insight. Do not load it for settled arithmetic or routine execution.
 - For probability forecasts or stochastic simulators, read [prediction and simulation validation](references/prediction-validation.md). A point estimate, deterministic calculation or ordinary report does not trigger this adapter by itself.
 - **Controlled experiment:** compare a candidate against a baseline under a fixed protocol and explicit acceptance gates.
 - **Artifact iteration:** edit code, prompts, rules, or configuration through a bounded propose-evaluate-accept loop. Freeze the evaluator before optimizing the candidate.
@@ -45,7 +45,7 @@ Treat the following workflow as decision criteria, not a required sequence of fo
 - Ask Hamming's question: what is the important problem, and why are you not working on it?
 - Name the one or two decisive unknowns. Avoid absorbing a fashionable problem without its reasoning chain.
 - Define the decision the result will change. If no plausible result changes a decision, narrow or stop the work.
-- Predict the result before reading the answer or running the experiment. Record the prediction so hindsight cannot rewrite it.
+- Before a consequential test, state the research prediction and preserve its provenance so hindsight cannot rewrite it. This does not require the user to supply a prediction before assisted exploration can begin.
 - When training problem-selection taste, keep a dated portfolio of plausible opportunities—including those not pursued—with a resolution horizon and source of truth. Use `decision` to judge which opportunities matter; use this skill to make their forecasts resolvable.
 
 ## 2. Concentrate ownership before scaling headcount
