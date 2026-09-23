@@ -153,6 +153,103 @@ class RetrievalTests(unittest.TestCase):
             {"start": 3723.12, "end": 3724.0, "text": "Later"},
         ], transcribe.parse_vtt(str(path)))
 
+    def test_vtt_rolling_lines_emit_only_new_content(self):
+        path = self.work / "captions.vtt"
+        path.write_text(
+            "WEBVTT\n\n00:01.000 --> 00:03.000\nAlpha beta\nGamma delta\n\n"
+            "00:02.000 --> 00:04.000\nGamma delta\nEpsilon zeta\n\n"
+            "00:03.000 --> 00:05.000\nGamma delta\nEpsilon zeta\n\n"
+            "00:04.000 --> 00:06.000\nEpsilon zeta\nLast line\n",
+            encoding="utf-8",
+        )
+        self.assertEqual([
+            {"start": 1.0, "end": 3.0, "text": "Alpha beta Gamma delta"},
+            {"start": 2.0, "end": 5.0, "text": "Epsilon zeta"},
+            {"start": 4.0, "end": 6.0, "text": "Last line"},
+        ], transcribe.parse_vtt(str(path)))
+
+    def test_vtt_preserves_repeated_or_extended_cues_after_gap(self):
+        for first, second in (
+            ("Thank you.", "Thank you."),
+            ("Hello", "Hello world"),
+            ("First line\nSecond line", "Second line\nThird line"),
+        ):
+            with self.subTest(first=first, second=second):
+                path = self.work / "captions.vtt"
+                path.write_text(
+                    f"WEBVTT\n\n00:01.000 --> 00:02.000\n{first}\n\n"
+                    f"01:01.000 --> 01:02.000\n{second}\n", encoding="utf-8",
+                )
+                self.assertEqual([
+                    {"start": 1.0, "end": 2.0, "text": first.replace("\n", " ")},
+                    {"start": 61.0, "end": 62.0, "text": second.replace("\n", " ")},
+                ], transcribe.parse_vtt(str(path)))
+
+    def test_vtt_decodes_entities_after_removing_markup(self):
+        path = self.work / "captions.vtt"
+        path.write_text(
+            "WEBVTT\n\n00:01.000 --> 00:02.000\n"
+            "<c>A &amp; B</c> &lt;name&gt; &#39;quoted&#39;\n", encoding="utf-8",
+        )
+        self.assertEqual(
+            "A & B <name> 'quoted'", transcribe.parse_vtt(str(path))[0]["text"],
+        )
+
+    def test_vtt_preserves_partial_line_overlap(self):
+        path = self.work / "captions.vtt"
+        path.write_text(
+            "WEBVTT\n\n00:01.000 --> 00:03.000\nAlpha beta\n\n"
+            "00:02.000 --> 00:04.000\nbeta gamma\n", encoding="utf-8",
+        )
+        self.assertEqual(
+            ["Alpha beta", "beta gamma"],
+            [segment["text"] for segment in transcribe.parse_vtt(str(path))],
+        )
+
+    def test_vtt_duplicate_cue_does_not_shorten_time_range(self):
+        path = self.work / "captions.vtt"
+        path.write_text(
+            "WEBVTT\n\n00:01.000 --> 00:04.000\nHello\n\n"
+            "00:02.000 --> 00:03.000\nHello\n", encoding="utf-8",
+        )
+        self.assertEqual(
+            [{"start": 1.0, "end": 4.0, "text": "Hello"}],
+            transcribe.parse_vtt(str(path)),
+        )
+
+    def test_vtt_diagnostics_surface_invalid_and_empty_cues(self):
+        path = self.work / "captions.vtt"
+        path.write_text(
+            "WEBVTT\n\n00:01.000 --> 00:02.000\nFirst\n\n"
+            "00:BAD.000 --> 00:04.000\nUnparsed\n\n"
+            "00:05.000 --> 00:04.000\nReversed\n\n"
+            "00:06.000 --> 00:07.000\n<c></c>\n\n"
+            "00:08.000 --> 00:09.000\nLast\n", encoding="utf-8",
+        )
+        diagnostics = {}
+        self.assertEqual(
+            ["First", "Last"],
+            [segment["text"] for segment in transcribe.parse_vtt(str(path), diagnostics=diagnostics)],
+        )
+        self.assertEqual(
+            {"status": "partial", "valid_cues": 3, "invalid_cues": 2, "empty_cues": 1},
+            diagnostics,
+        )
+
+    def test_vtt_diagnostics_none_without_text_and_complete_without_errors(self):
+        for body, expected in (
+            ("00:01.000 --> 00:02.000\n\n", {"status": "none", "valid_cues": 1, "invalid_cues": 0, "empty_cues": 1}),
+            ("00:02.000 --> 00:02.000\nInvalid\n", {"status": "none", "valid_cues": 0, "invalid_cues": 1, "empty_cues": 0}),
+            ("00:99.000 --> 01:40.000\nInvalid\n", {"status": "none", "valid_cues": 0, "invalid_cues": 1, "empty_cues": 0}),
+            ("00:01.000 --> 00:02.000\nValid\n", {"status": "complete", "valid_cues": 1, "invalid_cues": 0, "empty_cues": 0}),
+        ):
+            with self.subTest(body=body):
+                path = self.work / "captions.vtt"
+                path.write_text("WEBVTT\n\n" + body, encoding="utf-8")
+                diagnostics = {}
+                transcribe.parse_vtt(str(path), diagnostics=diagnostics)
+                self.assertEqual(expected, diagnostics)
+
 
 class SetupCliTests(unittest.TestCase):
     def test_keyless_first_run_is_ready_without_install_or_config_write(self):

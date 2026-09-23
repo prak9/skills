@@ -1,0 +1,4 @@
+interface:
+  display_name: "Read Link"
+  short_description: "Extract linked articles, X posts, images and video evidence"
+  default_prompt: "Use $read-link to extract this link's content, preserve source and completeness, and translate or archive only as requested."

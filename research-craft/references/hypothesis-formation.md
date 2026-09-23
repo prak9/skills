@@ -12,6 +12,16 @@ Include the strongest plausible alternative when it could change the decision: a
 
 ## Make The Difference Observable
 
+### Compare Coexisting Forces And Paths When Material
+
+Use this lens only when delays, feedback, cumulative exposure or intermediate resource constraints could change the answer. Opposing effects need not be competing truths: identify their signs, relative magnitudes, timing and interactions before deciding which dominates. Keep only the states, actions and transitions needed to distinguish relevant paths; an event sequence or cash bridge may suffice, without differential equations or a simulator.
+
+Compare the same initial conditions, horizon and outcome basis, making intentional differences explicit. A favorable endpoint does not establish that the system can reach it: check material interim limits and irreversible events, including the option to stop or change course. Do not infer the whole path from a terminal observation. Separate observed transitions, estimated relationships and assumed functional forms; if intervention changes selection or the environment, a fixed historical replay is not automatically a valid counterfactual.
+
+Where supported, identify the parameter region in which the net effect or preferred action changes, and how uncertainty places the current system relative to that boundary. Respect joint feasibility and interactions rather than varying correlated inputs independently. Unsupported breakpoints remain conditional ranges or qualitative conditions, not optimized point estimates. No universal inverted-U shape follows from two opposing forces. Test the decisive transition or boundary on fresh evidence; a mechanism story complements rather than replaces fair empirical comparison. A bounded useful improvement may be accepted with mechanism unresolved when the existing risk gates permit.
+
+For survival claims only, distinguish a continuous hazard from a period probability: along a specified hazard path, `S(T)=exp(-integral(lambda(t),0,T))`; for probabilities conditional on prior survival, `S_T=product(1-p_t)`. Marginal probabilities cannot simply replace conditional ones. If hazard paths are stochastic, unconditional survival averages the conditional survival, not generally the hazard before exponentiation. Falling hazard need not imply finite cumulative hazard or high long-run survival. Compare a common horizon and disclose unknown tails; do not impose a survival model on ordinary payoff arithmetic.
+
 Keep a compact comparison in the existing research record:
 
 | Field | Question |

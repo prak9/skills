@@ -148,6 +148,10 @@ For material uses of capital, connect cash committed, timing, incremental cash g
 
 ### Investor Return Bridge
 
+When expansion timing, cash burn or refinancing can change the thesis, test whether the terminal business is reachable and what existing common shareholders retain along the way. Bridge opening available cash, operating cash flow, capex, debt service and other material commitments through the relevant periods; exclude restricted cash and uncommitted financing from assured liquidity. Check intra-period gaps when annual totals conceal them. Distinguish a funding shortfall from certain business failure: financing terms or a feasible slower rollout may change the outcome, but must not be invented.
+
+Carry supported financing costs, senior claims and dilution into per-share scenarios without double counting cash uses already included in FCF. Equal terminal operating earnings do not imply equal present equity value. Growth can strengthen the franchise while temporarily weakening liquidity; show the timing and evidence for both. Where material, bound the delay, cash-conversion or financing terms that reverse feasibility or the valuation conclusion, using jointly coherent assumptions. Unknown terms limit valuation precision, not all accessible business research. Skip this added path analysis when it cannot change the requested conclusion.
+
 Compute returns from the price actually paid, not business growth alone. For comparable positive EPS and matching multiple definitions:
 
 ```text

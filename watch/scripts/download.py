@@ -43,8 +43,8 @@ def resolve_local(path: str) -> dict:
     }
 
 
-def _select_subtitle(info: dict, preferred: str | None) -> dict | None:
-    """Select one track, keeping translated auto-captions out of the default."""
+def _subtitle_tracks(info: dict) -> list[dict]:
+    """Project track provenance without retaining signed download URLs."""
     tracks = []
     for field, kind in (("subtitles", "manual"), ("automatic_captions", "automatic")):
         for language, formats in (info.get(field) or {}).items():
@@ -56,6 +56,12 @@ def _select_subtitle(info: dict, preferred: str | None) -> dict | None:
                 for item in formats
             )
             tracks.append({"language": language, "kind": "translated" if translated else kind})
+    return tracks
+
+
+def _select_subtitle(info: dict, preferred: str | None) -> dict | None:
+    """Select one track, keeping translated auto-captions out of the default."""
+    tracks = _subtitle_tracks(info)
 
     def matches(language: str, wanted: str) -> bool:
         language, wanted = language.lower(), wanted.lower()
@@ -169,10 +175,16 @@ def _read_info(info_path: Path, url: str) -> dict:
         try:
             raw = json.loads(info_path.read_text(encoding="utf-8"))
             info = {
+                "id": raw.get("id"),
                 "title": raw.get("title"),
                 "uploader": raw.get("uploader") or raw.get("channel"),
                 "duration": raw.get("duration"),
                 "url": raw.get("webpage_url") or url,
+                "upload_date": raw.get("upload_date"),
+                "language": raw.get("language"),
+                "license": raw.get("license"),
+                "description": raw.get("description"),
+                "available_subtitles": _subtitle_tracks(raw),
             }
         except Exception as exc:
             print(f"[watch] info.json parse failed: {exc}", file=sys.stderr)

@@ -61,3 +61,7 @@ The deterministic evaluator does not load this packet or accept its case-set ver
 ## Trace Attribution Development Packet
 
 `trace-attribution-cases.jsonl` contains six visible development cases for trace attribution, interrupted recovery and data-moat claims. Apply the same isolated execution, raw-record and independent criterion grading protocol above; it is not a holdout or a suite supported by the deterministic evaluator. Record actual behavior and cost before claiming improvement. JSON parsing and repository tests do not execute these cases.
+
+## Dynamic Path Development Packet
+
+`dynamic-path-cases.jsonl` freezes six visible development cases before the dynamic-path instruction edit: financing feasibility, threshold/selection economics, coexisting forces, hazard horizons, transition constraints and a clean arithmetic negative. Use the same isolated execution and independent grading protocol; this packet is not loaded by the deterministic evaluator. Local arithmetic and scoped rule review check the examples, not model behavior. Forward runs and cost comparisons remain unrun until actual outputs and actions are recorded. No new approval gate or mandatory simulation follows from these cases.

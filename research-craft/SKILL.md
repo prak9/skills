@@ -25,7 +25,7 @@ Choose the lightest mode that protects the claim:
 
 - **Exploration:** map an unfamiliar problem, inspect raw material, compare explanations, and identify the next discriminating observation. Keep hypotheses provisional.
 - For open-ended research with a consequential coverage gap, one-sided sources or unresolved source disagreement, use [perspective-driven evidence discovery](references/perspective-discovery.md). Skip it for supplied-material summaries, settled calculations and narrow checks; it does not require personas or additional agents.
-- When an unfamiliar mechanism, ambiguous concept or observational tie carries the decision, read [hypothesis formation](references/hypothesis-formation.md). Do not load it for settled arithmetic or routine execution.
+- When an unfamiliar mechanism, ambiguous concept or observational tie carries the decision—or delays, feedback or intermediate constraints can reverse it—read [hypothesis formation](references/hypothesis-formation.md). Do not load it for settled arithmetic or routine execution.
 - For probability forecasts or stochastic simulators, read [prediction and simulation validation](references/prediction-validation.md). A point estimate, deterministic calculation or ordinary report does not trigger this adapter by itself.
 - **Controlled experiment:** compare a candidate against a baseline under a fixed protocol and explicit acceptance gates.
 - **Artifact iteration:** edit code, prompts, rules, or configuration through a bounded propose-evaluate-accept loop. Freeze the evaluator before optimizing the candidate.

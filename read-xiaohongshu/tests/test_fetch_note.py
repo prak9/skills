@@ -8,6 +8,7 @@ import tempfile
 import types
 import unittest
 import urllib.request
+from urllib.parse import quote
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -135,6 +136,45 @@ class RedirectTests(unittest.TestCase):
         image = processor.http_request(urllib.request.Request("https://ci.xhscdn.com/image"))
         self.assertIsNone(image.get_header("Cookie"))
 
+    def test_mcp_json_cookies_are_loaded_in_memory_and_scoped(self):
+        rows = [
+            {'name': 'web_session', 'value': 'fixture', 'domain': '.xiaohongshu.com', 'path': '/', 'secure': True, 'expires': -1},
+            {'name': 'host_only', 'value': 'fixture', 'domain': 'www.xiaohongshu.com', 'path': '/', 'expires': 2147483647},
+            {'name': 'expired', 'value': 'fixture', 'domain': '.xiaohongshu.com', 'expires': 1},
+            {'name': 'unrelated', 'value': 'fixture', 'domain': '.example.com'},
+        ]
+        for payload in (rows, {'cookies': rows, 'origins': []}):
+            with self.subTest(shape=type(payload).__name__), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / 'cookies.json'
+                original = json.dumps(payload)
+                path.write_text(original)
+                opener = fetch.build_opener(path)
+                self.assertEqual(original, path.read_text())
+                self.assertEqual(['cookies.json'], [p.name for p in Path(directory).iterdir()])
+            processor = next(h for h in opener.handlers if isinstance(h, urllib.request.HTTPCookieProcessor))
+            self.assertEqual({'web_session', 'host_only'}, {c.name for c in processor.cookiejar})
+            request = processor.http_request(urllib.request.Request(NOTE_URL))
+            self.assertIn('web_session=fixture', request.get_header('Cookie'))
+            for url in ('https://ci.xhscdn.com/image', 'http://www.xiaohongshu.com/explore'):
+                self.assertIsNone(processor.http_request(urllib.request.Request(url)).get_header('Cookie'))
+            subdomain = processor.http_request(urllib.request.Request('https://child.www.xiaohongshu.com/'))
+            self.assertNotIn('host_only', subdomain.get_header('Cookie', ''))
+
+    def test_bad_json_cookies_do_not_echo_secrets(self):
+        payloads = [
+            '{"cookies": ["secret-value"',
+            {'cookies': 'secret-value'},
+            [{'domain': '.xiaohongshu.com', 'name': 'a', 'value': 'secret-value\r\nInjected: yes'}],
+            [{'domain': '.xiaohongshu.com', 'name': 'a', 'value': 'secret-value', 'expires': 'invalid'}],
+        ]
+        for payload in payloads:
+            with self.subTest(payload_type=type(payload).__name__), tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / 'cookies.json'
+                path.write_text(payload if isinstance(payload, str) else json.dumps(payload))
+                with self.assertRaises(fetch.FetchError) as caught:
+                    fetch.build_opener(path)
+                self.assertNotIn('secret-value', str(caught.exception))
+
 
 class ManifestTests(unittest.TestCase):
     def setUp(self):
@@ -145,6 +185,43 @@ class ManifestTests(unittest.TestCase):
         state = {"note": {"noteDetailMap": {NOTE_A: {"note": note(NOTE_A, 3)}}}}
         self.html.write_text("<script>window.__INITIAL_STATE__=" + json.dumps(state) + "</script>")
         self.args = argparse.Namespace(source=NOTE_URL, cookie_file=None, html_file=str(self.html), timeout=1, out_dir=str(self.root / "output"), metadata_only=False)
+
+    def test_public_share_exports_body_without_browser_or_mcp(self):
+        primary = dict(note(NOTE_A), title='测试标题', desc='第一段\n\n第二段', user={'nickname': '作者'})
+        page = '<script>window.__INITIAL_STATE__=' + json.dumps({'note': {'noteDetailMap': {NOTE_A: {'note': primary}}}}) + '</script>'
+        self.args.source = '测试标题 https://xhslink.cn/o/example 复制到小红书'
+        self.args.html_file = None
+        with patch.object(fetch, 'request_url', side_effect=[
+            (page.encode(), NOTE_URL + '?xsec_token=private', 'text/html'),
+            (b'GIF89aimage', 'https://ci.xhscdn.com/image', 'image/gif'),
+        ]), patch.object(fetch, 'read_browser_page') as browser_read:
+            result = fetch.run(self.args)
+        browser_read.assert_not_called()
+        self.assertTrue(result['ok'])
+        self.assertEqual('http', result['access_mode'])
+        self.assertEqual(NOTE_URL, result['canonical_url'])
+        body = Path(result['text_file']).read_text()
+        self.assertIn('第一段\n\n第二段', body)
+        self.assertIn('作者', body)
+        self.assertIn('未包含图片 OCR', body)
+        self.assertNotIn('xsec_token', body)
+
+    def test_body_survives_image_failure(self):
+        with patch.object(fetch, 'request_url', side_effect=fetch.FetchError('HTTP 403', 3)):
+            result = fetch.run(self.args)
+        self.assertFalse(result['ok'])
+        self.assertTrue(Path(result['text_file']).is_file())
+        manifest = json.loads(Path(result['manifest']).read_text())
+        self.assertEqual('note.txt', manifest['text_file'])
+
+    def test_existing_text_is_never_overwritten(self):
+        output = Path(self.args.out_dir)
+        output.mkdir()
+        (output / 'note.txt').write_text('user content')
+        with patch.object(fetch, 'request_url') as request, self.assertRaises(fetch.FetchError):
+            fetch.run(self.args)
+        request.assert_not_called()
+        self.assertEqual('user content', (output / 'note.txt').read_text())
 
     def test_download_failure_retains_order_hashes_and_missing_pages(self):
         png = b"\x89PNG\r\n\x1a\nimage"
@@ -182,6 +259,161 @@ class ManifestTests(unittest.TestCase):
         self.args.metadata_only = True
         with patch.object(fetch, "request_url", return_value=(page.encode(), NOTE_URL.replace(NOTE_A, NOTE_B), "text/html")), self.assertRaises(fetch.FetchError):
             fetch.run(self.args)
+
+    def test_login_is_classified_before_parsing_without_downloading(self):
+        self.args.html_file = None
+        target = NOTE_URL + '?type=video&xsec_token=private-token'
+        login = 'https://www.xiaohongshu.com/login?redirectPath=' + quote(target, safe='')
+        with patch.object(fetch, 'request_url', return_value=(b'<html>login</html>', login, 'text/html')) as request:
+            with self.assertRaises(fetch.FetchError) as caught:
+                fetch.run(self.args)
+        self.assertEqual('login_required', caught.exception.details['status'])
+        self.assertEqual(NOTE_A, caught.exception.details['note_id'])
+        self.assertEqual('video', caught.exception.details['note_type_hint'])
+        self.assertNotIn('private-token', json.dumps(caught.exception.details))
+        self.assertEqual(1, request.call_count)
+        self.assertFalse(Path(self.args.out_dir).exists())
+
+    def test_video_without_images_returns_handoff_not_ocr_success(self):
+        video = {'noteId': NOTE_A, 'type': 'video', 'title': 'video', 'desc': 'caption',
+                 'video': {'media': {'stream': {'h264': [{'masterUrl': 'https://sns-video-bd.xhscdn.com/video.mp4'}]}}}}
+        self.html.write_text('<script>window.__INITIAL_STATE__=' + json.dumps({'note': {'noteDetailMap': {NOTE_A: {'note': video}}}}) + '</script>')
+        with patch.object(fetch, 'request_url') as request:
+            result = fetch.run(self.args)
+        request.assert_not_called()
+        self.assertEqual('video_handoff', result['status'])
+        self.assertEqual('none', result['completeness'])
+        self.assertFalse(result['downloaded'])
+        self.assertEqual('watch', result['handoff']['skill'])
+        self.assertEqual(['https://sns-video-bd.xhscdn.com/video.mp4'], result['handoff']['media_urls'])
+        self.assertEqual('caption', result['description'])
+        self.assertEqual('not_started', result['handoff']['transcript_status'])
+        self.assertIn('未包含视频逐字稿', Path(result['text_file']).read_text())
+
+    def test_video_cover_does_not_count_as_video_content(self):
+        video = dict(note(NOTE_A), type='video', video={'consumer': {'originVideoKey': 'not-a-url'}})
+        self.html.write_text('<script>window.__INITIAL_STATE__=' + json.dumps({'rows': [video]}) + '</script>')
+        with patch.object(fetch, 'request_url') as request:
+            result = fetch.run(self.args)
+        request.assert_not_called()
+        self.assertEqual('video_handoff', result['status'])
+        self.assertEqual([], result['handoff']['media_urls'])
+        self.assertFalse(result['downloaded'])
+
+
+class AccessClassificationTests(unittest.TestCase):
+    def test_login_hint_never_trusts_external_redirect(self):
+        for target in ('https://evil.example/explore/' + NOTE_A,
+                       'https://www.xiaohongshu.com:8765/explore/' + NOTE_A):
+            with self.subTest(target=target), self.assertRaises(fetch.FetchError) as caught:
+                fetch.classify_access_page('https://www.xiaohongshu.com/login?redirectPath=' + quote(target, safe=''), '')
+            self.assertEqual('login_required', caught.exception.details['status'])
+            self.assertIsNone(caught.exception.details.get('note_id'))
+
+    def test_captcha_and_risky_ip_are_security_blocks(self):
+        for url in ('https://www.xiaohongshu.com/website-login/captcha',
+                    'https://www.xiaohongshu.com/website-login/error?error_code=300012'):
+            with self.subTest(url=url), self.assertRaises(fetch.FetchError) as caught:
+                fetch.classify_access_page(url, '')
+            self.assertEqual('security_block', caught.exception.details['status'])
+
+    def test_login_navigation_link_is_not_a_login_wall(self):
+        fetch.classify_access_page(NOTE_URL, '<a href="/login">登录</a>')
+
+    def test_saved_login_html_is_not_parsed_as_a_note(self):
+        with tempfile.TemporaryDirectory() as directory:
+            html = Path(directory) / 'login.html'
+            html.write_text('<script>window.__INITIAL_STATE__={"login":{},"user":{}}</script>')
+            args = argparse.Namespace(source=NOTE_URL, cookie_file=None, html_file=str(html), timeout=1, out_dir=None, metadata_only=True)
+            with self.assertRaises(fetch.FetchError) as caught:
+                fetch.run(args)
+            self.assertEqual('login_required', caught.exception.details['status'])
+
+    def test_video_urls_reject_external_hosts_and_do_not_synthesize_keys(self):
+        video = {'consumer': {'originVideoKey': 'fake-key'}, 'media': {'stream': {'h264': [
+            {'masterUrl': 'http://127.0.0.1/internal'},
+            {'masterUrl': 'https://evilxhscdn.com/video.mp4'},
+            {'masterUrl': 'https://sns-video-bd.xhscdn.com/video.mp4'},
+            {'masterUrl': 'https://sns-video-bd.xhscdn.com/video.mp4'}]}}}
+        self.assertEqual(['https://sns-video-bd.xhscdn.com/video.mp4'], fetch.video_urls(video))
+
+
+class BrowserReadingTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.context, self.page = MagicMock(), MagicMock()
+        self.context.new_page.return_value = self.page
+        self.page.url = NOTE_URL
+        self.page.goto.return_value.status = 200
+        self.page.content.return_value = '<script>window.__INITIAL_STATE__={}</script>'
+        for patcher in (
+            patch.dict(sys.modules, {'playwright': types.ModuleType('playwright'), 'playwright.sync_api': fake_playwright}),
+            patch.object(browser, 'PROFILE_DIR', Path(self.directory.name)),
+            patch.object(browser, 'launch_context', return_value=self.context),
+            patch.object(browser, 'has_login_session', return_value=True),
+            patch.object(browser, 'risk_reason', return_value=None),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def test_authorized_read_returns_html_without_cookie_export(self):
+        page, url = fetch.read_browser_page(NOTE_URL, 1)
+        self.assertIn('__INITIAL_STATE__', page)
+        self.assertEqual(NOTE_URL, url)
+        self.context.storage_state.assert_not_called()
+        self.context.close.assert_called_once()
+        self.context.new_page.assert_called_once()
+
+    def test_missing_session_does_not_navigate(self):
+        with patch.object(browser, 'has_login_session', return_value=False):
+            with self.assertRaises(fetch.FetchError) as caught:
+                fetch.read_browser_page(NOTE_URL, 1)
+        self.assertEqual('login_required', caught.exception.details['status'])
+        self.page.goto.assert_not_called()
+        self.context.close.assert_called_once()
+
+    def test_risk_stops_before_waiting_for_content(self):
+        with patch.object(browser, 'risk_reason', return_value='captcha'):
+            with self.assertRaises(fetch.FetchError) as caught:
+                fetch.read_browser_page(NOTE_URL, 1)
+        self.assertEqual('security_block', caught.exception.details['status'])
+        self.page.wait_for_function.assert_not_called()
+        self.context.close.assert_called_once()
+
+    def test_session_loss_discards_page_and_closes_context(self):
+        with patch.object(browser, 'has_login_session', side_effect=[True, False]):
+            with self.assertRaises(fetch.FetchError) as caught:
+                fetch.read_browser_page(NOTE_URL, 1)
+        self.assertEqual('login_required', caught.exception.details['status'])
+        self.context.close.assert_called_once()
+
+    def test_browser_exception_does_not_leak_signed_url(self):
+        self.page.goto.side_effect = RuntimeError('url?xsec_token=secret')
+        with self.assertRaises(fetch.FetchError) as caught:
+            fetch.read_browser_page(NOTE_URL, 1)
+        self.assertNotIn('secret', str(caught.exception))
+        self.context.close.assert_called_once()
+
+    def test_external_main_frame_navigation_is_aborted(self):
+        route = MagicMock()
+        route.request.url = 'http://127.0.0.1/private'
+        route.request.frame = self.page.main_frame
+        route.request.is_navigation_request.return_value = True
+        self.page.route.side_effect = lambda pattern, callback: callback(route)
+        with self.assertRaises(fetch.FetchError) as caught:
+            fetch.read_browser_page(NOTE_URL, 1)
+        self.assertEqual('navigation_blocked', caught.exception.details['status'])
+        route.abort.assert_called_once()
+        route.continue_.assert_not_called()
+
+    def test_public_mode_never_launches_browser(self):
+        args = argparse.Namespace(source=NOTE_URL, cookie_file=None, html_file=None, timeout=1, out_dir=None, metadata_only=True)
+        with patch.object(fetch, 'read_browser_page') as capture, patch.object(fetch, 'request_url',
+                return_value=(b'<html>login</html>', 'https://www.xiaohongshu.com/login', 'text/html')):
+            with self.assertRaises(fetch.FetchError):
+                fetch.run(args)
+        capture.assert_not_called()
 
 
 class CollectionTests(unittest.TestCase):

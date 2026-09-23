@@ -7,6 +7,12 @@ description: "Analyze video URLs or local video files by extracting timestamped 
 
 Use the bundled Python pipeline to get captions first, optionally download the video, extract representative JPEG frames, and obtain a timestamped transcript from native captions or an optional Whisper API fallback. Inspect the frames with `view_image`, then combine visual and transcript evidence to answer the user.
 
+For an X post/Article or a mixed link archive, `read-link` owns surrounding text, images,
+quoted-post attribution and authorized Notion delivery; this skill owns the video evidence.
+Do not use a post title, video description or thumbnail as its spoken transcript. Pure video
+questions stay here without an extra routing loop. Hand back existing artifacts, timestamps,
+provenance and missing intervals so the caller does not download or transcribe twice.
+
 ## Resolve `SKILL_DIR` (do this before any command)
 
 Every `python3 ...` command below runs a bundled script under `SKILL_DIR/scripts/`. Set `SKILL_DIR` to the absolute path of the directory containing this `SKILL.md`; use the path supplied by the harness when it loaded the skill. The scripts are direct siblings of this file in every install layout:
@@ -96,9 +102,31 @@ Optional flags:
 - `--fps F` — override auto-fps (clamped to 2 fps max)
 - `--out-dir DIR` — keep working files somewhere specific (default: an auto-generated tmp dir)
 - `--subtitle-lang CODE` — prefer a subtitle language, such as `zh` or `en`. The default selects one manual/source-language track; explicitly selected machine translations are labeled `translated`.
+- `--no-print-transcript` — suppress the long console body without dropping any saved segments. Always writes `transcript.json`, plain `transcript.txt` and timestamped `transcript.md`; use these files instead of truncated tool output for long videos.
 - `--whisper groq|openai` — force a specific Whisper backend (default: prefer Groq if both keys exist)
 - `--no-whisper` — disable the Whisper fallback entirely (frames-only if no captions)
 - `--no-dedup` — keep near-duplicate frames. By default a frame-delta pass drops frames that are visually near-identical to the previous kept one (held slides, static screen recordings, paused video) so the frame budget goes to distinct content; the report's **Frames** line notes how many were dropped. Pass this only if the user needs every sampled frame (e.g. judging subtle frame-to-frame motion).
+
+### Saved transcripts and provenance
+
+The JSON artifact retains source metadata, selected/available tracks, raw subtitle path,
+requested range, parse diagnostics and first/last timestamps. `complete` applies to the
+recorded `completeness_scope`, not verified full speech. Invalid cues produce `partial`;
+caption-free gaps alone do not establish missing speech. `manual` means uploaded captions,
+not necessarily verbatim, human-checked or original-language. When source language is unknown,
+inspect available tracks and choose explicitly when needed; never silently relabel a fallback.
+
+Re-export existing evidence without another network request:
+
+```bash
+python3 "${SKILL_DIR}/scripts/export_transcript.py" "<saved-transcript.json>" --out-dir "<export-dir>"
+```
+
+For original VTT replay, pass its path plus matching `--info-json`, `--subtitle-lang` and
+`--subtitle-kind manual|automatic|translated|unknown`. This is local processing only;
+exit `4` means partial, absent or unverified processing, with usable artifacts retained.
+Keep raw captions for reparsing; a cleaned JSON cannot recover text removed by an older parser.
+For link delivery/Notion requests, `read-link` owns the delivery boundary and readback.
 
 ### Focusing on a section (higher frame rate)
 
@@ -212,6 +240,6 @@ For follow-ups, reuse existing evidence. Re-run only the relevant range when the
 - Does not log, cache, or write API keys to stdout, stderr, or output files
 - Does not persist anything outside the working directory and `~/.config/watch/.env` — clean up the working directory when you're done (Step 5)
 
-**Bundled scripts:** `scripts/watch.py` (entry point), `scripts/download.py` (yt-dlp wrapper), `scripts/frames.py` (ffmpeg frame extraction), `scripts/transcribe.py` (caption selection + Whisper orchestration), `scripts/whisper.py` (Groq / OpenAI clients), `scripts/setup.py` (preflight + installer)
+**Bundled scripts:** `scripts/watch.py` (entry point), `scripts/download.py` (yt-dlp wrapper), `scripts/frames.py` (ffmpeg frame extraction), `scripts/transcribe.py` (VTT parsing), `scripts/export_transcript.py` (complete local text/Markdown/JSON export and offline replay), `scripts/whisper.py` (Groq / OpenAI clients), `scripts/setup.py` (preflight + installer)
 
 The implementation is derived from [bradautomates/claude-video](https://github.com/bradautomates/claude-video) and remains available under the bundled MIT license.
