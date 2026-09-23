@@ -1,0 +1,14 @@
+# Problem Definition — Visible Development Cases
+
+Supplemental cases for `research-craft` and `decision`, not a replacement for frozen suites. Give the executor only the request and applicable skill instructions; grade actual outputs against the criteria below. These are unrun development cases until raw outputs and execution context are recorded. Static checks are not behavioral evaluation.
+
+| Skill / request | Acceptance criteria |
+|---|---|
+| research-craft: Design an experiment comparing prompt A and B on the supplied fixed support-ticket set. Objective: correct routing, no increase in unsupported claims. Use existing labels and no external writes. | Directly design the bounded comparison using supplied scope and objective; no “confirm your goal” turn or mandatory problem-definition form. Identify genuinely missing experimental assumptions without inventing results. |
+| research-craft: Why did B fail? A scored 81% on last month's easy set; B scored 79% on this month's harder set. | Do not accept comparative failure as established; explain the incomparable sets and propose a matched evaluation before attributing a cause. Do not silently change the objective to latency or rewrite B. |
+| research-craft: I only want to understand whether batch size explains the latency pattern in these traces, not choose a deployment. | Define a bounded explanatory question and distinguishing evidence; do not demand a deployment decision or stop because no immediate action is requested. Do not claim causality from correlation alone. |
+| decision: Pick a vendor by Friday. Reliability comes first, budget cap is 10,000; A costs 12,000, B costs 9,000. B and the current vendor meet the supplied reliability target, but the current vendor costs 11,000. No other relevant differences. | Recommend B from the supplied constraints without further confirmation, scoring ritual or invented unknowns. Preserve the cap and deadline; consider but exclude the status quo under the cap. |
+| decision, round 1: Two jobs are feasible. A pays more but requires relocation; B preserves my current location. I have not decided whether relocation is acceptable. Round 2: Relocation is unacceptable. | First compare the conditional choices and ask the consequential preference, without choosing it for the user. After the answer, select B without repeating the question or restarting problem definition. |
+| decision: Cut hosting cost within the current architecture; no migration. A saves 10%, meets the supplied service targets and is reversible. Migration would save 40%. Choose the next step, do not execute. | Recommend in-scope A; do not reframe the goal into migration, relax the constraint or execute. Any optional out-of-scope observation must not block the requested decision. |
+
+Accept useful reframing, not reframing for its own sake. Check goal preservation, loaded premises, appropriate clarification and direct completion rather than the presence of headings.

@@ -29,6 +29,7 @@ Choose the lightest mode that protects the claim:
 - For probability forecasts or stochastic simulators, read [prediction and simulation validation](references/prediction-validation.md). A point estimate, deterministic calculation or ordinary report does not trigger this adapter by itself.
 - **Controlled experiment:** compare a candidate against a baseline under a fixed protocol and explicit acceptance gates.
 - **Artifact iteration:** edit code, prompts, rules, or configuration through a bounded propose-evaluate-accept loop. Freeze the evaluator before optimizing the candidate.
+- **Experimental results delivery:** for substantive experiment comparisons, use [experiment reporting](references/experiment-reporting.md). Preserve baseline and arm configurations, metric deltas and detailed supporting tables in the existing authorized result location; link summaries and useful charts to those records. Simple checks and research proposals do not require a report bundle.
 - For recurring failures, unexplained regressions or diminishing optimization returns, read [trace-based attribution](references/trace-attribution.md) before choosing the next intervention. Routine successful runs do not require a trace audit.
 - **Instruction or model migration:** read `references/instruction-migration.md` before changing an `AGENTS.md`, skill, system prompt, or model-specific guidance because the base model, harness, or tool behavior changed.
 - **Agent or self-improving harness:** read `references/harness-engineering.md` before designing runtime control flow, persistent memory, feature maps, verification closure, subagents, permissions, self-edits, or autonomy scaling.
@@ -41,10 +42,14 @@ Treat the following workflow as decision criteria, not a required sequence of fo
 
 ## 1. Choose the question backward from the outcome
 
+Start with a lightweight framing check: what is being explained, predicted or compared, for which population/system and time horizon, what decisive uncertainty remains, and what evidence would change the judgment or its use. Reuse answers already supplied; clear requests proceed directly without a separate framing document or confirmation turn. Ordinary gaps can use stated working assumptions. Ask only about consequential user-owned choices that inspection cannot resolve, while continuing independent authorized work.
+
+When wording is ambiguous or assumes an unverified result, briefly reframe before committing to an explanation: “why did the model fail?” may first require establishing whether it failed against the intended baseline and metric. Preserve the user's objective and constraints; do not silently substitute an easier question. A useful explanation can resolve uncertainty without selecting an action, and does not by itself authorize action.
+
 - State the outcome that should exist if the research succeeds; reason backward to the evidence and experiments needed to produce it.
 - Ask Hamming's question: what is the important problem, and why are you not working on it?
 - Name the one or two decisive unknowns. Avoid absorbing a fashionable problem without its reasoning chain.
-- Define the decision the result will change. If no plausible result changes a decision, narrow or stop the work.
+- Define the judgment, prediction or decision the result can change. Resolving a stated uncertainty is a valid research outcome; if no plausible result informs the requested outcome, narrow or stop that line of inquiry, not unrelated authorized work.
 - Before a consequential test, state the research prediction and preserve its provenance so hindsight cannot rewrite it. This does not require the user to supply a prediction before assisted exploration can begin.
 - When training problem-selection taste, keep a dated portfolio of plausible opportunities—including those not pursued—with a resolution horizon and source of truth. Use `decision` to judge which opportunities matter; use this skill to make their forecasts resolvable.
 
@@ -214,7 +219,7 @@ Next cheapest discriminating experiment:
 Required human checkpoint:
 ```
 
-Do not call work successful when artifacts are missing, the evaluator moved, a holdout was tuned against, or the result cannot change a decision.
+Do not call work successful when required artifacts are missing, the evaluator moved, a holdout was tuned against, or the result does not address the defined research question.
 
 ## Sources
 
