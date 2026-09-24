@@ -141,6 +141,8 @@ failure evidence
 
 Promote only a recurring failure or one high-consequence systemic failure whose cause, reusable boundary, and affected task class are clear. Require target cases, held-out regressions, clean negatives, preserved passing behavior, an owner, and a retirement trigger. Keep one-off symptoms in the error ledger. Retire or narrow a rule when it creates false positives, stale context, duplicated policy, or evaluator gaming.
 
+Keep admitted lessons at the narrowest verified scope: **project**, **domain**, or **global**. Record scope and dependencies beside the existing evidence and retirement trigger; these labels are not new files or mandatory promotion stages. A project win does not establish a domain rule, and a domain result does not justify global instructions. Broaden only with evidence from materially different contexts supporting the claimed transfer and its limits. Distinguish an observed result from an executable procedure and a general instruction; recording the first does not authorize installing the others. Shared Skill or global instruction edits still require applicable authorization. Narrow or demote a lesson when counterevidence or changed dependencies invalidate its scope.
+
 ## Put constraints in the strongest maintainable layer
 
 Do not ask an agent to remember an invariant that the environment can make impossible or reject deterministically. After establishing the root cause and a regression, choose the earliest decisive layer that fits the claim:

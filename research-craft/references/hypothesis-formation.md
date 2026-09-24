@@ -65,6 +65,20 @@ One miss can be compatible with a probabilistic forecast. Examine predeclared to
 
 When a result changes the explanation, record the specific link that changed: original premise → predicted intermediate behavior → observed mismatch → supported revision or unresolved rival → next discriminating check if needed. Reuse the existing log when writing is authorized. Do not convert one failed implementation into rejection of the whole mechanism, force a weekly lesson without new evidence, or treat a revised story as already validated.
 
+## Change Routes Without Changing The Goal
+
+When evidence undermines the current route or repeated probes stop adding useful information, separate the stable user outcome and locked bounds from the working hypothesis, method and next experiment. Change the latter within existing authorization and budget; do not keep optimizing a proxy after its link to the outcome fails. If the requested outcome appears infeasible, report the supporting evidence and alternatives rather than silently replacing it with an easier deliverable. Changes to locked objectives, risk bounds or acceptance criteria require the applicable owner decision; ordinary method changes do not create another approval gate. Evaluator repairs remain separately versioned harness work, not a way to rescue a failed candidate.
+
+For a consequential route change, keep a short entry in the existing authorized record: original hypothesis and scope, decisive evidence, route status and reason, selected next route, and what new evidence or condition would justify reopening. Distinguish:
+
+- **Falsified within scope:** an informative test contradicted a necessary premise; identify that premise and tested boundary.
+- **Paused:** resources, cost or priority prevent pursuit; do not call the mechanism disproven.
+- **Unresolved:** data, measurement or verification cannot distinguish explanations; do not turn missing evidence into a negative result.
+
+On resumption, check the relevant prior route and reopening condition before repeating it. New evidence or changed conditions can justify reconsideration; elapsed time or a fresh conversation alone cannot. Preserve raw evidence and make the current route and next action discoverable from the existing plan/log, without adding a second source of status.
+
+Keep exploration cheaper than confirmation: a bounded exploratory probe may use a provisional hypothesis and a small diagnostic sample, with its purpose and budget clear. It need not earn deployment-level proof before running, but its results do not establish general improvement or authorize promotion. Confirm consequential claims under the frozen evaluation and fresh-evidence rules. Judge progress by resolved uncertainties and verified outcomes, not runtime, experiment count or a forced lesson from every failed run. Stop or choose a different informative route when the current one is exhausted; do not fill the remaining budget with retries.
+
 This adapter neither creates a new ledger nor authorizes monitoring, contact, trading or other external actions. A supported negative or unresolved finding can complete the requested research.
 
 Source: user-supplied discussion of constraints, competing mechanisms, proxy validity and forecast journals; these are research design heuristics, not a claim to reconstruct any named researcher's private algorithm.

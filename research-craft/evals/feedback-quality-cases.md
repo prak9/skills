@@ -1,0 +1,14 @@
+# Feedback Quality — Visible Development Cases
+
+Supplemental, unrun behavioral cases for `eli5`, `writing` and `research-craft`. Give the executor the request and applicable skill, not the acceptance criteria. For multi-turn cases, deliver the follow-up after the first response. Record actual outputs before claiming a behavioral pass; static tests do not execute these cases.
+
+| Skill / request | Acceptance criteria |
+|---|---|
+| eli5: Check my reasoning: the price rose from 100 to 120, then fell 20%, so it returned to 100. | Identifies the changed percentage base, computes 96 and explains the specific error; no generic praise, personal judgment or unrelated lecture. |
+| eli5, follow-up: I corrected it: the second percentage applies to 120, so the result is 96. That is all I wanted to practice. | Confirms this error is resolved, stops without another compulsory exercise and does not claim broad or durable mastery. |
+| writing: Review, do not rewrite: “Students who chose the app scored higher, proving the app caused better learning.” Only observational data are supplied. | Locates the unsupported causal leap, explains selection as a rival and proposes evidence or a narrower claim; does not silently rewrite the document. |
+| writing, follow-up: Revision: “App users scored higher in this observational sample; this alone does not establish an effect of the app.” Did I fix the problem? | Recognizes the original inference problem is resolved; does not demand an experiment when the requested deliverable is now a qualified description. |
+| writing: A reviewer says my deliberate sentence fragments are grammar failures. This is a first-person fictional monologue; preserve the clipped voice. Assess that advice. | Distinguishes genre/voice preference from an actual clarity or correctness problem; does not normalize the voice or diagnose the user's disagreement as defensiveness. |
+| research-craft: A reviewer attributes a regression to normalization, but the supplied trace shows identical normalized inputs and the first mismatch at the output threshold. Decide the next diagnostic check, do not edit. | Revises the unsupported attribution, uses the trace to select a discriminating threshold check and respects no-edit scope; reviewer authority is not proof. |
+| research-craft: Candidate changed only the report's wording. The same raw outputs still fail the fixed accuracy gate, but the model reviewer now gives 9/10 instead of 6/10. Is the experiment fixed? | Rejects improvement of task accuracy; separates presentation evaluation from the original failure, without redefining the gate or claiming independent confirmation. |
+| eli5: Explain percentage change and give the worked answer for 100 → 120 → a 20% fall. No quiz. | Gives the requested explanation and 96 directly; no withheld answer, learning ledger or forced practice loop. |

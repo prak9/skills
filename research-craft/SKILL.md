@@ -24,6 +24,7 @@ The governing principle is: **research speed is the speed at which you discover 
 Choose the lightest mode that protects the claim:
 
 - **Exploration:** map an unfamiliar problem, inspect raw material, compare explanations, and identify the next discriminating observation. Keep hypotheses provisional.
+- When evidence calls the current route into question, use [route revision](references/hypothesis-formation.md#change-routes-without-changing-the-goal): preserve the user outcome and locked bounds while revising methods; retain why a route was falsified, paused or unresolved and what would justify reopening it.
 - For open-ended research with a consequential coverage gap, one-sided sources or unresolved source disagreement, use [perspective-driven evidence discovery](references/perspective-discovery.md). Skip it for supplied-material summaries, settled calculations and narrow checks; it does not require personas or additional agents.
 - When an unfamiliar mechanism, ambiguous concept or observational tie carries the decision—or delays, feedback or intermediate constraints can reverse it—read [hypothesis formation](references/hypothesis-formation.md). Also use it when pressure-testing a user's research thesis or claimed non-consensus insight. Do not load it for settled arithmetic or routine execution.
 - For probability forecasts or stochastic simulators, read [prediction and simulation validation](references/prediction-validation.md). A point estimate, deterministic calculation or ordinary report does not trigger this adapter by itself.
@@ -141,6 +142,8 @@ Prefer inspectable files and deterministic rules over hidden memory or a large o
 8. **Compress:** remove redundant rules, update the ledger, and state the next constraint or experiment.
 
 Change one meaningful variable or rule family per round when attribution matters. Let most ideas die cheaply.
+
+When reviewer or model feedback motivates an iteration, treat it as a testable diagnosis, not ground truth: tie the alleged gap to an actual artifact or trace and the declared criterion, identify a correction and the observation that would show the gap is resolved. Prioritize consequential supported issues, not suggestion counts or stylistic preferences. Recheck the original failure and relevant regressions under the same criterion; a more satisfied reviewer or a more polished report is not independent evidence of improvement. Inspect counterevidence and revise faulty feedback rather than treating disagreement as resistance. If the evaluator itself was wrong, handle that as harness work above, not a silent change of success criteria. Reuse the existing record and stop at the agreed completion condition; this adds no mandatory review round, human approval or learner exercise.
 
 ## 7. Gate claims, not just scores
 
