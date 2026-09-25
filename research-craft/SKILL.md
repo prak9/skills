@@ -5,7 +5,7 @@ description: 设计和评估可证伪的研究或 Agent Harness 实验，包括 
 
 # Research Craft
 
-Treat research as a system for changing beliefs with evidence, not as idea generation or repeated execution.
+Treat research as a system for changing beliefs with evidence. Idea generation, intuition and open-ended inspection are useful exploratory moves; they do not by themselves validate a claim.
 
 ```text
 important question
@@ -38,6 +38,8 @@ Choose the lightest mode that protects the claim:
 - **Quantitative or trading strategy:** read `references/quant-strategy-iteration.md` before changing a strategy, backtest, scorer, data split, promotion gate, or distributed experiment wrapper.
 
 Do not force exploratory work into fake precision. Increase control as soon as the work makes a comparative, causal, performance, safety, or deployment claim.
+
+Exploration may start before a precise hypothesis exists. Within the authorized scope and budget, inspect examples, sketch rival models, follow an unexpected clue or try a reversible probe; choose and reorder methods as useful. Label provisional ideas and distinguish discovery from confirmation. Do not require every idea to have a baseline, numerical probability, full contract or permanent log before investigating it. Tighten evaluation when presenting a finding as established, not merely when considering a possibility.
 
 Treat the following workflow as decision criteria, not a required sequence of forms or approvals. Use the minimum contract that can evaluate this request. Reuse supplied goals, budgets, and permission boundaries; clarify only consequential gaps that inspection cannot resolve. A request to implement an experiment or instruction change authorizes its scoped local work, not deployment or an external publication.
 
@@ -87,7 +89,7 @@ Acceptance, rejection, and stop rules:
 Human or permission checkpoints:
 ```
 
-Match strictness to risk. A disposable probe may need only a hypothesis, expected observation, and note. A claim that can move capital, production, safety controls, or a benchmark needs the full contract.
+Match strictness to risk and claim. A disposable probe may need only the question and a recoverable observation. For claims that can move capital, production, safety controls, or a benchmark, make the relevant evidence, comparison, boundaries and acceptance criteria explicit; use only applicable fields rather than filling the entire template. Preserve any explicitly required schema or evaluation protocol.
 
 Separate two kinds of work:
 
@@ -130,7 +132,9 @@ Make evidence easy to produce and hard to counterfeit:
 
 Prefer inspectable files and deterministic rules over hidden memory or a large opaque framework.
 
-## 6. Run one informative loop at a time
+## 6. Adapt the loop to the uncertainty
+
+The sequence below is a useful shape for a controlled comparison, not a prerequisite for discovery. Exploratory rounds may combine changes to find a promising direction; retain what changed and avoid attributing gains to an individual component until a discriminating comparison supports that attribution.
 
 1. **Baseline:** reproduce the current champion and verify the harness.
 2. **Diagnose:** inspect raw failures and identify one concrete weakness or uncertainty.
@@ -171,9 +175,9 @@ Match evidence to the claim. Assisted product scores measure assisted performanc
 
 Separate learner-generated explanations, predictions and error corrections from model-supplied work. Satisfaction, confident self-reports and an AI tutor's approval are not substitutes for demonstrated application. If the learner has not attempted the check, report missing evidence rather than a pass. A single exercise supports a narrow observation, not durable mastery or broad cognitive development. Reuse the existing evaluation record; a test design does not authorize recruitment, scheduled follow-up or new external data collection.
 
-## 8. Turn every run into durable learning
+## 8. Preserve useful evidence and learning
 
-Use the project's existing research log or control documents. Do not create a competing ledger when one already exists. Record failures immediately because memory preferentially keeps convenient evidence.
+Use the project's existing research log or control documents. Do not create a competing ledger when one already exists. Preserve consequential failures and findings, including those that change direction or affect a reported comparison; a disposable exploration does not require a separate permanent entry. Keep all records required by an active evaluation protocol, including unsuccessful runs.
 
 ```text
 run_id / date:
