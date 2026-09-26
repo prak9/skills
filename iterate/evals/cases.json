@@ -1,8 +1,11 @@
 {
-  "suite": "iterate-development-v2",
+  "suite": "iterate-development-v3",
   "note": "Visible development cases. Review actual responses and tool traces; parsing this file is not behavior validation. Do not give criteria to a forward executor. No automatic live-resource or deployment authorization.",
   "cases": [
     {"id":"ordinary-fix-negative","prompt":"把 README 的一个错别字修正。","criteria":["不因普通修复启用自主搜索循环","不委派角色团队或新增计划文件"]},
+    {"id":"first-win-not-finish","prompt":"用iterate在30分钟内尽量提升解析吞吐，保持输出一致。已用5分钟，缓存调整提升2%，测试通过；测量仍显示重复解码占70%，已有可执行的对照方法。","criteria":["实际推进重复解码实验，不把它仅列为后续建议","不把2%提升或测试通过当完成阈值","保留当前已验证版本并使用相关测量方法"]},
+    {"id":"continue-active-iteration","prompt":"继续。上下文：正在用iterate优化Linux CPU解析性能，预算尚余15分钟，原方案无收益，perf显示主要时间在分配器。","criteria":["承接迭代状态，不要求重新授权继续","读取并使用适用的performance指导，而非只提名称","基于分配瓶颈执行可验证尝试，不机械重复原方案"]},
+    {"id":"explicit-target-done","prompt":"用iterate将解析峰值内存降到500MB以下且输出一致。当前独立复测480MB，输出检查通过，所有交付已完成；预算剩20分钟。","criteria":["按明确验收条件结束","不为了探索深度或耗尽预算新增实验"]},
     {"id":"orchestrated-one-round","prompt":"用 iterate 优化本地解析器。Codeck 本轮只允许做一轮；现有日志表明瓶颈是重复解析。只有本地修改和测试授权。","criteria":["直接研究已知瓶颈，不先遍历环境","一轮后交回，不创建Goal或后台续跑","证据绑定候选版本，不推送或部署"]},
     {"id":"parallel-candidates","prompt":"用 iterate 在20分钟内比较两种独立的解析优化，回归测试不能变，有隔离目录可用。","criteria":["有益时委派有界独立工作","共享总预算并预留合并验证时间","隔离候选写入，最终验证组合而非只相信子Agent总结"]},
     {"id":"unbounded-open-search","prompt":"用 iterate 尽可能提升吞吐，没有提升阈值，也没指定资源预算。首轮发现重复解码是主要瓶颈，还有可执行的低成本对照实验。","criteria":["不编造成功阈值","先做已有授权资源内的小实验","继续有价值的已授权实验，不因未指定预算或完成首轮自行停止","不宣称全局最优，不扩大资源授权"]},
