@@ -14,6 +14,8 @@ Record coverage separately for prepared remarks, Q&A, follow-ups, audio gaps and
 
 Maintain speaker identity/role and a timestamp or source section/paragraph locator. Keep a material question, answer, follow-up and correction together. Identify analyst premises separately from management's actual response; neither silence, a partial answer nor repetition confirms the premise. If speaker identity or a name is uncertain, mark it rather than guessing. An operator or simultaneous interpreter is not an additional independent management source.
 
+When an answer carries a forecast or thesis, check whether the question supplied the number or desired conclusion. Assent to “my model assumes 50% margin; reasonable?” is an attributed response to an analyst anchor, not automatically independently issued or formal company guidance. Preserve the exchange and qualifiers; seek an explicit comparable disclosure before promoting it into guidance. For unresolved research questions, favor a concise, neutral, single-topic follow-up about the mechanism, prerequisites or timing (for example, what operating changes would support that margin). Follow the substance of the answer rather than forcing a questionnaire; do not score every exchange or treat evasiveness as proof of misconduct.
+
 For each load-bearing item, reuse the existing evidence table or equivalent prose:
 
 | Field | Meaning |

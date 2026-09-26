@@ -20,6 +20,14 @@ news -> observed signal -> economic hypothesis -> rival explanations
 6. **Score only when useful.** Qualitatively or 1–5 compare signal support, transmission clarity, purity, company-scale elasticity, neglect, validation speed, and downside. Do not average away a broken transmission link.
 7. **Set a research posture.** Observe, consider after specified proof, or reject the supported claim as appropriate. A small position does not validate an uncertain thesis, and proof of an unfavorable value gap does not establish executable short-sale economics. Do not force a candidate, a numeric score or a trade from a news request.
 
+## Neglect And Historical Winners
+
+Use these checks only when small size, low coverage, illiquidity or future institutional discovery carries the opportunity thesis; they are not a preference for microcaps or a mandatory screening stage.
+
+- **Explain the absence.** Distinguish overlooked economics or documented mandate/position-size constraints from a justified discount for weak governance, funding dependence or poor business quality. Institutions have different eligibility rules; do not assume none can buy. Name what could change a relevant constraint and what supports that path, without making an imminent rerating necessary by default.
+- **Value without discovery.** Test whether supported per-share cash generation and distributions can justify the case without new institutional buyers or multiple expansion. If returns depend on discovery, expose that dependence. Carry financing and dilution into the model, and spread, executable capacity and stressed exit liquidity into the applicable exposure analysis; low liquidity is both a possible source of mispricing and a real cost, not free alpha.
+- **Learn from matched outcomes.** When using past winners to infer a selection edge, compare contemporaneously similar failures and ordinary outcomes using information available at the selection date. The share of winners that began small is not the probability that a small company becomes a winner. Before importing historical size/liquidity returns, inspect the universe, delistings, survivor selection, weighting, rebalancing, sample window and trading costs. If the underlying study cannot be checked, retain the claim as unverified rather than a return assumption. Do not require a new backtest for every company memo.
+
 ## Output
 
 ```markdown
