@@ -57,6 +57,8 @@ A price fall alone proves neither cheapness nor thesis failure: separate the new
 
 ## 4. Bound Exposure Robustly
 
+Concentrated research attention and concentrated capital are different choices. Deep familiarity can improve diagnosis but does not remove funding, liquidity, correlated-tail or permanent-loss risk. Historical wealth concentrated in a few winning stocks does not establish that those winners were identifiable in advance or that a particular investor can select them. When concentration is requested, test the evidence of selection advantage and the portfolio's ability to survive being wrong; do not import an admired investor's holding count, increase exposure merely after wins, or use real-money risk as a learning requirement. Scale and personal liquidity needs can change whether an otherwise unchanged strategy remains feasible.
+
 Do not derive a position percentage without the user's portfolio size, existing exposures, maximum tolerable loss, liquidity horizon, tax/financing constraints, and a sufficiently supported payoff distribution. When those inputs are absent, provide a conditional posture such as `observe`, `small exploratory`, `add after validation`, `reduce`, or `exit`, plus the evidence or price gate that changes it.
 
 Use Kelly-style sizing only as a diagnostic upper bound when bets are sufficiently repeatable, payoffs and probabilities are estimable, losses are bounded, and cross-position dependence is modeled. Never present full Kelly or the approximation `mu / variance` as a universal recommendation. Shrink uncertain edge estimates, stress adverse correlation and tails, and cap any model-derived fraction:

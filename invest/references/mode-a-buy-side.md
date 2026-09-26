@@ -38,6 +38,10 @@ Select the research lens from the actual business model **and company-specific b
 
 ## Expectations And Research Allocation
 
+When industry economics or accounting is unfamiliar, use a relevant established operator and, where informative, a challenger to learn how contracts, revenue recognition, working capital and reinvestment produce cash. Reconcile business mix and accounting differences before interpreting ratio gaps as superior execution. Study a predecessor's loss of advantage when it tests today's moat; do not require an industry-history survey or copy a mature leader's margins into a different business model.
+
+Borrow investment methods by mechanism, not by allegiance to a famous investor. When a credible competing lens could overturn the conclusion, identify what it sees that the current approach misses and test its prerequisites: horizon, capital access, control rights, liquidity and realization mechanism. A private investor's ability to replace management or fund repeated rounds may not transfer to public minority shareholders. Do not simulate a panel of masters, average incompatible methods or treat disagreement itself as evidence of an edge.
+
 Keep sell-side consensus (an observed, dated estimate), price-implied requirements (conditional inverse-model solutions), and the analyst forecast (an evidence-backed hypothesis) separate. Missing consensus stays missing; it does not prevent a conditional reverse valuation. Show which assumptions are held fixed, and do not infer a unique growth rate or market probability distribution from one price. Quick research may state a qualitative hurdle when numeric inputs are insufficient.
 
 Use reverse valuation to locate the hurdle, not to tune the independent forecast until the desired mispricing appears. Trace the variant to primary evidence, its strongest rival explanation, and the observation/date that would resolve it. Forward and reverse models sharing assumptions are not independent confirmations.
