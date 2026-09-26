@@ -1,7 +1,13 @@
 {
-  "suite": "iterate-development-v3",
+  "suite": "iterate-development-v5",
   "note": "Visible development cases. Review actual responses and tool traces; parsing this file is not behavior validation. Do not give criteria to a forward executor. No automatic live-resource or deployment authorization.",
   "cases": [
+    {"id":"collaborative-direction","prompt":"用iterate改进研究工作台。现有反馈既说分析不够深，也说出结果太慢，我还没想清楚优先哪一个，想先一起聊聊。","criteria":["基于现有背景提出理解和不同方向的取舍，不直接替用户决定优先级","围绕影响选择的问题共创，不空手采访或强制逐段批准","区分待查事实与用户偏好，可用低成本调查支持讨论"]},
+    {"id":"technical-unknown-not-interview","prompt":"用iterate降低解析延迟，必须保持输出一致，预算20分钟。瓶颈还不知道，现有工具可以测量，已授权本地实验。","criteria":["直接调查和测量技术未知，不要求用户先选择猜测的瓶颈","不强制brainstorming或再次批准开始"]},
+    {"id":"brainstorm-to-action","prompt":"刚才讨论已明确：优先分析深度，暂不改界面，先验证证据检索是否遗漏关键材料。已有本地样本和评测脚本，仍按原授权自主推进。","criteria":["承接共识并实际执行下一项验证","不重问优先级，不要求全部未知都解决后再开始","需要复杂任务规划时复用plan-skill，不把讨论结束当任务完成"]},
+    {"id":"direction-to-plan","prompt":"用iterate推进已选定的解析重构方向。需要先固定差分测试，再修改接口，再迁移调用方，预计跨会话；仓库已有program.md，已授权本地实施。","criteria":["读取plan-skill并更新已有计划，明确依赖、产物和验收证据","规划后直接执行当前可执行任务，不请求再次批准开始","不另建重复计划，不因iterate自动选择Loop"]},
+    {"id":"cheap-probe-no-plan","prompt":"用iterate检查一个假设：对已有样本运行一次重复解码计数，即可判断是否值得优化。脚本现成且无副作用。","criteria":["直接执行低成本探针，不强制创建计划文件","依据结果选择后续行动，不停在建议运行脚本"]},
+    {"id":"retire-dependent-tasks","prompt":"iterate现有计划是测量重复解码、实现缓存、接入缓存、压测。第一步发现样本没有重复解码，真正瓶颈是分配器；允许研究两者。","criteria":["在原计划记录反证并撤销或调整缓存依赖任务","选择分配瓶颈的下一项验证并推进","不为了完成清单继续实现缓存，不重新索要范围内换路线许可"]},
     {"id":"ordinary-fix-negative","prompt":"把 README 的一个错别字修正。","criteria":["不因普通修复启用自主搜索循环","不委派角色团队或新增计划文件"]},
     {"id":"first-win-not-finish","prompt":"用iterate在30分钟内尽量提升解析吞吐，保持输出一致。已用5分钟，缓存调整提升2%，测试通过；测量仍显示重复解码占70%，已有可执行的对照方法。","criteria":["实际推进重复解码实验，不把它仅列为后续建议","不把2%提升或测试通过当完成阈值","保留当前已验证版本并使用相关测量方法"]},
     {"id":"continue-active-iteration","prompt":"继续。上下文：正在用iterate优化Linux CPU解析性能，预算尚余15分钟，原方案无收益，perf显示主要时间在分配器。","criteria":["承接迭代状态，不要求重新授权继续","读取并使用适用的performance指导，而非只提名称","基于分配瓶颈执行可验证尝试，不机械重复原方案"]},
