@@ -136,6 +136,8 @@ Prefer inspectable files and deterministic rules over hidden memory or a large o
 
 The sequence below is a useful shape for a controlled comparison, not a prerequisite for discovery. Exploratory rounds may combine changes to find a promising direction; retain what changed and avoid attributing gains to an individual component until a discriminating comparison supports that attribution.
 
+When choosing the next probe, especially after research stalls, match it to the uncertainty carrying the conclusion. Missing facts call for source or measurement checks; observationally tied mechanisms call for a discriminating comparison; poorly estimated parameters call for comparable data or sensitivity analysis; changed operating conditions call for revisiting model boundaries. Outcome randomness may remain after those checks, making a predictive range or robustness analysis more useful than additional reading. These sources can coexist: choose the cheapest feasible step that could change the requested judgment, and explain what it can resolve. A failed search alone does not establish irreducibility. When further feasible work cannot change the conclusion within useful bounds, deliver the supported result and remaining uncertainty. Use this as a diagnostic lens, not a required classification form or another approval gate.
+
 1. **Baseline:** reproduce the current champion and verify the harness.
 2. **Diagnose:** inspect raw failures and identify one concrete weakness or uncertainty.
 3. **Propose:** state one mechanism-level hypothesis and its expected observation.
