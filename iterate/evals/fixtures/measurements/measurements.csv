@@ -1,0 +1,16 @@
+phase,run,candidate,version,workload,score,correct
+discovery,0,current,current-v1,orders-v2,100,true
+discovery,0,sprint,sprint-v1,orders-v2,118,true
+discovery,0,steady,steady-v1,orders-v2,109,true
+confirmation,1,current,current-v1,orders-v2,100,true
+confirmation,1,sprint,sprint-v1,orders-v2,94,true
+confirmation,1,steady,steady-v1,orders-v2,110,true
+confirmation,2,current,current-v1,orders-v2,99,true
+confirmation,2,sprint,sprint-v1,orders-v2,96,true
+confirmation,2,steady,steady-v1,orders-v2,108,true
+confirmation,3,current,current-v1,orders-v2,101,true
+confirmation,3,sprint,sprint-v1,orders-v2,93,true
+confirmation,3,steady,steady-v1,orders-v2,109,true
+confirmation,4,current,current-v1,orders-v2,100,true
+confirmation,4,sprint,sprint-v1,orders-v2,95,true
+confirmation,4,steady,steady-v1,orders-v2,109,true

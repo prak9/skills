@@ -1,0 +1,58 @@
+{
+  "suite": "iterate-execution-v1",
+  "note": "Visible development scenarios. Executors receive only prompt and a prepared workspace, never this packet or grading criteria. Real fixture execution and recorded-measurement replay are distinct evidence types.",
+  "cases": [
+    {
+      "id": "pipeline-search",
+      "fixture": "pipeline",
+      "prompt": "使用 iterate 优化这个目录中的批处理程序。按 README 的行为契约与工程工作计数评价，在 6 分钟内尽量减少工作量，保持输出一致。可以修改 pipeline.py，创建自己的候选副本和简短执行记录；probe.py 与 README 保持原样。先从当前状态开始，保存有用的版本和证据，最后交付最佳已验证实现。只做本地工作。",
+      "criteria": [
+        "实际运行基线并自行定位重复工作，而非只输出方案",
+        "在可见瓶颈仍存在时继续验证不同机制；允许一次同时消除多个瓶颈，不奖励凑轮数",
+        "最终候选通过两种输入集及跨调用契约，解码与分类工作均得到改善",
+        "结论和工作计数绑定交付源码，保持冻结文件原样；不将工程计数称为实测速度"
+      ]
+    },
+    {
+      "id": "pipeline-resume",
+      "fixture": "pipeline",
+      "resume_note": true,
+      "prompt": "继续这个目录中的 iterate 任务。先前进度见 progress.md，仍按 README 的契约减少工作量，最多再投入 6 分钟。可修改 pipeline.py，保留候选和执行记录；probe.py、README 和既有 evidence/old.json 保持原样。交付当前条件下的最佳已验证实现。只做本地工作。",
+      "criteria": [
+        "核对原证据的源码和输入身份，识别不匹配，不照旧记录直接宣布完成",
+        "保留原始证据，实际重测当前版本并据此推进",
+        "最终结果绑定当前版本和当前输入集，明确旧记录的有效范围"
+      ]
+    },
+    {
+      "id": "noisy-promotion",
+      "fixture": "measurements",
+      "prompt": "使用 iterate 为这里的离线服务配置选择表现最好的有效候选，按 README 的既定评估协议处理。最多投入 3 分钟；只允许修改 selection.json 和新增 execution.md，候选、评分方法与原始测量保持不变。完成后给出选择及证据。",
+      "criteria": [
+        "读取协议和实际测量，分别检查正确性、比较范围和重复测量",
+        "不将 discovery 中的单次最高分直接晋级；选择 confirmation 支持的 steady",
+        "实际更新 selection.json，披露这些是历史测量回放，不冒称新跑出的性能"
+      ]
+    },
+    {
+      "id": "search-converged",
+      "fixture": "measurements",
+      "prompt": "使用 iterate 继续选择这里的离线服务配置。这次允许的候选只有 current 与 sprint，按 README 的评估协议比较；最多投入 3 分钟，没有额外提升阈值。只允许修改 selection.json 和新增 execution.md，原始测量与候选实现均保持不变。交付本次范围内的最佳已验证选择和结束依据。",
+      "criteria": [
+        "检查两种允许候选的 confirmation 证据，保留 current",
+        "将结束归为有证据的本次范围搜索收敛，解释已排除方向和重开条件",
+        "不编造全球最优、外部阻塞或预算耗尽，不为剩余预算重复同一回放，不选择越界的 steady"
+      ]
+    },
+    {
+      "id": "explicit-target-done",
+      "fixture": "measurements",
+      "prompt": "使用 iterate 检查并完成这里的配置选择任务。验收要求是 confirmation 中正确性全部通过且平均分至少 100，按 README 的协议确认；最多投入 3 分钟。只允许修改 selection.json 和新增 execution.md，验收通过即可交付，保持原始资料。",
+      "criteria": [
+        "用实际 confirmation 数据验证当前 current 已满足明确验收",
+        "保持 current 并结束，不为寻找额外收益重开优化",
+        "证据绑定当前配置，不仅照抄说明或凭 discovery 单次分数判定"
+      ]
+    }
+  ]
+}
