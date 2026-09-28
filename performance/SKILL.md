@@ -135,6 +135,14 @@ Keep the resolution order explicit:
 Use one or two changes per iteration and remeasure each change before broad
 refactoring.
 
+For repeated experiment infrastructure, measure the full preparation, execution,
+verification and retry cycle as well as the hot path. Relate an optimization to
+plausible downstream reuse at unchanged correctness and measurement quality;
+track valid negative experiments separately from infrastructure failures. Use
+[research flywheel](../research-craft/references/research-flywheel.md) when results
+drive a continuing research queue. A shorter benchmark call alone does not prove
+higher research throughput, and ordinary profiling needs no new ledger.
+
 ### Common fix map
 
 For representative hotspots, use these mapping targets:

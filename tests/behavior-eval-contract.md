@@ -50,6 +50,8 @@ When a new rule raises reads, questions, or operations, compare it with the froz
 
 The deterministic evaluator and its unit-test fixtures validate the result envelope; they are not model runs. A model or instruction migration is not verified until real harness records with raw outputs and observed actions have been graded.
 
+For new bounded command-based artifact experiments, use the separate [captured experiment path](../research-craft/references/research-flywheel.md#captured-command-experiments). It records process receipts and invokes a distinct grader; it does not convert self-reported `behavior_pass` or costs into trusted telemetry. Keep this v2 envelope and its frozen cases compatible. `--suite all` means core plus instruction-migration only, not every case packet in the repository; inventory other packets as unrun, artifact-replayed or behavior-graded with evidence links. Captured artifact checks and independently graded agent behavior remain different evidence scopes.
+
 ## Principle-Transfer Development Packet
 
 `principle-transfer-cases.jsonl` is a supplementary `principle-transfer-v1` packet for timing decisions, abstraction fidelity, resource tradeoffs, completion boundaries, and audience-aware writing. All cases are visible development cases, not new holdouts. Keep the core and instruction-migration suites unchanged.

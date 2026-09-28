@@ -1,0 +1,8 @@
+{
+  "source": "invest/evals/learning-loop-sequence.json; Q4 has no supplied actual outcome",
+  "claims": [
+    {"id": "q2-profit", "forecast": 2800, "actual": 2040, "resolution": "resolved"},
+    {"id": "q3-profit", "forecast": 2560, "actual": 1960, "resolution": "resolved"},
+    {"id": "q4-profit", "forecast": 2560, "actual": null, "resolution": "not_due"}
+  ]
+}

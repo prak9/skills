@@ -35,6 +35,7 @@ Choose the lightest mode that protects the claim:
 - **Instruction or model migration:** read `references/instruction-migration.md` before changing an `AGENTS.md`, skill, system prompt, or model-specific guidance because the base model, harness, or tool behavior changed.
 - **Agent or self-improving harness:** read `references/harness-engineering.md` before designing runtime control flow, persistent memory, feature maps, verification closure, subagents, permissions, self-edits, or autonomy scaling.
 - **Automated scientific or engineering discovery:** read `references/automated-discovery.md` before decomposing a problem into parallel experiments, optimizing iteration throughput, designing a multimodal research system, or extracting reusable infrastructure from a narrow-domain loop.
+- **Evaluation/data flywheel:** for repeated experiments driven by task feedback, read [research flywheel](references/research-flywheel.md). Connect cases, captured runs, independent grades and subsequent findings; measure the complete learning cycle and keep development data separate from confirmation. This is not a logging requirement for ordinary research answers.
 - **Quantitative or trading strategy:** read `references/quant-strategy-iteration.md` before changing a strategy, backtest, scorer, data split, promotion gate, or distributed experiment wrapper.
 
 Do not force exploratory work into fake precision. Increase control as soon as the work makes a comparative, causal, performance, safety, or deployment claim.
@@ -131,6 +132,8 @@ Make evidence easy to produce and hard to counterfeit:
 - Prove the agent can reach, reproduce, act, observe, compare, preserve evidence, and recover before multiplying workers or authority; otherwise record the human-verification debt.
 
 Prefer inspectable files and deterministic rules over hidden memory or a large opaque framework.
+
+For bounded local command experiments, [run_experiment.py](scripts/run_experiment.py) captures execution, a separate artifact grader and measured elapsed time. Its packets support replay and cost summaries; they do not attest to nested agent actions, hidden holdout isolation or model improvement. Use an existing capable harness instead when available.
 
 ## 6. Adapt the loop to the uncertainty
 

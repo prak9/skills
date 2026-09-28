@@ -28,6 +28,8 @@ Prefer the lighter surface when uncertain. Upgrade Lite in place when its state 
 
 Never create a second hand-maintained view of state that can be derived from an authoritative field.
 
+For an authorized research flywheel, plan nodes link the existing case/run/grade/finding/change IDs and their raw evidence; the experiment packet owns execution and grading facts. Preserve pending outcome dates, failed or unresolved runs and dependency changes needed for recovery. Derive summaries from those records instead of copying scores into a second ledger. Use [research-craft's flywheel contract](../research-craft/references/research-flywheel.md) only for repeated research, not ordinary Lite work.
+
 ## Create Or Refresh
 
 1. Read the request, relevant repository instructions, specs, entry points, tests, configuration, and recent changes.

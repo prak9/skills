@@ -20,11 +20,15 @@ Provide a short data dictionary: row grain, unique keys, units, missing-value se
 
 Check key uniqueness at the declared grain, join multiplicity, expected vs actual rows, missing/failed/excluded counts and reconciliation of the summary to the supporting tables within a stated rounding tolerance. Do not fill missing results with zero. Preserve filters and computation commands/scripts so another run can regenerate the same summary; a file hash alone does not verify its contents or the metric logic.
 
+For repeated research, link case, run, grade, finding and change IDs in these existing tables. Record sampling origin/family, development or confirmation exposure, and the observation or outcome due date when relevant. Capture process costs from the harness where possible; retain self-reported costs as such and unknown values as unknown. Separate valid negative results, unresolved judgments and execution/grading failures. Use the [flywheel contract](research-flywheel.md) when these records drive future sampling or experiment selection.
+
 ## Compare without hiding the tradeoff
 
 For a metric B at baseline and C for a candidate, report the signed absolute change `C - B`. For positive, meaningfully nonzero B, relative change can be `100 * (C - B) / B`; label its direction, since lower loss may be better. For zero, negative or near-zero baselines, use absolute changes and explain why relative change is N/A or unstable, unless a justified domain convention is explicitly defined. A rate changing from 40% to 44% is +4 percentage points and +10% relative, not +4% relative.
 
 Show primary metrics alongside relevant risk, cost, coverage and sample-size guardrails. Report uncertainty when it matters and is estimable; respect paired observations, time dependence and the actual independent unit. No made-up intervals from aggregate-only data. Keep tuning/validation outcomes separate from untouched test confirmation. Disclose search exposure and failed arms rather than presenting only the best run.
+
+When efficiency is claimed, include preparation, unsuccessful trials/retries, verification and human intervention within the measured boundary. Summed run durations measure consumed execution time, not a parallel campaign's wall-clock duration. Compare best confirmed quality against cumulative budget/time when useful; a faster isolated call does not establish faster learning. Keep representative workload results separate from oversampled challenge cases.
 
 ## Visualize to answer a question
 

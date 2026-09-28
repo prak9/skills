@@ -51,6 +51,10 @@ discriminating experiments x evidence validity x independence x integration rate
 
 Increasing parallelism amplifies error when validity, independence, or integration falls.
 
+For a repeated evaluation/data loop, use [research flywheel](research-flywheel.md). Measure preparation, execution, verification and decision latency separately where observable. Lower experiment cost and higher execution reliability should buy more discriminating trials and room for uncertain, mechanism-diverse directions. Preserve independent-confirmation capacity as search expands; selecting from more trials increases the opportunity to find a lucky score.
+
+Evaluate infrastructure as a candidate investment: compare its construction and maintenance cost with plausible downstream reuse and saved cost at equivalent evidence quality. Keep money, elapsed time and human effort separate unless an explicit conversion is justified. A cheaper probe earns wider use only after checking what decisive failures it can miss; record ranking reversals between proxy and full evaluation. Track valid negative findings separately from launch, data and grading failures.
+
 ## Coordinate Coupled Improvement Loops
 
 Treat problem decomposition, data selection, evaluator design, candidate architecture or algorithm, training procedure, and portfolio scheduling as separate, versioned loops.
@@ -76,6 +80,7 @@ priority ~= (expected reduction in decision-relevant uncertainty
 
 - Stage cheap falsifiers before expensive confirmations, and expand a run only through predeclared evidence gates.
 - Maintain separate capacity for exploitation, exploration, independent replication, and evaluator or leakage audits. Do not let the current leader consume the whole budget.
+- Revisit the allocation after observed learning and bottleneck changes. A small cheap task is not automatically more valuable than testing the main unresolved mechanism; reserve room for uncertain alternatives without imposing universal budget percentages.
 - Treat the priority as a forecast to calibrate after resolution, not as ground truth. Record expected and realized learning value in the ledger.
 - Do not rely only on an experiment-proposing model's estimate of its own value. Use replay performance, independent checks, or a separately governed scheduler.
 - Count repeated exposure to the same evaluator or holdout as an adaptation cost even when wall-clock execution is cheap.

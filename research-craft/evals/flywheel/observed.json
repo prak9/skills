@@ -1,0 +1,896 @@
+{
+  "schema": "research-flywheel-observation-v1",
+  "date": "2026-09-28",
+  "scope": "Captured artifact replay and synthetic reconciliation; no new model runs, unseen holdout or capability uplift. Full source snapshots remain in local packets; committed fixtures reproduce the observations.",
+  "summary": {
+    "coverage": "provided_packets_only",
+    "evidence_scope": "Visible artifact regressions and synthetic reconciliation; no new model execution or holdout",
+    "expected_runs": [
+      "pipeline-contract-candidate-resume",
+      "pipeline-contract-candidate-pipeline",
+      "forecast-reconciliation-rewritten",
+      "forecast-reconciliation-retained"
+    ],
+    "groups": {
+      "2ed3fbf49f6a7c1b7c120c0a2fa2e121ff66cff83a870e19af294f6279b13577": [
+        "forecast-reconciliation-rewritten",
+        "forecast-reconciliation-retained"
+      ],
+      "dbc3107de00575c4a76083f62b14146a6b1e7de86cb96224a886fe05fecd1fe1": [
+        "pipeline-contract-candidate-resume",
+        "pipeline-contract-candidate-pipeline"
+      ]
+    },
+    "invalid_packets": 0,
+    "inventory_complete": true,
+    "promotion": "not_decided; artifact checks and comparable identities do not establish uplift",
+    "provided_runs": 4,
+    "resources": {
+      "cost": null,
+      "human_seconds": null,
+      "tokens": null
+    },
+    "runs": [
+      {
+        "candidate_id": "candidate-resume",
+        "candidate_key": "f32b4e5188a40626a00e9ec440599d199690e16edcec0991851f78218bb201d8",
+        "run_id": "pipeline-contract-candidate-resume",
+        "status": "completed",
+        "timings": {
+          "candidate_seconds": 0.11502919159829617,
+          "grader_seconds": 0.06510512810200453,
+          "preparation_seconds": 0.00594787672162056,
+          "wall_seconds": 0.21184157766401768
+        },
+        "verdict": "fail"
+      },
+      {
+        "candidate_id": "candidate-pipeline",
+        "candidate_key": "d987326f8d92f95f82cece09157146e8f7059c9200c46e7c4dbc049e19bc379b",
+        "run_id": "pipeline-contract-candidate-pipeline",
+        "status": "completed",
+        "timings": {
+          "candidate_seconds": 0.06502828653901815,
+          "grader_seconds": 0.06506941374391317,
+          "preparation_seconds": 0.005859074182808399,
+          "wall_seconds": 0.14314175304025412
+        },
+        "verdict": "pass"
+      },
+      {
+        "candidate_id": "rewritten",
+        "candidate_key": "2a481f54d1e7c6134dccf3eee21a0cfb9dd2d7079e5e60fbf9ad710139047348",
+        "run_id": "forecast-reconciliation-rewritten",
+        "status": "completed",
+        "timings": {
+          "candidate_seconds": 0.0646157693117857,
+          "grader_seconds": 0.06469967029988766,
+          "preparation_seconds": 0.004160871729254723,
+          "wall_seconds": 0.13690327014774084
+        },
+        "verdict": "fail"
+      },
+      {
+        "candidate_id": "retained",
+        "candidate_key": "a9bb634b1544ed0c1a62cf05b10836347223f81ffda9a99a755def2d26809f39",
+        "run_id": "forecast-reconciliation-retained",
+        "status": "completed",
+        "timings": {
+          "candidate_seconds": 0.06463178619742393,
+          "grader_seconds": 0.06460359133780003,
+          "preparation_seconds": 0.003230910748243332,
+          "wall_seconds": 0.13596586976200342
+        },
+        "verdict": "pass"
+      }
+    ],
+    "statuses": {
+      "completed": 4
+    },
+    "summed_run_seconds": 0.6278524706140161,
+    "timed_runs": 4,
+    "verdicts": {
+      "fail": 2,
+      "pass": 2,
+      "unresolved": 0
+    }
+  },
+  "runs": [
+    {
+      "record": {
+        "artifacts": [
+          {
+            "path": "manifest.json",
+            "sha256": "5f2e8365e9c0eb4077aa031a6e705566541701dd914a7a415af9ac98b8194676"
+          },
+          {
+            "path": "runner.py",
+            "sha256": "be1a5e80f5f028d60af1d04dc06406f9d83cceb2cde1ff1c6354ddd53c006064"
+          },
+          {
+            "path": "inputs/000-candidate.py",
+            "sha256": "5037f79ae5eb152f72576602cd96df28cc9525279319fd602dbd35c34d9ace2c"
+          },
+          {
+            "path": "inputs/001-grader.py",
+            "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754"
+          },
+          {
+            "path": "inputs/002-cases.json",
+            "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa"
+          },
+          {
+            "path": "inputs/003-execution-evidence.json",
+            "sha256": "c89e52a416c9fc886c5971dbf95e52ba93a3f1e4990323f6d622edf6f70b4577"
+          },
+          {
+            "path": "candidate.stdout",
+            "sha256": "1379486ff3d3faed3bd1e8909e8f06a113bced429bb21d7e871b43f27f2f8b0a"
+          },
+          {
+            "path": "candidate.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "grader.stdout",
+            "sha256": "802e31f658b8bc510f4e69cef88a301ed6b7228e90909c77c27ea03497d27d32"
+          },
+          {
+            "path": "grader.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "candidate_id": "candidate-resume",
+        "candidate_key": "f32b4e5188a40626a00e9ec440599d199690e16edcec0991851f78218bb201d8",
+        "case": {
+          "dataset_version": "flywheel-replay-v2",
+          "exposure": "exposed",
+          "family": "pipeline-input-semantics",
+          "id": "pipeline-contract",
+          "source": "iterate/evals/execution-evidence.json: preserved candidate-resume failure and candidate-pipeline control",
+          "split": "regression"
+        },
+        "comparison": {
+          "case": {
+            "dataset_version": "flywheel-replay-v2",
+            "exposure": "exposed",
+            "family": "pipeline-input-semantics",
+            "id": "pipeline-contract",
+            "source": "iterate/evals/execution-evidence.json: preserved candidate-resume failure and candidate-pipeline control",
+            "split": "regression"
+          },
+          "context": {
+            "environment": "local-python",
+            "model": "not-applicable; artifact replay"
+          },
+          "criteria": [
+            "normal-input",
+            "unhashable-input",
+            "reordered-categories"
+          ],
+          "fixed_files": [
+            {
+              "role": "evaluator",
+              "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754"
+            },
+            {
+              "role": "input",
+              "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa"
+            },
+            {
+              "role": "input",
+              "sha256": "c89e52a416c9fc886c5971dbf95e52ba93a3f1e4990323f6d622edf6f70b4577"
+            }
+          ],
+          "grader_command": [
+            "/usr/local/bin/python",
+            "-B",
+            "/data/code/skills/research-craft/evals/flywheel/grader.py",
+            "pipeline-contract",
+            "{artifact}"
+          ],
+          "platform": "Linux-6.17.0-35-generic-x86_64-with-glibc2.39",
+          "python": "3.13.12",
+          "runner_sha256": "be1a5e80f5f028d60af1d04dc06406f9d83cceb2cde1ff1c6354ddd53c006064",
+          "stage": "comparison",
+          "timeout_seconds": {
+            "candidate": 10,
+            "grader": 10
+          }
+        },
+        "comparison_key": "dbc3107de00575c4a76083f62b14146a6b1e7de86cb96224a886fe05fecd1fe1",
+        "criteria": [
+          {
+            "evidence": "normal-input: observed {'rows': [{'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}]}; expected three integer-valued rows with category index 0",
+            "id": "normal-input",
+            "status": "pass"
+          },
+          {
+            "evidence": "unhashable-input: observed {'error': 'TypeError'}; expected three integer-valued rows with category index 0",
+            "id": "unhashable-input",
+            "status": "fail"
+          },
+          {
+            "evidence": "reordered-categories: observed {'rows': [{'id': 'x', 'amount': 0, 'category': 1}, {'id': 'x', 'amount': 0, 'category': 1}, {'id': 'x', 'amount': 0, 'category': 1}]}; expected three integer-valued rows with category index 1",
+            "id": "reordered-categories",
+            "status": "pass"
+          }
+        ],
+        "evidence_scope": "artifact_only",
+        "grade_id": "pipeline-contract-candidate-resume/grade",
+        "links": {},
+        "processes": [
+          {
+            "argv": [
+              "/usr/local/bin/python",
+              "-B",
+              "/data/code/skills/research-craft/evals/flywheel/candidate.py",
+              "pipeline-contract",
+              "candidate-resume"
+            ],
+            "elapsed_seconds": 0.11502919159829617,
+            "returncode": 0,
+            "stage": "candidate",
+            "status": "completed"
+          },
+          {
+            "argv": [
+              "/usr/local/bin/python",
+              "-B",
+              "/data/code/skills/research-craft/evals/flywheel/grader.py",
+              "pipeline-contract",
+              "/data/code/skills/.research/research-flywheel-2026-09-28-release/pipeline-contract-candidate-resume/candidate.stdout"
+            ],
+            "elapsed_seconds": 0.06510512810200453,
+            "returncode": 0,
+            "stage": "grader",
+            "status": "completed"
+          }
+        ],
+        "resources": {
+          "cost": null,
+          "human_seconds": null,
+          "tokens": null,
+          "tool_calls": null
+        },
+        "run_id": "pipeline-contract-candidate-resume",
+        "schema_version": 1,
+        "snapshots": [
+          {
+            "path": "inputs/000-candidate.py",
+            "role": "candidate",
+            "sha256": "5037f79ae5eb152f72576602cd96df28cc9525279319fd602dbd35c34d9ace2c",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/candidate.py"
+          },
+          {
+            "path": "inputs/001-grader.py",
+            "role": "evaluator",
+            "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/grader.py"
+          },
+          {
+            "path": "inputs/002-cases.json",
+            "role": "input",
+            "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/cases.json"
+          },
+          {
+            "path": "inputs/003-execution-evidence.json",
+            "role": "input",
+            "sha256": "c89e52a416c9fc886c5971dbf95e52ba93a3f1e4990323f6d622edf6f70b4577",
+            "source_path": "/data/code/skills/iterate/evals/execution-evidence.json"
+          }
+        ],
+        "started_at": "2026-09-28T10:28:42.367950+00:00",
+        "status": "completed",
+        "telemetry_limit": "Child stdout/stderr, exit and elapsed time only; no nested tool audit or sandbox.",
+        "timings": {
+          "candidate_seconds": 0.11502919159829617,
+          "grader_seconds": 0.06510512810200453,
+          "preparation_seconds": 0.00594787672162056,
+          "wall_seconds": 0.21184157766401768
+        },
+        "verdict": "fail"
+      },
+      "candidate_stdout": "{\"normal-input\": {\"rows\": [{\"id\": \"x\", \"amount\": 0, \"category\": 0}, {\"id\": \"x\", \"amount\": 0, \"category\": 0}, {\"id\": \"x\", \"amount\": 0, \"category\": 0}]}, \"unhashable-input\": {\"error\": \"TypeError\"}, \"reordered-categories\": {\"rows\": [{\"id\": \"x\", \"amount\": 0, \"category\": 1}, {\"id\": \"x\", \"amount\": 0, \"category\": 1}, {\"id\": \"x\", \"amount\": 0, \"category\": 1}]}}\n",
+      "grader_stdout": "{\"criteria\": [{\"id\": \"normal-input\", \"status\": \"pass\", \"evidence\": \"normal-input: observed {'rows': [{'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}]}; expected three integer-valued rows with category index 0\"}, {\"id\": \"unhashable-input\", \"status\": \"fail\", \"evidence\": \"unhashable-input: observed {'error': 'TypeError'}; expected three integer-valued rows with category index 0\"}, {\"id\": \"reordered-categories\", \"status\": \"pass\", \"evidence\": \"reordered-categories: observed {'rows': [{'id': 'x', 'amount': 0, 'category': 1}, {'id': 'x', 'amount': 0, 'category': 1}, {'id': 'x', 'amount': 0, 'category': 1}]}; expected three integer-valued rows with category index 1\"}]}\n"
+    },
+    {
+      "record": {
+        "artifacts": [
+          {
+            "path": "manifest.json",
+            "sha256": "a9ccdbb5a9f3aeb9926b5412f391a1b5827ec3b07d80b9ac1bc9454751b01821"
+          },
+          {
+            "path": "runner.py",
+            "sha256": "be1a5e80f5f028d60af1d04dc06406f9d83cceb2cde1ff1c6354ddd53c006064"
+          },
+          {
+            "path": "inputs/000-candidate.py",
+            "sha256": "5037f79ae5eb152f72576602cd96df28cc9525279319fd602dbd35c34d9ace2c"
+          },
+          {
+            "path": "inputs/001-grader.py",
+            "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754"
+          },
+          {
+            "path": "inputs/002-cases.json",
+            "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa"
+          },
+          {
+            "path": "inputs/003-execution-evidence.json",
+            "sha256": "c89e52a416c9fc886c5971dbf95e52ba93a3f1e4990323f6d622edf6f70b4577"
+          },
+          {
+            "path": "candidate.stdout",
+            "sha256": "bcd1b1a6284cbf9bc8b5431a7cffbf99e820a422813816f39727994bd39c6a7b"
+          },
+          {
+            "path": "candidate.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "grader.stdout",
+            "sha256": "eae798f63bafb337215d29ebd9ef3fdc475824a6dc5d891654de185d25afa3e3"
+          },
+          {
+            "path": "grader.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "candidate_id": "candidate-pipeline",
+        "candidate_key": "d987326f8d92f95f82cece09157146e8f7059c9200c46e7c4dbc049e19bc379b",
+        "case": {
+          "dataset_version": "flywheel-replay-v2",
+          "exposure": "exposed",
+          "family": "pipeline-input-semantics",
+          "id": "pipeline-contract",
+          "source": "iterate/evals/execution-evidence.json: preserved candidate-resume failure and candidate-pipeline control",
+          "split": "regression"
+        },
+        "comparison": {
+          "case": {
+            "dataset_version": "flywheel-replay-v2",
+            "exposure": "exposed",
+            "family": "pipeline-input-semantics",
+            "id": "pipeline-contract",
+            "source": "iterate/evals/execution-evidence.json: preserved candidate-resume failure and candidate-pipeline control",
+            "split": "regression"
+          },
+          "context": {
+            "environment": "local-python",
+            "model": "not-applicable; artifact replay"
+          },
+          "criteria": [
+            "normal-input",
+            "unhashable-input",
+            "reordered-categories"
+          ],
+          "fixed_files": [
+            {
+              "role": "evaluator",
+              "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754"
+            },
+            {
+              "role": "input",
+              "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa"
+            },
+            {
+              "role": "input",
+              "sha256": "c89e52a416c9fc886c5971dbf95e52ba93a3f1e4990323f6d622edf6f70b4577"
+            }
+          ],
+          "grader_command": [
+            "/usr/local/bin/python",
+            "-B",
+            "/data/code/skills/research-craft/evals/flywheel/grader.py",
+            "pipeline-contract",
+            "{artifact}"
+          ],
+          "platform": "Linux-6.17.0-35-generic-x86_64-with-glibc2.39",
+          "python": "3.13.12",
+          "runner_sha256": "be1a5e80f5f028d60af1d04dc06406f9d83cceb2cde1ff1c6354ddd53c006064",
+          "stage": "comparison",
+          "timeout_seconds": {
+            "candidate": 10,
+            "grader": 10
+          }
+        },
+        "comparison_key": "dbc3107de00575c4a76083f62b14146a6b1e7de86cb96224a886fe05fecd1fe1",
+        "criteria": [
+          {
+            "evidence": "normal-input: observed {'rows': [{'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}]}; expected three integer-valued rows with category index 0",
+            "id": "normal-input",
+            "status": "pass"
+          },
+          {
+            "evidence": "unhashable-input: observed {'rows': [{'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}]}; expected three integer-valued rows with category index 0",
+            "id": "unhashable-input",
+            "status": "pass"
+          },
+          {
+            "evidence": "reordered-categories: observed {'rows': [{'id': 'x', 'amount': 0, 'category': 1}, {'id': 'x', 'amount': 0, 'category': 1}, {'id': 'x', 'amount': 0, 'category': 1}]}; expected three integer-valued rows with category index 1",
+            "id": "reordered-categories",
+            "status": "pass"
+          }
+        ],
+        "evidence_scope": "artifact_only",
+        "grade_id": "pipeline-contract-candidate-pipeline/grade",
+        "links": {},
+        "processes": [
+          {
+            "argv": [
+              "/usr/local/bin/python",
+              "-B",
+              "/data/code/skills/research-craft/evals/flywheel/candidate.py",
+              "pipeline-contract",
+              "candidate-pipeline"
+            ],
+            "elapsed_seconds": 0.06502828653901815,
+            "returncode": 0,
+            "stage": "candidate",
+            "status": "completed"
+          },
+          {
+            "argv": [
+              "/usr/local/bin/python",
+              "-B",
+              "/data/code/skills/research-craft/evals/flywheel/grader.py",
+              "pipeline-contract",
+              "/data/code/skills/.research/research-flywheel-2026-09-28-release/pipeline-contract-candidate-pipeline/candidate.stdout"
+            ],
+            "elapsed_seconds": 0.06506941374391317,
+            "returncode": 0,
+            "stage": "grader",
+            "status": "completed"
+          }
+        ],
+        "resources": {
+          "cost": null,
+          "human_seconds": null,
+          "tokens": null,
+          "tool_calls": null
+        },
+        "run_id": "pipeline-contract-candidate-pipeline",
+        "schema_version": 1,
+        "snapshots": [
+          {
+            "path": "inputs/000-candidate.py",
+            "role": "candidate",
+            "sha256": "5037f79ae5eb152f72576602cd96df28cc9525279319fd602dbd35c34d9ace2c",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/candidate.py"
+          },
+          {
+            "path": "inputs/001-grader.py",
+            "role": "evaluator",
+            "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/grader.py"
+          },
+          {
+            "path": "inputs/002-cases.json",
+            "role": "input",
+            "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/cases.json"
+          },
+          {
+            "path": "inputs/003-execution-evidence.json",
+            "role": "input",
+            "sha256": "c89e52a416c9fc886c5971dbf95e52ba93a3f1e4990323f6d622edf6f70b4577",
+            "source_path": "/data/code/skills/iterate/evals/execution-evidence.json"
+          }
+        ],
+        "started_at": "2026-09-28T10:28:42.600295+00:00",
+        "status": "completed",
+        "telemetry_limit": "Child stdout/stderr, exit and elapsed time only; no nested tool audit or sandbox.",
+        "timings": {
+          "candidate_seconds": 0.06502828653901815,
+          "grader_seconds": 0.06506941374391317,
+          "preparation_seconds": 0.005859074182808399,
+          "wall_seconds": 0.14314175304025412
+        },
+        "verdict": "pass"
+      },
+      "candidate_stdout": "{\"normal-input\": {\"rows\": [{\"id\": \"x\", \"amount\": 0, \"category\": 0}, {\"id\": \"x\", \"amount\": 0, \"category\": 0}, {\"id\": \"x\", \"amount\": 0, \"category\": 0}]}, \"unhashable-input\": {\"rows\": [{\"id\": \"x\", \"amount\": 0, \"category\": 0}, {\"id\": \"x\", \"amount\": 0, \"category\": 0}, {\"id\": \"x\", \"amount\": 0, \"category\": 0}]}, \"reordered-categories\": {\"rows\": [{\"id\": \"x\", \"amount\": 0, \"category\": 1}, {\"id\": \"x\", \"amount\": 0, \"category\": 1}, {\"id\": \"x\", \"amount\": 0, \"category\": 1}]}}\n",
+      "grader_stdout": "{\"criteria\": [{\"id\": \"normal-input\", \"status\": \"pass\", \"evidence\": \"normal-input: observed {'rows': [{'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}]}; expected three integer-valued rows with category index 0\"}, {\"id\": \"unhashable-input\", \"status\": \"pass\", \"evidence\": \"unhashable-input: observed {'rows': [{'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}, {'id': 'x', 'amount': 0, 'category': 0}]}; expected three integer-valued rows with category index 0\"}, {\"id\": \"reordered-categories\", \"status\": \"pass\", \"evidence\": \"reordered-categories: observed {'rows': [{'id': 'x', 'amount': 0, 'category': 1}, {'id': 'x', 'amount': 0, 'category': 1}, {'id': 'x', 'amount': 0, 'category': 1}]}; expected three integer-valued rows with category index 1\"}]}\n"
+    },
+    {
+      "record": {
+        "artifacts": [
+          {
+            "path": "manifest.json",
+            "sha256": "4e18aed3e18bac36f387771252adb878658788b3e702f834703a9cf4dfa56d0d"
+          },
+          {
+            "path": "runner.py",
+            "sha256": "be1a5e80f5f028d60af1d04dc06406f9d83cceb2cde1ff1c6354ddd53c006064"
+          },
+          {
+            "path": "inputs/000-candidate.py",
+            "sha256": "5037f79ae5eb152f72576602cd96df28cc9525279319fd602dbd35c34d9ace2c"
+          },
+          {
+            "path": "inputs/001-grader.py",
+            "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754"
+          },
+          {
+            "path": "inputs/002-cases.json",
+            "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa"
+          },
+          {
+            "path": "inputs/003-forecast-input.json",
+            "sha256": "745c40d7cf55e0fb7e3d17ddab84b236860e0e7dfde825b4f1bc6a48e888bb33"
+          },
+          {
+            "path": "candidate.stdout",
+            "sha256": "0667d66d4be835c4f7344d5610511d0ea5ac734acaee4be3f7ee5678dc0888ad"
+          },
+          {
+            "path": "candidate.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "grader.stdout",
+            "sha256": "6068a0a1ac516d31cdeeee29ae912300b0c3c170febf08bf6b31119950043822"
+          },
+          {
+            "path": "grader.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "candidate_id": "rewritten",
+        "candidate_key": "2a481f54d1e7c6134dccf3eee21a0cfb9dd2d7079e5e60fbf9ad710139047348",
+        "case": {
+          "dataset_version": "flywheel-replay-v2",
+          "exposure": "visible",
+          "family": "forecast-history",
+          "id": "forecast-reconciliation",
+          "source": "Synthetic structured adapter of invest/evals/learning-loop-sequence.json, not a semantic regrade of its archived answers",
+          "split": "development"
+        },
+        "comparison": {
+          "case": {
+            "dataset_version": "flywheel-replay-v2",
+            "exposure": "visible",
+            "family": "forecast-history",
+            "id": "forecast-reconciliation",
+            "source": "Synthetic structured adapter of invest/evals/learning-loop-sequence.json, not a semantic regrade of its archived answers",
+            "split": "development"
+          },
+          "context": {
+            "environment": "local-python",
+            "model": "not-applicable; artifact replay"
+          },
+          "criteria": [
+            "original-forecast",
+            "forecast-error",
+            "pending-outcome"
+          ],
+          "fixed_files": [
+            {
+              "role": "evaluator",
+              "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754"
+            },
+            {
+              "role": "input",
+              "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa"
+            },
+            {
+              "role": "input",
+              "sha256": "745c40d7cf55e0fb7e3d17ddab84b236860e0e7dfde825b4f1bc6a48e888bb33"
+            }
+          ],
+          "grader_command": [
+            "/usr/local/bin/python",
+            "-B",
+            "/data/code/skills/research-craft/evals/flywheel/grader.py",
+            "forecast-reconciliation",
+            "{artifact}"
+          ],
+          "platform": "Linux-6.17.0-35-generic-x86_64-with-glibc2.39",
+          "python": "3.13.12",
+          "runner_sha256": "be1a5e80f5f028d60af1d04dc06406f9d83cceb2cde1ff1c6354ddd53c006064",
+          "stage": "comparison",
+          "timeout_seconds": {
+            "candidate": 10,
+            "grader": 10
+          }
+        },
+        "comparison_key": "2ed3fbf49f6a7c1b7c120c0a2fa2e121ff66cff83a870e19af294f6279b13577",
+        "criteria": [
+          {
+            "evidence": "original forecasts observed: [2040, 1960, 2560]",
+            "id": "original-forecast",
+            "status": "fail"
+          },
+          {
+            "evidence": "actuals [2040, 1960]; actual minus original forecast [0, 0]; resolved True",
+            "id": "forecast-error",
+            "status": "fail"
+          },
+          {
+            "evidence": "Q4 unresolved outcome: {'id': 'q4-profit', 'forecast': 2560, 'actual': None, 'error': None, 'resolution': 'not_due'}",
+            "id": "pending-outcome",
+            "status": "pass"
+          }
+        ],
+        "evidence_scope": "artifact_only",
+        "grade_id": "forecast-reconciliation-rewritten/grade",
+        "links": {},
+        "processes": [
+          {
+            "argv": [
+              "/usr/local/bin/python",
+              "-B",
+              "/data/code/skills/research-craft/evals/flywheel/candidate.py",
+              "forecast-reconciliation",
+              "rewritten"
+            ],
+            "elapsed_seconds": 0.0646157693117857,
+            "returncode": 0,
+            "stage": "candidate",
+            "status": "completed"
+          },
+          {
+            "argv": [
+              "/usr/local/bin/python",
+              "-B",
+              "/data/code/skills/research-craft/evals/flywheel/grader.py",
+              "forecast-reconciliation",
+              "/data/code/skills/.research/research-flywheel-2026-09-28-release/forecast-reconciliation-rewritten/candidate.stdout"
+            ],
+            "elapsed_seconds": 0.06469967029988766,
+            "returncode": 0,
+            "stage": "grader",
+            "status": "completed"
+          }
+        ],
+        "resources": {
+          "cost": null,
+          "human_seconds": null,
+          "tokens": null,
+          "tool_calls": null
+        },
+        "run_id": "forecast-reconciliation-rewritten",
+        "schema_version": 1,
+        "snapshots": [
+          {
+            "path": "inputs/000-candidate.py",
+            "role": "candidate",
+            "sha256": "5037f79ae5eb152f72576602cd96df28cc9525279319fd602dbd35c34d9ace2c",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/candidate.py"
+          },
+          {
+            "path": "inputs/001-grader.py",
+            "role": "evaluator",
+            "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/grader.py"
+          },
+          {
+            "path": "inputs/002-cases.json",
+            "role": "input",
+            "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/cases.json"
+          },
+          {
+            "path": "inputs/003-forecast-input.json",
+            "role": "input",
+            "sha256": "745c40d7cf55e0fb7e3d17ddab84b236860e0e7dfde825b4f1bc6a48e888bb33",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/forecast-input.json"
+          }
+        ],
+        "started_at": "2026-09-28T10:28:42.743720+00:00",
+        "status": "completed",
+        "telemetry_limit": "Child stdout/stderr, exit and elapsed time only; no nested tool audit or sandbox.",
+        "timings": {
+          "candidate_seconds": 0.0646157693117857,
+          "grader_seconds": 0.06469967029988766,
+          "preparation_seconds": 0.004160871729254723,
+          "wall_seconds": 0.13690327014774084
+        },
+        "verdict": "fail"
+      },
+      "candidate_stdout": "{\"claims\": [{\"id\": \"q2-profit\", \"forecast\": 2040, \"actual\": 2040, \"error\": 0, \"resolution\": \"resolved\"}, {\"id\": \"q3-profit\", \"forecast\": 1960, \"actual\": 1960, \"error\": 0, \"resolution\": \"resolved\"}, {\"id\": \"q4-profit\", \"forecast\": 2560, \"actual\": null, \"error\": null, \"resolution\": \"not_due\"}]}\n",
+      "grader_stdout": "{\"criteria\": [{\"id\": \"original-forecast\", \"status\": \"fail\", \"evidence\": \"original forecasts observed: [2040, 1960, 2560]\"}, {\"id\": \"forecast-error\", \"status\": \"fail\", \"evidence\": \"actuals [2040, 1960]; actual minus original forecast [0, 0]; resolved True\"}, {\"id\": \"pending-outcome\", \"status\": \"pass\", \"evidence\": \"Q4 unresolved outcome: {'id': 'q4-profit', 'forecast': 2560, 'actual': None, 'error': None, 'resolution': 'not_due'}\"}]}\n"
+    },
+    {
+      "record": {
+        "artifacts": [
+          {
+            "path": "manifest.json",
+            "sha256": "26c20988bd032eafa820bfda380c01bc51193c260604f374664052a81b282721"
+          },
+          {
+            "path": "runner.py",
+            "sha256": "be1a5e80f5f028d60af1d04dc06406f9d83cceb2cde1ff1c6354ddd53c006064"
+          },
+          {
+            "path": "inputs/000-candidate.py",
+            "sha256": "5037f79ae5eb152f72576602cd96df28cc9525279319fd602dbd35c34d9ace2c"
+          },
+          {
+            "path": "inputs/001-grader.py",
+            "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754"
+          },
+          {
+            "path": "inputs/002-cases.json",
+            "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa"
+          },
+          {
+            "path": "inputs/003-forecast-input.json",
+            "sha256": "745c40d7cf55e0fb7e3d17ddab84b236860e0e7dfde825b4f1bc6a48e888bb33"
+          },
+          {
+            "path": "candidate.stdout",
+            "sha256": "0bc4cd91f5ca3f0a892af377314cb940ea0b135302f1c0da622bb4adf4226a20"
+          },
+          {
+            "path": "candidate.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "path": "grader.stdout",
+            "sha256": "9a85efe9028d0cc0256cdb99eafcc9b27eca0dc402af1111b3c8c2808c7237a3"
+          },
+          {
+            "path": "grader.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "candidate_id": "retained",
+        "candidate_key": "a9bb634b1544ed0c1a62cf05b10836347223f81ffda9a99a755def2d26809f39",
+        "case": {
+          "dataset_version": "flywheel-replay-v2",
+          "exposure": "visible",
+          "family": "forecast-history",
+          "id": "forecast-reconciliation",
+          "source": "Synthetic structured adapter of invest/evals/learning-loop-sequence.json, not a semantic regrade of its archived answers",
+          "split": "development"
+        },
+        "comparison": {
+          "case": {
+            "dataset_version": "flywheel-replay-v2",
+            "exposure": "visible",
+            "family": "forecast-history",
+            "id": "forecast-reconciliation",
+            "source": "Synthetic structured adapter of invest/evals/learning-loop-sequence.json, not a semantic regrade of its archived answers",
+            "split": "development"
+          },
+          "context": {
+            "environment": "local-python",
+            "model": "not-applicable; artifact replay"
+          },
+          "criteria": [
+            "original-forecast",
+            "forecast-error",
+            "pending-outcome"
+          ],
+          "fixed_files": [
+            {
+              "role": "evaluator",
+              "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754"
+            },
+            {
+              "role": "input",
+              "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa"
+            },
+            {
+              "role": "input",
+              "sha256": "745c40d7cf55e0fb7e3d17ddab84b236860e0e7dfde825b4f1bc6a48e888bb33"
+            }
+          ],
+          "grader_command": [
+            "/usr/local/bin/python",
+            "-B",
+            "/data/code/skills/research-craft/evals/flywheel/grader.py",
+            "forecast-reconciliation",
+            "{artifact}"
+          ],
+          "platform": "Linux-6.17.0-35-generic-x86_64-with-glibc2.39",
+          "python": "3.13.12",
+          "runner_sha256": "be1a5e80f5f028d60af1d04dc06406f9d83cceb2cde1ff1c6354ddd53c006064",
+          "stage": "comparison",
+          "timeout_seconds": {
+            "candidate": 10,
+            "grader": 10
+          }
+        },
+        "comparison_key": "2ed3fbf49f6a7c1b7c120c0a2fa2e121ff66cff83a870e19af294f6279b13577",
+        "criteria": [
+          {
+            "evidence": "original forecasts observed: [2800, 2560, 2560]",
+            "id": "original-forecast",
+            "status": "pass"
+          },
+          {
+            "evidence": "actuals [2040, 1960]; actual minus original forecast [-760, -600]; resolved True",
+            "id": "forecast-error",
+            "status": "pass"
+          },
+          {
+            "evidence": "Q4 unresolved outcome: {'id': 'q4-profit', 'forecast': 2560, 'actual': None, 'error': None, 'resolution': 'not_due'}",
+            "id": "pending-outcome",
+            "status": "pass"
+          }
+        ],
+        "evidence_scope": "artifact_only",
+        "grade_id": "forecast-reconciliation-retained/grade",
+        "links": {},
+        "processes": [
+          {
+            "argv": [
+              "/usr/local/bin/python",
+              "-B",
+              "/data/code/skills/research-craft/evals/flywheel/candidate.py",
+              "forecast-reconciliation",
+              "retained"
+            ],
+            "elapsed_seconds": 0.06463178619742393,
+            "returncode": 0,
+            "stage": "candidate",
+            "status": "completed"
+          },
+          {
+            "argv": [
+              "/usr/local/bin/python",
+              "-B",
+              "/data/code/skills/research-craft/evals/flywheel/grader.py",
+              "forecast-reconciliation",
+              "/data/code/skills/.research/research-flywheel-2026-09-28-release/forecast-reconciliation-retained/candidate.stdout"
+            ],
+            "elapsed_seconds": 0.06460359133780003,
+            "returncode": 0,
+            "stage": "grader",
+            "status": "completed"
+          }
+        ],
+        "resources": {
+          "cost": null,
+          "human_seconds": null,
+          "tokens": null,
+          "tool_calls": null
+        },
+        "run_id": "forecast-reconciliation-retained",
+        "schema_version": 1,
+        "snapshots": [
+          {
+            "path": "inputs/000-candidate.py",
+            "role": "candidate",
+            "sha256": "5037f79ae5eb152f72576602cd96df28cc9525279319fd602dbd35c34d9ace2c",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/candidate.py"
+          },
+          {
+            "path": "inputs/001-grader.py",
+            "role": "evaluator",
+            "sha256": "dd6fc3808a52b6d2dbee9a783bd6eb2d680379a0f4122eef1004ab10f02f3754",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/grader.py"
+          },
+          {
+            "path": "inputs/002-cases.json",
+            "role": "input",
+            "sha256": "c26664715b5a02a0c278b16291789f8bdd114c307a96528c4aa60f86890ebffa",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/cases.json"
+          },
+          {
+            "path": "inputs/003-forecast-input.json",
+            "role": "input",
+            "sha256": "745c40d7cf55e0fb7e3d17ddab84b236860e0e7dfde825b4f1bc6a48e888bb33",
+            "source_path": "/data/code/skills/research-craft/evals/flywheel/forecast-input.json"
+          }
+        ],
+        "started_at": "2026-09-28T10:28:42.881053+00:00",
+        "status": "completed",
+        "telemetry_limit": "Child stdout/stderr, exit and elapsed time only; no nested tool audit or sandbox.",
+        "timings": {
+          "candidate_seconds": 0.06463178619742393,
+          "grader_seconds": 0.06460359133780003,
+          "preparation_seconds": 0.003230910748243332,
+          "wall_seconds": 0.13596586976200342
+        },
+        "verdict": "pass"
+      },
+      "candidate_stdout": "{\"claims\": [{\"id\": \"q2-profit\", \"forecast\": 2800, \"actual\": 2040, \"error\": -760, \"resolution\": \"resolved\"}, {\"id\": \"q3-profit\", \"forecast\": 2560, \"actual\": 1960, \"error\": -600, \"resolution\": \"resolved\"}, {\"id\": \"q4-profit\", \"forecast\": 2560, \"actual\": null, \"error\": null, \"resolution\": \"not_due\"}]}\n",
+      "grader_stdout": "{\"criteria\": [{\"id\": \"original-forecast\", \"status\": \"pass\", \"evidence\": \"original forecasts observed: [2800, 2560, 2560]\"}, {\"id\": \"forecast-error\", \"status\": \"pass\", \"evidence\": \"actuals [2040, 1960]; actual minus original forecast [-760, -600]; resolved True\"}, {\"id\": \"pending-outcome\", \"status\": \"pass\", \"evidence\": \"Q4 unresolved outcome: {'id': 'q4-profit', 'forecast': 2560, 'actual': None, 'error': None, 'resolution': 'not_due'}\"}]}\n"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "dataset_version": "flywheel-replay-v2",
+  "evidence_scope": "Visible artifact regressions and synthetic reconciliation; no new model execution or holdout",
+  "cases": [
+    {
+      "id": "pipeline-contract",
+      "family": "pipeline-input-semantics",
+      "source": "iterate/evals/execution-evidence.json: preserved candidate-resume failure and candidate-pipeline control",
+      "split": "regression",
+      "exposure": "exposed",
+      "arms": ["candidate-resume", "candidate-pipeline"],
+      "criteria": ["normal-input", "unhashable-input", "reordered-categories"]
+    },
+    {
+      "id": "forecast-reconciliation",
+      "family": "forecast-history",
+      "source": "Synthetic structured adapter of invest/evals/learning-loop-sequence.json, not a semantic regrade of its archived answers",
+      "split": "development",
+      "exposure": "visible",
+      "arms": ["rewritten", "retained"],
+      "criteria": ["original-forecast", "forecast-error", "pending-outcome"]
+    }
+  ]
+}
