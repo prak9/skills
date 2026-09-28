@@ -28,6 +28,8 @@ For a metric B at baseline and C for a candidate, report the signed absolute cha
 
 Show primary metrics alongside relevant risk, cost, coverage and sample-size guardrails. Report uncertainty when it matters and is estimable; respect paired observations, time dependence and the actual independent unit. No made-up intervals from aggregate-only data. Keep tuning/validation outcomes separate from untouched test confirmation. Disclose search exposure and failed arms rather than presenting only the best run.
 
+For task-completion claims, reconcile required versus completed, permitted-deferred and unresolved items independently of quality scores, using the original scope and denominator. For decision/state tests, retain pair IDs, the changed input/history, expected invariance or justified action change, and both actual decisions. Report individual correctness as well as pair consistency; a constant wrong answer is not robust performance.
+
 When efficiency is claimed, include preparation, unsuccessful trials/retries, verification and human intervention within the measured boundary. Summed run durations measure consumed execution time, not a parallel campaign's wall-clock duration. Compare best confirmed quality against cumulative budget/time when useful; a faster isolated call does not establish faster learning. Keep representative workload results separate from oversampled challenge cases.
 
 ## Visualize to answer a question

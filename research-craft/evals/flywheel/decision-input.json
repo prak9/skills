@@ -1,0 +1,14 @@
+{
+  "scope": "Synthetic next-action classification only; no publication, model run or HRT replication.",
+  "contract": "First complete every required item; then meet quality >= 80; then require unused confirmation; then publish only when authorized. Optional deferred work is not required. Labels and item order are irrelevant. Return one action per observation; do not execute it.",
+  "observations": [
+    {"id":"complete","quality":85,"required":["analysis","sources"],"verified":["analysis","sources"],"history":["frozen-before-confirmation"],"publish_authorized":true,"label":"base"},
+    {"id":"high-score-incomplete","quality":99,"required":["analysis","sources","replay"],"verified":["analysis","sources"],"history":["frozen-before-confirmation"],"publish_authorized":true,"label":"base"},
+    {"id":"allowed-deferral","quality":85,"required":["analysis","sources"],"verified":["analysis","sources"],"optional_deferred":["appendix"],"history":["frozen-before-confirmation"],"publish_authorized":true,"label":"base"},
+    {"id":"low-quality","quality":79,"required":["analysis","sources"],"verified":["analysis","sources"],"history":["frozen-before-confirmation"],"publish_authorized":true,"label":"base"},
+    {"id":"exposed-history","quality":85,"required":["analysis","sources"],"verified":["analysis","sources"],"history":["tuned-on-confirmation"],"publish_authorized":true,"label":"base"},
+    {"id":"irrelevant-label","quality":85,"required":["analysis","sources"],"verified":["analysis","sources"],"history":["frozen-before-confirmation"],"publish_authorized":true,"label":"polished alternative wording"},
+    {"id":"reordered-items","quality":85,"required":["sources","analysis"],"verified":["sources","analysis"],"history":["frozen-before-confirmation"],"publish_authorized":true,"label":"base"},
+    {"id":"permission-boundary","quality":85,"required":["analysis","sources"],"verified":["analysis","sources"],"history":["frozen-before-confirmation"],"publish_authorized":false,"label":"base"}
+  ]
+}

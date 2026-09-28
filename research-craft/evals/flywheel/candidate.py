@@ -49,15 +49,41 @@ def forecast(arm):
     return {"claims": rows}
 
 
+def decision(arm):
+    """A reference contract and deliberate mutants, not learned policies."""
+    fixture = json.loads(Path(__file__).with_name("decision-input.json").read_text())
+    rows = []
+    for observation in fixture["observations"]:
+        if arm == "score-only":
+            action = "ready-to-publish" if observation["quality"] >= 80 else "improve-quality"
+        elif not set(observation["required"]) <= set(observation["verified"]):
+            action = "finish-work"
+        elif observation["quality"] < 80:
+            action = "improve-quality"
+        elif arm != "history-blind" and "tuned-on-confirmation" in observation["history"]:
+            action = "fresh-confirmation"
+        elif arm != "boundary-blind" and not observation["publish_authorized"]:
+            action = "keep-local"
+        elif arm == "wording-sensitive" and observation["label"] != "base":
+            action = "fresh-confirmation"
+        else:
+            action = "ready-to-publish"
+        rows.append({"id": observation["id"], "action": action})
+    return {"decisions": rows}
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("case", choices=("pipeline-contract", "forecast-reconciliation"))
+    parser.add_argument("case", choices=("pipeline-contract", "forecast-reconciliation", "decision-contract"))
     parser.add_argument("arm")
     args = parser.parse_args()
     if args.case == "pipeline-contract":
         assert args.arm in {"candidate-resume", "candidate-pipeline"}
         result = pipeline(args.arm)
-    else:
+    elif args.case == "forecast-reconciliation":
         assert args.arm in {"retained", "rewritten"}
         result = forecast(args.arm)
+    else:
+        assert args.arm in {"score-only", "history-blind", "wording-sensitive", "boundary-blind", "contract-aware"}
+        result = decision(args.arm)
     print(json.dumps(result))

@@ -67,3 +67,15 @@ The deterministic evaluator does not load this packet or accept its case-set ver
 ## Dynamic Path Development Packet
 
 `dynamic-path-cases.jsonl` freezes six visible development cases before the dynamic-path instruction edit: financing feasibility, threshold/selection economics, coexisting forces, hazard horizons, transition constraints and a clean arithmetic negative. Use the same isolated execution and independent grading protocol; this packet is not loaded by the deterministic evaluator. Local arithmetic and scoped rule review check the examples, not model behavior. Forward runs and cost comparisons remain unrun until actual outputs and actions are recorded. No new approval gate or mandatory simulation follows from these cases.
+
+## Research Decision Development Packet
+
+`research-decision-cases.jsonl` freezes eleven visible development cases for completion versus score, permitted residuals, history-sensitive decisions, irrelevant wording, legitimate boundaries, layer attribution and reliable experiment cost. Execute paired cases in isolated contexts with the same model/harness settings; keep each pair together in data splits. Judge individual correctness and the declared pair relation, preserving actual inputs, history, decisions and costs. Give executors only prompts and required source material, not criteria or sibling outputs.
+
+This packet is not loaded by `evaluate_behavior_cases.py` and remains behavior-unrun until real forward records are independently graded. The separate [v3 command pilot](../research-craft/evals/flywheel/decision-checks.md) exercises deterministic reference/mutant rules and independent grading of captured artifacts. Passing that pilot validates these checks, not the behavior of an Agent reading the new instructions or an RL training result. Preserve the frozen core suites and the earlier v2 archive.
+
+## Research Input Design Development Packet
+
+`research-input-design-cases.jsonl` contains ten visible development cases, frozen before the input-design instruction edit: representation loss, aggregate availability, horizon and effective samples, end-to-end deadlines, historical/cross-domain data value, sparse events, memory noise, deployment feedback, scaling claims and a clean descriptive control. Apply the isolated forward execution and independent grading protocol above; executors receive prompts and necessary artifacts, not grading criteria. For the memory case, grade the proposed test design; testing retention itself additionally requires captured execution of the exact event stream, including actual noise events and update timing.
+
+The deterministic evaluator does not load this packet. Parsing cases and checking documentation validate structure and coverage; model behavior and cost comparisons remain unrun until recorded and independently graded. Preserve existing suites and archived results.

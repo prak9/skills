@@ -12,7 +12,7 @@ one declared editable strategy surface
   -> accept or reject with an experiment ledger
 ```
 
-Optimize the strategy, not the scoreboard. Freeze the evaluator wrapper, data window, universe, costs, fill model, score, seed, split protocol, distributed manifest, and artifact collection before candidate search.
+Optimize the strategy, not the scoreboard. Freeze the evaluator wrapper, evaluation window, eligible training-source versions, universe, costs, fill model, score, seed, split protocol, distributed manifest, and artifact collection before candidate search. Training-data mixtures may vary when they are the declared candidate surface; evaluation data stays protected.
 
 If the repository has control documents such as `program.md`, `TASK-*.md`, `memory.md`, run logs, or promotion records, treat them as the contract. Read the active task, locked constraints, escalation rules, and writeback locations. Do not create a parallel ledger.
 
@@ -33,7 +33,7 @@ Record:
 
 When the evaluator is missing or unstable, repair and verify it as harness work. Refreeze it before strategy comparison.
 
-When forming an unresolved mechanism, use [hypothesis formation](hypothesis-formation.md); for probability outputs or stochastic simulators, use [prediction validation](prediction-validation.md). These are conditional reads, not mandatory additions to every backtest.
+When forming an unresolved mechanism, use [hypothesis formation](hypothesis-formation.md); for predictive representation/timing comparisons, probability outputs or stochastic simulators, use [prediction validation](prediction-validation.md). These are conditional reads, not mandatory additions to every backtest.
 
 ## Transfer an observation, not someone else's trade
 
@@ -46,6 +46,18 @@ For example, weekly fund-flow commentary might motivate a native higher-frequenc
 When porting, integrating or replacing a research implementation, compare the same recorded inputs and initial state across both paths. Trace material intermediate features, availability times, units, missing/zero values, precision/threshold boundaries and final decisions. Include relevant ordering, duplicate-event and restart behavior. Predeclare justified numeric tolerances; similar aggregate P&L does not establish equivalent decisions or state transitions.
 
 Keep a minimal differential reproduction for material mismatches, reconcile intentional differences against the accepted contract, and preserve the regression evidence. Do not widen tolerances just to hide a failure. If paired inputs or state cannot be recovered, mark parity unresolved. Use the existing behavior-preservation contract when engineering work needs it; do not create a new approval step or execute live orders to demonstrate parity.
+
+## Separate execution reward from completion
+
+For execution research, fix the upstream target, deadline, permissible direction/actions and whether completion is a hard requirement or a soft preference. Compare the same opportunities under common fees, fill rules and terminal treatment, reporting P&L, completion, residual exposure and relevant opportunity cost together. A higher P&L with less completion leaves an exposure/coverage explanation to test; it does not establish that under-filling caused the gain. Honor explicitly allowed residuals rather than adding a universal 100% fill rule.
+
+Design rewards and any enforceable action/terminal constraints to support that contract, then verify the actual paths and feasibility. A larger penalty alone does not guarantee completion; a forced final fill needs executable capacity and accounted costs. Reward tuning is candidate work only when the external evaluator stays fixed; changing terminal valuation or the acceptance objective requires a new protocol and rescoring both arms. Keep prediction quality, target selection and execution quality distinct using the [layered comparison](prediction-validation.md#separate-three-claims).
+
+## Diagnose Deployment Feedback At The Tested Scale
+
+When performance changes after deployment or sizing changes, distinguish external regime shifts, effects of the strategy's own orders/scale, and other participants adapting to its behavior. Link observed outcomes to policy version, size, action timing, fills and costs; choose evidence that separates plausible explanations rather than attributing every regression to drift. Historical replay supports claims within its modeled behavior and scale; a small-position gain needs renewed impact/capacity evidence before extrapolation.
+
+For an authorized field experiment, consider interference and carryover: arms trading in the same market may affect each other's prices, liquidity or responses. Choose a comparison unit and timing that address those interactions, or narrow the causal claim. Use appropriate impact stress or shadow evidence for a research-only task, keeping its limits explicit. Neither a proposed A/B test nor simulation success authorizes live orders or capital increases.
 
 ## Keep the evaluator authoritative
 
@@ -74,11 +86,11 @@ Do not silently rescore, widen a grid, remove failed arms, change a split, or re
 
 ## Mandatory promotion gates
 
-- **Frozen protocol:** no candidate-time changes to evaluator, data, cost model, score, split, or seed.
+- **Frozen protocol:** no candidate-time changes to evaluator, evaluation data, cost model, score, split, or seed; training selection stays within its declared surface.
 - **Holdout confirmation:** treat verify/truth as vetoes, not tuning signals. Disclose repeated validation exposure and require fresh out-of-sample evidence when contaminated.
 - **Generalization gap:** reject a train jump with flat or worse holdout performance unless new evidence explains it.
 - **Market rationale:** require a simple mechanism; code-only patterns are not a thesis.
-- **Rule shape:** prefer monotonic, continuous, rounded, and economically smooth rules over jagged sets or false precision.
+- **Rule shape:** test economically feasible local perturbations and investigate unexplained action spikes. Prefer simple, rounded and economically justified shapes; require monotonicity or continuity only where the mechanism supports it. Deadlines, lot sizes and binding constraints can justify discontinuities. Separate sensitivity to input changes from training variability across seeds; neither a smooth plot nor a spike establishes out-of-sample validity or overfitting by itself.
 - **Sample floor:** reject gains created by shrinking effective trade count below the declared minimum. More ticks, fills or rows need not mean more independent information. Respect time dependence and label-information overlap in the split; ordinary shuffled CV is not automatically valid for financial sequences.
 - **Evidence coverage:** add a check for a named failure mode, not a vote toward a fixed quota. Heatmaps, CV and stress replay can share the same leaked preprocessing, selected data or optimistic fill assumptions. Agreement then corroborates one pipeline, not independent validity; choose the cheapest check that breaks the shared blind spot before extending the battery.
 - **Replay:** reject headline improvement that destroys known useful behavior.
@@ -118,3 +130,7 @@ Classify failures precisely: overfit gap, weak mechanism, insufficient sample, c
 End with the decision, champion metrics, holdout behavior, sample size, artifact and replay status, accepted/rejected change, and the ledger's new constraint.
 
 Sources: fixed-evaluator auto-research and observable failure learning. The [Calvin trading interview](https://www.youtube.com/watch?v=diuitUuuM4o) motivates observation transfer and adaptive-market questions, not verified performance claims or universal trading rules. Validation boundaries are supported by [scikit-learn's time-series guidance](https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-of-time-series-data) and [The Probability of Backtest Overfitting](https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf); no additional reading is required unless that boundary is the crux.
+
+The [HRT AI Labs internship project](https://www.hudsonrivertrading.com/hrtbeat/intern-spotlight-hrt-ai-labs-project-2026/) motivates execution-layer controls, history-sensitive state and completion checks. Its algorithm ranking, suspected overfit and memory benefit are local observations or explanations to test, not universal preferences for PPO, proof that exploration fixes model error, or evidence of live trading performance. Keep undisclosed reward, tuning and architecture details unknown.
+
+The user-supplied transcript of Marc Khoury's [ICML 2025 talk](https://icml.cc/Expo/Conferences/2025/talk%20panel/46791) motivates input/horizon design, conditional data value, latency and adaptive-market checks. Its internal scaling examples generate local hypotheses; public evidence here does not establish universal architecture rankings, cross-market transfer or profitable deployment.

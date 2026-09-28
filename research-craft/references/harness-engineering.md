@@ -100,6 +100,18 @@ Store long-horizon state outside the context window:
 
 Separate the context-management mechanism from its current content. For every memory class, specify what is written, retrieved, summarized, deduplicated, retired, and what evidence authorizes an update. Do not continuously rewrite one giant prompt blob.
 
+### Test state through decisions
+
+When state compression, retrieval or recovery is under change, construct a pair with the same latest observation but a consequential difference in history. For example, the same score may be fresh confirmation or the result of repeated tuning on that acceptance set. Preserve the exposure history needed to choose the next action. Contrast with a pair whose only difference is irrelevant wording or item order; verify that the transformation really preserves meaning, timing and constraints before expecting the same decision.
+
+Specify each expected action or acceptable action set before comparing, then check both individual correctness and the paired relation. Include legitimate changes at authorization, deadline or other task boundaries; universally identical actions can be just as wrong as unstable ones. If decisive history is unavailable, test retrieval or an explicitly unresolved decision rather than inventing the missing state.
+
+Compare compact state with the same contemporaneously available facts in full history, and an appropriate no-memory baseline when needed. Record retrieval/context cost; distinguish gains from added information, salience or budget from gains due to memory architecture. Use interrupted recovery and stale-state cases only when relevant, and confirm on fresh cases before generalizing. A stored file, longer context or one successful replay does not establish better decisions.
+
+For long event streams, add a noise-retention pair: place a decisive fact early, then insert actual irrelevant events before the decision. Compare with a clean stream and with a stream containing a genuine later update. Check both retention and revision; always keeping the old answer can conceal a broken update mechanism. Freeze event contents, order and update timing, verifying that the noise leaves relevant time, permissions and deadlines unchanged. A prose statement that many messages occurred is not an executed retention test.
+
+Keep the audit trail recoverable while testing a compact working state and selective updates. Trace retained facts to their sources and preserve material changes; compare the same available facts and declared resource budget. Noise filtering earns its place through decision correctness and cost, not through a preference for longer context, fewer updates or a particular memory architecture.
+
 ## Use parallel work only when inspectable
 
 For subagents or backend jobs:

@@ -27,7 +27,7 @@ Choose the lightest mode that protects the claim:
 - When evidence calls the current route into question, use [route revision](references/hypothesis-formation.md#change-routes-without-changing-the-goal): preserve the user outcome and locked bounds while revising methods; retain why a route was falsified, paused or unresolved and what would justify reopening it.
 - For open-ended research with a consequential coverage gap, one-sided sources or unresolved source disagreement, use [perspective-driven evidence discovery](references/perspective-discovery.md). Skip it for supplied-material summaries, settled calculations and narrow checks; it does not require personas or additional agents.
 - When an unfamiliar mechanism, ambiguous concept or observational tie carries the decision—or delays, feedback or intermediate constraints can reverse it—read [hypothesis formation](references/hypothesis-formation.md). Also use it when pressure-testing a user's research thesis or claimed non-consensus insight. Do not load it for settled arithmetic or routine execution.
-- For probability forecasts or stochastic simulators, read [prediction and simulation validation](references/prediction-validation.md). A point estimate, deterministic calculation or ordinary report does not trigger this adapter by itself.
+- For predictive-model comparisons involving input representation or timing, probability forecasts, or stochastic simulators, read [prediction and simulation validation](references/prediction-validation.md). A point estimate, deterministic calculation or ordinary report does not trigger this adapter by itself; use only the sections carrying the claim.
 - **Controlled experiment:** compare a candidate against a baseline under a fixed protocol and explicit acceptance gates.
 - **Artifact iteration:** edit code, prompts, rules, or configuration through a bounded propose-evaluate-accept loop. Freeze the evaluator before optimizing the candidate.
 - **Experimental results delivery:** for substantive experiment comparisons, use [experiment reporting](references/experiment-reporting.md). Preserve baseline and arm configurations, metric deltas and detailed supporting tables in the existing authorized result location; link summaries and useful charts to those records. Simple checks and research proposals do not require a report bundle.
@@ -82,7 +82,7 @@ Prediction and strongest plausible rival:
 Observed variables / latent construct / model boundary and rival data-generating process:
 Baseline or current champion:
 Editable surface:
-Frozen evaluator and data:
+Frozen evaluator / evaluation data / training-source versions:
 Splits / holdouts / sample floor:
 Primary metric and guardrails:
 Artifacts and ledger location:
@@ -116,6 +116,8 @@ For an automated discovery portfolio, append the loop under change, frozen depen
 When a proposed abstraction or simplification carries the conclusion, test a contrastive pair: two cases the model treats as equivalent but that might require different predictions or actions. Select the pair from observed cases or a clearly labeled hypothetical; do not force a counterexample when the distinction is immaterial to the contract.
 
 Check whether compression preserved the relevant outcome, timing, constraints, interactions, and evidence needed to choose an action. For example, a non-idempotent operation that never executed and one that executed but lost its reply cannot safely share an unconditional retry policy. A bounded read-only retry may legitimately treat different errors alike when recovery behavior and diagnostic evidence remain adequate.
+
+For learned inputs, use the [representation and availability checks](references/prediction-validation.md#test-the-input-representation) before attributing a limit to model capacity. For memory updates, use [history and noise tests](references/harness-engineering.md#test-state-through-decisions); for historical or cross-domain training data, test [conditional data value](references/research-flywheel.md#test-the-incremental-value-of-data).
 
 Keep the simpler model when it preserves the required distinctions; add only the variable, state, or boundary needed by an evidenced failure. Fewer concepts or a fixed variable count is not proof of quality, and a hand-picked pair is not proof of general validity. Before transfer to a new setting, identify the mechanism and boundary that must still hold. Use analogy, reframing, or backward reasoning as optional probes when stuck, not a mandatory sequence or substitute for evidence.
 
@@ -158,15 +160,16 @@ When reviewer or model feedback motivates an iteration, treat it as a testable d
 
 Require the gates relevant to the claim:
 
-- **Protocol integrity:** evaluator, data, split, costs, seed, and objective remained fixed during candidate comparison.
+- **Protocol integrity:** evaluator, evaluation data, split, costs, seed, and objective remained fixed during candidate comparison. When training-data selection is the intervention, keep source versions and its allowed selection/weighting surface declared.
 - **Argument integrity:** the evidence supports the stated premises, the inference connects them to the conclusion, key terms remain stable, and the strongest plausible rival has not been ignored.
 - **Baseline strength:** the candidate beats a tuned, reproducible baseline rather than a weak straw man.
+- **Task completion:** verify the original required scope independently of the optimized score. Retain completed, deferred and unresolved work with the same denominator; honor explicitly optional work and allowed abstention. A high score on the easy subset cannot offset a missing required deliverable. Define hard constraints and permitted residuals before comparison rather than relying on a reward penalty alone.
 - **Held-out confirmation:** distinguish tuning data from untouched acceptance data. Validation used to choose candidates cannot also be independent confirmation; repeated acceptance exposure is contamination, not free evidence.
 - **Sample and uncertainty:** the effective sample supports the claimed precision; show ranges or sensitivity when it does not.
 - **Model validity:** material assumptions about measurement, independence, linearity, interactions, feedback, stationarity, and adaptation are stated; test predeclared plausible in-scope rival data-generating processes and structural-break signals, then narrow, condition, or reject claims that exceed the supported scope.
 - **Raw-evidence check:** inspect actual failures, traces, trades, or outputs instead of trusting an aggregate alone.
 - **Replay and regression:** preserve known useful behavior and unrelated passing cases.
-- **Mechanism and simplicity:** prefer smooth, legible, causal or economic explanations over fragmented exceptions.
+- **Mechanism and simplicity:** prefer legible causal or economic explanations over fragmented exceptions. When decision robustness matters, test stability under irrelevant changes and sensitivity to meaningful ones; preserve justified threshold or permission boundaries. Smoothness or a sharp jump alone does not establish generalization or overfitting.
 - **Anti-Goodhart:** check whether the candidate learned the judge, leakage, artifact format, or benchmark quirks instead of the objective.
 - **Operational validity:** account for execution friction, capacity, latency, permissions, maintainability, and downstream ownership. Require added complexity to earn its measured benefit under the declared guardrails; neither a higher isolated score nor fewer lines alone establishes improvement.
 

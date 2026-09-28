@@ -260,7 +260,7 @@ class ResearchExperimentTests(unittest.TestCase):
         }
         self.assertTrue(all(row["status"] == "pass" for row in grade("pipeline-contract", observations)["criteria"]))
 
-    def test_documented_pilot_preserves_expected_failures_across_two_domains(self):
+    def test_documented_pilot_preserves_expected_failures_across_three_domains(self):
         result = subprocess.run(
             [sys.executable, "-B", str(ROOT / "research-craft/evals/flywheel/run_pilot.py"), "--output", str(self.root / "pilot")],
             capture_output=True, text=True, timeout=20,
@@ -268,8 +268,90 @@ class ResearchExperimentTests(unittest.TestCase):
         self.assertEqual(0, result.returncode, result.stderr)
         summary = json.loads(result.stdout)
         self.assertTrue(summary["inventory_complete"])
-        self.assertEqual(2, len(summary["groups"]))
-        self.assertEqual({"pass": 2, "fail": 2, "unresolved": 0}, summary["verdicts"])
+        self.assertEqual(3, len(summary["groups"]))
+        self.assertEqual({"pass": 3, "fail": 6, "unresolved": 0}, summary["verdicts"])
+
+    def test_decision_grader_distinguishes_completion_history_and_perturbations(self):
+        produce = runpy.run_path(str(ROOT / "research-craft/evals/flywheel/candidate.py"))["decision"]
+        grade = runpy.run_path(str(ROOT / "research-craft/evals/flywheel/grader.py"))["grade"]
+        failures = {
+            "contract-aware": set(),
+            "score-only": {"completion", "history", "meaningful-boundary"},
+            "history-blind": {"history"},
+            "wording-sensitive": {"irrelevant-change"},
+            "boundary-blind": {"meaningful-boundary"},
+        }
+        for arm, expected in failures.items():
+            with self.subTest(arm=arm):
+                rows = grade("decision-contract", produce(arm))["criteria"]
+                self.assertEqual(expected, {row["id"] for row in rows if row["status"] == "fail"})
+
+    def test_decision_fixture_pairs_preserve_their_declared_controls(self):
+        fixture = json.loads((ROOT / "research-craft/evals/flywheel/decision-input.json").read_text())
+        rows = {row["id"]: {key: value for key, value in row.items() if key != "id"} for row in fixture["observations"]}
+        baseline = rows["complete"]
+        for name, field in (("exposed-history", "history"), ("irrelevant-label", "label"), ("permission-boundary", "publish_authorized"), ("low-quality", "quality")):
+            with self.subTest(pair=name):
+                changed = {key for key in baseline if baseline[key] != rows[name][key]}
+                self.assertEqual({field}, changed)
+        reordered = rows["reordered-items"]
+        for field in ("required", "verified"):
+            self.assertNotEqual(baseline[field], reordered[field])
+            self.assertEqual(set(baseline[field]), set(reordered[field]))
+        self.assertEqual(baseline["required"], rows["allowed-deferral"]["required"])
+        self.assertGreater(rows["high-score-incomplete"]["quality"], baseline["quality"])
+        self.assertFalse(set(rows["high-score-incomplete"]["required"]) <= set(rows["high-score-incomplete"]["verified"]))
+
+    def test_research_decision_packet_has_valid_pairs_and_visible_development_cases(self):
+        cases = [json.loads(line) for line in (ROOT / "tests/research-decision-cases.jsonl").read_text().splitlines()]
+        self.assertEqual(len(cases), len({case["id"] for case in cases}))
+        pairs = {}
+        for case in cases:
+            self.assertEqual("development", case["split"])
+            self.assertTrue((ROOT / case["skill"] / "SKILL.md").is_file())
+            self.assertTrue(case["prompt"] and case["criteria"])
+            if "pair_id" in case:
+                pairs.setdefault(case["pair_id"], []).append(case)
+        self.assertEqual({"confirmation-history", "irrelevant-wording"}, set(pairs))
+        self.assertTrue(all(len(pair) == 2 for pair in pairs.values()))
+
+    def test_decision_grader_rejects_constant_actions_and_missing_or_duplicate_pairs(self):
+        produce = runpy.run_path(str(ROOT / "research-craft/evals/flywheel/candidate.py"))["decision"]
+        grade = runpy.run_path(str(ROOT / "research-craft/evals/flywheel/grader.py"))["grade"]
+        artifact = produce("contract-aware")
+        for row in artifact["decisions"]:
+            row["action"] = "keep-local"
+        self.assertTrue(any(row["status"] == "fail" for row in grade("decision-contract", artifact)["criteria"]))
+        for mutation in ("missing", "duplicate", "extra", "malformed"):
+            artifact = produce("contract-aware")
+            if mutation == "missing":
+                artifact["decisions"].pop()
+            elif mutation == "duplicate":
+                artifact["decisions"].append(artifact["decisions"][0])
+            elif mutation == "extra":
+                artifact["decisions"].append({"id": "extra", "action": "ready-to-publish"})
+            else:
+                artifact["decisions"][0] = None
+            with self.subTest(mutation=mutation):
+                self.assertTrue(all(row["status"] == "fail" for row in grade("decision-contract", artifact)["criteria"]))
+
+    def test_high_score_cannot_override_completion_in_captured_experiment(self):
+        base = ROOT / "research-craft/evals/flywheel"
+        records = []
+        for arm in ("score-only", "contract-aware"):
+            config = self.config(arm)
+            config["candidate_id"] = arm
+            config["case"] = {"id": "decision-contract", "family": "decision-contract", "dataset_version": "decision-v1", "source": "synthetic contract", "split": "development", "exposure": "visible"}
+            config["criteria"] = ["completion", "history", "irrelevant-change", "meaningful-boundary"]
+            config["candidate_command"] = [sys.executable, "-B", str(base / "candidate.py"), "decision-contract", arm]
+            config["grader_command"] = [sys.executable, "-B", str(base / "grader.py"), "decision-contract", "{artifact}"]
+            config["files"] = [{"path": str(base / name), "role": role} for name, role in (("candidate.py", "candidate"), ("grader.py", "evaluator"), ("decision-input.json", "input"))]
+            record = self.run_case(config, arm)
+            self.assertEqual("completed", record["status"])
+            self.assertEqual([], self.runner.verify_packet(self.root / arm))
+            records.append(record)
+        self.assertEqual(["fail", "pass"], [row["verdict"] for row in records])
+        self.assertEqual(records[0]["comparison_key"], records[1]["comparison_key"])
 
     def test_forecast_grader_rejects_invented_actual_even_with_correct_error(self):
         grade = runpy.run_path(str(ROOT / "research-craft/evals/flywheel/grader.py"))["grade"]

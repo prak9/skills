@@ -1,6 +1,6 @@
 {
-  "dataset_version": "flywheel-replay-v2",
-  "evidence_scope": "Visible artifact regressions and synthetic reconciliation; no new model execution or holdout",
+  "dataset_version": "flywheel-replay-v3",
+  "evidence_scope": "Visible artifact regressions, synthetic reconciliation and decision contracts; no new model execution or holdout",
   "cases": [
     {
       "id": "pipeline-contract",
@@ -19,6 +19,15 @@
       "exposure": "visible",
       "arms": ["rewritten", "retained"],
       "criteria": ["original-forecast", "forecast-error", "pending-outcome"]
+    },
+    {
+      "id": "decision-contract",
+      "family": "completion-history-perturbation",
+      "source": "Synthetic next-action classifications in decision-input.json; no external actions or HRT replication",
+      "split": "development",
+      "exposure": "visible",
+      "arms": ["score-only", "history-blind", "wording-sensitive", "boundary-blind", "contract-aware"],
+      "criteria": ["completion", "history", "irrelevant-change", "meaningful-boundary"]
     }
   ]
 }

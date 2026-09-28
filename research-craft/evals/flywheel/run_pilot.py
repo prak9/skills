@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replay two task families through captured execution and separate grading."""
+"""Replay artifact and synthetic task families with separate grading."""
 import argparse
 import importlib.util
 import json
@@ -25,8 +25,10 @@ def run_pilot(output):
             inputs = [HERE / "cases.json"]
             if case["id"] == "pipeline-contract":
                 inputs.append(ROOT / "iterate/evals/execution-evidence.json")
-            else:
+            elif case["id"] == "forecast-reconciliation":
                 inputs.append(HERE / "forecast-input.json")
+            else:
+                inputs.append(HERE / "decision-input.json")
             config = {
                 "schema_version": 1, "run_id": run_id, "candidate_id": arm, "stage": "comparison",
                 "case": {**{key: case[key] for key in ("id", "family", "source", "split", "exposure")}, "dataset_version": registry["dataset_version"]},

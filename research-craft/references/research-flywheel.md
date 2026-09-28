@@ -8,6 +8,8 @@ Treat lower cost and higher stability as capacity to test more discriminating hy
 
 Useful views are time to a supported decision, valid experiments versus execution/data/grading failures, total cost including rejected attempts, and best confirmed quality against cumulative budget/time. A valid negative can eliminate an important route; a timeout alone leaves its mechanism unresolved. Summed parallel run durations are resource consumption, not campaign wall time. Experiment count and hypothesis count are diagnostics, not standalone rewards.
 
+Compare routes under a matched total budget and task contract, including failed trials, tuning, repair and confirmation. Inspect quality and completion across relevant seeds, tasks or time windows; use time to a predeclared acceptable result when such a threshold exists, otherwise quality-versus-budget. Keep unsuccessful routes and unknown costs visible. A cheap run, sample reuse or one best score does not establish cheaper reliable learning, and a stable expensive route must still earn its cost.
+
 Evaluate reusable infrastructure by construction/maintenance cost, plausible reuse, savings and evidence fidelity. Small deterministic checkers, replay fixtures, cached immutable inputs and interruption-safe execution can reduce repeated effort. Reuse a result only when its candidate, data, evaluator and material environment remain applicable. Fresh source discovery and live integrations need their own checks. Keep optional infrastructure out of unrelated delivery gates.
 
 ## Spend In Stages
@@ -40,11 +42,23 @@ This is a join contract, not five mandatory files. A compact JSONL index plus ex
 - Keep holdouts and authoritative grades outside candidate-editable scope. Remove version/path identity hints from comparative judging where feasible, randomize answer order and retain ties/disagreement. Record residual exposure or order effects.
 - Preserve source rights, retention boundaries and necessary redactions. Store observable actions and source evidence, not private reasoning, credentials or indiscriminate transcripts. A study request does not authorize external data export or publication.
 
+## Test The Incremental Value Of Data
+
+When data selection carries the hypothesis, declare the eligible training-source versions and selection/weighting surface as candidate work, keeping the target population and evaluation protocol fixed. Compare the relevant baseline (for example, recent or in-domain data) with an older or cross-domain addition. Test reweighting or an alternative representation only when it could distinguish the leading explanations. Track source/age/regime, mixing choices, model capacity, comparable tuning budgets and total cost in existing run records. Fit selection and weights on development data; keep final confirmation separate. Choose a discriminating comparison rather than requiring a full mixing grid.
+
+Separate data benefit from extra compute, repeated sampling and parameter growth. Record independent event or entity coverage alongside row/token counts, and inspect relevant target groups for negative transfer. Sparse independent events favor a defensible simple or regularized baseline and justified priors; a larger model can earn adoption with transferable information and fresh evidence. Neither a large archive nor a small event count dictates one architecture.
+
+Retain findings at their tested task, data mix, period, capacity and budget. Describe scaling behavior over its measured range and uncertainty; extrapolation, cross-market transfer and downstream profit require their own evidence. Preserve saturation, failed mixtures and regressions so later experiments learn where additional data helped and where it did not.
+
 ## Validate The Evaluator
 
 Separate deterministic correctness/integrity checks, rubric-bound semantic judgments and delayed external outcomes. Calibrate graders on known positive, negative and unresolved examples, including polished wrong answers and self-approval attempts. Inspect false acceptance, false rejection and affected task groups; agreement between models is not an oracle. Use expert adjudication where the criteria require it, without making every routine check a new human gate.
 
 Freeze the judge before candidate comparison. Repair evaluator defects in a separate version, replay anchors and rescore both arms. Costs and tool actions should come from the harness or provider when available; label self-report and unknowns explicitly. A packet hash checks bytes and identity, not truth, semantic coverage or complete side-effect absence.
+
+Grade completion/feasibility separately from performance: freeze required work, permitted omissions and residual treatment, then check whether a score gain coincides with changed coverage, exposure or unfinished work. A reward penalty is a candidate design choice; the acceptance contract stays authoritative. Calibrate with both a high-scoring incomplete result and a valid result that leaves only explicitly optional work deferred.
+
+For decision or memory changes, pair cases whose irrelevant wording should preserve the decision with cases whose meaningful history or constraint should change it. Check each case against its contract as well as the relation between cases: a constant wrong action can look stable. Use [state tests](harness-engineering.md#test-state-through-decisions) when history matters. These targeted checks complement outcome metrics; they are not a compulsory battery for every task.
 
 ## Close The Loop At The Right Layer
 
@@ -64,7 +78,7 @@ Run the replay pilot from the repository root:
 python3 research-craft/evals/flywheel/run_pilot.py --output /tmp/research-flywheel-pilot
 ```
 
-Use a fresh output path. The pilot exercises archived pipeline failures/controls and synthetic forecast reconciliation; it is not a new model run or untouched holdout.
+Use a fresh output path. The v3 pilot exercises archived pipeline failures/controls, synthetic forecast reconciliation and [decision-contract checks](../evals/flywheel/decision-checks.md). The latter compare a reference rule with deliberately faulty rules for completion, history, irrelevant changes and permission boundaries. These are grader/runner checks, not new model runs, learned trading policies or untouched holdouts. Earlier archived v2 observations remain historical evidence under their recorded versions.
 
 For another command, supply a JSON manifest:
 
