@@ -156,6 +156,8 @@ Change one meaningful variable or rule family per round when attribution matters
 
 When reviewer or model feedback motivates an iteration, treat it as a testable diagnosis, not ground truth: tie the alleged gap to an actual artifact or trace and the declared criterion, identify a correction and the observation that would show the gap is resolved. Prioritize consequential supported issues, not suggestion counts or stylistic preferences. Recheck the original failure and relevant regressions under the same criterion; a more satisfied reviewer or a more polished report is not independent evidence of improvement. Inspect counterevidence and revise faulty feedback rather than treating disagreement as resistance. If the evaluator itself was wrong, handle that as harness work above, not a silent change of success criteria. Reuse the existing record and stop at the agreed completion condition; this adds no mandatory review round, human approval or learner exercise.
 
+Feedback is useful when it changes a decision, distinguishes explanations, or increases confidence through valid replication—not merely when it is new or numerous. Consolidate repeated comments into the existing diagnosis; a low-value comment need not trigger another edit. Preserve anomalous evidence and its reopening condition before promoting it into a general rule, while acting promptly on verified correctness or safety defects. Focus diagnosis on the current crux without narrowing acceptance to that one metric. Successful correction in the current context establishes a local result, not persistent learning or transfer.
+
 ## 7. Gate claims, not just scores
 
 Require the gates relevant to the claim:
