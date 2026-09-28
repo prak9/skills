@@ -92,7 +92,15 @@ Monitoring must classify observations as no change, confidence update, valuation
 
 ## Skill Boundary And Handoff
 
-`invest` owns investment-domain research. `decision` may choose among actions, `plan-skill` may maintain durable execution state, and `writing` may shape presentation. Preserve confirmed goals, constraints, conclusions, evidence, and citations; do not rerun upstream work unless they are missing or contradictory, and do not invoke all four by default.
+`invest` owns investment-domain research. `decision` may choose among actions and `plan-skill` may maintain durable execution state; neither is required merely to deliver a report. Final reader-facing investment articles and research memos **must use `writing`** as specified below. Preserve confirmed goals, constraints, conclusions, evidence, and citations; do not rerun upstream work unless they are missing or contradictory, and do not invoke all four by default.
+
+### Required Writing Pass For Final Articles
+
+After the requested research and necessary evidence checks are complete, read and apply [writing](../writing/SKILL.md) and its [revision checklist](../writing/references/revision-checklist.md) before delivering a final article, substantive research memo or article-form thesis update. Actual reading and application are required; saying “polished” is not the handoff. The same agent can perform it; a separate agent or a user confirmation is not required. Pure calculations, raw extraction tables/JSON, brief factual answers and a concise `no thesis change` status retain their scope rather than becoming articles.
+
+Pass the verified research, intended audience/format and source links to writing. Lock the investment conclusion, as-of date, currencies/units/periods, scenario assumptions, reported-versus-estimated status, valuation math, contradictory evidence, risk conditions and claim-level citations. Writing may organize a newly drafted article around its argument and improve reader-facing explanations; it cannot increase conviction, invent consensus or estimates, recalculate targets, shorten away requested research, or delete a material caveat to make the story stronger. Editing an existing user article still respects its authorized edit level.
+
+Reconcile the final text and tables against those locked items. Repair any changed meaning; return an actual evidence or model inconsistency to invest and update affected conclusions, rather than hiding it through wording. Explain overlaps and source limits through the data and their reading implications, not a checklist proving compliance. Deliver the resulting article without the internal handoff narration. Notion publication, when separately authorized, uses this checked final version and still requires the readback below. Writing activation itself never authorizes publication.
 
 ## Notion Delivery
 
