@@ -52,7 +52,7 @@ When wording is ambiguous or assumes an unverified result, briefly reframe befor
 
 - State the outcome that should exist if the research succeeds; reason backward to the evidence and experiments needed to produce it.
 - Ask Hamming's question: what is the important problem, and why are you not working on it?
-- Name the one or two decisive unknowns. Avoid absorbing a fashionable problem without its reasoning chain.
+- Name the few decisive unknowns and the plausible answers that would change the requested explanation, prediction or decision. Preserve decisive interactions rather than forcing a single-variable story. Avoid absorbing a fashionable problem without its reasoning chain.
 - Define the judgment, prediction or decision the result can change. Resolving a stated uncertainty is a valid research outcome; if no plausible result informs the requested outcome, narrow or stop that line of inquiry, not unrelated authorized work.
 - Before a consequential test, state the research prediction and preserve its provenance so hindsight cannot rewrite it. This does not require the user to supply a prediction before assisted exploration can begin.
 - When training problem-selection taste, keep a dated portfolio of plausible opportunities—including those not pursued—with a resolution horizon and source of truth. Use `decision` to judge which opportunities matter; use this skill to make their forecasts resolvable.
@@ -107,6 +107,7 @@ For an automated discovery portfolio, append the loop under change, frozen depen
 - Operationalize any concept that determines labels, metrics, inclusion, or causal interpretation; do not let a convenient proxy silently replace the construct being claimed.
 - Treat measurements as projections of system state. When several mechanisms can produce the same output, design the cheapest observation that separates them before inferring a cause or hidden state.
 - Diversify beyond the current feed; use old and cross-field work to escape synchronized conclusions.
+- Judge a new source by what it adds beyond existing evidence: discrimination between plausible explanations, coverage, independent observations or measurement quality. Different publishers may repeat one underlying observation; more records can create false confidence when they duplicate observations, share a selection bias or describe conditions that no longer apply. Seek incremental information, not novelty or nominally "orthogonal" sources alone.
 - Inspect raw samples by hand before building abstractions. Silent data or labeling errors often produce plausible but false theories.
 - Shrink the problem until it is cheap: one batch, one trace, one symbol, one regime, one failing case, or one minimal reproduction.
 - Tune the strongest honest baseline before claiming improvement. For comparative claims, predeclare comparable search/tuning budgets and record actual trials, compute and human intervention for both arms; unequal resources limit attribution, even if the resulting system is useful.
