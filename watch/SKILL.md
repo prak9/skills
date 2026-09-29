@@ -242,4 +242,4 @@ For follow-ups, reuse existing evidence. Re-run only the relevant range when the
 
 **Bundled scripts:** `scripts/watch.py` (entry point), `scripts/download.py` (yt-dlp wrapper), `scripts/frames.py` (ffmpeg frame extraction), `scripts/transcribe.py` (VTT parsing), `scripts/export_transcript.py` (complete local text/Markdown/JSON export and offline replay), `scripts/whisper.py` (Groq / OpenAI clients), `scripts/setup.py` (preflight + installer)
 
-The implementation is derived from [bradautomates/claude-video](https://github.com/bradautomates/claude-video) and remains available under the bundled MIT license.
+Third-party copyright and permission notices are retained in the bundled `LICENSE`.

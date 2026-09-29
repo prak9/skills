@@ -136,6 +136,16 @@ Parallelism is useful only when outputs have independent acceptance and merge co
 
 Do not call a loop self-improving if it merely retries without persistent failure attribution, an editable boundary, or an acceptance criterion.
 
+## Evaluate trajectories and policy-generated data
+
+Use this lens when action order, delayed feedback or task selection carries the claimed improvement. Evaluate the complete requested task and total cost, including repairs, failed branches and verification; keep intermediate deliverables and permission constraints independently binding. A useful diagnostic or tool repair may enable later success without immediately raising the score. Require a testable downstream purpose rather than assuming infrastructure work will pay off.
+
+When the policy determines which tasks or observations enter the data, retain the generating policy/version, eligible opportunity set and selection/completion status where relevant. Compare common tasks separately from coverage or selection changes. Allowed abstention can improve utility; omitted required work cannot disappear from the denominator. If only selected outcomes were logged, narrow claims to that support or acquire an authorized discriminating sample. More self-generated successes do not establish performance on unseen or systematically skipped states.
+
+Separate trajectory acceptance from action credit. Final success does not establish that every preceding step helped; final failure does not make every step useless. Use replay, local substitution or ablation with comparable inputs and resources when a component's contribution matters, preserving meaningful order and interactions. Treat intermediate scores as diagnostics unless their link to the final objective is verified. Keep the evaluator outside the candidate's editable surface.
+
+After a policy change, ask whether its new actions and visited states are covered by the old evidence. Revalidate the changed behavior while replaying retained capabilities; extrapolation into unsupported states stays unresolved. A small text or parameter edit can produce a large behavioral shift, while a large implementation change can preserve behavior. Judge update risk by that shift and its consequences, not diff size. Prompt, memory and workflow improvements are not weight learning; online RL requires an actual policy optimizer and appropriate evaluation, not merely an observation-action loop.
+
 ## Compile failures into durable rules carefully
 
 Use a promotion pipeline instead of turning every incident into a permanent instruction:
@@ -234,5 +244,3 @@ Evidence packet, defect escapes, and sampled review:
 Human checkpoints:
 Next experiment:
 ```
-
-Sources: Lilian Weng, “Harness Engineering for Self-Improvement,” Lil'Log, 2026-07-04; Andrew Ng, [“AI Engineering Skills Map: Software engineering fundamentals”](https://x.com/AndrewYNg/status/2093388974194872781), 2026-08-29.

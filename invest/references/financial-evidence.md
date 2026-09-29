@@ -52,9 +52,3 @@ When new evidence challenges the reliability of an underlying financial fact, tr
 Check the final thesis and executive summary against the supported model and original evidence. A narrower body must not leave a stronger headline, target or “market missed this” claim behind. Distinguish completed research, unresolved evidence and investment attractiveness: “worth further study” does not mean “mispriced,” while unresolved value does not erase the useful work completed. Name the decisive missing evidence and reopening condition without moving an accessible current check into an indefinite follow-up list.
 
 Automated format/arithmetic checks can verify locators' shape and calculations, not that a source exists or entails the claim. Report what was actually read or tested. No audit process guarantees an error-free report or changes the authorization required for publishing, archiving or trading.
-
-## Design Provenance And Adaptation
-
-Adapted from the local `dayu-agent` checkout at commit `2115c86d5a9027bb51cbbc8a4d0175080732e4e6`: `dayu/config/prompts/base/tools.md`, `base/fact_rules.md`, `tasks/confirm_evidence_violations.md`, and the implemented `dayu/services/internal/write_pipeline/chapter_audit_coordinator.py` and `audit_evidence_rewriter.py`. Its `company_facets.py` and `tasks/infer_company_facets.md` also inform Mode A's business-model/constraint lens. Upstream: [Dayu](https://github.com/noho/dayu-agent). These are design sources, not issuer evidence or a runtime dependency.
-
-Retain grounded retrieval, claim-level confirmation, source-aware repair and conditional research focus. Do not import the long fixed template, fixed search/tag quotas, mandatory write/audit/confirm/repair stages, rigid formatting, blanket ban on unit conversion, or the qualitative-screening template's ban on valuation. The available tools and the current user's investment request govern execution.

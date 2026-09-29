@@ -59,6 +59,12 @@ When performance changes after deployment or sizing changes, distinguish externa
 
 For an authorized field experiment, consider interference and carryover: arms trading in the same market may affect each other's prices, liquidity or responses. Choose a comparison unit and timing that address those interactions, or narrow the causal claim. Use appropriate impact stress or shadow evidence for a research-only task, keeping its limits explicit. Neither a proposed A/B test nor simulation success authorizes live orders or capital increases.
 
+## Check support when the policy changes
+
+When changing selection, order timing, size or execution rules, identify which policy generated the historical sample and what opportunities were eligible, rejected, submitted, unfilled or filled. Filled-order logs condition on old actions and market responses; they do not reveal every outcome the new policy would produce. Separate common-opportunity comparisons from selection/coverage changes and preserve explicitly permitted abstention.
+
+Check whether the new actions and resulting states have adequate support before reusing old rewards or fitted fill/impact models. Reweighting, even with known action probabilities, cannot recover actions with no support; historical price replay alone does not establish counterfactual fills or market impact. Use the cheapest relevant offline coverage, execution-model or stress check, then narrow any unresolved value claim. Fresh field evidence requires separate authorization; an evidence gap never licenses live exploration or increased capital.
+
 ## Keep the evaluator authoritative
 
 An evaluator such as `backtest.py` may orchestrate distributed jobs, but it must:
@@ -97,9 +103,9 @@ Do not silently rescore, widen a grid, remove failed arms, change a split, or re
 - **Cost and execution:** stress fees, fills, latency, capacity, liquidity, and turnover at the level relevant to deployment.
 - **Simplicity:** reject special cases whose only defense is historical fit.
 
-## Ridge HFT project profile
+## Project-Specific Metric Mapping
 
-When operating in the Ridge HFT research repository, map the generic gates to its existing contract:
+When the active project's contract uses the following metrics and model family, map the generic gates to that contract:
 
 - **EDGE candidates:** use the primary metric and gate frozen in the current `program.md` and active TASK, with paired held-out comparisons, four-layer detail, relative deltas, search-count accounting, and regime balance. Where the contract selects `pot`, `dret/avgnwt` cannot replace it. Historical metric preferences or a script named `promotion_gate.py` do not override the active contract; unresolved contract conflicts block promotion, not read-only diagnosis.
 - **RISK candidates:** require the offline ledger oracle, adverse-fill stress, and M0 decision metrics before sim/verify. Judge deployable money with the task's `M` proxy rather than headline `dret` alone.
@@ -128,9 +134,3 @@ compression and next constraint:
 Classify failures precisely: overfit gap, weak mechanism, insufficient sample, cost sensitivity, unstable regime, replay regression, artifact failure, or implementation bug. A failed score with useful attribution is research progress; an unexplained win is not.
 
 End with the decision, champion metrics, holdout behavior, sample size, artifact and replay status, accepted/rejected change, and the ledger's new constraint.
-
-Sources: fixed-evaluator auto-research and observable failure learning. The [Calvin trading interview](https://www.youtube.com/watch?v=diuitUuuM4o) motivates observation transfer and adaptive-market questions, not verified performance claims or universal trading rules. Validation boundaries are supported by [scikit-learn's time-series guidance](https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-of-time-series-data) and [The Probability of Backtest Overfitting](https://www.davidhbailey.com/dhbpapers/backtest-prob.pdf); no additional reading is required unless that boundary is the crux.
-
-The [HRT AI Labs internship project](https://www.hudsonrivertrading.com/hrtbeat/intern-spotlight-hrt-ai-labs-project-2026/) motivates execution-layer controls, history-sensitive state and completion checks. Its algorithm ranking, suspected overfit and memory benefit are local observations or explanations to test, not universal preferences for PPO, proof that exploration fixes model error, or evidence of live trading performance. Keep undisclosed reward, tuning and architecture details unknown.
-
-The user-supplied transcript of Marc Khoury's [ICML 2025 talk](https://icml.cc/Expo/Conferences/2025/talk%20panel/46791) motivates input/horizon design, conditional data value, latency and adaptive-market checks. Its internal scaling examples generate local hypotheses; public evidence here does not establish universal architecture rankings, cross-market transfer or profitable deployment.

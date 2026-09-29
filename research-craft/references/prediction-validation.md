@@ -69,9 +69,3 @@ Distinguish these estimation errors from inherent outcome randomness, which can 
 ## Handoff
 
 Report the event and information boundary, strongest baseline, unused-data status, relevant score/process checks, dominant uncertainty and supported claim level. Keep unresolved links visible; do not require a positive result, new framework or economic proof to finish a narrower request.
-
-## Sources
-
-- [scikit-learn probability calibration](https://scikit-learn.org/1.8/modules/calibration.html): proper scores, reliability and discrimination.
-- [Stan predictive checks](https://mc-stan.org/docs/2_38/stan-users-guide/posterior-predictive-checks.html): compare replicated and observed process features.
-- User-supplied sports-modeling example: forecast origins, process decomposition and the distinction between numerical precision and model validity. The training schedule and named algorithms are not mandatory skill steps.

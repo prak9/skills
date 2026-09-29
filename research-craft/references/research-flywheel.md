@@ -12,6 +12,10 @@ Compare routes under a matched total budget and task contract, including failed 
 
 Evaluate reusable infrastructure by construction/maintenance cost, plausible reuse, savings and evidence fidelity. Small deterministic checkers, replay fixtures, cached immutable inputs and interruption-safe execution can reduce repeated effort. Reuse a result only when its candidate, data, evaluator and material environment remain applicable. Fresh source discovery and live integrations need their own checks. Keep optional infrastructure out of unrelated delivery gates.
 
+After improving a consequential link, remeasure the complete cycle: the bottleneck may move to verification, queueing or handoff. Include slow and failed attempts and human takeover, not only successful-run averages. Consolidate repeated, stable interfaces when observed reuse earns their maintenance and coordination cost; leave uncertain experiments room to vary. A larger shared platform or more collaborators is an intervention to evaluate, not evidence of progress.
+
+Treat infrastructure as an experimental instrument. Pin material kernel/runtime, sampling, checkpoint recovery and reward/weight synchronization behavior when they can confound the comparison. If these change with the candidate, isolate or disclose the joint change before crediting a data mix or algorithm. Use deterministic replay or numerical tolerances suited to the claim; bitwise identity can diagnose drift but cannot certify the objective, data or evaluator.
+
 ## Spend In Stages
 
 | Stage | Question | Evidence and budget |
@@ -61,6 +65,8 @@ Grade completion/feasibility separately from performance: freeze required work, 
 For decision or memory changes, pair cases whose irrelevant wording should preserve the decision with cases whose meaningful history or constraint should change it. Check each case against its contract as well as the relation between cases: a constant wrong action can look stable. Use [state tests](harness-engineering.md#test-state-through-decisions) when history matters. These targeted checks complement outcome metrics; they are not a compulsory battery for every task.
 
 ## Close The Loop At The Right Layer
+
+Before turning a retry, complaint or abandoned task into learning data, reconstruct the requested outcome and observable failure. Distinguish model error, missing tool evidence, environment mismatch, product presentation and a changed user goal. Define the correct behavior with a reproducible case or appropriate expert judgment; retain unresolved labels when evidence cannot decide. Pair an actionable example with an independently evaluated related task, rather than training and confirming on the same incident. Synthetic or teacher-generated answers need a stated source of new information and a checker that can reject plausible wrong outputs.
 
 Trace failure -> competing causes -> cheapest discriminating intervention -> preserved regression -> later comparable confirmation. Fix data, tests, tools, retrieval or state where those caused the failure; add a Skill rule when contextual judgment is the right enforcement point. Keep prior failures intact. An independently checked improvement can be useful within scope with its mechanism still unresolved; broader promotion needs transfer evidence.
 

@@ -80,7 +80,3 @@ python3 <SKILL_ROOT>/scripts/wrap_preview.py article-wechat-ink.html
 - 校验结果和仍需人工确认的 warning；
 - 操作提示：打开预览页，点击“复制正文”，粘贴到公众号编辑器后再做一次真实预览；
 - 未经真实微信编辑器验证时的明确证据边界。
-
-## Provenance
-
-本 skill 借鉴 [gzh-design-skill](https://github.com/isjiamu/gzh-design-skill) 的“组件约束 + 产物校验 + 独立复制预览”工作流。上游采用 AGPL-3.0；本目录未复制其代码、主题或素材，渲染器、主题和校验实现均为本仓库独立实现。

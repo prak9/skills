@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 import numpy as np
@@ -21,6 +22,23 @@ SPEC.loader.exec_module(diagnostics)
 
 
 class ModelTuningDiagnosticsTests(unittest.TestCase):
+    def test_cli_requires_explicit_data_root_and_accounts(self) -> None:
+        options = {"--results-root": "/example/results", "--account": "sim", "--real-account": "real"}
+        for omitted in options:
+            argv = [str(SCRIPT)] + [part for key, value in options.items() if key != omitted for part in (key, value)]
+            with self.subTest(omitted=omitted), patch.object(sys, "argv", argv):
+                with self.assertRaises(SystemExit) as caught:
+                    diagnostics.parse_args()
+                self.assertEqual(2, caught.exception.code)
+
+    def test_self_test_needs_no_private_configuration(self) -> None:
+        with patch.object(sys, "argv", [str(SCRIPT), "--self-test"]):
+            args = diagnostics.parse_args()
+        self.assertTrue(args.self_test)
+        self.assertIsNone(args.results_root)
+        self.assertIsNone(args.account)
+        self.assertIsNone(args.real_account)
+
     @staticmethod
     def write_bundle(directory: Path, start: str, end: str, *, pot: str = "0.3", manifest: str | None = None) -> None:
         directory.mkdir(parents=True, exist_ok=True)

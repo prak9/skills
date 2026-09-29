@@ -70,6 +70,6 @@ Escalate to an owner, maintainer, specialist, technical lead, or team decision w
 - Treat “deadline” as a constraint, not evidence. Only a genuine high-consequence emergency justifies narrowing the immediate bar to correctness and containment.
 - After an emergency change, require the deferred design, maintainability, tests, and cleanup review. A normal launch desire, end of sprint, or sunk effort is not an emergency.
 
-## Source
+## Required Attribution
 
 This contract adapts the review-process principles in [Google Engineering Practices](https://github.com/google/eng-practices/tree/master/review), including its reviewer and change-author guides. The upstream repository is licensed under [CC BY 3.0](https://github.com/google/eng-practices/blob/master/LICENSE). This skill adds evidence gates, calibrated severities, and AI-review boundaries for the current workflow.

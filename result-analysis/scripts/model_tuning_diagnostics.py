@@ -731,9 +731,9 @@ def self_test() -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--results-root", default="/home/x/www/results")
-    parser.add_argument("--account", default="dce_t1")
-    parser.add_argument("--real-account", default="dce_ht1028")
+    parser.add_argument("--results-root", help="explicit report data root")
+    parser.add_argument("--account", help="SIM account from bundle metadata")
+    parser.add_argument("--real-account", help="REAL account from bundle metadata")
     parser.add_argument("--end", help="exclusive report end date, YYYYMMDD")
     parser.add_argument("--lookback", type=int, default=20)
     parser.add_argument("--min-days", type=int, default=3)
@@ -743,7 +743,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model-root", help="current model root, e.g. latest_models_t1")
     parser.add_argument("--output")
     parser.add_argument("--self-test", action="store_true")
-    return parser.parse_args()
+    args = parser.parse_args()
+    if not args.self_test:
+        missing = [flag for flag in ("results-root", "account", "real-account")
+                   if not getattr(args, flag.replace("-", "_"))]
+        if missing:
+            parser.error("required for report analysis: " + ", ".join("--" + flag for flag in missing))
+    return args
 
 
 def main() -> None:

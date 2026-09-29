@@ -143,7 +143,3 @@ What is the narrowest safe fix direction?
 ```
 
 Reject the finding if these answers remain vague after reasonable inspection.
-
-## Source
-
-The “code-judo” structural-simplification lens adapts the [Thermo-Nuclear Code Quality Review](https://github.com/cursor/plugins/blob/main/thermos/skills/thermo-nuclear-code-quality-review/SKILL.md). This rubric converts its fixed size thresholds and presumptive blockers into evidence-based probes so they remain compatible with calibrated review findings. The lifecycle, workload, and data-access gates draw on Andrew Ng's [“AI Engineering Skills Map: Software engineering fundamentals”](https://x.com/AndrewYNg/status/2093388974194872781).

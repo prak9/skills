@@ -80,5 +80,3 @@ On resumption, check the relevant prior route and reopening condition before rep
 Keep exploration cheaper than confirmation: a bounded exploratory probe may use a provisional hypothesis and a small diagnostic sample, with its purpose and budget clear. It need not earn deployment-level proof before running, but its results do not establish general improvement or authorize promotion. Confirm consequential claims under the frozen evaluation and fresh-evidence rules. Judge progress by resolved uncertainties and verified outcomes, not runtime, experiment count or a forced lesson from every failed run. Stop or choose a different informative route when the current one is exhausted; do not fill the remaining budget with retries.
 
 This adapter neither creates a new ledger nor authorizes monitoring, contact, trading or other external actions. A supported negative or unresolved finding can complete the requested research.
-
-Source: user-supplied discussion of constraints, competing mechanisms, proxy validity and forecast journals; these are research design heuristics, not a claim to reconstruct any named researcher's private algorithm.

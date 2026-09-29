@@ -18,7 +18,7 @@
 - 日报文件 start/end、账户、品种、session、代码 commit/dirty 状态。
 - 模型文件真实路径、mtime、SHA256；params 中的 feature version、target type、horizon、model type、alpha/CV selector、sg/fg、训练日期和样本窗。
 - 数据源/合约选择、wintest、费用真值、交易状态机、evaluator、split 和 seed。
-- `/home/x/py/docs/research/program.md` 的 Locked Constraints、关闭/挂起轴、当前 active surface；`memory.md` 的最新结论和 active TASK。
+- 当前项目 `docs/research/program.md`（或 AGENTS 指定的运行卡）的 Locked Constraints、关闭/挂起轴、当前 active surface；`memory.md` 的最新结论和 active TASK。
 
 按模型身份分组。若日报之间模型、目标、horizon、feature、gate 或状态机变化，禁止直接汇总；先拆成同身份 cohort。身份拿不到时写 `identity_unverified`，跨日结论降一级。
 
@@ -31,7 +31,7 @@
 | L0 数据/标签 | 决策时点可见的全量行 | 标签是否可用、是否泄漏/漂移 | 缺失、时间对齐、分布、重叠、realization curve | 交易赚钱 |
 | L1 全 tick 预测 | 未经交易 gate 的 signals | 排序、方向、幅度、残差 | Spearman IC、R²、NRMSE、DAR、slope、scale ratio | 可交易性/成本后 edge |
 | L2 eligible 信号 | fee/state gate 后 | 门槛是否筛出更高质量边际 | fee-aware precision/recall、分位单调性、margin curve、coverage | 完成交易收益 |
-| L3 SIM 完成交易 | trades, account=dce_t1 | 预测进入状态机后的经济结果 | hit/corr、pnl\|hit/miss、pot/costcov/dret/tn/avgnwt、尾部 | REAL 执行因果 |
+| L3 SIM 完成交易 | trades，账户由 bundle meta 指定 | 预测进入状态机后的经济结果 | hit/corr、pnl\|hit/miss、pot/costcov/dret/tn/avgnwt、尾部 | REAL 执行因果 |
 | L4 REAL 部署 | 实盘订单/成交 | 实际结果与部署差 | pot/dret/PnL、hitr、订单生命周期、paired markout | 未配对时的漏单/滑点原因 |
 
 每个结论写清层级。L3 hit 高只能说明“已完成 SIM 交易子集方向兑现高”；它可能由 gate 选择造成，不能称为全模型准确率。L4 没有稳定 decision id 时只能写 deployment gap `unresolved`。
@@ -70,13 +70,13 @@
 
 ```bash
 python <result-analysis>/scripts/model_tuning_diagnostics.py \
-  --results-root /home/x/www/results --account dce_t1 --real-account dce_ht1028 \
+  --results-root /path/to/results --account SIM_ACCOUNT --real-account REAL_ACCOUNT \
   --lookback 20 --include-signals \
-  --model-root /home/x/shared_16/models/latest_models_t1 \
+  --model-root /path/to/models \
   --output /tmp/model_tuning_diagnostics.json
 ```
 
-日报样本到研究状态的现有门槛见项目政策；这些门槛不阻止指出可复现的标签/实现错误或提出最小反证实验。正式 PROMOTE/REJECT 只服从项目 frozen WFA/gate，日报统计不得代替。
+运行前替换示例路径与账户；报告根目录、SIM 和 REAL 账户均须显式传入，`--self-test` 无需数据配置。日报样本到研究状态的现有门槛见项目政策；这些门槛不阻止指出可复现的标签/实现错误或提出最小反证实验。正式 PROMOTE/REJECT 只服从项目 frozen WFA/gate，日报统计不得代替。
 
 日不是绝对独立样本；相邻日、同模型和重叠标签存在相关性。把 date/model identity 作为 cluster，披露有效独立单元数。优先报告日级中位数、正日率和 concentration，不让交易笔数多的单日吞掉其他日期。
 

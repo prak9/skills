@@ -23,8 +23,6 @@ Required boundaries:
 - FCFE is cash available to common equity after investment and net borrowing; it is not synonymous with dividends or reported net income. Cash-flow timing, EPS and share basis must be consistent. Do not add dividends or buybacks again on top of a value already capturing that distributable cash. If repurchases/dilution drive EPS, model changing shares and funding explicitly outside this fixed-share shortcut.
 - No separately added nonoperating assets. If stripping excess cash/investments from price, also reconcile the associated earnings and claims; do not automatically add net cash to a PE model retaining its interest/investment income. Keep currency, ADR/ADS conversion, minority interests and common-equity claims aligned.
 
-The equity-versus-firm cash-flow distinction and two-stage valuation basis follow [CFA Institute, Free Cash Flow Valuation](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/free-cash-flow-valuation). PE's dependence on growth, payout/cash capacity and equity risk is explained in [Damodaran, Price Earnings Ratio](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/invfables/peratio.htm). The implementation below is a conditional specialization, not a source-endorsed parameter set.
-
 ## Run The Calculator
 
 Run `python3 invest/scripts/calculate_pe_implied_growth.py /path/to/input.json` from the repository root. It reads one JSON file and prints JSON; it does not fetch data, write an archive or place orders. All six economic fields below are required; none has an economic default. Rates are decimals, multiples are ratios, and price uses the base EPS currency/security unit.

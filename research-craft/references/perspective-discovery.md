@@ -30,7 +30,3 @@ Let findings revise the outline instead of forcing retrieved facts into a predet
 Use self-review to locate claims needing evidence, not to certify reliability. Do not replace source checks with uncalibrated numeric confidence, imagined professor grades or simulated peer-review approval. State the evidence, remaining uncertainty and the accessible check that could change the claim; independent review is not created by assigning the same model another role.
 
 Stop expanding perspectives when additional sources are duplicates or cannot materially change the requested understanding or decision. If decisive evidence is inaccessible within scope, complete supported work and name the limitation. Do not seek permission for an already authorized lookup, expand access rights or require exhaustive coverage of every stakeholder.
-
-## Basis And Limits
-
-[STORM, NAACL 2024](https://aclanthology.org/2024.naacl-long.347/) motivates perspective-guided questions, retrieval-backed follow-ups and evidence-informed outlines. The disagreement taxonomy and scope controls here are design adaptations, not a tested reproduction of STORM. Its article-writing evaluation does not establish that four role-play prompts replace expert research, nor that self-grading resolves source bias or unsupported associations.

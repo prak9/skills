@@ -79,3 +79,9 @@ This packet is not loaded by `evaluate_behavior_cases.py` and remains behavior-u
 `research-input-design-cases.jsonl` contains ten visible development cases, frozen before the input-design instruction edit: representation loss, aggregate availability, horizon and effective samples, end-to-end deadlines, historical/cross-domain data value, sparse events, memory noise, deployment feedback, scaling claims and a clean descriptive control. Apply the isolated forward execution and independent grading protocol above; executors receive prompts and necessary artifacts, not grading criteria. For the memory case, grade the proposed test design; testing retention itself additionally requires captured execution of the exact event stream, including actual noise events and update timing.
 
 The deterministic evaluator does not load this packet. Parsing cases and checking documentation validate structure and coverage; model behavior and cost comparisons remain unrun until recorded and independently graded. Preserve existing suites and archived results.
+
+## Structural Optimization Development Packet
+
+`structural-optimization-cases.jsonl` freezes eight visible development cases for exact penalty recovery, permanent pruning, state merging, reformulation and witness preservation, baseline strength, empirical retirement, and lightweight positive controls. Apply the prompt-only isolated forward protocol above. This packet is not supported by the deterministic evaluator; keep raw responses, skill revisions and criterion-level judgments with the experiment's records.
+
+`test_structural_optimization_fixtures.py` checks the arithmetic and small exhaustive counterexamples used by four cases. It does not execute an agent, validate arbitrary optimized algorithms, or establish skill improvement. Grade actual forward runs separately; paired successes on visible cases support scoped regression evidence, not a general capability gain.

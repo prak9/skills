@@ -39,9 +39,3 @@ break-even billed utilization = fixed costs / [GPUs * period hours * (price - va
 State which fixed costs are included: cash operating, EBIT, pre-tax or debt-service break-even are different thresholds. This formula assumes positive contribution per billed hour and a stable cost/price basis; nonpositive contribution, a threshold above 100%, ramping inventory or take-or-pay contracts require a different interpretation/model. Do not multiply metered revenue by MFU. Missing realized prices, vintage data or cost terms permit conditional bounds, not a fabricated point estimate.
 
 Connect the decisive cost range to FCF/per-share value and the current price hurdle. Stress joint price/utilization, energization delay, renewal, replacement and funding changes where relevant. Derive falsifiers from observable contract prices, accepted capacity, cash cost or cash collection—not from total AI spending, a popular interview or an arbitrary industry utilization threshold.
-
-## Discovery Examples, Not Fixed Inputs
-
-- [SemiAnalysis's cluster TCO methodology](https://newsletter.semianalysis.com/p/how-much-do-gpu-clusters-really-cost): distinguish a rental rate from delivered work and inspect the age of the embedded price data.
-- [CoreWeave original quarterly materials](https://investors.coreweave.com/overview/default.aspx): retrieve the specific period's filing and transcript, including equipment, lease, financing and cash-flow notes; cite those documents, not this discovery page.
-- [Dwarkesh's Dylan Patel discussion, 2026-08-25](https://www.dwarkesh.com/p/dylan-patel-3): questions about compute pricing, surplus capture and financing; interview scenarios are not audited industry facts. Recheck recency at each task's as-of date.

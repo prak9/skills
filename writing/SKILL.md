@@ -132,6 +132,4 @@ Boundary and handoff: `decision` owns the choice, `plan-skill` owns durable exec
 
 接收 `invest` 的最终文章时，读取终稿检查表，按已完成研究组织成稿，再把结论、时点、口径、假设、引用与风险逐项对回研究材料。措辞需要更强证据时保留原强度，或把具体疑点交回 invest；文风优化不补估值、不删除反证，也不触发发布。
 
-增量来源：吸收 [human-writing](https://github.com/KKKKhazix/human-writing) 的材料、说话位置、推进、中文节奏和体裁思想；覆盖映射、适配边界与 MIT 声明见 `references/human-writing-source.md`，仅在追溯来源时读取。
-
-另吸收 Humanizer-zh、stop-slop、taste-skill 和 shuorenhua 的适用思想；版本、覆盖及取舍见 `references/writing-sources.md`，不将上游禁令叠加成每次写作的必读清单。
+第三方许可保留于 `references/human-writing-source.md` 与 `references/writing-sources.md`，无需在日常写作时加载。

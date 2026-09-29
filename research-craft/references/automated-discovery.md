@@ -145,5 +145,3 @@ The coordinator resolves incompatible assumptions and duplicated evidence before
 - **API fragmentation:** allowing experimental extensions to create multiple competing ways to express the same core operation.
 - **Self-grading:** accepting an agent's completion claim without raw artifacts and an independent checker.
 - **Speed without learning:** reducing runtime while the decisive uncertainty remains unchanged.
-
-Source: distilled from the supplied discussions of Jeff Dean's TensorFlow and Gemini lessons, first-principles problem selection, automated ML, and automated scientific discovery loops.

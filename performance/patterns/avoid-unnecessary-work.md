@@ -23,6 +23,11 @@ the shared structural cause across a flat profile.
 5. Avoid duplicating large logic between paths; the optimization must remain
    auditable against one contract.
 
+For search-space pruning or state merging, use the
+[structural obligations](../references/structural-optimization.md): work that is
+unhelpful now may become necessary after a later update. Low observed usage can
+justify a reversible fast path, not permanent deletion of supported behavior.
+
 ## Verification
 
 Test fast and slow paths, invalidation, state changes, and uncommon inputs.

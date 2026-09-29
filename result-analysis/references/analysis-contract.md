@@ -4,7 +4,7 @@
 
 ## 1. 输入与优先级
 
-默认结构化数据目录：`/home/x/www/results/YYYYMM/artifacts/`；兼容旧的 `YYYYMM/` 直接存放 CSV，PDF 通常仍在月份目录。
+结构化数据目录：`<results-root>/YYYYMM/artifacts/`，根目录从项目配置或用户输入确定；兼容旧的 `YYYYMM/` 直接存放 CSV，PDF 通常仍在月份目录。
 
 | 文件 | 粒度 | 用途 | 优先级 |
 |---|---|---|---|
@@ -15,7 +15,7 @@
 | `signals_<b>-<e>.csv` | 逐信号 | 全 tick/eligible 预测、margin、因子 | 按需 |
 | `capacity_<b>-<e>.csv` | 容量网格 | 仅作辅助；核对生成方法 | 按需 |
 | `res_<b>-<e>.pdf` | 图表 | 定位指定页或结构化数据缺失 | 最后 |
-| `/data/logs/result/cron_YYMMDD.log` | 运行日志 | 判断实盘比对/数据生成是否跳过 | 异常时 |
+| `<result-log-root>/cron_YYMMDD.log` | 项目配置指定的运行日志 | 判断实盘比对/数据生成是否跳过 | 异常时 |
 
 使用 detail 时读 `meta.note`。它对代理量、回填和配对边界的声明优先于本参考。字段不存在时降级，不凭空补值；不使用 detail 的任务无需为此寻找它。
 
@@ -33,7 +33,7 @@ model_path / params_mtime / SHA256 / missing_or_backfilled_fields
 - 不硬编码 t0/t1/t2 的 feature/target 映射。用当前日报的 `account×y`、params 和 artifact hash 确认。
 - 按最小受影响单位拆 cohort：账户级模型、标签、horizon 或 feature 变化影响该账户；品种×session 的 fg/sg、gate 或状态机变化只影响对应 cell。除非是全局身份变化，不得因单个 cell 改动剔除整日其它可比数据。
 - 报告时模型身份无法恢复，写 `identity_unverified`，跨日结论降一级。
-- 若实盘字段缺失或 bundle 不完整，检查对应 `/data/logs/result/cron_YYMMDD.log` 中的 `未拿到`、跳过和回填告警，并把生成失败与真实零值分开。
+- 若实盘字段缺失或 bundle 不完整，检查项目配置所指的对应运行日志中 `未拿到`、跳过和回填告警，并把生成失败与真实零值分开。
 
 ## 3. 指标层级
 
@@ -131,7 +131,7 @@ consensus = w.groupby(["s", "t"]).agg(
 
 ## 5. SIM、REAL 与部署口径
 
-- SIM 账户通常为 `*_t*` 且不含 `ht`；REAL 示例为 `dce_ht1028`。实际账户以 bundle meta 为准。
+- SIM 与 REAL 账户以 bundle meta 和项目配置为准；账户名称仅供定位，不用命名模式代替身份核验。
 - REAL `dret` 可能由报告代码回填；原始 REAL 没有可认证模型预测时，`prec/ic` 应为空。
 - 锁仓品种是结构上限，必须单列；低 REAL 量不自动解释成执行故障。
 - `meta.recommend` 中 `has_real=false` 只可写 “SIM-only 候选”。

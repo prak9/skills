@@ -101,5 +101,3 @@ Fix material defects and rerun the affected checks until the requested interface
 - `references/composition-and-taste.md`: read for new design direction, major redesign, information architecture, data composition, or anti-template review
 - `references/interface-quality.md`: read for accessibility, interaction, forms, responsive layout, content resilience, performance, media, and motion
 - `references/verification-foundation.md`: read for independent checking, judgment coverage, rendered evidence, granularity, calibration, and completion
-
-This skill generalizes lessons from [Vercel's design.md](https://vercel.com/design.md) and [Web Interface Guidelines](https://vercel.com/design/guidelines). The user's product and brand remain the authority; Vercel's visual identity does not.

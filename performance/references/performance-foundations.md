@@ -18,6 +18,13 @@ whether the system improved without breaking correctness.
 - Establish a baseline. If execution is unavailable, use a back-of-the-envelope
   estimate and label the conclusion as a hypothesis rather than a speedup.
 
+For structural algorithm changes, distinguish the **correctness oracle** from
+the **competitive performance baseline**. A simple exhaustive solver can check
+small inputs; a reasonably tuned implementation tests whether the speedup is
+useful. One implementation may fill both roles. Avoid sharing the disputed
+assumption with the oracle, and avoid attributing a weak baseline's full-table
+storage or untuned code to an unavoidable cost of its algorithm.
+
 ## Rank by leverage
 
 Investigate in this order unless evidence rules out an earlier layer:
@@ -35,6 +42,12 @@ Investigate in this order unless evidence rules out an earlier layer:
 An instruction-level win cannot compensate for unnecessary orders of magnitude
 of work. Conversely, do not impose a disruptive redesign when a simple local
 choice is measurably sufficient.
+
+When a change reformulates the problem, permanently prunes candidates, merges
+states, or replaces a hard constraint with a penalty, read
+[structural optimization](structural-optimization.md). It identifies what must
+remain equivalent before omitted work can be called unnecessary; routine local
+hoisting or caching needs only its applicable invariant and regression checks.
 
 ## Estimate before building
 
@@ -96,10 +109,3 @@ Report the baseline and candidate on the same workload, metric, environment, and
 build. Include correctness checks, sample count or uncertainty when available,
 resource tradeoffs, and the residual boundary not exercised. Never turn a profile
 percentage directly into an expected end-to-end speedup.
-
-## Source
-
-This reference distills the general single-binary tuning principles in Jeff Dean
-and Sanjay Ghemawat's [Abseil Performance Hints](https://abseil.io/fast/hints.html).
-Library-specific examples remain conditional on the project's language,
-dependencies, workload, and measured bottleneck.

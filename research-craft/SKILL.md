@@ -51,7 +51,7 @@ Start with a lightweight framing check: what is being explained, predicted or co
 When wording is ambiguous or assumes an unverified result, briefly reframe before committing to an explanation: “why did the model fail?” may first require establishing whether it failed against the intended baseline and metric. Preserve the user's objective and constraints; do not silently substitute an easier question. A useful explanation can resolve uncertainty without selecting an action, and does not by itself authorize action.
 
 - State the outcome that should exist if the research succeeds; reason backward to the evidence and experiments needed to produce it.
-- Ask Hamming's question: what is the important problem, and why are you not working on it?
+- Ask what the important problem is, and why you are not working on it.
 - Name the few decisive unknowns and the plausible answers that would change the requested explanation, prediction or decision. Preserve decisive interactions rather than forcing a single-variable story. Avoid absorbing a fashionable problem without its reasoning chain.
 - Define the judgment, prediction or decision the result can change. Resolving a stated uncertainty is a valid research outcome; if no plausible result informs the requested outcome, narrow or stop that line of inquiry, not unrelated authorized work.
 - Before a consequential test, state the research prediction and preserve its provenance so hindsight cannot rewrite it. This does not require the user to supply a prediction before assisted exploration can begin.
@@ -117,6 +117,8 @@ For an automated discovery portfolio, append the loop under change, frozen depen
 When a proposed abstraction or simplification carries the conclusion, test a contrastive pair: two cases the model treats as equivalent but that might require different predictions or actions. Select the pair from observed cases or a clearly labeled hypothetical; do not force a counterexample when the distinction is immaterial to the contract.
 
 Check whether compression preserved the relevant outcome, timing, constraints, interactions, and evidence needed to choose an action. For example, a non-idempotent operation that never executed and one that executed but lost its reply cannot safely share an unconditional retry policy. A bounded read-only retry may legitimately treat different errors alike when recovery behavior and diagnostic evidence remain adequate.
+
+Distinguish exact redundancy within a defined domain from low empirical value. A structural argument can justify omitting states or work while preserving the required answer; historical non-use only supports conditional deprioritization. For empirical compression, retain recoverable provenance and the conditions that would reopen the omitted material. When an algorithm reformulation, permanent pruning, state merge or penalty relaxation carries the claim, use the [structural optimization checks](../performance/references/structural-optimization.md). Verify the original output and constraints, not only a convenient scalar score; a bound, approximation or sampled success is a different claim from exact equivalence.
 
 For learned inputs, use the [representation and availability checks](references/prediction-validation.md#test-the-input-representation) before attributing a limit to model capacity. For memory updates, use [history and noise tests](references/harness-engineering.md#test-state-through-decisions); for historical or cross-domain training data, test [conditional data value](references/research-flywheel.md#test-the-incremental-value-of-data).
 
@@ -238,7 +240,3 @@ Required human checkpoint:
 ```
 
 Do not call work successful when required artifacts are missing, the evaluator moved, a holdout was tuned against, or the result does not address the defined research question.
-
-## Sources
-
-The general craft draws from Hamming, Schulman, Shannon, Feynman, Karpathy, Ng, Sutton, Olah, the user-supplied Jeff Dean discussion of problem selection and retrospective calibration, and the full Chinese source in `references/how-to-be-good-at-research-zh.md`. The harness adapter distills Lilian Weng's harness-engineering framework. The quantitative adapter combines fixed-evaluator auto-research with observable failure learning and anti-overfitting trading practice.

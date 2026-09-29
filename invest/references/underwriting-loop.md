@@ -323,9 +323,3 @@ Every material-change report should answer:
 5. What decision state follows, and what is the next validation point?
 
 Do not claim to monitor continuously, create an external alert, or mutate a watchlist unless the user authorized that action and the required persistent tooling is available. Otherwise deliver the baseline, thresholds, sources, and proposed cadence as a monitoring specification.
-
-## Method Sources
-
-- [Expectations Investing](https://www.expectationsinvesting.com/about): conditional price requirements, value-sensitive research, and net opportunity costs.
-- [Damodaran on growth](https://pages.stern.nyu.edu/~adamodar/New_Home_Page/valquestions/growth.htm): reinvestment-driven growth versus efficiency gains.
-- [Return on invested capital](https://www.morganstanley.com/im/publication/insights/articles/article_returnoninvestedcapital.pdf) and [total shareholder returns](https://www.morganstanley.com/im/publication/insights/articles/article_totalshareholderreturns.pdf): capital-return definitions and per-share return attribution.
