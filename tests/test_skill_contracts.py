@@ -79,10 +79,8 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("applicable instruction chain once", protocol)
         self.assertIn("do not read duplicate aliases", protocol)
 
-    def test_specialized_equity_modes_do_not_claim_bare_tickers(self) -> None:
-        text = skill_text(INVESTMENT_SKILL)
+    def test_gf_dma_still_needs_more_than_a_bare_ticker(self) -> None:
         gf_dma = reference_text(INVESTMENT_SKILL, "mode-c-gf-dma.md")
-        self.assertIn("Do not trigger Modes B, C, or E from a bare ticker", text)
         self.assertIn(
             "Do not trigger from a bare ticker or generic stock-analysis request",
             gf_dma,

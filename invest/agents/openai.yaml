@@ -1,4 +1,4 @@
 interface:
   display_name: "Invest"
-  short_description: "Quick or full buy-side research with testable specialist lenses"
-  default_prompt: "Use $invest for a decision-led Quick stock view by default; load full underwriting or a specialist valuation, trend, or news-to-alpha mode only when the request requires it."
+  short_description: "Multi-lens equity research with evidence-backed synthesis"
+  default_prompt: "Use $invest for multi-lens company research by default: combine business quality, joint scenarios, valuation, relevant runway and event transmission, downside risks, and trend diagnostics when informative; reconcile their evidence and disagreements into one judgment."

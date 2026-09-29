@@ -1,6 +1,6 @@
 # Mode B — Bayesian Intrinsic Growth Valuation
 
-Use when explicitly requested for Bayesian valuation, intrinsic versus implied growth, posterior growth hypotheses, or FOMO versus fundamentals, or for a clearly stated Mode A crux requiring this lens. Do not trigger from a bare ticker.
+Use alongside Mode A by default for Standard/Full stock research, including a bare ticker, and for explicit Bayesian valuation, intrinsic versus implied growth, posterior updates or FOMO versus fundamentals. Start with coherent competing operating scenarios; a numerical posterior requires evidence, not merely activation of this mode. Business-only research can use the scenario/update lens without valuation.
 
 The decision question is whether evidence-backed joint operating scenarios offer attractive value and net returns relative to the requirements of the current price. Choose a horizon appropriate to the business and decision; 3–5 years is an example, not a universal forecast window.
 
@@ -35,6 +35,8 @@ Use common valuation dates, currency, security basis, and return horizons. Growt
 8. **Define verification.** Name competing observable predictions, the source and comparable metric, economically justified breakpoint, maturation/disclosure lag and decision effect. Where the decisive variable is unreported, expose proxy limitations instead of treating absent disclosure as falsification.
 
 ## Output
+
+When integrated into Mode A, contribute the relevant scenarios, belief update, price requirements and uncertainty to one report; the standalone outline below is not a second mandatory report. Skip out-of-scope valuation/exposure sections for business-only work.
 
 ```markdown
 ## Company And Decision

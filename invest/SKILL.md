@@ -1,6 +1,6 @@
 ---
 name: invest
-description: Generate source-backed financial-statement and earnings-call extraction, business understanding, business-quality assessment, buy-side equity research and thesis monitoring. Use for U.S./Hong Kong/A-share reports, earnings transcripts, company economics, stock analysis, valuation or thesis updates; routes to specialist lenses only when relevant.
+description: Generate source-backed financial-statement and earnings-call extraction, business understanding, business-quality assessment, buy-side equity research and thesis monitoring. Use for U.S./Hong Kong/A-share reports, earnings transcripts, company economics, stock analysis, valuation or thesis updates; default company research combines complementary analytical lenses.
 ---
 
 # Invest
@@ -15,22 +15,22 @@ Seek information that changes an important estimate, distinguishes plausible exp
 
 ## Route By Request
 
-Load only the selected mode and applicable references.
+Use Mode A as the synthesis spine for company research, not an exclusive model choice. Load and apply complementary modes through its default multi-lens pass; direct extraction, calculation and explicitly narrow requests keep their scope.
 
 | Request | Route |
 |---|---|
 | Business/quality, bare ticker, stock analysis, IC memo, re-underwriting or thesis update | [Mode A — Buy-Side Research](references/mode-a-buy-side.md) |
-| Explicit Bayesian valuation, intrinsic vs implied growth, posterior update or FOMO vs fundamentals | [Mode B — Joint Scenarios](references/mode-b-bayesian-growth.md) |
-| Explicit GF-DMA, DMA/ATR, price/DMA divergence or EscapeRatio | [Mode C — GF-DMA](references/mode-c-gf-dma.md) |
-| News, product/procurement/supply-chain transmission or small-cap beneficiary search | [Mode D — News To Financials](references/mode-d-serenity-alpha.md) |
-| Explicit TAM-Adj-PEG or runway/quality-adjusted growth valuation | [Mode E — TAM-Adj-PEG](references/mode-e-tam-adj-peg.md) |
+| Default stock research, joint operating scenarios, intrinsic vs implied growth, posterior update or FOMO vs fundamentals | [Mode B — Joint Scenarios](references/mode-b-bayesian-growth.md), integrated with A |
+| GF-DMA request, or a material price/fundamental divergence discovered during research that trend diagnostics could clarify | [Mode C — GF-DMA](references/mode-c-gf-dma.md) |
+| Material news/product/procurement/supply-chain change, whether supplied or discovered; beneficiary search when requested | [Mode D — News To Financials](references/mode-d-serenity-alpha.md) |
+| Growth duration, penetration or reinvestment runway matters to value; explicit TAM-Adj-PEG | [Mode E — TAM-Adj-PEG](references/mode-e-tam-adj-peg.md), with its qualitative runway lens before any heuristic calculation |
 | Conditional PE-to-growth hurdle or forward-price arithmetic | [PE implied growth](references/pe-implied-growth.md), without requiring Mode B or a full report |
 | Opportunity search, universe screen or candidate-list review | [Opportunity discovery](references/opportunity-discovery.md), with the relevant domain lens |
 | Standalone financial-report or call extraction | [Financial extraction](references/financial-extraction.md) or [earnings transcripts](references/earnings-transcripts.md) directly |
 
-Do not trigger Modes B, C, or E from a bare ticker or generic stock-analysis request; use them only for an explicit request or a stated Mode A crux. A single-company request does not authorize a universe sweep or persistent watchlist.
+A bare ticker or generic stock-analysis request starts broad company research; the user need not name B, D or E for their relevant lenses to activate. Consider C when price behavior raises a material question, not merely to fill a technical section. More lenses mean distinct questions and evidence, not a vote or an aggregate score. A single-company request does not authorize a universe sweep or persistent watchlist.
 
-Inside Mode A, **Quick** is the default; **Full** applies to deep/comprehensive research, IC memos, re-underwriting, long history or requested financial-model reconstruction (including DCF/normalized EPS/reverse DCF); **Monitoring** reconciles affected claims against the prior thesis. Narrow supplied-input calculations retain their direct route. Follow Mode A's four-period operating baseline and Full's longer-history/recent-research instructions. Depth controls detail, not truthfulness. Missing inputs narrow claims, not all feasible work; identify undelivered components rather than silently downgrading Full to Quick. Ask only for consequential user-owned choices that authorized research cannot resolve.
+Inside Mode A, **Standard multi-lens** is the default; **Quick** applies when brevity or a quick view is requested. **Full** adds deep/comprehensive research, IC memos, re-underwriting, long history or requested financial-model reconstruction (including DCF/normalized EPS/reverse DCF); **Monitoring** reconciles affected claims against the prior thesis. Narrow supplied-input calculations retain their direct route. Follow Mode A's four-period operating baseline and Full's longer-history/recent-research instructions. Breadth and depth are separate: Standard crosses relevant perspectives without automatically requiring every model's full report. Missing inputs narrow claims, not all feasible work; identify undelivered components rather than silently downgrading Full to Quick. Ask only for consequential user-owned choices that authorized research cannot resolve.
 
 ## Shared Source Discipline
 

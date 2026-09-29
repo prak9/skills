@@ -1,6 +1,6 @@
 # Mode E — TAM-Adjusted PEG
 
-Use when explicitly requested for TAM-Adj-PEG, TAM-supported valuation, runway-adjusted PEG, or a quality-adjusted growth valuation, or for a clearly stated Mode A crux requiring this lens. Do not trigger from a bare ticker.
+Use in default Standard/Full research whenever growth duration, penetration, competition or reinvestment runway materially affects the case, without requiring the user to name this mode. Also use for explicit TAM-Adj-PEG or quality-adjusted growth valuation. Apply the qualitative runway/quality lens first; activating it does not require an adjusted PEG number.
 
 This is an **uncalibrated screening heuristic**, not a fair-value model or a standalone trade signal. Its factors and legacy bands have no demonstrated out-of-sample calibration here. Report that status with any calculation; a lower adjusted PEG alone does not establish cheapness.
 
@@ -40,6 +40,8 @@ Special cases:
 - **Turnaround:** show current/base and successful-normalization cases separately.
 
 ## Output
+
+Within Mode A, integrate the supported runway, competitive constraints and valuation consequences into the joint analysis. Use the calculation outline below only for a meaningful supported or explicitly hypothetical PEG exercise; do not create empty factor tables for ordinary research.
 
 ```markdown
 # [Ticker] — TAM-Adj-PEG

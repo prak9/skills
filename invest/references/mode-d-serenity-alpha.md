@@ -1,6 +1,6 @@
 # Mode D — Serenity Alpha (News To Financial Statements)
 
-Use when the user supplies news, a product launch, technology change, procurement clue, earnings-call signal, or asks for small-cap beneficiaries and financial-statement transmission.
+Use when material news, a product launch, technology change, procurement clue or earnings-call signal is supplied or discovered during company research, or for requested beneficiary searches. In default multi-lens research, proactively investigate relevant changes and integrate their financial transmission into Mode A; do not expand a single-company task into a universe search.
 
 Start with this chain:
 

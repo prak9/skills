@@ -17,7 +17,7 @@ RUN_CONTEXT = {
     "harness": "test-harness",
     "instruction_revision": "test-instructions",
     "skill_revision": "test-skills",
-    "case_set_version": "core-v1",
+    "case_set_version": "core-v2",
     "run_at": "2026-09-05T00:00:00Z",
     "evaluator": "test-evaluator",
 }
@@ -53,7 +53,7 @@ class BehaviorCaseEvaluatorTests(unittest.TestCase):
                         "case_set_version": (
                             "instruction-migration-v1"
                             if suite == "instruction-migration"
-                            else "all-v1" if suite == "all" else "core-v1"
+                            else "all-v2" if suite == "all" else "core-v2"
                         ),
                     },
                     "output": "；".join(case.get("must_include", [])),
@@ -183,13 +183,13 @@ class BehaviorCaseEvaluatorTests(unittest.TestCase):
     def test_wrong_case_set_version_fails_case(self) -> None:
         results = self.passing_results()
         for record in results:
-            record["run_context"]["case_set_version"] = "stale-cases"
+            record["run_context"]["case_set_version"] = "core-v1"
         process = self.run_evaluator(results)
 
         self.assertEqual(1, process.returncode)
         report = json.loads(process.stdout)
         self.assertTrue(
-            any("must be core-v1" in failure for failure in report["cases"][0]["failures"])
+            any("must be core-v2" in failure for failure in report["cases"][0]["failures"])
         )
 
 

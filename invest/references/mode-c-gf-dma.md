@@ -1,6 +1,6 @@
 # Mode C — GF-DMA Module Diagnostics
 
-Use only when the user explicitly asks for GF-DMA, DMA/ATR trend health, price-to-DMA divergence, EscapeRatio, or whether a price trend is fundamentally supported. Do not trigger from a bare ticker or generic stock-analysis request.
+Use for explicit GF-DMA, DMA/ATR trend health, price-to-DMA divergence or EscapeRatio requests, or when company research discovers a material price/fundamental divergence that this diagnostic could clarify. Do not trigger from a bare ticker or generic stock-analysis request alone. State the question and check data availability; qualitative interpretation is valid when numeric gates are not met.
 
 GF-DMA is an **uncalibrated heuristic**, not a return probability or causal model. Report its version, source dates, inputs, missing modules, and sensitivity. Never let the model improvise a numeric module score: use [scripts/calculate_gf_dma.py](../scripts/calculate_gf_dma.py), or return qualitative module observations / `N/A` when the required inputs or gates are missing. The aggregate score is disabled even when all module inputs exist.
 

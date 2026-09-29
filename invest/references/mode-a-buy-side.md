@@ -4,11 +4,30 @@ Use for business understanding/quality, a bare ticker, stock analysis, an IC mem
 
 ## Depth And Required References
 
-- **Quick, the default:** read [business understanding and quality](business-quality.md), use the recent-four-period baseline below, latest annual filing, current price/expectations when valuation is requested, and the evidence needed to resolve the crux. Compress the output, not the economics.
+- **Standard multi-lens, the default:** read [business understanding and quality](business-quality.md) and apply the multi-lens pass below. Use the recent-four-period baseline, latest annual filing and current price/expectations for stock-opportunity analysis. Broaden discovery before selecting the decisive questions; do not wait for the user to name specialist modes.
+- **Quick:** when a quick or brief view is requested, compress to the most informative lenses and evidence, retaining the four-period baseline for new underwriting. Do not silently use Quick for an unrestricted company-analysis request.
 - **Full:** deep/comprehensive research, an IC memo, re-underwriting, long history or financial-model reconstruction (including DCF/normalized EPS/reverse DCF) uses [the longitudinal underwriting loop](underwriting-loop.md). It supplies the longer history, recent-three-month research/interview discovery, forecast support, valuation attribution and consistency audit. Do not simulate missing history or replace a requested model with a toy bridge; narrow supplied-input arithmetic is not a Full-model request.
 - **Monitoring:** use [thesis reconciliation](thesis-reconciliation.md) for the affected prior claims, earnings update or cross-case error review. Reuse valid operating history; no material change means a concise `no thesis change` and the checked evidence window, not a new report.
 
 Business-only work ends with supported business understanding/quality and remaining questions. Do not force valuation, a pricing dispute or exposure advice. Narrow arithmetic and technical requests follow the entrypoint's direct routes.
+
+## Default Multi-Lens Pass
+
+For Standard and Full, examine the company across the perspectives below before narrowing. For stock-opportunity research, read and apply Mode B alongside A. Proactively look for material operating changes and runway constraints, then read D and E when those conditions apply; they do not require explicit user keywords. For business-only work, use the relevant operating/scenario reasoning without forcing numerical valuation. This is analytical model composition, not a requirement to call multiple language models or agents.
+
+| Perspective | Question and analytical route |
+|---|---|
+| Business and financial quality | A: who pays, why this company wins, cash conversion, governance and capital allocation; distinguish demand, accounting and financing explanations. |
+| Competing outcomes and belief updates | [B — Joint scenarios](mode-b-bayesian-growth.md): which coherent paths fit the evidence, what separates them, and how new evidence changes support; probabilities may remain unquantified. |
+| Expectations and valuation | A + B: independently supported cash-flow/per-share outcomes versus dated consensus and conditional price requirements; use economically compatible valuation cross-checks. |
+| Runway and competition | [E — Runway/quality](mode-e-tam-adj-peg.md): obtainable profitable demand, penetration, growth duration, reinvestment and competitive response; use normalized economics when PEG is inapplicable. |
+| Change and transmission | [D — News to financials](mode-d-serenity-alpha.md): how a product, contract, supply, cost or regulatory change reaches cash, on what timing and with which offsets. Search for relevant changes rather than wait for pasted news. |
+| Downside and survivability | [Uncertainty and exposure](uncertainty-exposure.md) for opportunity/risk research: joint failure, funding, dilution, liquidity and the strongest countercase; a good business or upside scenario is not sufficient. |
+| Price behavior versus fundamentals | [C — GF-DMA](mode-c-gf-dma.md) when evidence raises a meaningful trend/divergence question. A rally or fall alone is not proof of a fundamental change; unavailable comparable price/estimate history limits diagnostics. |
+
+Each applied lens should contribute a distinct evidence-backed inference, challenged assumption or material unresolved question. Do not merely list model names. If a relevant lens lacks inputs, seek accessible evidence, retain its qualitative insight and mark unsupported calculations unavailable; missing data is different from economic inapplicability. No fixed quota of models, sources or report sections is required.
+
+Integrate the results into one judgment. Explain agreement, consequential disagreement and which observation would resolve it; do not count shared assumptions or repeated news as independent confirmation. Several models can all be wrong for the same reason. Preserve differentiated views such as strong business quality but demanding price, or improving earnings but worsening funding risk. Do not average incompatible values or fabricate probabilities, quality multipliers or a composite score to make the models agree.
 
 ## Recent Four Earnings Periods
 
@@ -53,8 +72,9 @@ Lead with the answer and what the research changed or clarified. Then expose the
 
 | Depth | Preserve in the deliverable, where applicable |
 |---|---|
-| Quick | Business/quality conclusion; decisive operating changes; dated expectations vs supported forecast; bounded valuation/scenarios; thesis-killer, evidence gaps and next check |
-| Full | Quick conclusions plus source/history coverage, customer/value-chain/competitive economics, reproducible financial model and allocation/financing bridges, assumption support, valuation triangulation/attribution and coherent scenarios with detailed tables |
+| Quick | Concise answer from the most informative lenses; decisive evidence, countercase, uncertainty and next check, with valuation only where in scope |
+| Standard multi-lens | Business/quality and operating changes; competing scenarios, expectations/value, runway and material event transmission; downside, material disagreements across lenses, evidence gaps and falsifiers |
+| Full | Standard conclusions plus source/history coverage, customer/value-chain/competitive economics, reproducible financial model and allocation/financing bridges, assumption support, valuation triangulation/attribution and coherent scenarios with detailed tables |
 | Monitoring | Prior claim and due observation, actual evidence, what changed in mechanism/estimate/price, consequence and next validation point; retain old versions |
 
-Organize supporting detail around the argument; use appendices/tables for auditability rather than repeating a full template. Probabilities can be unavailable, but required research cannot disappear because the verdict is unresolved. Full applies [financial evidence and claim audit](financial-evidence.md) before delivery; propagate corrected inputs to affected scenarios and conclusions, not unrelated work. For specialist calculations or signal analysis, follow the entrypoint's routes only when they resolve the crux.
+Organize supporting detail around the argument; use appendices/tables for auditability rather than repeating a full template for each model. Make the substantive contributions and consequential limits of the selected lenses visible in the report, without a boilerplate list of irrelevant exclusions. Probabilities can be unavailable, but required research cannot disappear because the verdict is unresolved. Full applies [financial evidence and claim audit](financial-evidence.md) before delivery; propagate corrected inputs to affected scenarios and conclusions, not unrelated work.

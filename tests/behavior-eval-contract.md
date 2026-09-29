@@ -14,7 +14,7 @@ Each harness configuration writes one schema-v2 JSONL record per case:
     "harness": "codex-cli 1.2.3",
     "instruction_revision": "git:abc123",
     "skill_revision": "git:def456",
-    "case_set_version": "core-v1",
+    "case_set_version": "core-v2",
     "run_at": "2026-09-05T12:00:00Z",
     "evaluator": "independent-reviewer-v1"
   },
@@ -34,7 +34,11 @@ Each harness configuration writes one schema-v2 JSONL record per case:
 
 `operations` counts tool calls and other harness actions beyond producing the answer; keep its counting rule fixed across compared runs. `reference_reads` counts on-demand instruction or skill-reference files beyond the selected skill entry, not the project source and evidence that the task necessarily inspects; count those reads as operations or in an additional harness-specific metric. A required external write counts as both an operation and an external mutation. `skills_loaded` records actual activation, not the skills the evaluator expected to see.
 
-Every non-obvious run-context field is required so results from different models, reasoning profiles, harnesses, instructions, or case revisions cannot be compared as if only one variable changed. All selected records in one results file must share that run identity; `run_at` may differ by case. The evaluator requires `core-v1`, `instruction-migration-v1`, or `all-v1` to match the selected suite. Use `not-applicable` rather than an empty value when a field genuinely does not apply.
+Every non-obvious run-context field is required so results from different models, reasoning profiles, harnesses, instructions, or case revisions cannot be compared as if only one variable changed. All selected records in one results file must share that run identity; `run_at` may differ by case. The evaluator requires `core-v2`, `instruction-migration-v1`, or `all-v2` to match the selected suite. Use `not-applicable` rather than an empty value when a field genuinely does not apply.
+
+Core v2 changes only the generic invest development case to the user-requested multi-lens default, with a larger reference-read allowance for the additional lenses; its external-mutation and operation limits are unchanged. Explicit Quick and Full acceptance cases are unchanged. This is a requested behavior/coverage change, not a gain measured against the old Quick objective or a proven cost improvement. Historical v1 runs remain historical; do not relabel them v2. The additional qualitative criteria require actual behavior grading, not keyword matches.
+
+The supplementary `invest/evals/cases.jsonl` adds loss-maker/missing-input, narrow-arithmetic and model-disagreement controls for this change. These are development cases outside the core evaluator, not executed model runs. They remain behavior-unrun until actual prompt-only responses and actions are recorded and graded; repository test passes establish structural and calculator compatibility only.
 
 Run the deterministic envelope checks with:
 
