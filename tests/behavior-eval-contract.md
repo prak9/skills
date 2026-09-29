@@ -52,6 +52,14 @@ The deterministic evaluator and its unit-test fixtures validate the result envel
 
 For new bounded command-based artifact experiments, use the separate [captured experiment path](../research-craft/references/research-flywheel.md#captured-command-experiments). It records process receipts and invokes a distinct grader; it does not convert self-reported `behavior_pass` or costs into trusted telemetry. Keep this v2 envelope and its frozen cases compatible. `--suite all` means core plus instruction-migration only, not every case packet in the repository; inventory other packets as unrun, artifact-replayed or behavior-graded with evidence links. Captured artifact checks and independently graded agent behavior remain different evidence scopes.
 
+## Judgment Quality Development Packet
+
+`invest/evals/judgment-quality-cases.jsonl` freezes six visible development cases before this instruction revision: conviction versus forward return and passive concentration, hidden operating offsets, original-thesis resolution versus a new case, operating versus repricing clocks, narrow negative transmission and a clean arithmetic control. Apply the prompt-only protocol below and grade criterion by criterion. Numerical fixture tests validate the examples, not agent behavior; this packet is not supported by the deterministic evaluator. Record batch-context or other protocol deviations and narrow claims accordingly; a small hypothetical smoke comparison cannot establish live research or investment performance.
+
+## Allocation Comparison Development Packet
+
+The supplementary `invest/evals/allocation-comparison-cases.jsonl` packet covers payoff ratios versus expected returns, evidence updates versus attention, and marginal portfolio constraints. Apply the isolated prompt-only protocol below; it is a visible development packet not loaded by the deterministic evaluator. Fixture arithmetic and schema checks do not establish model behavior. Until real runs are recorded and independently graded, these cases remain behavior-unrun.
+
 ## Discovery And Patience Development Packet
 
 The supplementary `invest/evals/discovery-patience-cases.jsonl` packet covers soft versus hard screening, price versus evidence/prerequisite waits, deferred operating investment, repeated-source interviews, per-share valuation and revisable heuristics. These are visible development cases, not holdouts or a supported deterministic-evaluator suite. Use the prompt-only isolated execution and criterion-level grading protocol below for behavioral claims. `invest/tests/test_diligence_fixtures.py` checks packet structure and numerical examples only; those passes do not constitute model runs or measured skill improvement.

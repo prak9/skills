@@ -17,33 +17,13 @@ If PE or EPS CAGR is not meaningful, mark the method inapplicable and use normal
 
 ## TAM Runway Factor
 
-When a supported duration estimate is available, `sqrt(high-growth duration / 5)`, capped at 2.0, is an optional heuristic. Declare the formula or user-supplied convention used and retain precision until final rounding; the table below is approximate. If duration is unsupported, leave the factor and adjusted result `N/A`, or calculate an explicitly hypothetical sensitivity rather than filling a default.
-
-| Duration | Factor |
-|---:|---:|
-| 2 years | 0.6 |
-| 3 years | 0.75 |
-| 5 years | 1.0 |
-| 8 years | 1.25 |
-| 10 years | 1.4 |
-| 15 years | 1.7 |
-| 20+ years | 2.0 cap |
+When a supported duration estimate is available, `sqrt(high-growth duration / 5)`, capped at 2.0, is an optional heuristic. Declare the formula or user-supplied convention and retain precision until final rounding. If duration is unsupported, leave the factor and adjusted result `N/A`, or calculate an explicitly hypothetical sensitivity rather than filling a default.
 
 Do not assign runway from a sector label. Test penetration, TAM growth, share durability, capacity, competition, substitution, technology iterations, requalification, and whether frontier AI shifts the profit pool.
 
 ## Quality Factor
 
-These legacy ranges are illustrative parameter choices, not calibrated mappings from business quality to value. Prefer an explicit user-supplied factor or a disclosed sensitivity; unsupported quality factors leave the adjusted result `N/A`.
-
-| Illustrative factor | Assumed evidence state |
-|---:|---|
-| 0.3–0.5 | early, loss-making, unproven, or high dilution |
-| 0.5–0.7 | cyclical, concentrated, or high execution risk |
-| 0.7–0.9 | high growth with unstable margins/competition |
-| 0.9–1.1 | ordinary high-quality growth |
-| 1.1–1.3 | moat, pricing power, sticky customers |
-| 1.3–1.5 | platform/ecosystem or monopoly-like asset |
-| >1.5 | rare bottleneck/super-platform; use cautiously |
+There is no calibrated mapping from a qualitative label such as moat or platform to a numeric multiplier. Use an explicit user-supplied factor or clearly hypothetical sensitivity; otherwise leave the factor and adjusted result `N/A`. Do not invent a factor from the business description.
 
 Evaluate accrual of TAM to the company, pricing power, customer concentration, technology/requalification risk, sustainable margins, capex, second sourcing, financing/dilution, and AI substitution.
 

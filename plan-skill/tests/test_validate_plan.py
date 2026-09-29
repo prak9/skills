@@ -242,6 +242,23 @@ class ValidatePlanTests(unittest.TestCase):
             self.assertNotEqual(0, process.returncode, process.stdout)
             self.assertIn("reflection decision is unresolved", "\n".join(result["errors"]))
 
+    def test_lite_completed_node_accepts_explicit_none_without_a_reason(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "lite-change"
+            shutil.copytree(LITE_EXAMPLE, root)
+            program = root / "program.md"
+            text = program.read_text(encoding="utf-8").replace(
+                "| NODE-001 | `进行中` |", "| NODE-001 | `完成` |"
+            ).replace("| None | Pending |", "| RUN-001 | None |")
+            program.write_text(text, encoding="utf-8")
+
+            process = subprocess.run(
+                [sys.executable, "-B", str(VALIDATOR), str(root), "--json", "--strict"],
+                check=False, capture_output=True, text=True,
+            )
+
+            self.assertEqual(0, process.returncode, process.stdout)
+
     def test_lite_completed_node_accepts_evidence_linked_reflection(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "lite-change"
@@ -388,7 +405,7 @@ class ValidatePlanTests(unittest.TestCase):
 
         self.assert_rejected("Loop Contract", "Plan mode mismatch")
 
-    def test_valid_loop_contract_passes(self) -> None:
+    def enable_loop(self) -> None:
         self.replace("program.md", "- Plan mode: `Linear`", "- Plan mode: `Loop`")
         self.replace("program.md", "- Loop state: `Not applicable`", "- Loop state: `Plan`")
         self.replace("program.md", "- Loop iteration: `Not applicable`", "- Loop iteration: `1/3`")
@@ -441,6 +458,9 @@ class ValidatePlanTests(unittest.TestCase):
 | L-001 | Plan | N-002 | Add one CLI flag behavior | pytest CLI case and captured output | 待验证 | Not run yet | None | Act |
 """,
         )
+
+    def test_valid_loop_contract_passes(self) -> None:
+        self.enable_loop()
 
         process, result = self.run_validator()
 
@@ -517,6 +537,33 @@ class ValidatePlanTests(unittest.TestCase):
         )
 
         self.assert_rejected("atomic node `N-001`", "reflection decision is unresolved")
+
+    def test_completed_linear_atomic_node_accepts_explicit_none(self) -> None:
+        self.replace(
+            "tasks/TASK-001-add-export.md",
+            "| RUN-001 | R-001 |",
+            "| RUN-001 | None |",
+        )
+
+        process, result = self.run_validator("--strict")
+
+        self.assertEqual(0, process.returncode, process.stdout)
+        self.assertTrue(result["ok"], result)
+
+    def test_completed_linear_atomic_node_rejects_blank_reflection(self) -> None:
+        self.replace(
+            "tasks/TASK-001-add-export.md", "| RUN-001 | R-001 |", "| RUN-001 |  |"
+        )
+
+        self.assert_rejected("atomic node `N-001`", "reflection decision is unresolved")
+
+    def test_completed_loop_atomic_node_still_requires_reflection(self) -> None:
+        self.enable_loop()
+        self.replace(
+            "tasks/TASK-001-add-export.md", "| RUN-001 | R-001 |", "| RUN-001 | None |"
+        )
+
+        self.assert_rejected("atomic node `N-001`", "no `R-*` reflection")
 
     def test_reflection_requires_evidence_and_cognitive_feedback(self) -> None:
         self.replace(
@@ -595,6 +642,24 @@ class ValidatePlanTests(unittest.TestCase):
         self.assertEqual(0, process.returncode, process.stdout)
         self.assertTrue(result["ok"], result)
         self.assertEqual([], result["errors"])
+
+    def test_terminal_plan_accepts_explicit_clean_no_op_without_a_reason(self) -> None:
+        self.enable_clean(last_clean="N/A")
+        self.mark_completed()
+
+        process, result = self.run_validator("--strict")
+
+        self.assertEqual(0, process.returncode, process.stdout)
+        self.assertTrue(result["ok"], result)
+
+    def test_terminal_plan_preserves_legacy_clean_no_op_reason(self) -> None:
+        self.enable_clean(last_clean="N/A: no duplicated or stale state remained")
+        self.mark_completed()
+
+        process, result = self.run_validator("--strict")
+
+        self.assertEqual(0, process.returncode, process.stdout)
+        self.assertTrue(result["ok"], result)
 
     def test_structural_abstraction_requires_complete_gate(self) -> None:
         self.replace(

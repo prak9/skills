@@ -1,6 +1,6 @@
 # Web Design Verification Foundation
 
-Use this contract to prevent a design loop from becoming a fast producer of plausible but unverified UI.
+Use this contract for formal multi-round comparisons, automated design optimization, or promotion of a new design rule across a system. Ordinary implementation uses the proportionate rendered and interaction checks in `../SKILL.md`, without this evaluation machinery.
 
 ## Define The Loop
 
@@ -16,7 +16,7 @@ The maker may run the sensors, but “I implemented it” or “it looks polishe
 
 ## Build A Judgment Coverage Map
 
-Create this map privately for material acceptance conditions:
+For these comparative tasks, make material acceptance conditions and their evidence traceable. This map is one useful format, not a required artifact:
 
 | Claim | Plausible failure | Cheapest decisive sensor | Raw evidence | Owner / gate |
 |---|---|---|---|---|
@@ -31,9 +31,9 @@ Coverage is complete when every material claim has a decisive sensor or explicit
 
 ## Align Granularity
 
-- **Change slice:** one route, flow, composition region, component family, or state model per attempt.
+- **Change slice:** choose a scope whose effects the checks can localize; independent routes, regions, or fixes may share an attempt when their evidence remains distinguishable.
 - **Verification precision:** sensors must localize more finely than the slice can fail. A page rewrite needs viewport and flow evidence; a control change needs state and keyboard evidence.
-- **Memory event:** record the attempted direction, evidence, defect, retained strength, and next rule. Do not store a token transcript or only “design done.”
+- **Comparison record:** retain the candidate, evidence, and conclusion needed to reproduce a comparison or justify a promoted rule. No separate event log is needed for every implementation step.
 
 If verification is coarser than the change, split the change or strengthen the sensors before continuing.
 
@@ -78,7 +78,7 @@ Inspect screenshots at actual size, not only thumbnails. Check hierarchy, alignm
 
 ## Revise And Stop
 
-Fix one highest-impact systemic defect per pass. Preserve what the evidence says is working. A failed render changes the composition, implementation, fixture, or explicit acceptance contract; repeating cosmetic tweaks without a new hypothesis is not progress.
+Prioritize high-impact defects and preserve what the evidence says is working. Combine independent repairs when their effects remain testable; isolate changes when a comparison needs causal attribution. Investigate failed renders instead of repeating cosmetic tweaks without a new hypothesis, and do not revise acceptance merely to erase a failure.
 
 Complete when the requested scope is implemented, declared acceptance has supporting
 evidence, and no known material defect remains in the tested matrix. These conditions

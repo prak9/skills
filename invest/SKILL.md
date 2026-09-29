@@ -7,114 +7,61 @@ description: Generate source-backed financial-statement and earnings-call extrac
 
 ## Decision Contract
 
-Start with the user's research question. For fundamental company research, understand how the business actually works and establish its quality before settling an investment verdict: customer value -> commercial and operating system -> sustainable economics -> evidence and limits -> price when requested. Do not replace this with corporate history or a news digest. A business-only request can end with a well-supported understanding and quality assessment, without a target price, rating or invented pricing dispute. Narrow valuation, technical and monitoring requests retain their scope.
+Answer the user's research question, not a report template. Fundamental research explains how customer value becomes retained cash, what is changing, and what evidence could change the judgment. Business-only work can end there; valuation, technical calculations and narrow updates retain their scope.
 
-Replace point certainty with conditional scenarios. Keep these judgments separate:
+Keep business quality, thesis support, price attractiveness and exposure/survivability separate. The load-bearing chain is **operating mechanism -> discriminating evidence -> supported forecast -> price requirements when relevant -> per-share payoff -> observable falsifier**. A citation supports an observation, not automatically the inference built on it.
 
-- business quality, direction of change and strength of evidence;
-- investment thesis quality and evidence;
-- price/valuation attractiveness;
-- exposure size and survivability.
-
-Depth means resolving the causal and pricing dispute, not producing more sections or a more elaborate spreadsheet. A material investment claim needs a traceable chain: operating mechanism -> discriminating evidence -> independently supported forecast -> conditional price requirements -> per-share payoff -> observable falsifier. A source for a number is not automatically evidence for the inference built on it.
-
-Distinguish a supported investment case, an illustrative valuation sensitivity, and an unresolved underwriting question. `No demonstrated edge` and `Too Hard at present` are valid conclusions, not reasons to abandon requested research. Complete accessible checks, identify the unsupported link and what would resolve it; do not invent a variant, target or probability to fill a template.
-
-Treat every output as research analysis, not personalized investment advice. Never invent unavailable data. Mark it `未核验`, name the source that would confirm it, and narrow the conclusion.
+Seek information that changes an important estimate, distinguishes plausible explanations or exposes a neglected constraint. An insight may confirm the prevailing view or show that no edge is demonstrated; novelty, contrarianism and source volume are not objectives. Complete accessible decisive checks instead of merely proposing them. Distinguish a supported case, an illustrative sensitivity and an unresolved underwriting question. Mark unavailable inputs `未核验`, name the resolving evidence and bound the conclusion; do not invent targets or probabilities to finish a template. Outputs are research analysis, not personalized trading instructions.
 
 ## Route By Request
 
-Load only the selected mode and the references it explicitly requires.
+Load only the selected mode and applicable references.
 
-| Trigger | Route |
+| Request | Route |
 |---|---|
-| business model/quality, customer or competitive economics, bare ticker, “analyze this stock,” buy-side view, IC memo, full re-underwriting, or thesis update | [Mode A — Buy-Side Equity Research](references/mode-a-buy-side.md) |
-| explicit Bayesian valuation, intrinsic versus implied growth, posterior update, or FOMO versus fundamentals | [Mode B — Bayesian Joint Scenarios](references/mode-b-bayesian-growth.md) |
-| explicit GF-DMA, DMA/ATR health, price/DMA divergence, or EscapeRatio | [Mode C — GF-DMA](references/mode-c-gf-dma.md) |
-| news, product/procurement/supply-chain signal, financial-statement transmission, or small-cap beneficiary search | [Mode D — Serenity Alpha](references/mode-d-serenity-alpha.md) |
-| explicit TAM-Adj-PEG, runway-adjusted PEG, or quality-adjusted growth valuation | [Mode E — TAM-Adj-PEG Screening](references/mode-e-tam-adj-peg.md) |
+| Business/quality, bare ticker, stock analysis, IC memo, re-underwriting or thesis update | [Mode A — Buy-Side Research](references/mode-a-buy-side.md) |
+| Explicit Bayesian valuation, intrinsic vs implied growth, posterior update or FOMO vs fundamentals | [Mode B — Joint Scenarios](references/mode-b-bayesian-growth.md) |
+| Explicit GF-DMA, DMA/ATR, price/DMA divergence or EscapeRatio | [Mode C — GF-DMA](references/mode-c-gf-dma.md) |
+| News, product/procurement/supply-chain transmission or small-cap beneficiary search | [Mode D — News To Financials](references/mode-d-serenity-alpha.md) |
+| Explicit TAM-Adj-PEG or runway/quality-adjusted growth valuation | [Mode E — TAM-Adj-PEG](references/mode-e-tam-adj-peg.md) |
+| Conditional PE-to-growth hurdle or forward-price arithmetic | [PE implied growth](references/pe-implied-growth.md), without requiring Mode B or a full report |
+| Opportunity search, universe screen or candidate-list review | [Opportunity discovery](references/opportunity-discovery.md), with the relevant domain lens |
+| Standalone financial-report or call extraction | [Financial extraction](references/financial-extraction.md) or [earnings transcripts](references/earnings-transcripts.md) directly |
 
-For a narrowly requested PE-to-EPS-growth hurdle or its forward price calculation, load [conditional PE implied growth](references/pe-implied-growth.md) directly. This optional calculator does not require Mode B, a full company report, or a new probability model.
+Do not trigger Modes B, C, or E from a bare ticker or generic stock-analysis request; use them only for an explicit request or a stated Mode A crux. A single-company request does not authorize a universe sweep or persistent watchlist.
 
-For an authorized opportunity search, universe screen or candidate-list review, use [opportunity discovery](references/opportunity-discovery.md), alongside the selected domain lens when needed. A single-company request does not trigger a universe sweep or a persistent watchlist.
-
-Do not trigger Modes B, C, or E from a bare ticker or generic stock-analysis request. They require an explicit request or a clearly stated Mode A crux. Do not load all modes for completeness.
-
-For a standalone U.S./Hong Kong/A-share financial-report extraction request, use [structured financial extraction](references/financial-extraction.md) and its applicable market branch directly. For earnings-call transcripts, use [call extraction](references/earnings-transcripts.md). Deliver the requested extraction without forcing valuation, a Full memo or Notion publication.
-
-## Select Depth Inside Mode A
-
-- **Quick is the default** for a bare ticker or ordinary stock-analysis request: use current primary evidence and the minimum history needed to bound the crux, valuation, scenarios, thesis-killer, and next checks.
-- **Full** applies when the user asks for deep/comprehensive research, an IC memo, a long history, integrated modeling, DCF/normalized EPS/reverse DCF, or re-underwriting. Mode A will load [the longitudinal underwriting loop](references/underwriting-loop.md).
-- **Monitoring** uses the prior versioned thesis and reports only what changed. No material change means a concise `no thesis change` result with the evidence window checked.
-
-Depth controls evidence breadth and model detail, not truthfulness. A Quick result must expose missing inputs; a Full result must not pad length with irrelevant history.
-
-Proceed with the selected depth without asking the user to approve the route or supply facts available through authorized research. Ask only for a user-owned choice that materially changes the task and cannot be resolved from context. Missing consensus, history, or a model input narrows the claim; it does not automatically block all useful research. Complete the requested checks that remain possible and name any undelivered component instead of silently replacing Full research with Quick.
+Inside Mode A, **Quick** is the default; **Full** applies to deep/comprehensive research, IC memos, re-underwriting, long history or requested financial-model reconstruction (including DCF/normalized EPS/reverse DCF); **Monitoring** reconciles affected claims against the prior thesis. Narrow supplied-input calculations retain their direct route. Follow Mode A's four-period operating baseline and Full's longer-history/recent-research instructions. Depth controls detail, not truthfulness. Missing inputs narrow claims, not all feasible work; identify undelivered components rather than silently downgrading Full to Quick. Ask only for consequential user-owned choices that authorized research cannot resolve.
 
 ## Shared Source Discipline
 
-For time-sensitive prices, market cap, filings, guidance, consensus, multiples, earnings calls, presentations, catalysts, technical data, or regulation, verify current information before using it.
+Verify time-sensitive prices, filings, guidance, estimates, valuation inputs, calls, catalysts and regulations. Prefer original exchange/regulatory filings and company IR for reported facts; test interpretation with relevant customer, supplier, competitor, regulator and industry evidence. Reputable data providers and specialist research/interviews can add estimates or mechanisms, but their authority does not validate proprietary underlying data. Full includes the recent-three-month discovery pass.
 
-Prioritize sources in this order:
+Preserve source, document type, publication/filing and access dates, and actual section/page/timecode where available. Distinguish reported facts, management statements, dated third-party estimates/consensus and analyst inference. Cite the original document next to material claims and table values; a bibliography alone is insufficient. Trace borrowed claims to their source or label `二手转引，原始证据未核验`. A transcript proves what was said, not its truth. Show derived calculations and cite inputs without implying that the source endorsed the result. Never invent locators or claim full-text access from snippets; preserve these links in authorized archives.
 
-1. SEC/local-exchange filings and exchange announcements;
-2. company IR releases, presentations, and earnings calls;
-3. customer, supplier, competitor, regulator, and industry-association disclosures;
-4. reputable market-data/estimate providers and mainstream financial reporting.
+For material numeric inputs retain value, unit, currency, period, accounting/estimate basis, first-available timestamp and missing reason. Linked calculations, model reconstruction and historical evaluation use [the data contract](references/data-contract.md) and `scripts/validate_invest_data.py`; Quick may express the same semantics in a compact table. Unknown is not zero, and arithmetic validation is not source verification. Self-contained hypothetical arithmetic needs stated premises, units, horizon and checked formulas—not a fabricated source ledger. Real-company portions of mixed tasks retain the source contract.
 
-Also actively discover original specialist research, public expert/customer interviews and technical fieldwork relevant to the crux. Use them for mechanisms, competing interpretations and missing operating detail; their authority does not turn an estimate into a reported fact. Full research includes the recent-three-month discovery pass in the underwriting reference.
+Use [financial evidence and claim audit](references/financial-evidence.md) for extraction, disputed support, citation repair and the Full pre-delivery check. When a material PDF fails, follow [PDF retrieval](references/pdf-retrieval.md) before declaring it unavailable. Historical research preserves the original information cutoff; current revisions and known outcomes cannot leak backward. Cluster repeated underlying observations rather than counting publishers as independent confirmation.
 
-For every material number or claim, preserve source, document type, publication/filing date, access date, and section/page when available. Distinguish:
-
-- reported fact;
-- management guidance or commentary;
-- point-in-time consensus/third-party estimate;
-- analyst inference.
-
-Attach original-source citations next to material facts, numbers, quotations and thesis-bearing claims, including in tables; a bibliography alone is insufficient. Link the actual filing, report or interview, not a homepage or search result, with the date and page/section/timecode where available. Trace a report's borrowed claim to the original evidence; if inaccessible, cite the intermediary explicitly as `二手转引，原始证据未核验`. For original research or interviews, attribute the author's estimate or speaker's view and disclose inaccessible underlying data. A transcript proves what was said, not that the assertion is true. Label own calculations/inferences, cite their inputs and show the bridge; never attach a source as if it endorsed an analyst-derived target. Do not invent locators or imply full-text access from a snippet. Preserve these claim-to-source links in any authorized archive.
-
-For each material numeric input also preserve value, unit, currency, period, accounting/estimate basis, first-available timestamp, and an explicit missing reason. Use the [material investment data contract](references/data-contract.md) for linked calculations, model reconstruction, or historical evaluation, and validate it with `scripts/validate_invest_data.py`. A Quick memo may use a compact table with the same semantics. Unknown is never zero; passing arithmetic checks does not prove that the source supports the claim.
-
-For filing extraction, disputed source support or citation repair, read [financial evidence and claim audit](references/financial-evidence.md). Ground each locator in its document, check material extracted values against the original context, and distinguish a broken citation from an unsupported claim. Full research uses this audit before delivery; a supported Quick answer does not require a separate audit pipeline.
-
-When a material PDF cannot be read, use [PDF retrieval and page extraction](references/pdf-retrieval.md) before declaring the original unavailable. Separate web-tool, download and text-layer failures; retain original bytes/page evidence and use a verified alternate original or targeted visual/OCR reading when needed.
-
-For self-contained hypothetical arithmetic supplied by the user, state the premises, units, and relative horizon and verify the formulas directly. Do not build a sourced-data ledger or require publication timestamps for invented companies or assumed scenarios. This exception does not cover real-company model reconstruction, sourced inputs, or historical point-in-time claims; retain the data contract for those portions of a mixed task.
-
-Do not let current estimates, later restatements, or known outcomes leak into a historical decision reconstruction. Cluster evidence sharing one underlying event rather than counting it as independent confirmation.
-
-For U.S.-listed companies, use current SEC/IR access as the factual baseline when available. Use `edgartools` only if already installed; installing software or configuring a real SEC identity requires explicit user authorization. SEC data does not replace current price, technical, consensus, TAM, share, or catalyst sources.
+For U.S. filings, use current SEC/IR access; `edgartools` is optional if installed. Installing software or configuring a real SEC identity needs authorization. Do not arrange interviews, buy data or seek nonpublic information without applicable authorization.
 
 ## Exposure And Monitoring
 
-When the user asks about opportunity/risk, entry, sizing, portfolio fit, evidence overlap, or whether news changes a thesis, read [uncertainty and exposure](references/uncertainty-exposure.md). Use conditional research postures rather than individualized trading commands.
-
-Monitoring must classify observations as no change, confidence update, valuation-only change, core-assumption breach, or new regime. Do not claim continuous monitoring, create alerts, or mutate a watchlist without both user authorization and persistent tooling.
+For opportunity/risk, entry, sizing, allocation comparisons, evidence overlap or news changing a thesis, read [uncertainty and exposure](references/uncertainty-exposure.md). Monitoring distinguishes no change, confidence update, valuation-only change, core-assumption breach and new regime. Price, belief and capital commitment need not move together. Analysis does not authorize trading, alerts, watchlist mutation or continuous monitoring; those require authorization and actual persistent tooling.
 
 ## Skill Boundary And Handoff
 
-`invest` owns investment-domain research. `decision` may choose among actions and `plan-skill` may maintain durable execution state; neither is required merely to deliver a report. Final reader-facing investment articles and research memos **must use `writing`** as specified below. Preserve confirmed goals, constraints, conclusions, evidence, and citations; do not rerun upstream work unless they are missing or contradictory, and do not invoke all four by default.
+`invest` owns investment research. Reuse supplied `decision` or `plan-skill` results; do not rerun upstream work unless needed evidence or constraints are missing/contradictory, and do not invoke all four skills by default. Final articles follow the writing pass below.
 
 ### Required Writing Pass For Final Articles
 
-After the requested research and necessary evidence checks are complete, read and apply [writing](../writing/SKILL.md) and its [revision checklist](../writing/references/revision-checklist.md) before delivering a final article, substantive research memo or article-form thesis update. Actual reading and application are required; saying “polished” is not the handoff. The same agent can perform it; a separate agent or a user confirmation is not required. Pure calculations, raw extraction tables/JSON, brief factual answers and a concise `no thesis change` status retain their scope rather than becoming articles.
+After research and necessary evidence checks, actually read and apply [writing](../writing/SKILL.md) and its [revision checklist](../writing/references/revision-checklist.md) for a final article, substantive memo or article-form update. Pure calculations, raw extraction and brief status answers retain their scope. A separate agent or user confirmation is unnecessary.
 
-Pass the verified research, intended audience/format and source links to writing. Lock the investment conclusion, as-of date, currencies/units/periods, scenario assumptions, reported-versus-estimated status, valuation math, contradictory evidence, risk conditions and claim-level citations. Writing may organize a newly drafted article around its argument and improve reader-facing explanations; it cannot increase conviction, invent consensus or estimates, recalculate targets, shorten away requested research, or delete a material caveat to make the story stronger. Editing an existing user article still respects its authorized edit level.
-
-Reconcile the final text and tables against those locked items. Repair any changed meaning; return an actual evidence or model inconsistency to invest and update affected conclusions, rather than hiding it through wording. Explain overlaps and source limits through the data and their reading implications, not a checklist proving compliance. Deliver the resulting article without the internal handoff narration. Notion publication, when separately authorized, uses this checked final version and still requires the readback below. Writing activation itself never authorizes publication.
+Lock the conclusion, as-of date, units/currencies/periods, scenario assumptions, fact-versus-estimate labels, valuation math, contrary evidence, risk conditions and claim-level citations. Writing can improve structure and explanation, not conviction, evidence, numbers or requested coverage. Reconcile final text/tables against those items; send genuine evidence/model conflicts back to research. Deliver the checked article without internal handoff narration. Existing-text edits respect the requested edit level. Writing never authorizes publication.
 
 ## Notion Delivery
 
-An analysis, full memo, monitoring request, or material thesis change **does not authorize a Notion write**.
+Research **does not authorize a Notion write**. Require a current explicit request or an unrevoked standing authorization covering this research type and exact target; do not re-ask when already resolved, infer it from unrelated prior writes, or expand it because the thesis changed.
 
-Write only when the user explicitly requests it for the current task (including an earlier turn of that same unfinished task), or when an existing, unrevoked standing authorization clearly covers both this research type and the exact target. Reuse that authorization without asking again; revocation or a material scope/target change requires reevaluation. An unrelated prior write request is not standing authorization. A personal default belongs in user configuration, not this shared skill. Material change does not expand authorization.
+When authorized, resolve one destination from context and read-only search; ask only if ambiguity remains. Preserve the dated thesis, crux, scenarios, falsifiers and claim-level citations. Append updates to the resolved prior thesis rather than duplicating it; routine no-change logging requires explicit coverage. Verify the returned page ID/URL, destination/parent and expected content with proportionate readback, and report the direct link. An uncertain response calls for checking whether the write exists before retrying.
 
-When authorized:
-
-- resolve exactly one target from the request, task context, and read-only search; ask only if multiple plausible destinations remain. Do not make the user repeat a target already resolved;
-- preserve the as-of date, decision, crux, scenarios, citations, and falsifiers;
-- for a monitoring update, append to the resolved prior thesis page rather than creating duplicates; a `no thesis change` entry is written only when the standing authorization explicitly includes routine logging;
-- require a returned Notion page URL or ID and a proportionate readback of the destination/parent and expected content before claiming success. Report the direct link; a creation receipt alone does not establish that the complete report reached the requested location. If a write response is uncertain, check for the existing page before retrying to avoid duplicates.
-
-If delivery is genuinely blocked after available in-scope resolution checks, deliver the research completed so far, distinguish research completeness from archive status, state `Notion archive pending`, and name the exact missing target or access. Do not call the overall task complete merely because the text is ready; continue an authorized archive when its blocker is resolved.
+If archiving remains blocked after feasible checks, deliver completed research with `Notion archive pending`, the precise missing access/target and recovery action. Distinguish research completeness from delivery; an authorized unfinished archive remains required work.

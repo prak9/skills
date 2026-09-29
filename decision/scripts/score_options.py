@@ -270,13 +270,7 @@ def recommendation(score: float | None, eligibility: str) -> str:
         return "先确认未决红线，再比较方案"
     if score is None:
         return "保留为候选；先补齐能改变判断的未知项"
-    if score >= 80:
-        return "推进或承诺"
-    if score >= 65:
-        return "有条件推进"
-    if score >= 50:
-        return "先验证，暂不做不可逆承诺"
-    return "暂停、拒绝或寻找替代方案"
+    return "评分完整；仅用于既定维度与权重下的方案比较"
 
 
 def option_eligibility(
@@ -526,7 +520,10 @@ def calculate(model: dict[str, Any]) -> dict[str, Any]:
 
 
 def to_markdown(result: dict[str, Any]) -> str:
-    lines: list[str] = ["# 决策评分结果", ""]
+    lines: list[str] = [
+        "# 决策评分结果", "",
+        "分数仅用于既定维度与权重下的比较，不代表成功概率，也不决定是否行动或投入规模。", "",
+    ]
     if result["global_vetoed"]:
         lines.append("**警告：已触发全局硬性否决项，所有方案均不可行，总分不能覆盖该风险。**")
         lines.append("")
@@ -536,7 +533,7 @@ def to_markdown(result: dict[str, Any]) -> str:
         lines.append("")
     lines.extend(
         [
-            "| 可行排名 | 方案 | 可行性 | 总分 | 分数范围 | 建议 |",
+            "| 可行排名 | 方案 | 可行性 | 总分 | 分数范围 | 比较说明 |",
             "|---:|---|---|---:|---:|---|",
         ]
     )

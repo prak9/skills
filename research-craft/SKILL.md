@@ -5,240 +5,114 @@ description: 设计和评估可证伪的研究或 Agent Harness 实验，包括 
 
 # Research Craft
 
-Treat research as a system for changing beliefs with evidence. Idea generation, intuition and open-ended inspection are useful exploratory moves; they do not by themselves validate a claim.
+Change beliefs with evidence. Find the uncertainty that matters, obtain the cheapest discriminating observation, and preserve what the result actually supports. Intuition and open-ended inspection can generate ideas; they do not validate them.
 
-```text
-important question
-  -> falsifiable hypothesis and prediction
-  -> explicit research contract
-  -> cheapest informative probe
-  -> raw evidence and fixed evaluation
-  -> accept / reject / revise
-  -> durable memory and next bet
-```
+Optimize trustworthy learning, not experiment count, researcher count or hardware utilization. The workflow below supplies decision criteria, not mandatory forms, a fixed sequence or extra approvals.
 
-The governing principle is: **research speed is the speed at which you discover you are wrong without corrupting the evidence.** Optimize the whole loop for informative failure, reproducibility, and cumulative learning.
+## Choose the mode and reference
 
-## Route the work
+- **Exploration:** inspect unfamiliar material, follow clues and compare provisional explanations. No invented hypothesis, probability, baseline or permanent log is required before a cheap reversible probe.
+- **Controlled comparison:** compare a candidate with an honest baseline under a fixed protocol. Freeze the evaluator before optimizing code, prompts, rules or configuration.
+- **Results delivery:** for substantive comparisons, use [experiment reporting](references/experiment-reporting.md). Preserve configurations, raw evidence, metric deltas and supporting tables in the existing authorized result location. Ordinary checks need no report bundle.
 
-Choose the lightest mode that protects the claim:
+Load specialist detail only when its condition applies:
 
-- **Exploration:** map an unfamiliar problem, inspect raw material, compare explanations, and identify the next discriminating observation. Keep hypotheses provisional.
-- When evidence calls the current route into question, use [route revision](references/hypothesis-formation.md#change-routes-without-changing-the-goal): preserve the user outcome and locked bounds while revising methods; retain why a route was falsified, paused or unresolved and what would justify reopening it.
-- For open-ended research with a consequential coverage gap, one-sided sources or unresolved source disagreement, use [perspective-driven evidence discovery](references/perspective-discovery.md). Skip it for supplied-material summaries, settled calculations and narrow checks; it does not require personas or additional agents.
-- When an unfamiliar mechanism, ambiguous concept or observational tie carries the decision—or delays, feedback or intermediate constraints can reverse it—read [hypothesis formation](references/hypothesis-formation.md). Also use it when pressure-testing a user's research thesis or claimed non-consensus insight. Do not load it for settled arithmetic or routine execution.
-- For predictive-model comparisons involving input representation or timing, probability forecasts, or stochastic simulators, read [prediction and simulation validation](references/prediction-validation.md). A point estimate, deterministic calculation or ordinary report does not trigger this adapter by itself; use only the sections carrying the claim.
-- **Controlled experiment:** compare a candidate against a baseline under a fixed protocol and explicit acceptance gates.
-- **Artifact iteration:** edit code, prompts, rules, or configuration through a bounded propose-evaluate-accept loop. Freeze the evaluator before optimizing the candidate.
-- **Experimental results delivery:** for substantive experiment comparisons, use [experiment reporting](references/experiment-reporting.md). Preserve baseline and arm configurations, metric deltas and detailed supporting tables in the existing authorized result location; link summaries and useful charts to those records. Simple checks and research proposals do not require a report bundle.
-- For recurring failures, unexplained regressions or diminishing optimization returns, read [trace-based attribution](references/trace-attribution.md) before choosing the next intervention. Routine successful runs do not require a trace audit.
-- **Instruction or model migration:** read `references/instruction-migration.md` before changing an `AGENTS.md`, skill, system prompt, or model-specific guidance because the base model, harness, or tool behavior changed.
-- **Agent or self-improving harness:** read `references/harness-engineering.md` before designing runtime control flow, persistent memory, feature maps, verification closure, subagents, permissions, self-edits, or autonomy scaling.
-- **Automated scientific or engineering discovery:** read `references/automated-discovery.md` before decomposing a problem into parallel experiments, optimizing iteration throughput, designing a multimodal research system, or extracting reusable infrastructure from a narrow-domain loop.
-- **Evaluation/data flywheel:** for repeated experiments driven by task feedback, read [research flywheel](references/research-flywheel.md). Connect cases, captured runs, independent grades and subsequent findings; measure the complete learning cycle and keep development data separate from confirmation. This is not a logging requirement for ordinary research answers.
-- **Quantitative or trading strategy:** read `references/quant-strategy-iteration.md` before changing a strategy, backtest, scorer, data split, promotion gate, or distributed experiment wrapper.
+| Condition | Reference |
+|---|---|
+| Ambiguous construct, unfamiliar mechanism, observational tie, consequential delay/feedback, or pressure-testing a research thesis | [Hypothesis formation](references/hypothesis-formation.md) |
+| Evidence challenges the current method | [Route revision](references/hypothesis-formation.md#change-routes-without-changing-the-goal) |
+| Open research has a consequential coverage gap, one-sided sources or unresolved source disagreement | [Perspective discovery](references/perspective-discovery.md); not supplied-text summaries or narrow checks |
+| Predictive-model inputs/timing, probability forecasts or stochastic simulators | [Prediction validation](references/prediction-validation.md) |
+| Recurring failure, regression or diminishing optimization returns | [Trace attribution](references/trace-attribution.md) |
+| Instructions change because the base model, harness or tools changed | [Instruction migration](references/instruction-migration.md) |
+| Agent runtime, persistent memory, verification closure, permissions, self-edits or autonomy scaling | [Harness engineering](references/harness-engineering.md) |
+| Parallel experiment design, research-team ownership, throughput or reusable discovery infrastructure | [Automated discovery](references/automated-discovery.md) |
+| Repeated task-feedback experiments, sampling and data reuse | [Research flywheel](references/research-flywheel.md) |
+| Strategy, backtest, scorer, data split, promotion gate or distributed trading experiment changes | [Quant strategy iteration](references/quant-strategy-iteration.md) |
+| A claim about assisted performance, independent learning, retention or transfer | [Human-learning evaluation](references/human-learning.md) |
 
-Do not force exploratory work into fake precision. Increase control as soon as the work makes a comparative, causal, performance, safety, or deployment claim.
+Reuse confirmed goals, budgets, permissions and project records. Implementation requests authorize scoped local work, not deployment or publication. Resolve discoverable gaps yourself; ask only for consequential user-owned choices, while progressing independent authorized work. Do not invent a budget when none was specified.
 
-Exploration may start before a precise hypothesis exists. Within the authorized scope and budget, inspect examples, sketch rival models, follow an unexpected clue or try a reversible probe; choose and reorder methods as useful. Label provisional ideas and distinguish discovery from confirmation. Do not require every idea to have a baseline, numerical probability, full contract or permanent log before investigating it. Tighten evaluation when presenting a finding as established, not merely when considering a possibility.
+## Frame the question around the outcome
 
-Distinguish candidate-generation filters from final acceptance gates. When an early proxy may discard valuable directions, inspect a proportionate sample of rejected or near-threshold cases, preserving missing evidence versus actual failure and conditions for reopening. Broaden exploration where justified without relaxing the user's constraints or the frozen evaluator. Compare useful findings and missed mechanisms at comparable total effort, not just the number of candidates generated.
+State what is being explained, predicted or compared, for which population/system and horizon, and what uncertainty the result should resolve. Clear requests proceed directly; use stated working assumptions for ordinary gaps.
 
-Treat the following workflow as decision criteria, not a required sequence of forms or approvals. Use the minimum contract that can evaluate this request. Reuse supplied goals, budgets, and permission boundaries; clarify only consequential gaps that inspection cannot resolve. A request to implement an experiment or instruction change authorizes its scoped local work, not deployment or an external publication.
+Check the premise before explaining it: “why did the model fail?” may first require verifying failure against the intended metric and baseline. Preserve the user's objective rather than substituting an easier question. Explanation does not itself authorize action.
 
-## 1. Choose the question backward from the outcome
+Name the decisive unknowns and plausible rivals, preserving interactions that could change the result. Before a consequential test, record its prediction and provenance so hindsight cannot rewrite it. A line of inquiry with no plausible effect on the requested outcome may be narrowed or retired without stopping unrelated work.
 
-Start with a lightweight framing check: what is being explained, predicted or compared, for which population/system and time horizon, what decisive uncertainty remains, and what evidence would change the judgment or its use. Reuse answers already supplied; clear requests proceed directly without a separate framing document or confirmation turn. Ordinary gaps can use stated working assumptions. Ask only about consequential user-owned choices that inspection cannot resolve, while continuing independent authorized work.
+When training problem-selection judgment, preserve the dated opportunity portfolio, including unchosen alternatives, resolution horizons and sources of truth. Use `decision` for choosing real actions; research makes predictions resolvable. Do not add portfolio tracking to ordinary questions.
 
-When wording is ambiguous or assumes an unverified result, briefly reframe before committing to an explanation: “why did the model fail?” may first require establishing whether it failed against the intended baseline and metric. Preserve the user's objective and constraints; do not silently substitute an easier question. A useful explanation can resolve uncertainty without selecting an action, and does not by itself authorize action.
+## Fix the comparison, not every exploratory step
 
-- State the outcome that should exist if the research succeeds; reason backward to the evidence and experiments needed to produce it.
-- Ask what the important problem is, and why you are not working on it.
-- Name the few decisive unknowns and the plausible answers that would change the requested explanation, prediction or decision. Preserve decisive interactions rather than forcing a single-variable story. Avoid absorbing a fashionable problem without its reasoning chain.
-- Define the judgment, prediction or decision the result can change. Resolving a stated uncertainty is a valid research outcome; if no plausible result informs the requested outcome, narrow or stop that line of inquiry, not unrelated authorized work.
-- Before a consequential test, state the research prediction and preserve its provenance so hindsight cannot rewrite it. This does not require the user to supply a prediction before assisted exploration can begin.
-- When training problem-selection taste, keep a dated portfolio of plausible opportunities—including those not pursued—with a resolution horizon and source of truth. Use `decision` to judge which opportunities matter; use this skill to make their forecasts resolvable.
+For a consequential run, record enough to recover the claim, baseline, allowed changes, acceptance and evidence. Include only relevant fields: population and horizon; mechanism and rival; observed variables versus latent construct / model boundary; data, splits and source versions; metric and guardrails; command/configuration, artifacts and actual resource use. Honor an existing required schema rather than creating a parallel form.
 
-## 2. Concentrate ownership before scaling headcount
+Separate:
 
-- Default to the smallest stable core that can span the decisive unknowns. Optimize for density of relevant skill, context, and judgment rather than the number of researchers.
-- Give each core researcher end-to-end ownership of an important question: understand the mechanism, design the test, inspect the evidence, and defend the update. Do not turn exceptional researchers into ticket takers.
-- Prefer sustained domain obsession when it has produced artifacts, unusually sharp questions, or repeated learning. Intensity without evidence, falsifiability, or willingness to update is fixation, not research quality.
-- Compose the core around complementary bottlenecks instead of interchangeable resumes. Add a person only when a named constraint cannot be removed more cheaply by better tools, automation, advice, or a narrower problem.
-- Use agents, automation, contractors, and broader contributors to multiply the core's reach without diffusing problem ownership or changing who has authority over hypotheses, evaluators, and acceptance gates.
-- Protect the small core from becoming a closed consensus: expose provisional work to trusted critics, require independent reproduction for consequential claims, and preserve rejected evidence and dissent.
-- Reduce key-person risk by writing down protocols, decision rationales, failure histories, and reusable findings. Keep judgment attributable, but make the research recoverable if one person leaves.
+- **Candidate work:** change the tested idea under a fixed evaluator.
+- **Harness work:** repair data, scoring, orchestration or reproducibility, check replay anchors, record the new version and refreeze before candidate comparisons.
 
-Scale the support surface after the core has found a repeatable learning loop. Do not scale headcount to compensate for a vague question, weak evaluator, or missing research taste.
+Never redefine success to rescue the candidate in the same round. Exploratory combinations can find a direction, but attributing a gain to one component needs a discriminating comparison. Predeclare comparable search/tuning resources when claiming superiority; unequal trials, compute or human intervention limit attribution.
 
-## 3. Write the research contract
+Candidate-generation filters are not final acceptance gates. If an early proxy may discard useful directions, inspect a proportionate sample of rejects or near-threshold cases. Preserve missing evidence versus actual failure and reopening conditions; broaden discovery without weakening the frozen evaluator.
 
-Before a consequential run or edit, record the minimum contract:
+## Inspect reality and preserve the distinctions that matter
 
-```text
-Objective and decision:
-Claim type and key terms:
-Hypothesis and mechanism:
-Explicit premises / hidden assumptions:
-Prediction and strongest plausible rival:
-Observed variables / latent construct / model boundary and rival data-generating process:
-Baseline or current champion:
-Editable surface:
-Frozen evaluator / evaluation data / training-source versions:
-Splits / holdouts / sample floor:
-Primary metric and guardrails:
-Artifacts and ledger location:
-Acceptance, rejection, and stop rules:
-Human or permission checkpoints:
-```
+Start with primary sources, original data, code, traces and raw samples; summaries can hide labeling errors or assumptions. Operationalize concepts that determine inclusion, labels, metrics or causality. A convenient proxy is not automatically the claimed construct.
 
-Match strictness to risk and claim. A disposable probe may need only the question and a recoverable observation. For claims that can move capital, production, safety controls, or a benchmark, make the relevant evidence, comparison, boundaries and acceptance criteria explicit; use only applicable fields rather than filling the entire template. Preserve any explicitly required schema or evaluation protocol.
+Judge a source by incremental information: a discriminator between explanations, missing coverage, an independent observation or better measurement. Different publishers may repeat one observation, share selection bias or describe outdated conditions. Diversify into old or cross-field work when the current feed or framing is saturated, not merely to increase source count.
 
-Separate two kinds of work:
+Shrink the test to a batch, trace, symbol, regime or minimal failure that can discriminate the current uncertainty. Tune the strongest honest baseline before calling a candidate better.
 
-- **Candidate work** changes the idea being tested while the evaluator stays fixed.
-- **Harness work** repairs data, scoring, orchestration, validation, or reproducibility. Label it explicitly, test it against replay anchors, then refreeze the protocol before comparing candidates.
+### Check what simplification preserves
 
-Never optimize the candidate and redefine success in the same round.
+If abstraction carries the conclusion, examine a contrastive pair: cases treated as equivalent that could require different predictions or actions. Use observed cases or labeled hypotheticals, not forced distinctions. Preserve relevant outcomes, timing, constraints, interactions and evidence. A payment that never executed differs from one that committed but lost its response; unconditional retry cannot erase that distinction.
 
-For an automated discovery portfolio, append the loop under change, frozen dependency versions, expected learning value, and scheduling budgets from `references/automated-discovery.md`.
+A proof of redundancy within a defined domain can justify permanently omitted work. Historical non-use supports only conditional deprioritization with recoverable provenance and reopening conditions. For algorithm reformulation, pruning, state merging or penalty relaxation, use [structural optimization](../performance/references/structural-optimization.md); check original outputs and constraints, not just a scalar score. An approximation, bound or sampled pass is not exact equivalence.
 
-## 4. Upgrade inputs and inspect reality first
+For learned inputs, consult [representation and availability](references/prediction-validation.md#test-the-input-representation); for memory, [history and noise](references/harness-engineering.md#test-state-through-decisions); for historical/cross-domain data, [conditional data value](references/research-flywheel.md#test-the-incremental-value-of-data).
 
-- Read primary sources, original data, code, traces, and appendices before relying on summaries.
-- Operationalize any concept that determines labels, metrics, inclusion, or causal interpretation; do not let a convenient proxy silently replace the construct being claimed.
-- Treat measurements as projections of system state. When several mechanisms can produce the same output, design the cheapest observation that separates them before inferring a cause or hidden state.
-- Diversify beyond the current feed; use old and cross-field work to escape synchronized conclusions.
-- Judge a new source by what it adds beyond existing evidence: discrimination between plausible explanations, coverage, independent observations or measurement quality. Different publishers may repeat one underlying observation; more records can create false confidence when they duplicate observations, share a selection bias or describe conditions that no longer apply. Seek incremental information, not novelty or nominally "orthogonal" sources alone.
-- Inspect raw samples by hand before building abstractions. Silent data or labeling errors often produce plausible but false theories.
-- Shrink the problem until it is cheap: one batch, one trace, one symbol, one regime, one failing case, or one minimal reproduction.
-- Tune the strongest honest baseline before claiming improvement. For comparative claims, predeclare comparable search/tuning budgets and record actual trials, compute and human intervention for both arms; unequal resources limit attribution, even if the resulting system is useful.
+Keep the simpler model when it preserves the required distinctions; add only what an evidenced failure requires. Fewer concepts, a fixed variable count or a hand-picked pair proves neither quality nor generality. Transfer an analogy only after checking its load-bearing mechanism and boundaries.
 
-### Check What A Smaller Model Preserves
+## Run the cheapest informative test
 
-When a proposed abstraction or simplification carries the conclusion, test a contrastive pair: two cases the model treats as equivalent but that might require different predictions or actions. Select the pair from observed cases or a clearly labeled hypothetical; do not force a counterexample when the distinction is immaterial to the contract.
+Choose the probe for the uncertainty:
 
-Check whether compression preserved the relevant outcome, timing, constraints, interactions, and evidence needed to choose an action. For example, a non-idempotent operation that never executed and one that executed but lost its reply cannot safely share an unconditional retry policy. A bounded read-only retry may legitimately treat different errors alike when recovery behavior and diagnostic evidence remain adequate.
+- Missing facts or suspect measurements: inspect sources or instrumentation.
+- Competing mechanisms with the same observations: seek a discriminating comparison.
+- Imprecise parameters: obtain comparable observations or examine sensitivity.
+- Changed conditions: revisit the model boundary and structural-break evidence.
+- Remaining outcome randomness: report predictive ranges or robustness where supported, not endless reading. A failed search alone does not establish irreducibility.
 
-Distinguish exact redundancy within a defined domain from low empirical value. A structural argument can justify omitting states or work while preserving the required answer; historical non-use only supports conditional deprioritization. For empirical compression, retain recoverable provenance and the conditions that would reopen the omitted material. When an algorithm reformulation, permanent pruning, state merge or penalty relaxation carries the claim, use the [structural optimization checks](../performance/references/structural-optimization.md). Verify the original output and constraints, not only a convenient scalar score; a bound, approximation or sampled success is a different claim from exact equivalence.
+A controlled round usually reproduces the baseline, diagnoses a weakness, states a testable prediction, makes a bounded change, collects comparable evidence, then accepts/rejects/revises. Reorder or combine discovery work as useful. Change one meaningful variable or rule family when causal attribution matters; let weak ideas die cheaply.
 
-For learned inputs, use the [representation and availability checks](references/prediction-validation.md#test-the-input-representation) before attributing a limit to model capacity. For memory updates, use [history and noise tests](references/harness-engineering.md#test-state-through-decisions); for historical or cross-domain training data, test [conditional data value](references/research-flywheel.md#test-the-incremental-value-of-data).
+Build only the harness needed for the claim. Record commands and material inputs, seeds, versions and configurations; validate expected tasks, rows, keys, files and failed cells before scoring. Preserve raw artifacts and interruption-safe state for consequential runs, including rejected attempts. Keep safety, permissions, secrets, holdouts and the evaluator outside candidate self-edits.
 
-Keep the simpler model when it preserves the required distinctions; add only the variable, state, or boundary needed by an evidenced failure. Fewer concepts or a fixed variable count is not proof of quality, and a hand-picked pair is not proof of general validity. Before transfer to a new setting, identify the mechanism and boundary that must still hold. Use analogy, reframing, or backward reasoning as optional probes when stuck, not a mandatory sequence or substitute for evidence.
+[run_experiment.py](scripts/run_experiment.py) can capture local command runs, separate artifact grading and elapsed time. Reuse an existing capable harness when available. Its receipts do not attest to hidden holdout isolation, nested agent behavior or model improvement. Prove the reach–act–observe–verify–recover path before multiplying workers or authority; record unresolved human-verification debt.
 
-## 5. Build only the harness the claim requires
+Reviewer feedback is a diagnosis to test, not ground truth. Tie it to an artifact and criterion, seek the strongest counterevidence, and verify the correction plus relevant regressions. Consolidate repeated low-information comments instead of editing to please a reviewer. Treat a wrong evaluator as harness work; do not silently redefine success. Local correction proves a local result, not persistent learning or transfer.
 
-Make evidence easy to produce and hard to counterfeit:
+## Gate claims, not just scores
 
-- Launch a run reproducibly from a recorded command and configuration.
-- Snapshot data range, seed, dependencies, candidate ID, evaluator version, and output paths when they affect the result.
-- Store authoritative artifacts, not only optimistic console summaries.
-- Validate expected task counts, rows, keys, files, and failed cells before scoring.
-- Preserve interruption-safe state in files: contract, run status, traces, diffs, decisions, and rejected attempts.
-- Keep safety, permissions, secrets, holdouts, and the evaluator outside any self-editing surface.
-- Prove the agent can reach, reproduce, act, observe, compare, preserve evidence, and recover before multiplying workers or authority; otherwise record the human-verification debt.
+Apply the gates material to the claim:
 
-Prefer inspectable files and deterministic rules over hidden memory or a large opaque framework.
+- **Protocol integrity:** fixed objective, evaluator, data/split, costs and relevant seeds during comparison; declared selection/weighting surface when training data is the intervention.
+- **Argument integrity:** supported premises, stable terms, valid inference and the strongest plausible rival considered.
+- **Task completion:** original required scope reconciled with completed, permitted-deferred and unresolved items under the same denominator. Easy-subset scores cannot offset missing deliverables; explicit optional work does not block completion.
+- **Baseline and confirmation:** tuned reproducible baseline; tuning/selection data separate from untouched confirmation. Repeated acceptance exposure is contamination, not independent evidence.
+- **Sample and model validity:** effective independent sample supports precision; material measurement, interaction, feedback, stationarity and adaptation assumptions face plausible rival processes and breaks. Narrow or condition unsupported claims; do not manufacture uncertainty intervals.
+- **Raw evidence and replay:** inspect actual outputs, failures and tails, preserve known useful behavior and unrelated passing cases.
+- **Mechanism and anti-Goodhart:** prefer explanations to fragmented exceptions; test irrelevant-change stability and meaningful-change sensitivity where relevant. Neither smoothness nor a sharp jump alone proves generalization; check judge gaming, leakage and format shortcuts.
+- **Operational validity:** include latency, execution friction, capacity, permissions, maintenance and downstream ownership as applicable. Added complexity must earn its benefit; neither isolated scores nor fewer lines establish improvement.
 
-For bounded local command experiments, [run_experiment.py](scripts/run_experiment.py) captures execution, a separate artifact grader and measured elapsed time. Its packets support replay and cost summaries; they do not attest to nested agent actions, hidden holdout isolation or model improvement. Use an existing capable harness instead when available.
+A failed gate rejects the claim, not automatically the whole task. Repair a recoverable measurement problem or revise the route within existing authority and resources, preserving rejected evidence. Stop at the verified requested outcome, exhausted agreed budget, user stop, or a real boundary requiring input/authority. When further feasible work cannot change the scoped judgment, deliver the supported answer and remaining uncertainty rather than inventing another experiment.
 
-## 6. Adapt the loop to the uncertainty
+## Preserve and hand off the useful result
 
-The sequence below is a useful shape for a controlled comparison, not a prerequisite for discovery. Exploratory rounds may combine changes to find a promising direction; retain what changed and avoid attributing gains to an individual component until a discriminating comparison supports that attribution.
+Use the existing log or control documents. Keep the question/prediction, exact changed surface and protocol, result/raw evidence, acceptance decision, belief update and consequential failure or reopening condition. Disposable exploration needs no separate permanent entry unless the active protocol requires it.
 
-When choosing the next probe, especially after research stalls, match it to the uncertainty carrying the conclusion. Missing facts call for source or measurement checks; observationally tied mechanisms call for a discriminating comparison; poorly estimated parameters call for comparable data or sensitivity analysis; changed operating conditions call for revisiting model boundaries. Outcome randomness may remain after those checks, making a predictive range or robustness analysis more useful than additional reading. These sources can coexist: choose the cheapest feasible step that could change the requested judgment, and explain what it can resolve. A failed search alone does not establish irreducibility. When further feasible work cannot change the conclusion within useful bounds, deliver the supported result and remaining uncertainty. Use this as a diagnostic lens, not a required classification form or another approval gate.
+Keep observation separate from interpretation, process quality from outcome luck, and current context from durable lessons. Resolve the full declared opportunity portfolio at its horizon, including misses and unchosen winners, before inferring selection skill from one successful bet.
 
-1. **Baseline:** reproduce the current champion and verify the harness.
-2. **Diagnose:** inspect raw failures and identify one concrete weakness or uncertainty.
-3. **Propose:** state one mechanism-level hypothesis and its expected observation.
-4. **Probe:** make the smallest meaningful change or run the cheapest discriminating experiment.
-5. **Observe:** collect the same metrics and inspect representative successes, failures, and tails.
-6. **Compare:** evaluate against the baseline, holdout, guardrails, and replay anchors.
-7. **Decide:** accept, reject, or revise using the predeclared rules; do not rescue a miss by changing the story after seeing results.
-8. **Compress:** remove redundant rules, update the ledger, and state the next constraint or experiment.
+Scale compute, data, capital or autonomy only after bounded tests and replay support the change. Ablate when component attribution matters; use current disconfirming evidence before promotion, rerunning only when relevant changes or unresolved concerns invalidate it. Test transfer before generalizing. Expose ideas to critics and publish useful artifacts only within existing permissions.
 
-Change one meaningful variable or rule family per round when attribution matters. Let most ideas die cheaply.
-
-When reviewer or model feedback motivates an iteration, treat it as a testable diagnosis, not ground truth: tie the alleged gap to an actual artifact or trace and the declared criterion, identify a correction and the observation that would show the gap is resolved. Prioritize consequential supported issues, not suggestion counts or stylistic preferences. Recheck the original failure and relevant regressions under the same criterion; a more satisfied reviewer or a more polished report is not independent evidence of improvement. Inspect counterevidence and revise faulty feedback rather than treating disagreement as resistance. If the evaluator itself was wrong, handle that as harness work above, not a silent change of success criteria. Reuse the existing record and stop at the agreed completion condition; this adds no mandatory review round, human approval or learner exercise.
-
-Feedback is useful when it changes a decision, distinguishes explanations, or increases confidence through valid replication—not merely when it is new or numerous. Consolidate repeated comments into the existing diagnosis; a low-value comment need not trigger another edit. Preserve anomalous evidence and its reopening condition before promoting it into a general rule, while acting promptly on verified correctness or safety defects. Focus diagnosis on the current crux without narrowing acceptance to that one metric. Successful correction in the current context establishes a local result, not persistent learning or transfer.
-
-## 7. Gate claims, not just scores
-
-Require the gates relevant to the claim:
-
-- **Protocol integrity:** evaluator, evaluation data, split, costs, seed, and objective remained fixed during candidate comparison. When training-data selection is the intervention, keep source versions and its allowed selection/weighting surface declared.
-- **Argument integrity:** the evidence supports the stated premises, the inference connects them to the conclusion, key terms remain stable, and the strongest plausible rival has not been ignored.
-- **Baseline strength:** the candidate beats a tuned, reproducible baseline rather than a weak straw man.
-- **Task completion:** verify the original required scope independently of the optimized score. Retain completed, deferred and unresolved work with the same denominator; honor explicitly optional work and allowed abstention. A high score on the easy subset cannot offset a missing required deliverable. Define hard constraints and permitted residuals before comparison rather than relying on a reward penalty alone.
-- **Held-out confirmation:** distinguish tuning data from untouched acceptance data. Validation used to choose candidates cannot also be independent confirmation; repeated acceptance exposure is contamination, not free evidence.
-- **Sample and uncertainty:** the effective sample supports the claimed precision; show ranges or sensitivity when it does not.
-- **Model validity:** material assumptions about measurement, independence, linearity, interactions, feedback, stationarity, and adaptation are stated; test predeclared plausible in-scope rival data-generating processes and structural-break signals, then narrow, condition, or reject claims that exceed the supported scope.
-- **Raw-evidence check:** inspect actual failures, traces, trades, or outputs instead of trusting an aggregate alone.
-- **Replay and regression:** preserve known useful behavior and unrelated passing cases.
-- **Mechanism and simplicity:** prefer legible causal or economic explanations over fragmented exceptions. When decision robustness matters, test stability under irrelevant changes and sensitivity to meaningful ones; preserve justified threshold or permission boundaries. Smoothness or a sharp jump alone does not establish generalization or overfitting.
-- **Anti-Goodhart:** check whether the candidate learned the judge, leakage, artifact format, or benchmark quirks instead of the objective.
-- **Operational validity:** account for execution friction, capacity, latency, permissions, maintainability, and downstream ownership. Require added complexity to earn its measured benefit under the declared guardrails; neither a higher isolated score nor fewer lines alone establishes improvement.
-
-If a required gate fails, reject the claim even when the headline metric improves. This does not automatically end an authorized iteration task: continue with a supported correction or discriminating probe within its budget. Stop when the requested outcome is reached, the agreed budget is exhausted, or a real blocker requires new input or authority.
-
-### When The Claim Is About Human Learning
-
-Use this lens only when evaluating instruction, training or a tool's effect on the learner. First distinguish the desired result: better assisted output, independent ability, retention over time, or transfer to a new setting. A production workflow can succeed without teaching its user; do not impose learning tests on a task whose claim is only delivery quality or efficiency.
-
-Match evidence to the claim. Assisted product scores measure assisted performance, not unaided competence. For independent ability, use unseen, comparably difficult tasks without the assistance being tested; for retention, specify and actually observe a relevant later interval; for transfer, change the context while retaining the target mechanism. Test only the dimensions claimed. Preserve prerequisite knowledge, baseline ability, allowed aids, exposure time and scoring conditions; differing practice or assistance limits before/after attribution. Causal claims need an appropriate comparison and identification argument, not merely a higher post-test score.
-
-Separate learner-generated explanations, predictions and error corrections from model-supplied work. Satisfaction, confident self-reports and an AI tutor's approval are not substitutes for demonstrated application. If the learner has not attempted the check, report missing evidence rather than a pass. A single exercise supports a narrow observation, not durable mastery or broad cognitive development. Reuse the existing evaluation record; a test design does not authorize recruitment, scheduled follow-up or new external data collection.
-
-## 8. Preserve useful evidence and learning
-
-Use the project's existing research log or control documents. Do not create a competing ledger when one already exists. Preserve consequential failures and findings, including those that change direction or affect a reported comparison; a disposable exploration does not require a separate permanent entry. Keep all records required by an active evaluation protocol, including unsuccessful runs.
-
-```text
-run_id / date:
-question and hypothesis:
-prediction:
-protocol and changed surface:
-result and raw evidence:
-baseline / holdout / guardrails:
-decision: accept | reject | revise
-failure attribution:
-belief update:
-reusable finding and next constraint:
-```
-
-Maintain three separations:
-
-- Keep observations separate from interpretations.
-- Grade process quality separately from outcome luck.
-- Keep current context separate from durable memory; promote a lesson only when evidence justifies it.
-- At the declared horizon, resolve the full opportunity portfolio and grade selection quality separately from execution quality and outcome luck. Preserve misses and unchosen winners so hindsight cannot turn one successful bet into proof of good taste.
-
-## 9. Scale and publish after learning survives
-
-- Spend more compute, data, capital, or autonomy only after the small version works and the protocol survives replay.
-- Ablate until the component carrying the result is known.
-- Before promotion, require current evidence from the strongest disconfirming test. Reuse a valid result for the same candidate and protocol; rerun when relevant changes or unresolved concerns invalidate it.
-- Explain the work clearly enough that another person can reproduce the setup, understand negative results, and challenge the inference.
-- Wander into adjacent fields when the current framing stalls; breadth is insurance against a saturated local optimum.
-- Expose provisional ideas to trusted critics early enough that they can kill weak work cheaply.
-- Publish useful tools, replications, and explanations when permissions allow; clear writing exposes research debt and attracts better criticism.
-
-## Decision-first handoff
-
-End substantial work with the applicable fields below; omit empty fields and do not invent a human checkpoint or another experiment after the requested result is supported:
-
-```text
-Decision and confidence:
-Claim type / concept boundary:
-Crux / decisive evidence:
-Protocol and baseline:
-Accepted and rejected changes:
-Held-out, sample, replay, and artifact status:
-Known failure modes and limits:
-Durable findings written:
-Next cheapest discriminating experiment:
-Required human checkpoint:
-```
-
-Do not call work successful when required artifacts are missing, the evaluator moved, a holdout was tuned against, or the result does not address the defined research question.
+End substantial work with the supported conclusion, decisive evidence and baseline, accepted/rejected changes, uncertainty and untested scope, and links needed to reproduce or challenge it. Include a next discriminating step or human decision only if genuinely unresolved—not as a compulsory extra round. Missing artifacts, moved evaluators, contaminated confirmation or an unanswered original question prevent a success claim.

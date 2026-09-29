@@ -245,7 +245,7 @@ class UpgradePlanTests(unittest.TestCase):
 
 
 class UpgradePlanExampleTests(unittest.TestCase):
-    def test_completed_lite_plan_upgrades_to_valid_completed_full_plan(self) -> None:
+    def check_completed_lite_upgrade(self, reflection: str) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "lite-change"
             shutil.copytree(PLAN_SKILL_ROOT / "examples" / "lite-change", root)
@@ -259,7 +259,7 @@ class UpgradePlanExampleTests(unittest.TestCase):
                 ("| NODE-001 | `进行中` |", "| NODE-001 | `完成` |"),
                 (
                     "| None | Pending |",
-                    "| RUN-001 | None: verifier passed with no material learning |",
+                    f"| RUN-001 | {reflection} |",
                 ),
             ):
                 self.assertIn(old, text)
@@ -302,8 +302,14 @@ class UpgradePlanExampleTests(unittest.TestCase):
             self.assertIn("- Status: `完成`", task)
             self.assertEqual(2, task.count("- [x]"))
             self.assertIn("- Evidence: RUN-001", task)
+            self.assertIn(f"| RUN-001 | {reflection} |", task)
             self.assertIn("- Remaining work: None", task)
             self.assertRegex(task, r"- Completed: \d{4}-\d{2}-\d{2}")
+
+    def test_completed_lite_plan_upgrades_to_valid_completed_full_plan(self) -> None:
+        for reflection in ("None", "None: verifier passed with no material learning"):
+            with self.subTest(reflection=reflection):
+                self.check_completed_lite_upgrade(reflection)
 
     def test_waiting_acceptance_lite_plan_preserves_pending_owner_decision(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -386,6 +392,19 @@ class UpgradePlanExampleTests(unittest.TestCase):
         self.assertEqual("R-001", nodes[0]["reflection"])
         self.assertEqual(1, len(rows))
         self.assertIn("Legacy Lite reflection details were not recorded", rows[0])
+
+    def test_explicit_none_does_not_generate_migration_reflection(self) -> None:
+        nodes = [{
+            "node": "NODE-001",
+            "status": "完成",
+            "reflection": "None",
+            "evidence": "verified run",
+        }]
+
+        rows = prepare_reflection_rows(nodes, "", None, "2026-09-05")
+
+        self.assertEqual([], rows)
+        self.assertEqual("None", nodes[0]["reflection"])
 
     def test_filled_lite_example_upgrades_without_losing_domain_content(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

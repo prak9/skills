@@ -197,7 +197,7 @@ def prepare_reflection_rows(
     for node in nodes:
         references = re.findall(r"\bR-\d{3}\b", node["reflection"])
         if not references and re.fullmatch(
-            r"None\s*:\s*(.+)", node["reflection"], flags=re.IGNORECASE
+            r"None(?:\s*:\s*(.+))?", node["reflection"], flags=re.IGNORECASE
         ):
             continue
         if not references and node["status"] == "完成":
@@ -517,7 +517,7 @@ def upgrade_inline_lite(
         atomic_status = "完成" if node_evidence_complete else node["status"]
         task = task.replace("| N-001 | `待开始` |", f"| N-001 | `{atomic_status}` |", 1)
         task = task.replace(
-            "| None | Pending; on completion use `R-*` or `None: routine pass produced no durable learning` |",
+            "| None | Pending; on completion use `R-*` or explicit `None` if no trigger fired |",
             f"| {node['evidence']} | {node['reflection']} |",
             1,
         )

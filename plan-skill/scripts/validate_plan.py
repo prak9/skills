@@ -444,8 +444,9 @@ def check_node_reflections(
             no_trigger = re.fullmatch(
                 r"None\s*:\s*(.+)", reflection_value, flags=re.IGNORECASE
             )
-            if not require_reflection and no_trigger is not None and is_concrete(
-                no_trigger.group(1)
+            if not require_reflection and (
+                reflection_value.lower() == "none"
+                or (no_trigger is not None and is_concrete(no_trigger.group(1)))
             ):
                 continue
             if require_reflection:
@@ -455,7 +456,7 @@ def check_node_reflections(
             else:
                 errors.append(
                     f"{path} completed atomic node `{node}` reflection decision is unresolved; "
-                    "use `R-*` or `None: <no trigger reason>`"
+                    "use `R-*` or explicit `None` when no trigger fired"
                 )
             continue
         missing = [reference for reference in references if reference not in records]
@@ -498,6 +499,8 @@ def is_clean_record(value: str | None) -> bool:
     if value is None:
         return False
     normalized = norm_cell(value).strip()
+    if normalized.upper() == "N/A":
+        return True
     no_op = re.fullmatch(r"N/A\s*:\s*(.+)", normalized, flags=re.IGNORECASE)
     if no_op is not None:
         return is_concrete(no_op.group(1))
@@ -539,7 +542,7 @@ def check_clean_contract(
     if program_status in {"待验收", "完成"} and not is_clean_record(last_clean):
         errors.append(
             f"{path} Last clean must cite a date plus evidence, or "
-            f"`N/A: <concrete reason>`, before `{program_status}`"
+            f"explicit `N/A` after a no-op check, before `{program_status}`"
         )
 
 

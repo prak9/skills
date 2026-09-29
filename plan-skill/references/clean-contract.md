@@ -13,7 +13,7 @@ Set `Clean state` to `Due` when any of these occurs:
 - when generated output is no longer traceable from intent through change and evidence, or the owner cannot explain the active system well enough to re-judge it;
 - during Loop `Reflect` when stale hypotheses or repeated attempts make the next action harder to recover.
 
-Do not run Clean on every update. If none of the triggers fired, leave the state alone. At a handoff or terminal transition, an already concise and consistent plan needs only a brief check and `Last clean: N/A: <concrete reason>`; do not manufacture rewrites, reflections, or approval work.
+Do not run Clean on every update. If none of the triggers fired, leave the state alone. At a handoff or terminal transition, an already concise and consistent plan needs only a brief check and explicit `Last clean: N/A`; no reason is required. Do not manufacture rewrites, reflections, or approval work. `Not run` still means the check has not happened.
 
 ## Procedure
 
@@ -54,4 +54,4 @@ Clean is complete only when:
 - line count, retrieval surface, and concept count do not increase except for triggered reflection entries or another concrete reason;
 - `scripts/validate_plan.py --strict <project-root>` passes.
 
-Set `Clean state` to `Not due`. Set `Last clean` to a date plus evidence pointer, or `N/A: <concrete reason>` when the pass found no accumulated state to change.
+Set `Clean state` to `Not due`. Set `Last clean` to a date plus evidence pointer, or explicit `N/A` when the pass found no accumulated state to change. Existing `N/A: <concrete reason>` records remain valid.

@@ -1,101 +1,57 @@
 # Uncertainty, Marginal Information, And Exposure
 
-Use this reference when the request concerns opportunity/risk, entry price, position sizing, portfolio fit, evidence overlap, or whether new information changes an investment thesis.
+Use for opportunity/risk, price, allocation comparisons, sizing, portfolio fit, or the effect of new information. Answer only the requested decision; single-company research does not authorize a portfolio review, watchlist, trade, alert or external record.
 
-## 1. Frame The Decision Correctly
+## Separate Belief, Price And Commitment
 
-Do not claim to abandon prediction. Replace a point forecast with a conditional distribution over outcomes, then choose an exposure that remains survivable when the estimate is wrong.
+Keep three judgments distinct: **thesis quality** (supported mechanism and falsifier), **price attractiveness** (forward net payoffs from today's quote), and **exposure** (estimation error, tail loss, correlation, liquidity and opportunity cost). A better business can offer a worse return after its price rises. A small position does not validate a weak thesis, and concentrated research need not mean concentrated capital.
 
-Keep three judgments separate:
+Use conditional outcomes rather than a lone target. A distribution needs defensible probabilities; otherwise give scenarios and sensitivities, not invented odds. Respect an explicitly chosen strategy as a constraint, not a universal market law.
 
-- **Thesis quality:** Is the causal mechanism supported and falsifiable?
-- **Price attractiveness:** Does the market price offer positive net expected value under conservative scenarios?
-- **Exposure posture:** What commitment is justified after estimation error, tail loss, correlation, liquidity, and opportunity cost?
+## Update Only What The Evidence Changes
 
-A strong company can be a poor price; a good price can still deserve a small position; a weakly evidenced thesis does not become stronger because the proposed position is small.
+Define the event, population, horizon and resolution rule before assigning a probability. Ground priors in applicable base rates and company economics, retaining comparability limits. Use ranges when evidence is weak; unsupported likelihoods do not become precise posteriors. Coexisting mechanisms are not mutually exclusive scenarios and need not sum to one.
 
-## 2. Calibrate Probabilities And Evidence
+Trace `observed signals -> shared cause -> rivals -> incremental evidence`. Earnings, guidance, supplier orders and analyst revisions originating from one event are not independent confirmations. Distinguish incremental, overlapping, redundant and contradictory evidence; preserve the previous estimate and explain which probability, payoff or feasibility assumption changes. If no incremental evidence warrants a belief update, leaving it unchanged is valid. Separate that from a price-only return update. Position size, familiarity, research hours, CEO access, insider purchases and recent price moves earn no automatic confidence increase.
 
-Start from a relevant base rate or conservative prior. Update it with observed evidence, not confidence language. Report ranges when the prior, likelihood, or data quality is uncertain; avoid decimal-level precision without repeated calibration data.
+For repeated forecasts, retain the dated information set and outcome for calibration; one-off probability bands are not objective odds. For stochastic valuation or repeated scoring, use [prediction validation](../../research-craft/references/prediction-validation.md), not for every deterministic DCF. Distinguish sampling error, parameter uncertainty and structural error: more simulation draws cannot validate assumed distributions. Preserve input dependencies; use hypothetical sensitivity when distributions lack support.
 
-Before treating several observations as confirmation, write:
+## Compare Forward Payoffs, Not Attention
 
-```text
-observed signals -> shared latent cause -> rival explanations -> incremental evidence after overlap
-```
+Use coherent scenario returns including financing/dilution, relevant taxes, fees, cash distributions and exit/terminal assumptions. Where probabilities are supported:
 
-Cluster earnings, management commentary, supplier orders, and analyst revisions when they originate from the same underlying event. Classify each new item as:
+`Net EV = sum(scenario probability * scenario net return)`
 
-- **Incremental:** changes a key probability after conditioning on what is already known;
-- **Corroborative but overlapping:** increases confidence only slightly;
-- **Redundant:** restates information already embedded in the thesis or price;
-- **Contradictory:** lowers a thesis probability or requires a new model.
+Show the dominant downside, holding period, interim funding/liquidity path and estimation sensitivity alongside the mean. A positive average cannot override a stated survival constraint. Price is information, not a unique probability distribution: compare independently evidenced business estimates with conditional price requirements, without counting news already embedded in a prior twice.
 
-For repeated forecasts, preserve the forecast, horizon, information set, and outcome so calibration can later be checked. For one-off investments, use probability bands and sensitivity analysis instead of claiming an objective posterior.
+For an allocation request, compare eligible holdings and watchlist candidates at common as-of dates, horizons, currencies and net-return definitions using **current prices**, not purchase costs. Retain differences in evidence freshness and uncertainty. A compact comparison needs supported payoffs, probability assumptions if defensible, funding/dilution, liquidity and incremental portfolio risk—not equal precision for every name.
 
-Before assigning probabilities, define the event, population, horizon and resolution criterion. Coexisting mechanisms are not mutually exclusive scenarios and need not sum to one. If stochastic valuation or repeated probability scoring is requested, apply [prediction validation](../../research-craft/references/prediction-validation.md); an ordinary deterministic DCF does not require it. Distinguish simulation sampling error, parameter uncertainty and structural misspecification. A million draws from arbitrary growth/margin distributions can estimate that assumed model precisely without establishing a real-world upside probability. Preserve dependent inputs and evidence for their distributions; otherwise report conditional sensitivities, not calibrated investment odds.
+An upside/downside ratio compares specified magnitudes, not probabilities, complete tails or expected return. Identify its scenarios and horizon; near-zero modeled downside makes it unstable, not risk-free. Do not rank on it alone. If estimates overlap or decisive inputs are unavailable, give a conditional or unresolved ranking, not a fabricated allocation.
 
-## 3. Compute Net Expected Value Without Hiding The Tail
+Distinguish **new cash, retention, adding, switching and cash**. A switch must beat retaining the holding and relevant feasible alternatives on net wealth after sale taxes, fees and other costs reduce redeployable capital. A slightly higher gross return need not justify switching. Conversely, “I would not add today” does not alone imply “sell everything”: costs, risk and available alternatives can make the gates asymmetric. Missing tax/portfolio inputs limits allocation advice, not standalone research.
 
-Use scenario returns after dilution, financing, taxes when relevant, transaction costs, and a plausible exit multiple or terminal value:
+## Let Evidence Earn Commitment, Not Exemptions
 
-```text
-Net EV = sum(scenario probability * scenario net return)
-```
+Small-to-core progression is optional, not a prescribed number of holdings or starting percentage. Operating execution, cash conversion, financing resilience and management conduct can strengthen a case; price appreciation and elapsed time alone cannot. Research and a watchlist can mature a thesis without a real-money starter position. Success-selected wealthy investors do not establish an ex-ante selection edge.
 
-Report the probability-weighted result together with downside severity, drawdown path, time horizon, and the assumptions that dominate the value. Do not let a positive average override a low-probability loss that violates the user's stated survival constraint or an explicit risk budget.
+Apply the same fresh-capital test to averaging up and down: update business/payoffs, current price, alternatives and incremental risk. A falling price proves neither cheapness nor failure; a rising price proves neither strength nor overvaluation. Deteriorating economics, debt/refinancing, cash runway, dilution or obsolescence can make averaging down unsafe; a “winner” label is no exemption. Losses or leverage are not universal bans unless the user adopted them. Larger scale does not by itself justify a higher multiple: test diversification, incremental returns, capital needs and durability.
 
-Treat the current market price as information, not as truth or a uniquely identified probability distribution. State which independently supported operating/payoff estimate differs from the conditional requirements of price. If a prior already incorporates a news event through price, do not count the same event again as an independent update.
+Assess **all existing exposure at current market value**, including positions enlarged by appreciation. “It earned its weight” does not waive concentration limits. Relate stressed holding losses to portfolio loss, common exposures and executable exit capacity; conviction can rise while permissible exposure falls. Changed personal liquidity needs or portfolio scale can also change feasibility without changing the company.
 
-### Entry, Exit, And Opportunity Cost
+Do not derive a position percentage without sufficient portfolio/exposure, loss-budget, liquidity, tax/financing and payoff inputs. Give a conditional posture and binding gate instead. Kelly is at most a diagnostic upper bound for sufficiently repeatable, estimable bets with bounded losses and modeled dependence, never a universal `mu / variance` recommendation. Shrink uncertain edge estimates and cap model-derived weights by stressed-loss, concentration/factor and executable-liquidity constraints, all expressed on the same portfolio-weight basis. Explain the binding constraint; unknown caps do not justify a guessed percentage.
 
-Compare a proposed switch with keeping the current holding and the best relevant feasible alternative, including cash when appropriate, on the same horizon and net-wealth basis. Deduct immediate sale taxes, fees, and financing costs before applying returns to the capital that can actually be redeployed. Include relevant liquidity, correlated tail risk, and estimation error; a slightly higher gross target return does not establish a robust switching advantage. Missing portfolio or tax inputs limits the switch recommendation, not the standalone stock research.
+Where holdings are supplied, inspect shared market, duration, size, rates, FX, commodity, geography, sector and thesis-specific exposures as relevant. Ticker count is not independent risk count. Stress correlated losses during deleveraging and illiquidity; with missing holdings, mark the portfolio conclusion unverified.
 
-Entry/exit gates should reflect conservative scenario returns, survival constraints, and value relative to alternatives, not universal PE levels or fixed price discounts. Respect an explicitly chosen personal strategy as such while showing its economic assumptions. Distinguish a discount to today's intrinsic value from a discount to an uncertain future value; translate the latter into horizon return and cash distributions rather than calling it guaranteed margin of safety.
+## Define Waiting And Exit Conditions
 
-A price fall alone proves neither cheapness nor thesis failure: separate the new price from changes in cash flows, financing, and the falsifier. Likewise, unchanged fundamentals can merit a `valuation-only change` report when a price move crosses an agreed return gate. Waiting for a price/evidence trigger is a conditional posture with a review point, not proof the opportunity will eventually pay off. It does not authorize trading, alerts, or external records.
+Entry and exit gates depend on evidence, feasibility, net returns and risk constraints, not universal PE discounts. Discount to uncertain future value must be translated into horizon return and distributions, not guaranteed margin of safety. An unchanged business may warrant a valuation-only update when price crosses a return gate.
 
-Specify whether waiting concerns price, missing evidence, or an actual prerequisite such as funding, permits or delivery capability; several may bind together. A better price cannot satisfy an unmet evidence or feasibility gate. Name the next observable result, a defensible observation window and what would reopen or invalidate the case. If the window passes, distinguish disclosure delay, operating failure and an unresolvable observation before updating; do not automatically declare failure or indefinitely roll the deadline forward. Complete accessible discriminating checks now rather than calling unfinished research patience.
+Separate waiting for **operating delivery**, **evidence/disclosure**, and **market repricing**. Include binding prerequisites such as funding, permits or delivery capability; a better price cannot satisfy an unmet evidence or feasibility gate. Flat prices alone do not falsify an on-track thesis or prove cheapness; repeated missed operating milestones and dwindling funding are not cured by patience or a fixed three-year horizon. Name the next discriminating result, economically justified window and reopening/invalidation condition. At expiry distinguish delay, failure and unresolvable observation; neither silently extend the forecast nor force a failure. Complete accessible checks now. Preserve old claims and assess new business cases separately using [thesis reconciliation](thesis-reconciliation.md).
 
-## 4. Bound Exposure Robustly
+A conditional reduction/exit can follow thesis deterioration, trust/governance evidence, valuation, a materially better net alternative, or a portfolio constraint. Not every sale requires a damaged company, and not every price drop requires a sale. State the supported reason, uncertainty and execution limits; thin liquidity can prevent an immediate full exit. Feelings of betrayal or boredom are prompts to investigate, not sufficient proof.
 
-Concentrated research attention and concentrated capital are different choices. Deep familiarity can improve diagnosis but does not remove funding, liquidity, correlated-tail or permanent-loss risk. Historical wealth concentrated in a few winning stocks does not establish that those winners were identifiable in advance or that a particular investor can select them. When concentration is requested, test the evidence of selection advantage and the portfolio's ability to survive being wrong; do not import an admired investor's holding count, increase exposure merely after wins, or use real-money risk as a learning requirement. Scale and personal liquidity needs can change whether an otherwise unchanged strategy remains feasible.
+Treat regime changes and edge decay as diagnoses, not automatic switches. Examine estimate revisions, valuation convergence, mechanism changes, crowding/capacity and costs as relevant; do not require a guessed numerical half-life or treat an unvalidated classifier as an oracle. Preserve uncertainty about structural change, measurement failure and execution effects.
 
-Do not derive a position percentage without the user's portfolio size, existing exposures, maximum tolerable loss, liquidity horizon, tax/financing constraints, and a sufficiently supported payoff distribution. When those inputs are absent, provide a conditional posture such as `observe`, `small exploratory`, `add after validation`, `reduce`, or `exit`, plus the evidence or price gate that changes it.
+## Deliver The Decision-Relevant Difference
 
-Use Kelly-style sizing only as a diagnostic upper bound when bets are sufficiently repeatable, payoffs and probabilities are estimable, losses are bounded, and cross-position dependence is modeled. Never present full Kelly or the approximation `mu / variance` as a universal recommendation. Shrink uncertain edge estimates, stress adverse correlation and tails, and cap any model-derived fraction:
-
-```text
-Exposure cap = min(
-  robust fractional sizing estimate,
-  maximum-loss budget,
-  liquidity/capacity cap,
-  factor/concentration cap
-)
-```
-
-Explain which cap binds. If none can be estimated, do not fabricate a percentage.
-
-## 5. Check Portfolio Factors And Stress Correlation
-
-When portfolio holdings are available, map common exposures before calling the portfolio diversified: market beta, size, value/growth duration, momentum, volatility, rates, FX, commodity, geography, sector, liquidity, and any thesis-specific factor. Use the factors that fit the assets; do not force a fixed factor count.
-
-Distinguish ticker count from independent risk bets. Inspect risk contribution and stressed correlation, because correlations that look low in normal periods can converge during deleveraging or liquidity shocks. If portfolio data is unavailable, name the likely overlaps and mark the portfolio conclusion unverified.
-
-## 6. Treat Regime And Edge Decay As Updates, Not Oracles
-
-Use regime evidence to update priors, expected payoff, and risk budget gradually. Do not make an unvalidated HMM or any single state classifier a hard top-level switch.
-
-Track an explicit edge half-life and decay indicators: estimate revisions, valuation convergence, crowding, capacity, transaction costs, causal mechanism, and fresh out-of-sample performance where applicable. Diagnose decay rather than assuming every deterioration comes from crowding; possible causes include overfitting, structural change, data drift, execution cost, capacity saturation, or measurement failure.
-
-## 7. Minimum Decision Output
-
-When the data supports it, report:
-
-1. Thesis quality and its dominant falsifier;
-2. Price attractiveness and market-implied assumptions;
-3. Scenario probabilities, net payoffs, weighted value, and dominant tail;
-4. Which evidence is genuinely incremental versus overlapping;
-5. Likely portfolio/factor overlap and stress caveat;
-6. Exposure posture, binding constraint, and price/evidence gates;
-7. Edge half-life, decay indicators, and next update time.
+Lead with what changed—or why no change is warranted—then the evidence, forward payoff/tail, binding constraint and next observation relevant to the request. Include quantitative probabilities, portfolio factors or sizing only when supported and needed. Do not expand a narrow comparison into a complete allocation report.

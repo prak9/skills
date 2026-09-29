@@ -84,6 +84,45 @@ class ScoreOptionsTests(unittest.TestCase):
         self.assertTrue(all(not item["feasible"] for item in result["results"]))
         self.assertTrue(all(item["rank"] is None for item in result["results"]))
 
+    def test_complete_scores_compare_options_without_action_thresholds(self) -> None:
+        for version in (1, 2):
+            with self.subTest(version=version):
+                scores = (1, 2.5, 3.25, 4, 5)
+                data = {
+                    "schema_version": version,
+                    "criteria": [{"name": "价值", "weight": 100}],
+                    "options": [
+                        {"name": f"方案{score}", "scores": {"价值": score}}
+                        for score in scores
+                    ],
+                }
+
+                result = self.run_score(data)
+                recommendations = {item["recommendation"] for item in result["results"]}
+
+                self.assertEqual(1, len(recommendations), recommendations)
+                self.assertTrue(all(isinstance(value, str) for value in recommendations))
+                for advice in recommendations:
+                    self.assertNotRegex(advice, "推进|承诺|暂停|拒绝")
+                self.assertEqual([100, 80, 65, 50, 20], [item["total_score"] for item in result["results"]])
+                self.assertEqual([1, 2, 3, 4, 5], [item["rank"] for item in result["results"]])
+                self.assertEqual("方案5", result["comparison"]["preferred_option"])
+                markdown = self.run_cli(data)
+                self.assertEqual(0, markdown.returncode, markdown.stderr)
+                self.assertNotIn("推进或承诺", markdown.stdout)
+
+    def test_missing_weights_are_not_replaced_by_generic_defaults(self) -> None:
+        for version in (1, 2):
+            with self.subTest(version=version):
+                data = self.base_input()
+                data["schema_version"] = version
+                del data["criteria"][0]["weight"]
+
+                process = self.run_cli(data)
+
+                self.assertEqual(2, process.returncode)
+                self.assertIn("weight must be a positive number", process.stderr)
+
     def test_v2_unknown_score_is_null_with_unrenormalized_range(self) -> None:
         data = {
             "schema_version": 2,

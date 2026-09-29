@@ -87,6 +87,67 @@ class TranscriptExportTests(unittest.TestCase):
         self.assertFalse(artifact["coverage"]["speech_verified"])
         self.assertEqual(original, vtt.read_text())
 
+    def test_caption_followup_frames_keep_original_evidence_without_asr(self):
+        for has_video in (False, True):
+            with self.subTest(has_video=has_video):
+                root = self.work / ("local" if has_video else "url")
+                root.mkdir()
+                vtt = root / "source.zh.vtt"
+                vtt.write_text("WEBVTT\n\n04:32.000 --> 04:34.000\n看这里的图表\n")
+                url = "https://example.com/original"
+                captions = {
+                    "subtitle_path": str(vtt),
+                    "subtitle_info": {"language": "zh", "kind": "automatic"},
+                    "info": {"title": "Original", "duration": 600, "language": "zh"},
+                }
+                original_dir, frame_dir = root / "transcript", root / "frames-pass"
+                video = root / "video.mp4"
+                frame = {"path": str(frame_dir / "cue.jpg"), "timestamp_seconds": 272,
+                         "reason": "transcript-cue"}
+                with patch.object(watch, "get_config", return_value={"detail": "transcript"}), patch.object(
+                    watch, "fetch_captions", return_value=captions
+                ) as fetch, patch.object(watch, "download") as media, patch.object(
+                    watch, "get_metadata", return_value={"duration_seconds": 600, "has_audio": True}
+                ), patch.object(watch, "extract_at_timestamps", return_value=([frame], {})) as cues, patch.object(
+                    watch, "load_api_key"
+                ) as key, patch.object(watch, "transcribe_video") as asr, contextlib.redirect_stderr(io.StringIO()):
+                    with patch.object(sys, "argv", ["watch", url, "--detail", "transcript", "--no-whisper",
+                                                   "--out-dir", str(original_dir)]), contextlib.redirect_stdout(io.StringIO()):
+                        self.assertEqual(0, watch.main())
+                    media.assert_not_called()
+                    self.assertFalse(video.exists())
+                    artifact = original_dir / "transcript.json"
+                    original = artifact.read_bytes()
+
+                    # Only the local branch has pixels already; the URL branch must download them.
+                    if has_video:
+                        video.write_bytes(b"existing-video")
+                    source = str(video) if has_video else url
+                    media.return_value = {"video_path": str(video), "subtitle_path": None, "info": {}}
+                    stdout = io.StringIO()
+                    with patch.object(sys, "argv", ["watch", source, "--detail", "transcript", "--no-whisper",
+                                                   "--timestamps", "4:32", "--start", "4:25", "--end", "4:40",
+                                                   "--out-dir", str(frame_dir)]), contextlib.redirect_stdout(stdout):
+                        self.assertEqual(0, watch.main())
+                    if has_video:
+                        media.assert_called_once_with(source, frame_dir / "download")
+                        self.assertIn("Transcript:** none available", stdout.getvalue())
+                    else:
+                        media.assert_called_once_with(url, frame_dir / "download", audio_only=False, subtitle_lang=None)
+                    self.assertEqual(1 if has_video else 2, fetch.call_count)
+                    key.assert_not_called()
+                    asr.assert_not_called()
+                    self.assertEqual([272.0], cues.call_args.args[2])
+                    self.assertEqual(265.0, cues.call_args.kwargs["start_seconds"])
+                    self.assertEqual(280.0, cues.call_args.kwargs["end_seconds"])
+                    self.assertIn("t=04:32", stdout.getvalue())
+                    self.assertEqual(original, artifact.read_bytes())
+                    saved = json.loads(original)
+                    self.assertEqual(url, saved["source"])
+                    self.assertEqual(captions["subtitle_info"], saved["subtitle_info"])
+                    self.assertEqual(str(vtt), saved["raw_subtitle_path"])
+                    self.assertEqual(272.0, saved["segments"][0]["start"])
+
     def test_partial_json_replay_preserves_gaps_and_focus(self):
         artifact = {
             "source": "local.mp4", "info": {"title": "Example"},

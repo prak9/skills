@@ -1,167 +1,60 @@
 # Mode A — Buy-Side Equity Research
 
-Use this mode for business understanding/quality, a bare ticker, a general stock-analysis request, an investment-committee memo, full re-underwriting, or a thesis-change update.
+Use for business understanding/quality, a bare ticker, stock analysis, an IC memo, re-underwriting or a thesis update. Start with the business rather than a target price.
 
-For new fundamental company research, read [business understanding and quality](business-quality.md). Establish the material business system before narrowing to valuation-sensitive drivers. Full examines the material dimensions; Quick compresses them and exposes gaps rather than declaring quality from a few ratios. Monitoring reuses the existing map and revisits affected links only. Business-only requests omit valuation, positioning and catalysts unless needed to answer the question; do not force an investment verdict.
+## Depth And Required References
 
-## Select The Research Depth
+- **Quick, the default:** read [business understanding and quality](business-quality.md), use the recent-four-period baseline below, latest annual filing, current price/expectations when valuation is requested, and the evidence needed to resolve the crux. Compress the output, not the economics.
+- **Full:** deep/comprehensive research, an IC memo, re-underwriting, long history or financial-model reconstruction (including DCF/normalized EPS/reverse DCF) uses [the longitudinal underwriting loop](underwriting-loop.md). It supplies the longer history, recent-three-month research/interview discovery, forecast support, valuation attribution and consistency audit. Do not simulate missing history or replace a requested model with a toy bridge; narrow supplied-input arithmetic is not a Full-model request.
+- **Monitoring:** use [thesis reconciliation](thesis-reconciliation.md) for the affected prior claims, earnings update or cross-case error review. Reuse valid operating history; no material change means a concise `no thesis change` and the checked evidence window, not a new report.
 
-**Quick research is the default for a bare ticker or ordinary “analyze this stock” request.** Use the recent-four-period backbone below, latest annual filing, current price/valuation, current consensus when available, and only the peer or industry evidence needed to resolve the investment crux. Quick extracts the decision-changing passages and trends rather than exhaustive chapter summaries. Deliver a decision-useful view; do not simulate a ten-year underwriting exercise with missing data.
-
-**Full research** applies when the user asks for deep/comprehensive research, an IC memo, a long historical reconstruction, a financial model, DCF/normalized EPS/reverse DCF, or re-underwriting. Read [underwriting-loop.md](underwriting-loop.md) for recent-three-month specialist-report/interview discovery, mechanism-level diligence, evidence-backed variants, assumption provenance, valuation attribution and observable falsification. Full means investigating the load-bearing claims, not filling a longer report outline.
-
-**Monitoring** applies when the user asks what changed since a prior memo or requests material-change alerts. Use the prior versioned baseline when available and return only the delta. If nothing material changed, say `no thesis change`, name the evidence window checked, and do not regenerate background.
-
-For an earnings/thesis update, prior-judgment reconciliation or cross-case error review, read [thesis-reconciliation.md](thesis-reconciliation.md). Use the relevant part only; this does not trigger Full research or retrospective scoring for a new-company memo.
+Business-only work ends with supported business understanding/quality and remaining questions. Do not force valuation, a pricing dispute or exposure advice. Narrow arithmetic and technical requests follow the entrypoint's direct routes.
 
 ## Recent Four Earnings Periods
 
-For a new company underwriting, prioritize the latest four reported fiscal quarters and each period's earnings materials and call: prepared remarks **and** Q&A when available. Count economic periods, not documents; a Q4 release/call and the annual filing covering it are complementary evidence, not a fifth quarter. Use the actual reporting cadence for non-quarterly issuers, label unequal periods and missing quarters/calls, and do not invent a complete four-quarter series. This operating-history window is separate from the recent-three-month external research/interview search; older necessary earnings materials remain in scope.
+For new company underwriting, prioritize the latest four reported fiscal quarters and their earnings materials/calls, including prepared remarks and available Q&A. Q4 and its annual filing cover one economic period, not two. Use the actual cadence for semiannual or irregular issuers, compare equal-duration periods and label missing quarters/calls. This baseline is distinct from Full's recent-three-month external research window; older necessary filings remain relevant.
 
-Organize the report around disclosed results and their meaning. Let table headers identify periods, metrics and cumulative versus standalone figures; explain material overlaps and their consequences beside the affected data. Describe supported comparisons directly and keep decision-relevant gaps visible where they matter. The research window guides evidence collection, not a requirement to force four rows or defend adherence to a U.S. reporting template. Translate internal safeguards into usable data presentation rather than a paragraph of prohibitions or assurances. Final articles and memos then follow the [required writing handoff](../SKILL.md#required-writing-pass-for-final-articles); standalone extraction and brief status answers retain their scope.
+Extract the sequence that changes judgment: operating/economic metrics; contemporaneous guidance/consensus versus actuals; revised ranges; promised versus delivered milestones; and revealing Q&A with original period/section links. An analyst's question is not guidance, an unanswered question is not confirmation or failure, and later revised estimates are not the original expectation. Test seasonality, mix, acquisitions, accounting and disclosure lag before declaring a trend or turning point. Full retains the period comparison in the underwriting reference; Quick compresses decisive changes. Let table headers and adjacent explanations show periods and overlaps rather than narrating template compliance.
 
-Extract what changed across periods: the decisive operating/economic metrics, prior guidance versus realized results, new guidance/revisions, management commitments and delivery dates, and revealing Q&A exchanges. Separate facts, management explanations and the analyst's inference. An analyst's question is not company guidance; an unanswered question is neither confirmation nor proof of failure. Compare actuals with the contemporaneous guide and consensus, not later revised expectations. Link each material delta to its original period/section and model or falsifier impact. Full uses the quarter-by-quarter comparison in [underwriting-loop.md](underwriting-loop.md); Quick may compress it into the few changes that drive the verdict. A valid existing four-period baseline can be rolled forward during monitoring rather than reread in full.
+## Investigate Toward A Judgment
 
-## Common Workflow
+1. **Resolve the boundary.** Confirm security/exchange, fiscal year, reporting currency, segments and source cutoff; ask only if unresolved ambiguity risks selecting the wrong company.
+2. **Map the business and its constraints.** Follow a customer transaction to collected cash, then identify material cohorts/segments, competitors, substitutes, suppliers and capital requirements. Establish who pays, who captures incremental value and who can interrupt it. Business quality comes from observable behavior and economics, not labels.
+3. **Locate the live dispute.** Identify the few uncertain relationships that could change the requested judgment, preserving material interactions and survival constraints. Select the lens by the business model and company-specific bottleneck, not a sector label. A GPU owner awaiting acceptance and a software vendor dependent on one distributor require different inquiry.
+4. **Obtain discriminating evidence.** Test the strongest plausible rival, inspect original footnotes/contracts/call exchanges and pursue relevant customer, competitor or supplier evidence now. A source list and a plan to investigate are not substitutes for an accessible decisive check.
+5. **Rebuild and price where requested.** Bridge demand, unit economics, support costs, reinvestment, working capital, financing and dilution into per-share outcomes. Preserve reported/guided/consensus/assumed layers and use [the data contract](data-contract.md) for linked calculations. Choose suitable valuation methods, justify load-bearing assumptions and reconcile coherent scenarios; do not average away conflicts.
+6. **State what survives and what would change it.** Give the supported quality/thesis conclusion, conditional value/return when possible, strongest countercase, and economically meaningful falsifier with source and observation window. If several necessary links can fail, retain that set rather than invent a single-variable story.
 
-1. **Define the security and boundary.** Resolve company, exchange, ticker, fiscal year, reporting currency, business/segment structure, latest source set, and disclosure limits from context and sources. This is a research check, not a user confirmation step; ask only when unresolved ambiguity could select the wrong security.
-2. **Form a provisional research question.** Map who uses, chooses and pays, what problem the product solves, and how delivery becomes collected cash before selecting decisive drivers. For investment requests, identify the price hurdle without using it to fit the operating forecast. Lead with the supported business-quality judgment and its evidence limits, then the requested horizon, price, value/return range and breakpoint. Good business performance alone does not establish an attractive price.
-3. **Map industry economics.** Locate the company in its value chain; identify suppliers, customers, substitutes, scarce inputs, bargaining power, profit pool, supply/demand cycle, and structural versus cyclical drivers. Explain who pays, why they cannot readily switch, who captures each incremental dollar, and what capacity, competition or incentive limits that capture.
-4. **Assess competition and moat direction.** Compare share direction, margins, pricing power, switching costs, scale, network/data/R&D advantages, customer concentration, entrants, and substitutes. Say whether the moat is widening or narrowing.
-5. **Rebuild only the economics required by the chosen depth.** Separate reported history, management guidance, sell-side consensus, and analyst assumptions. Link operating drivers to revenue, margins, reinvestment, FCF, dilution, and per-share value. For linked calculations or historical reconstruction, follow [the material data contract](data-contract.md) and run its validator. Full research uses the longitudinal underwriting reference; Quick research names missing history rather than inventing it.
-6. **Discover and test the decisive value drivers.** Use the industry map, accounting bridges and value sensitivity to select them; do not merely rename management's KPIs. Let the evidence determine how many matter, retaining jointly necessary conditions and survival constraints even when they explain little ordinary earnings variation. Follow each through cohort/segment/unit economics and its countervailing costs until the mechanism, evidence boundary and alternative explanation are clear. Distinguish observed consensus, conditional price-implied requirements and the analyst forecast. Revenue, costs, capital investment or dilution can be decisive.
-7. **Value and reconcile.** Use SOTP when segments deserve different economics; otherwise choose DCF, normalized earnings, reverse DCF, EV/revenue, EV/EBITDA, P/E, P/FCF, NAV, or milestone valuation as appropriate. Full research triangulates rather than mechanically averaging methods. Always expose the assumptions that drive the range.
-8. **Run coherent scenarios and oppose the thesis.** Show operating assumptions, valuation, return and triggers; use probabilities only when defensible, otherwise unweighted scenarios or clearly hypothetical probability sensitivity. Identify the dominant thesis-killer or smallest weakest-link set. Tie its threshold to economics, observable evidence and a realistic disclosure window rather than an arbitrary percentage or the stock price.
-9. **Define catalysts and monitoring.** Track only events connected to model lines, market-implied hurdles, falsifiers, or decision gates. Separate thesis confidence, valuation attractiveness, and exposure posture.
+These are decision criteria, not compulsory report sections. Mean reversion or structural change can be useful hypotheses when evidence distinguishes them; neither is a required asset label.
 
-Classify the asset as *mean-reverting*, *paradigm-shifting*, or *mixed*. A divergent view is useful only if evidence supports its accuracy and incomplete pricing, with a plausible realization path, edge half-life, and falsifier. Being non-consensus is not itself an edge.
+## Find Information That Changes The Answer
 
-Select the research lens from the actual business model **and company-specific binding constraints**, not the sector label. Identify who pays, the charging unit, assets/capital at risk and the constraint that changes cash capture. Two “AI cloud” companies may be a debt-funded GPU owner awaiting acceptance and a capital-light software vendor dependent on one distributor; investigate their different bottlenecks. Retain multiple segments or jointly necessary conditions when material, without a fixed tag limit or mandatory classification stage. Omit irrelevant template branches, not requested analysis or inconvenient evidence.
+Seek gaps between a reported metric and the economic mechanism it is supposed to represent. Growth can come from acquisitions rather than demand; favorable gross margins can conceal necessary support costs; bookings can precede revenue while collections lag. Use the [business-quality lenses](business-quality.md) to discover material omitted dependencies, then investigate the few that matter most.
 
-## Expectations And Research Allocation
+Judge a new perspective by its differential prediction: what observable fact would look different if it were right? Identify what a source adds beyond the current information set and how it changes an operating assumption, quality judgment, uncertainty or price requirement. Different opinions repeating management are not new evidence. A familiar public fact can yield a useful inference after correcting a denominator or connecting costs; do not manufacture secret information, expert access or disagreement.
 
-Prioritize variables whose plausible variation could change the requested judgment. Allocate further effort by their economic impact, unresolved uncertainty and the feasibility of obtaining discriminating evidence; a large but tightly bounded driver may need less work than an uncertain, testable constraint. Use qualitative comparisons when numbers are unsupported, preserve material interactions and reassess priorities as evidence or the business stage changes. This is a way to focus investigation, not a fixed variable count, composite score or reason to omit material business understanding.
+Allocate effort by economic impact, uncertainty and feasibility of resolution, without a fixed variable/source count or composite score. Use a comparable incumbent, challenger or predecessor when it can teach unfamiliar economics, reconciling business mix and accounting before transferring margins or multiples. Borrow methods by mechanism and prerequisites—horizon, capital, control rights, liquidity—not allegiance to a famous investor. Investigate accessible contrary evidence as seriously as confirmation.
 
-When industry economics or accounting is unfamiliar, use a relevant established operator and, where informative, a challenger to learn how contracts, revenue recognition, working capital and reinvestment produce cash. Reconcile business mix and accounting differences before interpreting ratio gaps as superior execution. Study a predecessor's loss of advantage when it tests today's moat; do not require an industry-history survey or copy a mature leader's margins into a different business model.
+End each consequential inquiry with the supported inference and its limit. Unsupported but testable explanations remain research hypotheses; `no demonstrated edge` is a useful outcome. Stop low-information repetition, not requested work. Separate research effort from capital commitment: observing a company requires no purchase. User-strategy exclusion, unattractive price and insufficient understanding are different conclusions. Use `Too Hard at present` only for a decisive link still unbounded after feasible inquiry, with the unresolved question and reopening evidence.
 
-Borrow investment methods by mechanism, not by allegiance to a famous investor. When a credible competing lens could overturn the conclusion, identify what it sees that the current approach misses and test its prerequisites: horizon, capital access, control rights, liquidity and realization mechanism. A private investor's ability to replace management or fund repeated rounds may not transfer to public minority shareholders. Do not simulate a panel of masters, average incompatible methods or treat disagreement itself as evidence of an edge.
+## Expectations And Valuation
 
-Keep sell-side consensus (an observed, dated estimate), price-implied requirements (conditional inverse-model solutions), and the analyst forecast (an evidence-backed hypothesis) separate. Missing consensus stays missing; it does not prevent a conditional reverse valuation. Show which assumptions are held fixed, and do not infer a unique growth rate or market probability distribution from one price. Quick research may state a qualitative hurdle when numeric inputs are insufficient.
+Keep three objects distinct: dated observed consensus, conditional price-implied requirements and an independently supported forecast. Missing consensus stays missing; a conditional reverse valuation may still be useful. One price does not identify a unique growth path or probability distribution. Forward and reverse models sharing assumptions are not independent confirmations.
 
-Use reverse valuation to locate the hurdle, not to tune the independent forecast until the desired mispricing appears. Trace the variant to primary evidence, its strongest rival explanation, and the observation/date that would resolve it. Forward and reverse models sharing assumptions are not independent confirmations.
+Use price to locate the hurdle, not to tune the forecast until mispricing appears. To claim a variant, show the specific difference, original evidence, credible rival and effect on per-share value. Public good news, a target above the quote or low coverage alone does not establish neglect. A conditional positive or negative value gap can be reported without inventing market beliefs; label assumption-sensitive conclusions accordingly.
 
-Before claiming a non-consensus opportunity, state exactly which forecast differs, whose dated expectation is observed, what price condition it changes, and why credible investors could still disagree. Publicly known good news may already be priced; a target above the quote is not evidence that the market missed something. A positive or negative gap is conditional on the supported economics, not proof of market psychology. Report `no demonstrated edge` when the chain does not survive the rival case.
+Choose DCF, normalized earnings, reverse DCF, SOTP, NAV, EV/revenue, EV/EBITDA or other methods by economic fit. Full triangulates where informative; do not force incompatible models. Distinguish present-value gaps from dated holding-period returns, and reported growth from value reaching common shareholders. A risk-free yield is not the equity discount rate; long-run moat analysis does not justify precise annual forecasts for a decade.
 
-Investigate available decision-changing evidence now: follow a relevant footnote, call Q&A, customer/competitor disclosure, underlying dataset or failed guidance instead of leaving an accessible check on a generic next-steps list. Select sources for the claim they can test, not a source-count quota. Distinguish company assertions from external verification, and multiple publishers from independent underlying observations. Do not arrange interviews, purchase data or seek nonpublic information without applicable authorization.
+Preserve evidence/authorization requirements and explicit user strategy constraints; revise empirical heuristics when counterevidence warrants it. Positive FCF, accelerating revenue, founder ownership and fixed PE bands are not universal quality/value laws. Test investment-phase losses, cyclical normalization, distributions and governance on their economics. Record consequential changes to a heuristic and its limits, without inferring the user's temperament.
 
-Separate research commitment from capital commitment. After the requested scope is complete, prefer the cheapest additional evidence that could change the decision; defer low-information interviews or more background reading. Complete useful analysis now, state the unresolved condition and review trigger, and do not buy merely to justify exploration. In repeated research, preserve dated shortlisted and unchosen opportunities so selection can be reviewed without hindsight. Use existing `decision` or `research-craft` outputs when supplied; do not require another skill or ledger for a one-off memo.
+## Deliver A Decision-Useful Report
 
-Separate user-strategy exclusion, unattractive price and insufficient understanding. An unfamiliar term calls for a concrete definition and economic example, not automatic rejection. Use `Too Hard at present` only for an essential mechanism/payoff that remains unbounded after feasible inquiry; name the unresolved link, completed checks and reopening evidence. Neither a three-variable cutoff nor multiplying dependent event probabilities measures complexity. Research can be complete with an unresolved investment verdict; lack of a verdict cannot excuse omitting feasible requested work.
+Lead with the answer and what the research changed or clarified. Then expose the mechanism, decisive evidence and counterevidence, economics, uncertainty and next resolving observation. A reader should understand why the conclusion follows and what could overturn it—not merely see completed headings. Preserve claim-level citations and the [required writing handoff](../SKILL.md#required-writing-pass-for-final-articles).
 
-Treat positive FCF, accelerating revenue, founder ownership, or a ten-year runway as strategy-specific filters or evidence, not universal inclusion rules. Mature cash distributions, cyclical normalization, and investment-phase losses require different economics. Fixed PE bands and percentage discounts are user strategy parameters when explicitly chosen, not fair-value laws; translate them into conditional net returns and test the underlying assumptions. A risk-free yield is not the equity discount rate. Long-term moat analysis does not imply precise annual profit forecasts for a decade.
+| Depth | Preserve in the deliverable, where applicable |
+|---|---|
+| Quick | Business/quality conclusion; decisive operating changes; dated expectations vs supported forecast; bounded valuation/scenarios; thesis-killer, evidence gaps and next check |
+| Full | Quick conclusions plus source/history coverage, customer/value-chain/competitive economics, reproducible financial model and allocation/financing bridges, assumption support, valuation triangulation/attribution and coherent scenarios with detailed tables |
+| Monitoring | Prior claim and due observation, actual evidence, what changed in mechanism/estimate/price, consequence and next validation point; retain old versions |
 
-Separate evidence/authorization requirements, explicit user strategy constraints, and empirical heuristics. Keep the first intact and do not silently change the second; revise the third when counterevidence changes its mechanism or applicability, preserving the prior rule and reason. Founder ownership, for example, does not establish alignment in the face of harmful related-party transactions. Consistency means applying and testing principles honestly, not defending a proxy against reality or inferring the user's temperament from an admired investor.
-
-## Optional Specialist Lenses
-
-Load another mode only when it resolves the crux:
-
-- [pe-implied-growth.md](pe-implied-growth.md) for a conditional base-PE/EPS-growth hurdle, forward price, terminal dependence and growth/reinvestment consistency check; use the deterministic calculator, without requiring Mode B;
-- [mode-b-bayesian-growth.md](mode-b-bayesian-growth.md) for intrinsic versus market-implied growth;
-- [mode-c-gf-dma.md](mode-c-gf-dma.md) for a requested trend/entry-health calculation with adequate technical data;
-- [mode-d-serenity-alpha.md](mode-d-serenity-alpha.md) for news, procurement, product, or supply-chain transmission;
-- [mode-e-tam-adj-peg.md](mode-e-tam-adj-peg.md) for growth-duration and TAM-supported valuation.
-
-## Quick Output
-
-```markdown
-# [Company / Ticker] — Quick Investment View
-
-## Decision
-- Bias, horizon, current price, valuation bracket, expected return range
-- Core thesis, market-implied expectation, confidence, and breakpoint
-
-## Evidence That Matters
-- How the business works; concrete quality signals, counterevidence and unresolved dimensions
-- Latest reported facts and guidance
-- Dated sell-side consensus, if available
-- Conditional price-implied requirements versus the independent forecast
-- Independent or contradictory evidence
-
-## Economics And Valuation
-- Key drivers and financial transmission
-- Base/Bull/Bear assumptions and range
-- What must be true at the current price
-
-## Variant View And Thesis-Killer
-- Demonstrated gap or no demonstrated edge; strongest rival explanation
-- Dominant falsifier, economic threshold, observable source and disclosure window
-
-## Catalysts And Next Checks
-- Cheapest decision-changing check, exact metric, and next review point
-
-## Sources And Missing Inputs
-```
-
-## Full Output
-
-```markdown
-# [Company / Ticker] Buy-Side Equity Research Memo
-
-## 0. Executive Investment View
-- Business in one causal chain: how customer value becomes retained cash, the current binding constraint, why it dominates, and the observable result that would overturn this judgment
-- Rating bias, horizon, target range, current price, implied return
-- Core thesis, debate, variant perception, confidence, thesis breakpoint
-
-## 1. Company And Source Boundary
-- Customer problem, user/buyer/payer, product alternatives and purchase/renewal process
-- Business/segment/geography/customer mix; contract, delivery and cash-collection path
-- Reporting basis and latest point-in-time source set
-
-## 2. Industry Chain And Competition
-- Value chain, profit pool, bargaining power, cycle, moat direction
-- Business-quality evidence by material dimension: current level, trend, peer/cohort comparison, rival explanation and unknowns
-- Customer value versus shareholder capture; operating fragility, management behavior and capital allocation
-
-## 3. Financial Model
-- Revenue and segment drivers
-- Gross/operating margin, capex, working capital, FCF, dilution
-- Material capital uses, incremental returns, and competitive-advantage fade
-- Reported / guidance / consensus / analyst reconciliation
-
-## 4. Key Value Drivers
-- Mechanism and net value capture; cohort/segment evidence and offsetting effects
-- Claim -> original observation -> inference -> strongest rival -> discriminating result
-- Observed expectation, price hurdle, independent range and its evidence anchor
-
-## 5. Valuation Triangulation
-- SOTP or appropriate primary method
-- DCF / normalized EPS / reverse DCF when applicable
-- Price-to-value bridge attributable to the variant; fixed assumptions and joint sensitivity
-- Load-bearing forecast support, cross-forecast consistency, terminal dependence and unsupported portions
-
-## 6. Bull / Base / Bear
-| Scenario | Probability | Core assumptions | Value | Implied return | Trigger |
-|---|---:|---|---:|---:|---|
-
-Probability may be N/A. Distinguish present-value gaps from dated holding-period returns.
-
-## 7. Variant Perception And Dominant Thesis-Killer
-- Specific pricing disagreement or no demonstrated edge; why the rival could be right
-- Evidence required to reject our interpretation, economic threshold, source, lag and consequence
-
-## 8. Catalysts, Risks, And Monitoring
-- Event, timing, expected evidence, decision effect
-- Versioned assumptions and prior forecast-versus-actual calibration
-
-## 9. Sources And Unverified Inputs
-- Recent research/interview search window, selected original sources, their incremental evidence and access limits; retain claim-level citations throughout the memo
-```
-
-## Quality Bar
-
-Organize substantial reports around the few relationships that currently carry the conclusion: explain their transmission, supporting evidence and conditions that would change the judgment near the opening, then use the financial, industry and management detail to test those relationships. Keep detailed supporting tables, source links and requested coverage available for audit. Distinguish return drivers from constraints that can interrupt the path, such as liquidity, refinancing or permits; a concise main argument should preserve both. If no small set adequately explains the business, show the relevant segments or interactions instead of forcing a simple story.
-
-Do not replace analysis with a news summary, context dump or unsupported spreadsheet. Can the reader trace the decisive claim from raw evidence to net per-share economics, identify what the comparison view already knows, and specify an observation that would change the verdict? If not, expose the failed link rather than add confident prose. Do not extrapolate historical growth mechanically. Reconcile demand, capacity, revenue, margins, opex, capex, working capital, FCF, dilution and terminal value. Preserve prior forecasts instead of rewriting them with hindsight. Use the output sections as an adaptable structure, not evidence that diligence is complete.
-
-Before delivering Full research, apply [financial-evidence.md](financial-evidence.md) to the material claims and their source/derivation links. Synthesize the executive view from the verified analysis; do not add unsupported facts or let caveats disappear in compression. Use compact prose or a useful causal diagram, not a new mandatory section or fixed variable count; retain jointly necessary conditions and say when the binding constraint remains unresolved. If an evidence correction changes a model input, propagate it to affected scenarios, value, verdict and summary. Repair only affected content; a citation correction alone is not a reason to rerun all research.
+Organize supporting detail around the argument; use appendices/tables for auditability rather than repeating a full template. Probabilities can be unavailable, but required research cannot disappear because the verdict is unresolved. Full applies [financial evidence and claim audit](financial-evidence.md) before delivery; propagate corrected inputs to affected scenarios and conclusions, not unrelated work. For specialist calculations or signal analysis, follow the entrypoint's routes only when they resolve the crux.

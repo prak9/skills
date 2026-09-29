@@ -22,6 +22,14 @@ important, partly tractable problem
 
 Do not confuse broad scanning with broad execution. Commit resources narrowly after the crux is explicit.
 
+## Concentrate Ownership Before Scaling Headcount
+
+Use the smallest stable core that spans the decisive unknowns, with end-to-end ownership of questions, experiments, evidence and updates. Complementary bottlenecks matter more than headcount; add a person only when tools, advice or a narrower problem cannot remove the named constraint more cheaply.
+
+Sustained domain attention earns weight through artifacts, sharp questions and repeated learning, not intensity alone. Agents and broader contributors extend reach without diffusing responsibility for hypotheses, evaluators or acceptance. Protect against closed consensus through trusted critics, independent reproduction for consequential claims, and preserved dissent.
+
+Record protocols, rationales, failures and reusable findings so the work survives any one person's departure. Scale support after finding a repeatable learning loop, not to compensate for an unclear question or weak evaluator.
+
 ## Design Around The Load-Bearing Abstraction
 
 - Define the representation that lets researchers express the problem while the system handles incidental hardware, scheduling, and distribution details.
@@ -96,7 +104,7 @@ The system may propose data selections, architectures, transformations, hypothes
 - acceptance, rollback, and stop rules
 - authoritative experiment ledger
 
-Never let a candidate edit the test that promotes it in the same round. Persist rejected runs and negative results. Stop on budget exhaustion, evaluator instability, repeated non-informative failures, or evidence that the decomposition is wrong.
+Never let a candidate edit the test that promotes it in the same round. Persist rejected runs and negative results. Evaluator instability pauses candidate comparison until the harness is repaired and refrozen; repeated non-informative failures or a wrong decomposition retire or revise that route. These do not by themselves end the whole goal: continue supported alternatives within the existing objective, authority and remaining budget. End the task at verified completion, agreed budget exhaustion, user stop, or a genuine blocker that prevents further useful authorized work; do not weaken acceptance to keep running or claim success.
 
 ## Start Narrow, Generalize Through Transfer
 

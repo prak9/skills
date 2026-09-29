@@ -1,7 +1,8 @@
 <!-- (C) 2026 Intel Corporation, MIT license -->
 # Performance foundations
 
-Use this reference before choosing a source or profile pattern. Performance work
+Use this reference when selecting or challenging an optimization mechanism,
+cost model, baseline or resource tradeoff. Performance work
 is a controlled argument: a representative workload and cost model identify the
 dominant mechanism; a change removes that mechanism; comparable evidence shows
 whether the system improved without breaking correctness.

@@ -41,7 +41,7 @@
 
 | Node | Status | Action | Verification | Evidence | Reflection |
 |---|---|---|---|---|---|
-| N-001 | `待开始` | <smallest useful action> | <command or scenario> | None | Pending; on completion use `R-*` or `None: routine pass produced no durable learning` |
+| N-001 | `待开始` | <smallest useful action> | <command or scenario> | None | Pending; on completion use `R-*` or explicit `None` if no trigger fired |
 
 ## Risks And Escalation
 

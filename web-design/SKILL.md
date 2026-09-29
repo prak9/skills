@@ -40,13 +40,13 @@ Privately define:
 - concrete type, color, spacing, shape, imagery, and motion rules;
 - empty, loading, error, success, long-content, and narrow-screen behavior.
 
-When multiple structures are plausible, compare 2 materially different composition hypotheses before coding. Change topology, density, and evidence placement, not merely color. Select the direction that makes the user's job clearest with the least mediation.
+When the direction is unclear, comparing structurally different options can help: vary topology, density, or evidence placement, not merely color. Use an established direction directly when it serves the brief; no fixed number of alternatives is required.
 
 Choose geometry before components. Use position, length, sequence, proportion, alignment, and grouping to express relationships. Treat cards, accordions, tabs, charts, and carousels as mechanisms, not default decorations.
 
-## Build One Coherent Vertical Slice
+## Build The Interface
 
-- Implement the smallest slice that proves the visual language and primary flow: often the shell, first viewport, one representative content section, and one interactive state.
+- Choose an implementation scope that can be meaningfully checked. For an uncertain direction, a representative slice can prove the visual language and primary flow before expanding; it is not a mandatory staging sequence for every task.
 - Establish hierarchy through type, alignment, spacing, and proportion before adding surfaces, borders, shadows, color, or motion.
 - Compose the page as a connected field with deliberate pacing. Repetition is for true peers; unequal content should not be forced into equal cards.
 - Use semantic HTML and native controls. Links navigate; buttons act. Preserve source order as reading order.
@@ -57,26 +57,26 @@ Choose geometry before components. Use position, length, sequence, proportion, a
 
 Read `references/interface-quality.md` before implementing forms, navigation, data-dense UI, motion, responsive behavior, or final interaction polish.
 
-## Build The Verification Foundation
+## Verify The Relevant Claims
 
-Read `references/verification-foundation.md` whenever an agent may implement more than one visual slice without review, when the acceptance bar is mostly aesthetic, or before declaring a substantial interface complete.
+For ordinary implementation, match each material requirement to an appropriate check. Read `references/verification-foundation.md` for formal multi-round comparisons, automated design optimization, or promotion of a new design rule across a system; those tasks need a stable evaluator and comparable evidence. Routine work does not require a coverage table, memory-event log, or evaluator version.
 
-Do not accept the maker's statement that a page “looks good.” For each important claim, define a failure class, sensor, and evidence path. Descend judgment to the cheapest decisive layer:
+Use the cheapest check that can decide the claim; the maker's statement that a page “looks good” is not evidence:
 
 - build, types, lint, and schema for structural defects;
 - DOM, accessibility, and component checks for semantics and states;
 - interaction tests for flows, errors, URL behavior, and keyboard operation;
 - rendered screenshots for hierarchy, overflow, responsive reflow, and themes;
 - performance traces for latency, layout shift, and expensive interaction;
-- an independent visual reviewer or retained human decision for taste and brand fit.
+- evidence-based visual review for taste and brand fit; use an independent reviewer when valuable and retain only consequential human decisions not already delegated.
 
-Verification must be finer than the change. A whole-page redesign cannot close on “build passes”; render representative viewports and exercise the changed flows. Freeze the content fixture, reference, viewport set, and rubric within an attempt. If the rubric changes, record it as a new evaluator version rather than moving the goalposts.
+Checks must cover the changed behavior and localize material defects. A whole-page redesign cannot close on “build passes”; render representative viewports and exercise the changed flows. Preserve acceptance criteria rather than redefining a defect away.
 
 ## Render, Inspect, And Revise
 
 Render the actual implementation when tooling permits. Inspect at minimum a narrow mobile viewport and a representative laptop viewport; add wide, dark, high-density, reduced-motion, or slow-network cases when the product supports or risks them.
 
-Review in this order:
+Use these questions where relevant, prioritizing the highest-risk changes:
 
 1. **Task:** Is the primary job and next action obvious without explanation?
 2. **First read:** Is one object dominant, and does the first viewport communicate value rather than merely mood?
@@ -87,7 +87,7 @@ Review in this order:
 7. **Trust:** Are semantics, contrast, labels, sources, privacy, and claims sound?
 8. **Restraint:** Can any card, border, pill, icon, effect, label, or paragraph be removed without losing meaning or affordance? Remove it.
 
-Fix material defects and rerun the affected checks until the requested interface passes acceptance. A vertical slice or first successful build is not the end of a broader implementation request. Stop polishing once acceptance passes; a self-imposed iteration count is a checkpoint, not permission to abandon unfinished work. At a real limit or necessary human decision, report the incomplete portion accurately. Keep critique notes internal unless requested.
+Fix material defects and rerun the affected checks; independent fixes may be combined when their effects remain verifiable. A vertical slice or first successful build is not the end of a broader implementation request. Stop polishing once acceptance passes; a self-imposed iteration count is a checkpoint, not permission to abandon unfinished work. At a real limit or necessary human decision, report the incomplete portion accurately. Keep critique notes internal unless requested.
 
 ## Deliver The Result
 
@@ -100,4 +100,4 @@ Fix material defects and rerun the affected checks until the requested interface
 
 - `references/composition-and-taste.md`: read for new design direction, major redesign, information architecture, data composition, or anti-template review
 - `references/interface-quality.md`: read for accessibility, interaction, forms, responsive layout, content resilience, performance, media, and motion
-- `references/verification-foundation.md`: read for independent checking, judgment coverage, rendered evidence, granularity, calibration, and completion
+- `references/verification-foundation.md`: read for formal multi-round comparisons, automated optimization, or design-rule promotion requiring comparable evidence

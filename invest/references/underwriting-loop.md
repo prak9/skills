@@ -17,15 +17,13 @@ Include the relevant parts of:
 - point-in-time sell-side consensus and estimate revisions;
 - the investor's prior theses, forecasts, decisions, and stated falsifiers.
 
-For every important item, preserve the document date, the information-availability date, source type, and whether it is reported fact, management guidance, consensus, third-party estimate, or analyst inference. Material numeric inputs also follow [data-contract.md](data-contract.md); validate linked calculations and historical timestamps with its script. Do not let later restatements, revised consensus, or known outcomes leak into an earlier decision reconstruction.
-
-If a point-in-time consensus snapshot or prior judgment cannot be recovered, mark it missing; never backfill it with a current estimate or a hindsight reconstruction. Use an evidence ledger with citations and retrieve the supporting passages as needed instead of forcing every source document into one context window.
+Apply the entrypoint's source discipline and [data contract](data-contract.md), including first-available timestamps. Missing point-in-time consensus or prior judgments stay missing; later restatements, revised estimates and known outcomes cannot repair a historical information set. Reuse one evidence record with citations and retrieve relevant passages instead of loading every document into context.
 
 Normalize before comparing periods: fiscal calendars, currencies, acquisitions and disposals, discontinued operations, segment changes, accounting-policy changes, stock splits, GAAP/non-GAAP definitions, and one-time items. State when periods remain incomparable.
 
 ### Extract The Last Four Earnings Cycles
 
-Start the recent operating narrative with the last four reported quarters, using each release/filing and available original call transcript or recording. Pair Q4 with the annual report without double-counting it, and retain relevant footnotes outside the earnings release. For semiannual or irregular issuers, state the actual coverage and compare equal-duration periods; never fabricate quarterly figures or unavailable calls. This four-period focus does not replace the longer history when cycle, accounting or management credibility requires it.
+Apply Mode A's recent-four-period coverage and cadence rules, retaining relevant filing footnotes outside the earnings release. Extend history when cycle, accounting or management credibility requires it.
 
 Use a compact period-by-period comparison in the memo or working evidence record:
 
@@ -43,7 +41,7 @@ Synthesize the sequence, not four unrelated summaries: identify persistent deter
 
 ### Discover Recent High-Information Research And Interviews
 
-For Full research, actively search the internet for the latest three calendar months ending on the research as-of date, unless the user specifies another window. State the exact dates; historical work uses the historical cutoff. This is a targeted discovery pass, not an instruction to ignore older decisive contracts, filings or methods, or to inflate Quick requests into Full research. Keep older material as labeled background and distinguish original publication, interview recording, data observation and later repost/update dates. A new upload or recently crawled page does not make its underlying data current; never use post-cutoff material in a historical judgment.
+For Full research, actively search the latest three calendar months ending on the research as-of date unless the user specifies another window; state exact dates. Retain older decisive contracts, filings and methods as dated background. Distinguish publication, recording, data observation and repost/update dates: a new upload is not new evidence. Historical work excludes post-cutoff material; Quick does not inherit this Full discovery requirement.
 
 Search from unresolved economic questions, not only the ticker: combine the company/value chain with a driver, unit, rival explanation and report/interview/transcript terms. Search relevant local-language and English sources where the business spans them. Follow promising citations to the author's original report, specialist research site, public conference/earnings Q&A, customer/operator interview, technical measurement or supplier document. A recurring author or outlet is a discovery lead, not an endorsed answer or mandatory source list.
 
@@ -51,9 +49,7 @@ When a load-bearing claim depends on an absent participant's information, choose
 
 Select information density by decision value: original observations, reproducible cost breakdowns, explicit samples/methods, contract detail, operational experience, a discriminating counterexample or a meaningful forecast revision. Length, recency, prestige and confidence are not substitutes. Read the substantive relevant sections and their assumptions/footnotes, not just an executive summary. Seek the strongest accessible conflicting explanation and reconcile scope/date/unit differences rather than average incompatible estimates.
 
-For retained material, extend the existing evidence record with title/author, direct original link, publication and observation dates, page/section/timecode, access scope (`relevant passage read`, `abstract only`, `secondary only`, or `unavailable`), original observation versus author inference, incentives/sample limits, and the specific model assumption or falsifier it changes. Do not create a second ledger. Interview access to operations is useful only within the speaker's actual role, period and sample; sponsorship, positions or commercial interests matter when relevant. A researcher's proprietary survey is that researcher's evidence, not independently verified customer data.
-
-Open the original whenever feasible, and retain the claim-level citation in the delivered report. If only video/audio exists, extract a timestamped transcript using the available media workflow before relying on detailed claims; mark uncertain transcription and do not invent quotes. If a paywall or access restriction prevents verification, record what was actually read, use available legitimate alternatives and continue the supported analysis; do not purchase access, bypass controls or reconstruct unseen tables. Mark material source gaps rather than claim an exhaustive search.
+For retained material, supplement the existing source record with observation date, actual access scope, sample/incentive limits and the model assumption or falsifier affected. An interview establishes observations only within the speaker's role, period and sample; a proprietary survey is not independently verified customer data. Read original relevant sections, assumptions and footnotes. For video/audio-only evidence, obtain a timestamped transcript through the available media workflow and flag transcription uncertainty. Follow the entrypoint's citation/access rules: legitimate alternatives may narrow gaps, but paywalls do not authorize purchases, bypasses or reconstructed unseen tables. Do not claim an exhaustive search.
 
 End the pass with what the selected recent material adds, contradicts or leaves unresolved, and how that affects the forecast, conditional price gap or next test. A reading list alone is not the deliverable. Stop expanding search when additional sources are duplicates or cannot change the decision within defensible bounds, or when the decisive remaining data is genuinely inaccessible; do not postpone an accessible check or require a quota of reports/interviews. For AI cloud/compute investment costs, read [ai-cloud-costs.md](ai-cloud-costs.md) to select the relevant cost and utilization boundaries.
 
@@ -85,18 +81,7 @@ For the selected crux, preserve enough operating detail to explain outcomes and 
 
 ### Make Evidence Carry A Specific Claim
 
-Embed a compact argument record in the existing memo/model; do not create a second ledger by default:
-
-```text
-Crux and economic mechanism:
-Claim / independently forecast range:
-Original observation, source date and precise locator:
-What the observation establishes, inference added, and what remains unknown:
-Source origin / population / selection and reporting limits:
-Strongest contrary evidence and rival explanation:
-Discriminating observation available now or at a named later point:
-Effect on model line, per-share value and verdict:
-```
+For a consequential crux, preserve a compact argument in the existing memo/model: mechanism and forecast -> dated original observation/locator and what it actually establishes -> added inference and limits (population, selection, reporting) -> strongest counterevidence/rival -> discriminating observation now or at a named later point -> effect on model, per-share value and verdict. No second ledger or fixed table is required.
 
 Compare explanations rather than merely collecting confirmation. Company commentary can establish management's intent, not the causal effect of its initiative; a customer case can establish that customer's behavior, not market-wide adoption. A supplier quote may constrain cost but not establish final demand. Reprints, analyst notes citing management and several metrics from the same campaign do not create independent evidence. External origin helps only when measurement, population and incentives fit the claim.
 
@@ -272,54 +257,20 @@ A failed necessary link weakens that path; absent supportive evidence or an unpu
 
 At a consequential commercialization transition, reassess the dominant remaining risk, required capabilities, next evidence and funding path. A discovery or working prototype can resolve one uncertainty while making permits, construction, reliable delivery or paid adoption decisive. Test the team's experience against the next task rather than transferring credibility automatically from the last milestone. Treat lifecycle analogies such as the Lassonde curve as prompts to examine changing risks, not a prescribed price path, universal stage order or guaranteed second rerating. Reuse the existing milestone and cash bridge only where this transition affects the thesis.
 
-## 6. Preserve A Decision Journal
+## 6. Preserve And Monitor A Versioned Thesis
 
-Version the thesis instead of rewriting history after results are known. Preserve:
+Reuse the existing journal rather than creating another ledger. Keep stable claim IDs, as-of information set, event definitions, forecast ranges/horizons, supported scenario probabilities, original price and conditional price requirements. For load-bearing assumptions retain evidence state, rivals, falsifier, measurement/source/cohort, maturation and disclosure lag, resolution/review date and conditional decision posture. Retain rejection/deferral reasons and actual outcomes as they become observable; preserve jointly necessary conditions rather than forcing a fixed variable count.
 
-- as-of date and available information set;
-- forecast horizon and ranges;
-- core assumptions and scenario probabilities;
-- current price, market-implied assumptions, and decision posture;
-- dominant falsifier and expected validation date;
-- evidence state of each load-bearing claim, unresolved rival and reason an opportunity was rejected or deferred;
-- actual outcome and error attribution when the horizon closes.
+Use [thesis reconciliation](thesis-reconciliation.md) for affected claims and recurring-error review, not retrospective grading of a first memo. Resolve forecast accuracy, mechanism support and shareholder payoff separately. Distinguish data, model, timing, valuation and exposure errors: a gain does not validate the original story, and a loss does not alone invalidate the process. A new business case cannot erase an old miss.
 
-Separate data surprise, model error, timing error, valuation/multiple error, and decision/exposure error. A profitable result does not prove the thesis was sound, and a loss does not prove the process was wrong.
+Watch the company and relevant value-chain, industry, macro, expectation and pricing evidence. Define materiality by economic ranges, falsifiers and return/risk gates—not headlines or a universal percentage. Classify consequential observations as:
 
-For consequential predictions being tracked, reuse stable claim IDs in this journal; keep the original event definition, dated forecast, resolution source/date and updates. Resolve forecast accuracy, causal support and shareholder payoff separately, including `unresolved` where causes cannot be identified. Sales may meet a forecast while cost synergy fails and multiple expansion produces a gain; the gain cannot settle all three claims as correct. Do not create a duplicate Bet Book or new persistent monitoring without authorization.
-
-When reconciling an earnings/thesis update or reviewing recurring judgment errors, use [thesis-reconciliation.md](thesis-reconciliation.md) to turn this journal into claim-level comparisons and bounded lessons. Do not add retrospective grading to an initial memo with no prior history.
-
-## 7. Monitor By Thesis Change, Not News Volume
-
-Create a versioned baseline before monitoring:
-
-| Field | Required content |
-| --- | --- |
-| Core assumptions | Usually 1-2 decisive causal variables; retain additional jointly necessary conditions when material |
-| Expected range | Base range and scenario bounds for each variable |
-| Market-implied hurdle | Growth, margin, duration, or return assumptions embedded in price |
-| Dominant falsifier | Threshold and deadline from the red-team step |
-| Observation route | Source, actual metric, cohort/basis, economic maturity and disclosure lag; proxy limits if direct evidence is unavailable |
-| Decision state | Watch / own / add-after-proof / reduce / exit, stated conditionally |
-| Next scheduled review | Earnings, filing, catalyst, or explicit calendar date |
-
-Monitor the company, competitors, customers, suppliers, industry supply/demand, relevant macro variables, consensus revisions, and market pricing. Classify each observation as:
-
-- `no thesis change`: already expected, immaterial, or duplicate evidence;
-- `confidence update`: changes scenario probabilities but not the causal model;
-- `valuation-only change`: price or discount-rate change alters expected return without changing cash flows;
-- `core-assumption breach`: a causal driver crosses its threshold;
+- `no thesis change`: expected, immaterial or duplicate;
+- `confidence update`: support changes without replacing the causal model;
+- `valuation-only change`: price/discount assumptions change returns, not business cash flows;
+- `core-assumption breach`: a necessary driver crosses its boundary;
 - `new regime / re-underwrite`: the old model no longer explains the business.
 
-Default to no alert for `no thesis change`. Record a routine no-change item only when a separately authorized persistent log is active and that authorization explicitly includes routine logging; monitoring by itself grants no write permission. Define materiality before monitoring in economic terms tied to the model: a core driver crossing its range, a meaningful change in scenario probability or long-term cash flow, a market-implied hurdle or expected return crossing a decision gate, the dominant falsifier being approached or breached, or the decision state changing. Do not use a universal percentage, a headline, or a stock-price move alone as proof of thesis change.
+Report the original source, affected claim/model line, incremental versus overlapping evidence, consequence for scenarios/value/confidence, and next resolving observation. Business progress, market repricing and portfolio feasibility are distinct updates; flat prices need not mean failed execution. Review on material off-cycle evidence or the specified milestone/filing date.
 
-Every material-change report should answer:
-
-1. What changed, and what is the primary source?
-2. Which model line or core assumption changed?
-3. Is the evidence independent, overlapping, or contradictory?
-4. How did scenarios, valuation, and thesis confidence change?
-5. What decision state follows, and what is the next validation point?
-
-Do not claim to monitor continuously, create an external alert, or mutate a watchlist unless the user authorized that action and the required persistent tooling is available. Otherwise deliver the baseline, thresholds, sources, and proposed cadence as a monitoring specification.
+Default to no alert for no change. Routine logging requires explicit coverage by an authorized persistent log. Research does not authorize a new journal, watchlist mutation, external alert or continuous monitoring. Without authorization and actual persistent tools, deliver the supported analysis and monitoring specification, not a claim of active surveillance.

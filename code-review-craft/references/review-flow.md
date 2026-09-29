@@ -1,6 +1,6 @@
 # Review Flow And Collaboration
 
-Use this reference for author-facing review, approval decisions, large or multi-file changes, and review-process conflicts. Treat review as a throughput-and-quality system: reduce waiting and wasted work without lowering the acceptance bar.
+Use this reference when large or mixed changes, stacked work, author collaboration or review-process conflicts need extra guidance. Ordinary small reviews use the entry-point contract and relevant rubric dimensions. Reduce waiting and wasted work without lowering the acceptance bar.
 
 ## Set The Standard
 

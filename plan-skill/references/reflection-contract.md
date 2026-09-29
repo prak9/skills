@@ -10,7 +10,7 @@ In Lite and Full Linear modes, write an evidence-linked `R-*` only when at least
 - a verifier fails, an unexpected condition appears, or reality escapes a passing checker;
 - a decision checkpoint produces a reusable rule or a finding that will change later work.
 
-A routine passing node needs evidence but no ledger entry. Mark its Reflection cell `None: <no trigger reason>` so completion does not hide an unresolved reflection decision. This rule is identical for Lite and Full Linear. In Loop mode, every verified attempt requires one `R-*`, including a passing attempt, because interpreting each result controls the next iteration.
+A routine passing node needs evidence but no ledger entry. Mark its Reflection cell explicitly `None` when no trigger fired; blank or `Pending` remains unresolved. Existing `None: <no trigger reason>` records remain valid, but a reason is optional. This rule is identical for Lite and Full Linear. In Loop mode, every verified attempt requires one `R-*`, including a passing attempt, because interpreting each result controls the next iteration.
 
 When reflection is triggered, use this shape:
 

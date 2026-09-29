@@ -25,7 +25,7 @@ Use common valuation dates, currency, security basis, and return horizons. Growt
 
 ## Workflow
 
-1. **Set a conservative prior.** Use relevant base rates, company economics, cycle, TAM, and competition. Market excitement alone does not justify an expansion scenario.
+1. **Ground the prior.** Use an applicable reference class, company economics, cycle, TAM, and competition; expose selection and comparability limits. Put downside caution into scenario and risk tests rather than an arbitrary probability haircut. Market excitement alone does not justify an expansion scenario.
 2. **Map each observation to a latent variable.** Write `observed signal -> latent growth/margin variable -> rival explanation -> disclosure lag`. Cluster observations caused by the same event; they are not independent confirmations.
 3. **Update probabilities.** Show prior, likelihood interpretation, and posterior as ranges when supported. Without a defensible likelihood or prior, explain the direction and limits of the update or use explicitly hypothetical probability sensitivity; do not fabricate posterior precision to complete the format. Cyclical, one-off, or backlog-timing signals should not automatically raise long-run growth. If the mechanism or reporting entity changes, rebuild the model rather than force an update.
 4. **Value the joint scenarios.** Calculate scenario cash flows, equity values, and net investor payoffs before applying posterior probabilities. Show sensitivity and tail outcomes, not just weighted growth or an average target. Apply the shared numeric-data rules, including the direct-arithmetic path for wholly hypothetical examples; a data validator does not validate the economic model.

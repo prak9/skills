@@ -16,7 +16,7 @@ Order the interface by user need, not source-document order. Each section should
 
 ## Compare Real Directions
 
-When the design is open-ended, form 2 hypotheses that differ in structure:
+When an open-ended design would benefit from comparing alternatives, vary meaningful structure. This table illustrates possible contrasts, not a required two-option deliverable:
 
 | Dimension | Direction A | Direction B |
 |---|---|---|
@@ -26,7 +26,7 @@ When the design is open-ended, form 2 hypotheses that differ in structure:
 | Interaction | direct manipulation, progressive disclosure, or none | a different user path |
 | Organizing move | one content-specific geometry | another content-specific geometry |
 
-Choose the direction that reduces interpretation and action cost. A palette swap is not a different direction.
+Choose the direction that reduces interpretation and action cost. A palette swap is not a different direction. An established direction that fits the brief needs no invented alternative or selection gate.
 
 ## Map Meaning To Geometry
 

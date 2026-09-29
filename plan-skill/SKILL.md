@@ -65,7 +65,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 
 - Resume by reading `program.md`, then the active task package and only the memory/evidence it references.
 - If the territory reveals a material unknown or deviation, read `references/unknowns-contract.md`, resolve discoverable facts from evidence, and update or stop the plan before crossing a bound.
-- Execute the smallest useful node and run its verifier. In Lite and Full Linear modes, read `references/reflection-contract.md` and write `R-*` only when its trigger fires; otherwise mark the node `None: <no trigger reason>`. Loop keeps one evidence-linked `R-*` per verified attempt.
+- Execute the smallest useful node and run its verifier. In Lite and Full Linear modes, read `references/reflection-contract.md` and write `R-*` only when its trigger fires; otherwise mark the node explicitly `None`. Loop keeps one evidence-linked `R-*` per verified attempt.
 - Create later task packages just in time, after their dependencies and acceptance conditions are known.
 - A failed verifier changes the plan, retires an assumption, or triggers escalation; repeating output without new information is not progress.
 - If a checker passes but reality fails, treat it as a foundation defect: reopen acceptance, identify the escaped failure class, and add the cheapest decisive sensor.

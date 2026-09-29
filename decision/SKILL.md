@@ -100,7 +100,7 @@ metadata:
 - 用户若要求模板，使用 `assets/decision-worksheet.md`。
 - 用户若要求正式报告，使用 `assets/decision-report-template.md`。
 - 需要更细评分定义时，读取 `references/scoring-rubric.md`。
-- 需要确定性计算时，优先使用 `scripts/score_options.py`。新输入显式使用 v2；旧输入缺省按 v1 兼容。只有提供有依据的权重或成本情景时才报告稳定性，排序翻转必须显式指出。
+- 需要确定性计算时，优先使用 `scripts/score_options.py`。新输入显式使用 v2；旧输入缺省按 v1 兼容。分数只支持既定维度与权重下的比较，不是成功概率或投入规模建议。只有提供有依据的权重或成本情景时才报告稳定性，排序翻转必须显式指出。
 - 需要方法论解释时，读取 `references/framework.md`。
 - 当方案排序依赖“某项变化是否造成某个结果”时，读取 `references/causal-analysis.md`；先区分观察变化与目标效应，再按“分析—解耦—抽象—重新耦合”形成可证伪解释。
 - Boundary and handoff: `decision` owns the choice; `invest` may supply domain evidence, `plan-skill` may own durable execution state, and `writing` may shape the final expression. Preserve confirmed goals, constraints, and conclusions; do not rerun upstream work unless they are missing or contradictory, and do not invoke all four by default.

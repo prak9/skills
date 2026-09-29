@@ -12,6 +12,8 @@ SOURCE_PACKET = PACKET.with_name("source-diligence-cases.jsonl")
 DAYU_PACKET = PACKET.with_name("dayu-diligence-cases.jsonl")
 EARNINGS_PACKET = PACKET.with_name("earnings-continuity-cases.jsonl")
 DISCOVERY_PACKET = PACKET.with_name("discovery-patience-cases.jsonl")
+ALLOCATION_PACKET = PACKET.with_name("allocation-comparison-cases.jsonl")
+JUDGMENT_PACKET = PACKET.with_name("judgment-quality-cases.jsonl")
 
 
 class DiligenceFixtureTests(unittest.TestCase):
@@ -19,7 +21,8 @@ class DiligenceFixtureTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.cases = [
             json.loads(line)
-            for packet in (PACKET, SOURCE_PACKET, DAYU_PACKET, EARNINGS_PACKET, DISCOVERY_PACKET)
+            for packet in (PACKET, SOURCE_PACKET, DAYU_PACKET, EARNINGS_PACKET,
+                           DISCOVERY_PACKET, ALLOCATION_PACKET, JUDGMENT_PACKET)
             for line in packet.read_text().splitlines()
         ]
         cls.by_id = {case["id"]: case for case in cls.cases}
@@ -132,6 +135,37 @@ class DiligenceFixtureTests(unittest.TestCase):
             "initial_price": initial,
             "future_price": future,
             "price_return": future / initial - 1,
+        })
+
+    def test_payoff_ratio_can_reverse_expected_return_ranking(self) -> None:
+        self.assert_numeric("allocation-payoff-ratio-not-expectation", {
+            "a_ratio": .60 / .20,
+            "b_ratio": .30 / .20,
+            "a_expected_return": .20 * .60 - .80 * .20,
+            "b_expected_return": .60 * .30 - .40 * .20,
+        })
+
+    def test_conviction_price_and_current_weight_are_distinct(self) -> None:
+        self.assert_numeric("judgment-conviction-price-concentration", {
+            "old_expected_return": .60 * .50 - .40 * .20,
+            "new_expected_return": .80 * .10 - .20 * .30,
+            "stress_portfolio_loss": .40 * .30,
+        })
+
+    def test_quality_insight_includes_required_support_cost(self) -> None:
+        self.assert_numeric("judgment-hidden-offset", {
+            "prior_contribution": 100 * .40 - 15,
+            "current_contribution": 130 * .40 - 30,
+        })
+
+    def test_narrow_judgment_controls_do_not_need_a_full_model(self) -> None:
+        self.assert_numeric("judgment-negative-news-scope", {
+            "annual_profit_change": -1000000 * (10 - 8),
+        })
+        terminal_price = 3 * 10
+        self.assert_numeric("judgment-simple-clean-control", {
+            "terminal_price": terminal_price,
+            "cumulative_return": terminal_price / 20 - 1,
         })
 
 

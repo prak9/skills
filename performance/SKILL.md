@@ -28,71 +28,50 @@ make from the evidence and overhead, not preference questions for the user.
 
 ## How to use this skill
 
-### Step 0 — Establish the performance argument
+### Establish the performance argument
 
-Read `references/performance-foundations.md` for every task. Define workload,
-metric, correctness constraint, baseline, and evidence boundary before selecting
-the first action. Use estimation only when measurement is unavailable; never
-claim a measured speedup without before/after evidence.
+Use the supplied workload, metric, correctness constraint, baseline and evidence
+boundary; recover only what is missing and material to the request. Existing
+profiles can be interpreted without starting new measurement. Never claim a
+measured speedup without comparable before/after evidence and correctness checks.
+
+Read [performance foundations](references/performance-foundations.md) when
+choosing or challenging an optimization mechanism, cost model, baseline or
+resource tradeoff. Read [structural optimization](references/structural-optimization.md)
+when reformulating a problem or permanently pruning/merging states. A local
+counter explanation does not require either full analysis.
+
+Select only the relevant branch below. Source-only diagnosis can start with
+`triggers/from-source.md`; it does not require PTS setup or a perf recording.
 
 ---
 
 ## Part 1 — PTS benchmarks (`pts/<name>`)
 
-For workload names like `pts/mt-dgemm`, run this part before any `perf` work.
-
-### Flow A — Run a benchmark
-
-1. Resolve version: if version missing, refresh and resolve via test profiles.
-2. Install benchmark definition/package.
-3. Run benchmark.
-4. Parse output.
-5. Save/report result with score and units.
-
-### Flow B — Optimize a benchmark
-
-1. Run Flow A and label `"baseline"`.
-2. Prepare source from test definition (`installed-tests/.../install.sh`).
-3. Profile/optimize with this skill:
-   - `performance` profiling flows for hotspots
-   - `patterns/` fixes for recognized code paths
-4. Rebuild benchmark and rerun Flow A with change label.
-5. Compare using test `hib` semantics.
-
-### PTS primitives you should use
-
-Use this PTS flow:
-
-- `batch-install`, `batch-run` command flow
-- parse summary output (`Average:`) into score + unit
-- persist and compare results in `files/pts-results.json` when available
-
-Use these paths:
-
-- `phoronix-test-suite` installed test path: `/var/lib/phoronix-test-suite` (root) or `~/.phoronix-test-suite` (user)
-- install metadata in `installed-tests/pts/<test-name>-<version>/`
-- compile flags in `generated.json` / `pts-install.json` when optimizing
-
-For benchmark-specific source edits:
-- read the benchmark `install.sh`
-- follow original build order
-- avoid changing upstream defaults except when explicitly testing `-march`/`-O`/SIMD flags
-- rebuild in the source layout described by `install.sh`
+For workload names like `pts/mt-dgemm`, read [PTS execution and optimization](references/pts.md)
+before preparing or rebuilding the benchmark. Existing PTS results can be
+interpreted without installing or rerunning the suite.
 
 ---
 
 ## Part 2 — Linux perf workflows
 
-### Step 1 — Setup checks
+### Setup before new collection
 
-Quickly check:
+Check only when collecting new evidence, not merely reading supplied counters:
+- availability of `perf` and the requested events (`perf list`); do not assume a CPU-specific PMU name exists
 - `/proc/sys/kernel/perf_event_paranoid` and permission mode
 - debug symbols (`-g`) presence for `perf annotate`
 - command context (who owns build, expected baseline, acceptable runtime)
 
 - If debug symbols are missing, follow the scoped rebuild or assembly fallback in `references/building-blocks.md`; do not stop an authorized local optimization merely to reconfirm its build step.
 
-### Step 2 — Choose a flow
+### Choose a flow
+
+Read only the flow needed by this question. Its collection and annotation steps
+apply when they add material evidence within the authorized runtime, not as a
+requirement to repeat already-matching work. The building-block reference is a
+shared mechanics library, not an additional set of tasks to execute.
 
 | Flow | Purpose | Read |
 | --- | --- | --- |
@@ -102,7 +81,7 @@ Quickly check:
 | **Flow D** | scaling with core-count sweeps | `references/flow-d.md` |
 | **Flow E** | hotspot report for sharing/follow-up | `references/flow-e.md` |
 
-### Step 3 — Match the signal to pattern files
+### Match the signal to pattern files
 
 When `perf` identifies a repeated pattern, read:
 

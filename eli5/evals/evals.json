@@ -3,6 +3,26 @@
   "skill_name": "eli5",
   "evals": [
     {
+      "id": "direct-term-without-template",
+      "prompt": "Explain deadlock to a beginner in one sentence. Keep and define the term deadlock, use no analogy, and do not quiz me.",
+      "expected_output": "One accurate sentence defines deadlock directly without adding a staged explanation, analogy, or exercise.",
+      "files": [],
+      "assertions": [
+        {"id": "requested-shape", "text": "The response is one sentence, retains and explains deadlock, and adds neither an analogy nor a quiz.", "kind": "model", "required": true},
+        {"id": "core-mechanism", "text": "It conveys that participants cannot proceed because each is waiting on a resource or action held up by the others, not merely that work is slow.", "kind": "model", "required": true}
+      ]
+    },
+    {
+      "id": "rate-limit-without-invented-operations",
+      "prompt": "Explain API rate limiting to my manager in two plain sentences. We only know that some requests receive HTTP 429; we do not know the quota, the provider's pricing, or how long a fix would take. No recommendation needed.",
+      "expected_output": "Explains the request-rate restriction and the limited observation without inventing quotas, costs, or engineering estimates.",
+      "files": [],
+      "assertions": [
+        {"id": "facts-stay-bounded", "text": "The explanation does not fabricate a requests-per-minute limit, peak-time incident, price, work estimate, or definite root cause beyond the stated HTTP 429 observation.", "kind": "model", "required": true},
+        {"id": "requested-explanation", "text": "It gives two plain sentences explaining rate limiting, without prescribing a purchase or substituting a business recommendation for the requested explanation.", "kind": "model", "required": true}
+      ]
+    },
+    {
       "id": "simplify-without-changing-conditions",
       "prompt": "ELI5 this rule in two sentences: a backup can restore deleted files only if those files were included in a completed backup before deletion. We have not checked whether yesterday's backup completed.",
       "expected_output": "A short explanation keeps the completed-before-deletion condition and the uncertainty about yesterday's backup; optional implementation detail may be omitted.",
