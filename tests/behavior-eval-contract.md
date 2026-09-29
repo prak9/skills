@@ -89,3 +89,7 @@ The deterministic evaluator does not load this packet. Parsing cases and checkin
 `structural-optimization-cases.jsonl` freezes eight visible development cases for exact penalty recovery, permanent pruning, state merging, reformulation and witness preservation, baseline strength, empirical retirement, and lightweight positive controls. Apply the prompt-only isolated forward protocol above. This packet is not supported by the deterministic evaluator; keep raw responses, skill revisions and criterion-level judgments with the experiment's records.
 
 `test_structural_optimization_fixtures.py` checks the arithmetic and small exhaustive counterexamples used by four cases. It does not execute an agent, validate arbitrary optimized algorithms, or establish skill improvement. Grade actual forward runs separately; paired successes on visible cases support scoped regression evidence, not a general capability gain.
+
+## Hypothesis Structure Development Packet
+
+`hypothesis-structure-cases.jsonl` contains five visible development cases for outcome-selected activation, response paths, competing causal channels, continuous states and missing follow-up. Use the prompt-only isolated forward execution and criterion-level grading protocol above. The deterministic evaluator does not load this packet. `test_hypothesis_structure_fixtures.py` validates the packet and missing-outcome arithmetic, not agent behavior; cases remain behavior-unrun without recorded and independently graded executions. Keep revised hypothesis definitions and original test results separate.

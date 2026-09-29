@@ -16,6 +16,14 @@ Include the strongest plausible alternative when it could change the decision: a
 
 ## Make The Difference Observable
 
+### Separate Activation, Sample Eligibility And Response
+
+For a conditional or event-based hypothesis, distinguish the measurable trigger marking onset, the state in which the proposed mechanism could operate, and the eligibility rules defining usable observations. Data completeness does not establish activation; a triggered event need not produce the predicted response. State which inputs were available at selection time. Follow-up availability may be assessed later, but missing outcomes are not evidence of nonactivation: preserve exclusions and examine whether missingness changes the population being estimated. Do not define a favorable state using the outcome it is supposed to predict.
+
+Define the response against the relevant baseline or comparison: direction, meaningful magnitude, observation window and, when material, intermediate path. Specify the empirical quantity that measures this response rather than choosing a convenient metric and silently replacing the claim. Separate response predictability, support for the proposed causal channel, and usefulness after action costs or constraints; evidence for one does not establish the others.
+
+These distinctions clarify the existing hypothesis, not a required form or discrete-event model. Continuous exposures, persistent states and cross-sectional questions need no invented trigger or threshold. Exploratory definitions may remain provisional; freeze the relevant definitions before confirmatory comparison. A revised trigger, state, eligibility rule or response window defines a revised test: retain the original result and seek fresh confirmation rather than rescuing it with outcome-selected exclusions.
+
 ### Compare Coexisting Forces And Paths When Material
 
 Use this lens only when delays, feedback, cumulative exposure or intermediate resource constraints could change the answer. Opposing effects need not be competing truths: identify their signs, relative magnitudes, timing and interactions before deciding which dominates. Keep only the states, actions and transitions needed to distinguish relevant paths; an event sequence or cash bridge may suffice, without differential equations or a simulator.
@@ -64,6 +72,8 @@ When a forecast journal is requested or already authorized, reuse it. Give conse
 One miss can be compatible with a probabilistic forecast. Examine predeclared tolerances, comparable resolved cases and structured errors before changing the model. Before interpreting residuals as a new mechanism, check data identity, labels, leakage, selection, implementation and chance variation. Use residuals to propose a new test on fresh evidence, not to fit an exception to the same failure.
 
 When a result changes the explanation, record the specific link that changed: original premise → predicted intermediate behavior → observed mismatch → supported revision or unresolved rival → next discriminating check if needed. Reuse the existing log when writing is authorized. Do not convert one failed implementation into rejection of the whole mechanism, force a weekly lesson without new evidence, or treat a revised story as already validated.
+
+Locate the evidenced weakness before choosing a correction: activation was misidentified, the response measure missed the declared effect, a rival channel explains it, the applicability boundary changed, or the evidence cannot discriminate. These can coexist and are diagnostic possibilities, not automatic attributions. Check the implicated observation or comparison; leave the cause unresolved when the same result fits several failures. Revise only the supported link without retroactively changing the original test.
 
 ## Change Routes Without Changing The Goal
 
