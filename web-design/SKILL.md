@@ -7,6 +7,8 @@ description: "Design, build, redesign, and visually review production web interf
 
 Create interfaces that are specific to the user's job, content, brand, and constraints. Treat visual quality as an engineered outcome: define what good means, build the smallest coherent direction, render it, and verify it with the right sensors.
 
+Match actions to the request. A review alone authorizes inspection, rendering, and relevant read-only diagnostics, not source edits or external changes. Apply the building and revision instructions only when implementation or fixes are authorized; a finding does not create that authorization.
+
 ## Protect This Priority Order
 
 1. Preserve supplied facts, content meaning, brand rules, user flows, privacy, and task constraints.
@@ -85,14 +87,14 @@ Use these questions where relevant, prioritizing the highest-risk changes:
 5. **Behavior:** Do keyboard, focus, loading, error, empty, destructive, and navigation states work?
 6. **Reflow:** Does content recompose without clipping, accidental scrollbars, tiny text, or character-level wrapping?
 7. **Trust:** Are semantics, contrast, labels, sources, privacy, and claims sound?
-8. **Restraint:** Can any card, border, pill, icon, effect, label, or paragraph be removed without losing meaning or affordance? Remove it.
+8. **Restraint:** Can any card, border, pill, icon, effect, label, or paragraph be removed without losing meaning or affordance? Remove it when changes are authorized; otherwise report consequential excess.
 
-Fix material defects and rerun the affected checks; independent fixes may be combined when their effects remain verifiable. A vertical slice or first successful build is not the end of a broader implementation request. Stop polishing once acceptance passes; a self-imposed iteration count is a checkpoint, not permission to abandon unfinished work. At a real limit or necessary human decision, report the incomplete portion accurately. Keep critique notes internal unless requested.
+For authorized implementation, fix material defects and rerun the affected checks; independent fixes may be combined when their effects remain verifiable. A vertical slice or first successful build is not the end of a broader implementation request. Stop polishing once acceptance passes; a self-imposed iteration count is a checkpoint, not permission to abandon unfinished work. At a real limit or necessary human decision, report the incomplete portion accurately. Keep critique notes internal unless requested.
 
 ## Deliver The Result
 
-- Return the implemented interface, not a mood-board essay or self-congratulatory design narrative.
-- Summarize the chosen direction, changed files, verification evidence, and residual risk concisely.
+- For a review, report material findings with locations, evidence, consequences, and repair directions.
+- For implementation, return the implemented interface, not a mood-board essay or self-congratulatory design narrative. Summarize the chosen direction, changed files, verification evidence, and residual risk concisely.
 - Name anything not rendered or tested. Do not convert an unverified assumption into a completion claim.
 - Preserve enough rationale that another engineer can explain the hierarchy, state model, and verification path without chat history.
 

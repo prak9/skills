@@ -35,7 +35,7 @@ For every task:
 - atomic nodes are terminal;
 - every completed Full Linear node records either a triggered evidence-linked `R-*` or explicit `None` when no trigger fired; every verified Loop attempt points to an `R-*`;
 - the completion review states the observable result, evidence, unverified behavior or residual risk, remaining work, and completion date;
-- consequential decisions or findings are written once to `memory.md`.
+- consequential decisions or findings are written once to the mode's authoritative record: Lite uses `program.md`; Full/Loop uses `memory.md`. Reuse existing evidence links; do not require a second record for Lite completion.
 
 For risky changes, also review applicable migration, compatibility, security, observability, rollback, and human-approval requirements. Add a deeper red-team checklist only when the risk warrants it; do not force an empty universal questionnaire.
 

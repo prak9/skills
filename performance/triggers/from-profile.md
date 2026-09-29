@@ -3,11 +3,15 @@
 
 Use this file when you have profiling data — `perf annotate`, `perf c2c`,
 `perf stat`, `perf report`, VTune, flamegraphs, or any sampled CPU profile.
-Find the matching pattern below, then read the linked file in `patterns/` for
-the full diagnosis and fix.
+Use matching patterns as hypotheses, then read only the relevant detail for
+applicability, correctness constraints and a discriminating check. A profile
+symbol or percentage routes investigation; it does not authorize a fix or prove
+its cause. Numerical thresholds and example speedups are not portable acceptance
+criteria, including in linked patterns.
 
-Read `references/performance-foundations.md` first so the profile is interpreted
-against a representative workload and an explicit baseline.
+Read `references/performance-foundations.md` when selecting or challenging a
+mechanism, baseline or tradeoff; do not require it again just to interpret an
+already scoped observation. Check CPU/event support before prescribing PMU commands.
 
 ## Contents
 
@@ -33,7 +37,7 @@ against a representative workload and an explicit baseline.
 | Scalar preamble (pointer subtraction + conditional branch) before an otherwise vectorizable loop; or two loop versions (one vectorized, one scalar) in annotate for a simple array function | Missing restrict | `patterns/missing-restrict.md` |
 | Scalar FP (`addsd`, `mulss`, `movsd`) or `xmm` registers in hot loop on AVX2/AVX-512 CPU | Narrow SIMD | `patterns/simd-upconversion.md` |
 | `lock cmpxchg` cluster with high density in annotate; throughput drops with more threads | Test-and-Set spinlock | `patterns/ttas.md` |
-| `perf c2c` HITM > 5% on a line; different byte offsets written by different threads | False sharing | `patterns/false-sharing.md` |
+| `perf c2c` localizes material HITM traffic to a line; independent fields at different offsets are written by different threads | False sharing | `patterns/false-sharing.md` |
 | `lock add` / `lock xadd` / `lock inc` in hot path; `perf c2c` true sharing on a stats/counter field | Shared statistics counter | `patterns/per-cpu-stats.md` |
 | Hot symbol's DSO column shows a `.so` file (not the application binary); symbol appears in `references/library-versions.md` | Library version upgrade | `patterns/library-version-upgrade.md` |
 | `crc32b`/`crc32q`/`pclmulqdq` instructions dominate a hot function; or a function named `crc32c`/`crc32_c`/`compute_crc32c` is prominent; single-accumulator CRC32 loop | Fast CRC32C | `patterns/fast-crc32c.md` |
@@ -76,13 +80,12 @@ Read `patterns/missing-restrict.md`.
 
 ### Missing vzeroupper
 
-Run `perf stat -e other_assists.avx_to_sse,other_assists.sse_to_avx ./program`.
-A non-zero `other_assists.avx_to_sse` count confirms the penalty. In
-`perf annotate`, the symptom is an extreme cycle count on the **first SSE
-instruction** following a function that uses `ymm` or `zmm0`–`zmm15` registers —
-the hardware is paying a transition penalty there. The fix is a single
-`vzeroupper` instruction (or `_mm256_zeroupper()` intrinsic) before any exit
-point that returns to SSE code.
+On CPUs exposing these events, `other_assists.avx_to_sse` and
+`other_assists.sse_to_avx` can help investigate AVX/SSE transitions. Check
+`perf list` and the event semantics first. A hot first legacy SSE instruction
+after AVX code is a clue, not proof of transition cost. Confirm the instruction
+path and target-specific behavior before testing boundary cleanup; preserve
+register liveness and compare the same workload before claiming a gain.
 
 Read `patterns/missing-vzeroupper.md`.
 
@@ -92,10 +95,10 @@ Read `patterns/missing-vzeroupper.md`.
 
 The accumulate instruction (e.g., `vaddss`, `vaddpd`, `vmulss`, `vfmadd213ps`)
 appears at the top of the `perf annotate` cycle-count column for a tight loop.
-IPC from `perf stat` is well below 1.0, yet cache-miss rates are low — the CPU
-is not waiting for memory, it is waiting for the previous iteration's result.
-Cycles-per-iteration is at or above the FP latency of the operation (typically
-4–5 cycles for `vadd`/`vfma`), even though the loop body is short.
+Low IPC with low cache-miss rates is compatible with a dependency bottleneck,
+but does not exclude memory or frontend limits. Inspect the loop-carried chain
+and compare cycles per iteration with the target CPU's instruction latency;
+check the permitted numerical semantics before testing independent accumulators.
 
 Read `patterns/parallel-accumulator.md`.
 
@@ -106,9 +109,9 @@ Read `patterns/parallel-accumulator.md`.
 `perf annotate` shows scalar floating-point instructions (`addsd`, `mulss`,
 `movsd`, `vaddss`, `vmulss`) or 128-bit packed operations (`xmm` register names)
 in the hot loop body, on a CPU that supports AVX2 (`ymm`) or AVX-512 (`zmm`).
-The CPU can process 4–8× more data per instruction than it currently does. Also
-applies when `perf stat` shows low IPC on a workload that is clearly CPU-bound
-(low cache misses) — auto-vectorization may have produced narrow or scalar code.
+This suggests checking vectorization and dispatch, not a proportional speedup:
+trip count, dependencies, memory traffic and frequency behavior can dominate.
+Low IPC and low cache misses alone do not establish a compute bottleneck.
 
 Read `patterns/simd-upconversion.md`.
 
@@ -130,12 +133,13 @@ Read `patterns/ttas.md`.
 
 ### False sharing
 
-`perf c2c` reports HITM (Hit Modified) events above 5% on a cache line (`Tot
-Hitm` column). The per-line access map shows **different byte offsets** being
+`perf c2c` localizes HITM (Hit Modified) traffic to a cache line. The per-line
+access map shows **different byte offsets** being
 written by different CPU or thread IDs — the key sign that threads are not
 actually sharing data, just sharing a cache line. The hotspot function appears
 in the multi-core profile but not (or barely) at 1 core, and the regression
-scales linearly with thread count.
+grows with thread count. Confirm independent source fields and benchmark a
+layout change; neither a fixed HITM percentage nor linear scaling is required.
 
 Read `patterns/false-sharing.md`.
 
@@ -156,11 +160,10 @@ Read `patterns/per-cpu-stats.md`.
 
 `perf report` or `perf annotate` shows `crc32b`, `crc32l`, or `crc32q`
 instructions dominating a hot function, or a `pclmulqdq`/`vpclmulqdq` chain
-with only one or two vector accumulators. A single-accumulator CRC32C loop is
-latency-bound at roughly 2.5 GB/s per GHz regardless of CPU clock speed or
-memory bandwidth — the bottleneck is instruction-level serialization, not data
-throughput. The function name itself (`crc32c`, `crc32_c`, `compute_crc32c`)
-is sufficient trigger even without inspecting the loop body.
+with only one or two vector accumulators. A serial chain suggests investigating
+instruction latency, but input size and memory traffic can change the limit.
+The function name itself (`crc32c`, `crc32_c`, `compute_crc32c`) can route to the
+reference; inspect the implementation before selecting a replacement.
 
 Read `patterns/fast-crc32c.md`.
 
@@ -173,9 +176,9 @@ Read `patterns/fast-crc32c.md`.
 sorted data type is a numeric primitive (`float`, `double`, `int32_t`,
 `uint32_t`, `int64_t`, `uint64_t`). `perf stat` may also show elevated
 `branch-misses` — the comparator-driven branches of introsort are notoriously
-hard for the branch predictor. The bottleneck is comparison and partitioning
-overhead, not memory bandwidth; replacing with x86-simd-sort gives 3–8×
-speedup by vectorizing both steps with AVX-512/AVX2.
+hard for the branch predictor. Compare comparison/partitioning cost with memory
+traffic before testing SIMD sort. Verify comparator and ordering semantics,
+target dispatch and representative sizes; do not promise a speedup from a symbol.
 
 Read `patterns/simd-sort.md`.
 
@@ -246,7 +249,8 @@ system library (`.so` file) rather than the application binary. The function
 name matches an entry in `references/library-versions.md` — a known hotspot
 for which a newer library version ships a significantly better implementation.
 
-The application code itself is not the bottleneck. The gain comes from the
-library update, not from any source change.
+Check the installed version and actual implementation. A hot library symbol can
+also reflect excessive caller work; compare an upgrade with reducing calls or
+batching them before choosing a change.
 
 Read `patterns/library-version-upgrade.md`.

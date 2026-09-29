@@ -175,6 +175,24 @@ class SkillContractTests(unittest.TestCase):
         for status in ("valid_in_recorded_scope", "stale", "evidence_missing", "uncheckable"):
             self.assertIn(status, reference)
 
+    def test_lite_completion_does_not_require_a_second_record(self) -> None:
+        completion = reference_text("plan-skill", "status-and-completion.md")
+        self.assertNotIn("findings are written once to `memory.md`", completion)
+        self.assertRegex(completion, r"Lite[^\n]*`program\.md`")
+        self.assertRegex(completion, r"Full/Loop[^\n]*`memory\.md`")
+
+    def test_counter_reference_does_not_turn_thresholds_into_diagnoses(self) -> None:
+        flow = reference_text("performance", "flow-a.md")
+        for diagnosis in (
+            "> 3–5% → memory-bound",
+            "% of time in kernel (task-clock)",
+            "**IPC ≥ 3.0 + low miss rates** → **CPU-efficient**",
+        ):
+            with self.subTest(diagnosis=diagnosis):
+                self.assertNotIn(diagnosis, flow)
+        self.assertIn("off-CPU", flow)
+        self.assertIn("user/system", flow)
+
     def test_core_skill_behavior_suite_has_24_cases_and_holdouts(self) -> None:
         all_cases = []
         for skill in ("decision", "writing", "invest", "plan-skill"):
