@@ -11,6 +11,7 @@ PACKET = Path(__file__).resolve().parents[1] / "evals" / "diligence-cases.jsonl"
 SOURCE_PACKET = PACKET.with_name("source-diligence-cases.jsonl")
 DAYU_PACKET = PACKET.with_name("dayu-diligence-cases.jsonl")
 EARNINGS_PACKET = PACKET.with_name("earnings-continuity-cases.jsonl")
+DISCOVERY_PACKET = PACKET.with_name("discovery-patience-cases.jsonl")
 
 
 class DiligenceFixtureTests(unittest.TestCase):
@@ -18,7 +19,7 @@ class DiligenceFixtureTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.cases = [
             json.loads(line)
-            for packet in (PACKET, SOURCE_PACKET, DAYU_PACKET, EARNINGS_PACKET)
+            for packet in (PACKET, SOURCE_PACKET, DAYU_PACKET, EARNINGS_PACKET, DISCOVERY_PACKET)
             for line in packet.read_text().splitlines()
         ]
         cls.by_id = {case["id"]: case for case in cls.cases}
@@ -117,6 +118,20 @@ class DiligenceFixtureTests(unittest.TestCase):
             "fy_gross_margin": sum(gross_profit) / sum(revenue),
             "fy_cfo_less_cash_capex": sum(cfo) - sum(cash_capex),
             "q4_gross_margin": gross_profit[-1] / revenue[-1],
+        })
+
+    def test_discovery_oracles_preserve_costs_debt_and_dilution(self) -> None:
+        profit = 25 - 12
+        self.assert_numeric("discovery-deferred-investment", {
+            "b_profit_at_unchanged_revenue": profit,
+            "b_margin_at_unchanged_revenue": profit / 125,
+        })
+        initial = (100 - 20) / 10
+        future = (200 - 60) / 20
+        self.assert_numeric("discovery-ev-per-share-bridge", {
+            "initial_price": initial,
+            "future_price": future,
+            "price_return": future / initial - 1,
         })
 
 

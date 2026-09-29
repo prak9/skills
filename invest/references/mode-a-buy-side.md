@@ -60,6 +60,8 @@ Separate user-strategy exclusion, unattractive price and insufficient understand
 
 Treat positive FCF, accelerating revenue, founder ownership, or a ten-year runway as strategy-specific filters or evidence, not universal inclusion rules. Mature cash distributions, cyclical normalization, and investment-phase losses require different economics. Fixed PE bands and percentage discounts are user strategy parameters when explicitly chosen, not fair-value laws; translate them into conditional net returns and test the underlying assumptions. A risk-free yield is not the equity discount rate. Long-term moat analysis does not imply precise annual profit forecasts for a decade.
 
+Separate evidence/authorization requirements, explicit user strategy constraints, and empirical heuristics. Keep the first intact and do not silently change the second; revise the third when counterevidence changes its mechanism or applicability, preserving the prior rule and reason. Founder ownership, for example, does not establish alignment in the face of harmful related-party transactions. Consistency means applying and testing principles honestly, not defending a proxy against reality or inferring the user's temperament from an admired investor.
+
 ## Optional Specialist Lenses
 
 Load another mode only when it resolves the crux:

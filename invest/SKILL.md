@@ -36,6 +36,8 @@ Load only the selected mode and the references it explicitly requires.
 
 For a narrowly requested PE-to-EPS-growth hurdle or its forward price calculation, load [conditional PE implied growth](references/pe-implied-growth.md) directly. This optional calculator does not require Mode B, a full company report, or a new probability model.
 
+For an authorized opportunity search, universe screen or candidate-list review, use [opportunity discovery](references/opportunity-discovery.md), alongside the selected domain lens when needed. A single-company request does not trigger a universe sweep or a persistent watchlist.
+
 Do not trigger Modes B, C, or E from a bare ticker or generic stock-analysis request. They require an explicit request or a clearly stated Mode A crux. Do not load all modes for completeness.
 
 For a standalone U.S./Hong Kong/A-share financial-report extraction request, use [structured financial extraction](references/financial-extraction.md) and its applicable market branch directly. For earnings-call transcripts, use [call extraction](references/earnings-transcripts.md). Deliver the requested extraction without forcing valuation, a Full memo or Notion publication.

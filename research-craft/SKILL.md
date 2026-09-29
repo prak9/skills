@@ -42,6 +42,8 @@ Do not force exploratory work into fake precision. Increase control as soon as t
 
 Exploration may start before a precise hypothesis exists. Within the authorized scope and budget, inspect examples, sketch rival models, follow an unexpected clue or try a reversible probe; choose and reorder methods as useful. Label provisional ideas and distinguish discovery from confirmation. Do not require every idea to have a baseline, numerical probability, full contract or permanent log before investigating it. Tighten evaluation when presenting a finding as established, not merely when considering a possibility.
 
+Distinguish candidate-generation filters from final acceptance gates. When an early proxy may discard valuable directions, inspect a proportionate sample of rejected or near-threshold cases, preserving missing evidence versus actual failure and conditions for reopening. Broaden exploration where justified without relaxing the user's constraints or the frozen evaluator. Compare useful findings and missed mechanisms at comparable total effort, not just the number of candidates generated.
+
 Treat the following workflow as decision criteria, not a required sequence of forms or approvals. Use the minimum contract that can evaluate this request. Reuse supplied goals, budgets, and permission boundaries; clarify only consequential gaps that inspection cannot resolve. A request to implement an experiment or instruction change authorizes its scoped local work, not deployment or an external publication.
 
 ## 1. Choose the question backward from the outcome
