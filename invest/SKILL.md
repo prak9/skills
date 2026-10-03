@@ -58,6 +58,10 @@ After research and necessary evidence checks, actually read and apply [writing](
 
 Lock the conclusion, as-of date, units/currencies/periods, scenario assumptions, fact-versus-estimate labels, valuation math, contrary evidence, risk conditions and claim-level citations. Writing can improve structure and explanation, not conviction, evidence, numbers or requested coverage. Reconcile final text/tables against those items; send genuine evidence/model conflicts back to research. Deliver the checked article without internal handoff narration. Existing-text edits respect the requested edit level. Writing never authorizes publication.
 
+Compose the article around the company's economics and the reader's investment question. Research checklists establish coverage; they do not prescribe the same advantage–caveat–verdict sequence for every business. Explain material limitations beside the claim or estimate they constrain, including their consequence for valuation or confidence. Shared model conventions can live in table notes or the methodology section; preserve local qualifiers needed to read a claim independently.
+
+Apply the writing checklist's whole-document rhetoric review (全文修辞复核) before delivery. Repair repeated, non-informative contrasts and verdicts at paragraph level while retaining distinct counterevidence. Reading the skill, validating arithmetic or finding few flagged words does not establish that the article passed this review. Stop when the identified prose defects are resolved and the protected research content still matches; no extra publication approval or separate agent is required.
+
 ## Notion Delivery
 
 Research **does not authorize a Notion write**. Require a current explicit request or an unrevoked standing authorization covering this research type and exact target; do not re-ask when already resolved, infer it from unrelated prior writes, or expand it because the thesis changed.
