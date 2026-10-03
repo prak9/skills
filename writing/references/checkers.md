@@ -16,6 +16,8 @@ python3 scripts/check_semantic_fidelity.py \
 
 已知语言可传 `--source-language zh|en|other` 与 `--revision-language zh|en|other`；默认 `auto` 只按文字范围选词表，不能可靠识别语言。未确认的拉丁文本、跨语言或不支持输入在无发现时返回 `not_evaluated`；数字或保护词漂移仍返回 `review_required`。`pass` 仅表示已覆盖的词面检查未发现差异；翻译、隐含意义、指代、论证顺序和跨句关系仍需语义复核。正常分析退出码为 0，不以退出码代表保真通过。
 
+执行性文本尤其需要另查条件作用域、动作顺序、许可与义务。英文情态词计数不能区分 `may` 表示可能还是允许；中文词表也未完整覆盖必须、应当、允许等约束。使用 `--protected-term` 只能定位字面缺失，不能验证权限相同。按 `executable-text.md` 比较具体情境下的行为，不把脚本扩展成自动改写或合规门禁。
+
 ## 散文形状
 
 长篇中文散文可在初稿后运行 `python3 scripts/check_prose.py 稿件.md`，或用路径 `-` 从标准输入读取。JSON 的 `findings` 给出行号、片段和待判断的形状；`metrics` 描述句长、连词和段落；`limitations` 说明覆盖边界。它不给 AI 概率或风格总分。

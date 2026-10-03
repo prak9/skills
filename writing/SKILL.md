@@ -27,6 +27,7 @@ description: 当文本本身是主要交付物时，进行中文或英文写作�
 - 新写或大幅重写非虚构长文、人物稿、个人经历、产品与行业评论，或材料和说话身份不清时，读 `references/material-and-voice.md`；普通润色沿用原稿，不因此启动研究。
 - 小说、故事、对白、混合创作，以及口播、教程、评测、诗歌等需要形式适配时，读 `references/narrative-and-formats.md` 的相关部分。
 - 涉及无名来源、承诺、引语用途、文件保护区或界面文案时，读 `references/editing-boundaries.md`。这些边界不要求普通短句加载全部参考。
+- 编写或审阅 Skill 指令、工具说明、操作步骤、任务交接、状态或错误信息，且歧义会改变行动时，读 `references/executable-text.md`；按其适用条件保护动作与分支，不给普通文章套受控语言格式。
 - 使用保真或散文检查脚本时，读 `references/checkers.md`；不为普通写作默认运行脚本。
 
 不要把参考文件或检查过程整篇复制给用户。

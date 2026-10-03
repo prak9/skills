@@ -1,0 +1,134 @@
+{
+  "case_set_version": "writing-executable-text-v1",
+  "recorded_at": "2026-10-03",
+  "protocol": {
+    "scope": "Visible development smoke comparison; not a holdout or the core deterministic evaluator suite",
+    "executor_context": "Two fresh fork_turns=none subagents; ten prompts share a context within each arm",
+    "instruction_context": "Selected writing snapshot and its on-demand references; prompts supplied without criteria",
+    "model": "Inherited session configuration; exact per-run model metadata unavailable",
+    "reasoning_effort": "Inherited; unavailable",
+    "grader": "Primary agent who authored the candidate; separate from forward executors, not an independent blinded grader",
+    "costs": "files_read and tool names are executor-reported; per-case tool counts, timing and token costs were not captured",
+    "baseline_revision": "198a14c:writing",
+    "baseline_skill_sha256": "0ef2202c8cbc4c38292da960bf4db2591c08f2a52da2fc911a24c39ac0697c4d",
+    "candidate_skill_sha256": "51445bcad872f127f2db53d5eaa7f65d1256320ff5f33bc3b65cbc06b8578ad4",
+    "candidate_executable_text_sha256": "5aaf59f0e155b686e142481ce09fc914d4e62767cd5d84d655ea3072fdd84441",
+    "cases_sha256": "18d156912a66cbb59f2c046c80ab944ee97862625dfd61d1b4f4fa8a1c478b42"
+  },
+  "baseline": {
+    "outputs": [
+      {
+        "id": "execution-fallback",
+        "output": "When synchronization detects a conflict, the configured policy may allow an automatic attempt to resolve it. Any conflict that remains unresolved is sent for manual review."
+      },
+      {
+        "id": "execution-scope",
+        "output": "只有校验通过且用户已批准发布，才能上传制品并切换流量；切换流量后，检查健康状态。无论校验是否通过，都保留本次日志。"
+      },
+      {
+        "id": "execution-error",
+        "output": "使用你指定的 Cookie 发起的 HTTP 请求返回了登录页，未能读取目标内容；本次未访问原登录浏览器，也未验证账号会话是否有效。"
+      },
+      {
+        "id": "execution-modality",
+        "output": "The worker may retry only if the operator has already approved retries. It should record each attempt and must preserve the audit log. The request may have failed."
+      },
+      {
+        "id": "execution-terminology",
+        "output": "No rewrite is needed. “Check” concerns the file’s existence, “verify” concerns its signature, and “confirm” asks the user to identify the deployment target. “Robust regression” is a technical term, not a vague request for a more reliable estimate."
+      },
+      {
+        "id": "execution-no-new-promise",
+        "output": "The cache is designed to fit your existing stack without vendor lock-in; it uses semantic similarity to reduce cache misses."
+      },
+      {
+        "id": "execution-unknown-contract",
+        "output": "这条指令缺少可执行的边界：\n\n- “任务结束”没有定义：无法判断成功、失败或中断是否都触发清理。修改时应明确触发条件。\n- “相关资源”没有范围：无法判断清理对象、清理动作、授权范围及必须保留的内容。修改时应明确这些边界。\n- “必要时重试”没有说明重试什么、何时触发、最多重试到哪里，以及重试失败后如何处理。修改时应补齐重试对象、条件和停止标准。\n- “然后继续”没有说明继续什么，也不清楚清理或重试失败是否影响后续操作。修改时应明确下一步及其前置条件。\n\n这些规则需要由指令制定者确定，现有上下文不足以代填。"
+      },
+      {
+        "id": "execution-status",
+        "output": "进程退出码为 0，但输出缺少清单要求的第 3 页和第 4 页，交付内容不完整。尚未进行内容验收。"
+      },
+      {
+        "id": "execution-unknown-actor",
+        "output": "The record was deleted before the audit began. It is unknown who deleted it. The deletion may have happened during maintenance."
+      },
+      {
+        "id": "execution-fiction-control",
+        "output": "我在门口站了很久，钥匙一直握在手里。我想，他可能已经走了，也可能只是没有听见。屋里没有灯，我还是又敲了一次门。"
+      }
+    ],
+    "files_read": [
+      "/tmp/writing-execution-review-ZY5B9T/baseline/SKILL.md",
+      "/tmp/writing-execution-review-ZY5B9T/baseline/references/editing-levels.md",
+      "/tmp/writing-execution-review-ZY5B9T/baseline/references/style-guide.md",
+      "/tmp/writing-execution-review-ZY5B9T/baseline/references/revision-checklist.md",
+      "/tmp/writing-execution-review-ZY5B9T/baseline/references/translation-guardrails.md",
+      "/tmp/writing-execution-review-ZY5B9T/baseline/references/editing-boundaries.md",
+      "/tmp/writing-execution-review-ZY5B9T/baseline/references/narrative-and-formats.md"
+    ],
+    "tools_used": [
+      "functions.exec",
+      "tools.exec_command",
+      "tools.apply_patch"
+    ]
+  },
+  "candidate": {
+    "outputs": [
+      {
+        "id": "execution-fallback",
+        "output": "When synchronization detects a conflict, the configured policy may allow an attempt to resolve it automatically. Any conflict that remains unresolved is sent for manual review."
+      },
+      {
+        "id": "execution-scope",
+        "output": "只有校验通过且用户已批准发布时，才上传制品并切换流量；切换流量后，检查健康状态。无论校验是否通过，都保留本次日志。"
+      },
+      {
+        "id": "execution-error",
+        "output": "使用你指定的 Cookie 发起 HTTP 请求后，返回的是登录页，未能读取所需内容；本次未访问原登录浏览器，也未验证账号会话是否有效，因此无法据此判断会话是否已失效。"
+      },
+      {
+        "id": "execution-modality",
+        "output": "The worker is allowed to retry only if the operator has already approved retries. It should record each attempt and must preserve the audit log. The request may have failed."
+      },
+      {
+        "id": "execution-terminology",
+        "output": "No rewrite is needed. “Check,” “verify,” and “confirm” describe distinct actions here, and “robust regression” is a specific statistical term."
+      },
+      {
+        "id": "execution-no-new-promise",
+        "output": "The cache is designed to fit your existing stack without vendor lock-in. It uses semantic similarity to reduce cache misses."
+      },
+      {
+        "id": "execution-unknown-contract",
+        "output": "这条指令的执行规则尚未定义清楚，单靠润色无法补齐：\n\n- “任务结束”缺少判定标准，无法确定何时触发清理。\n- “相关资源”未明确范围，“清理”也未定义具体操作，无法判断哪些资源可以处理、哪些需要保留。\n- “必要时重试”没有说明重试什么、由什么情况触发，以及何时停止。\n- “然后继续”没有说明继续哪项工作，也未说明清理或重试失败后是否仍继续。\n\n修改方向是由规则制定者补充这些判据、对象、范围和分支，再写明动作顺序与后续去向；现有上下文不足以代定这些规则。"
+      },
+      {
+        "id": "execution-status",
+        "output": "进程已退出，退出码为 0，但输出缺少清单要求的第 3 页和第 4 页，产物不完整。尚未进行内容验收。"
+      },
+      {
+        "id": "execution-unknown-actor",
+        "output": "The record was deleted before the audit began. It is not known who deleted it. The deletion may have happened during maintenance."
+      },
+      {
+        "id": "execution-fiction-control",
+        "output": "我在门口站了很久，手里一直拿着钥匙。我想，他可能已经走了，也可能只是没听见。屋里没有灯，我还是又敲了一次门。"
+      }
+    ],
+    "files_read": [
+      "/tmp/writing-execution-review-ZY5B9T/candidate/SKILL.md",
+      "/tmp/writing-execution-review-ZY5B9T/candidate/references/executable-text.md",
+      "/tmp/writing-execution-review-ZY5B9T/candidate/references/editing-levels.md",
+      "/tmp/writing-execution-review-ZY5B9T/candidate/references/style-guide.md",
+      "/tmp/writing-execution-review-ZY5B9T/candidate/references/revision-checklist.md",
+      "/tmp/writing-execution-review-ZY5B9T/candidate/references/editing-boundaries.md",
+      "/tmp/writing-execution-review-ZY5B9T/candidate/references/narrative-and-formats.md"
+    ],
+    "tools": [
+      "functions.exec",
+      "exec_command",
+      "apply_patch"
+    ]
+  }
+}
