@@ -13,4 +13,6 @@ Test only the dimensions claimed. Preserve prerequisite knowledge, baseline abil
 
 Separate learner-generated explanations, predictions and corrections from model-supplied work. Satisfaction, confidence and an AI tutor's approval do not substitute for demonstrated application. An unattempted check is missing evidence, not a pass. One exercise supports a narrow observation, not durable mastery or broad cognitive development.
 
+For claims about judgment, distinguish question selection from answer evaluation. Fresh tasks can test whether learners prioritize consequential questions under stated constraints, identify a decisive flaw in a plausible answer, or explain a legitimate tradeoff. Include valid alternatives when appropriate: detecting every answer as wrong or agreeing with the tutor is not the target ability. Grade against the task's evidence, constraints and declared preferences, not polish or conformity. Test only the judgment claimed; automating elementary work does not establish the prerequisites or advanced ability.
+
 Reuse the existing evaluation record. A test design does not authorize recruitment, scheduled follow-up or new external data collection. Do not impose learning tests on a request whose only claim is delivery quality or efficiency.

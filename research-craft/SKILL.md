@@ -92,7 +92,7 @@ Build only the harness needed for the claim. Record commands and material inputs
 
 [run_experiment.py](scripts/run_experiment.py) can capture local command runs, separate artifact grading and elapsed time. Reuse an existing capable harness when available. Its receipts do not attest to hidden holdout isolation, nested agent behavior or model improvement. Prove the reach–act–observe–verify–recover path before multiplying workers or authority; record unresolved human-verification debt.
 
-Reviewer feedback is a diagnosis to test, not ground truth. Tie it to an artifact and criterion, seek the strongest counterevidence, and verify the correction plus relevant regressions. Consolidate repeated low-information comments instead of editing to please a reviewer. Treat a wrong evaluator as harness work; do not silently redefine success. Local correction proves a local result, not persistent learning or transfer.
+Route feedback by what it asserts: verify factual corrections against evidence; test causal diagnoses against plausible rivals; honor authorized preferences within their stated scope without treating approval as proof of correctness or utility. Mixed feedback may require all three. Tie a claimed defect to an artifact and criterion, seek counterevidence, and verify the correction plus relevant regressions. Consolidate repeated low-information comments instead of editing to please a reviewer. A legitimate goal or criterion change needs the applicable authority and a separately versioned comparison; a wrong evaluator is harness work. Neither can retroactively rescue a failed candidate. Local correction proves a local result, not persistent learning or transfer.
 
 ## Gate claims, not just scores
 
