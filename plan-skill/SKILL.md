@@ -63,7 +63,7 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 
 ## Execute And Resume
 
-- Resume by reading `program.md`, then the active task package and only the memory/evidence it references.
+- Resume by reading `program.md`, then the active task package and only the memory/evidence it references. Reconcile known changes to load-bearing premises before following the saved next action, even if file fingerprints are unchanged. Reassess affected conclusions and nodes, preserving historical evidence, independent support and unrelated completed work in the existing authority; no second ledger is needed.
 - If the territory reveals a material unknown or deviation, read `references/unknowns-contract.md`, resolve discoverable facts from evidence, and update or stop the plan before crossing a bound.
 - Execute the smallest useful node and run its verifier. In Lite and Full Linear modes, read `references/reflection-contract.md` and write `R-*` only when its trigger fires; otherwise mark the node explicitly `None`. Loop keeps one evidence-linked `R-*` per verified attempt.
 - Create later task packages just in time, after their dependencies and acceptance conditions are known.

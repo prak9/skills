@@ -20,7 +20,7 @@ Load specialist detail only when its condition applies:
 | Condition | Reference |
 |---|---|
 | Ambiguous construct, unfamiliar mechanism, observational tie, consequential delay/feedback, or pressure-testing a research thesis | [Hypothesis formation](references/hypothesis-formation.md) |
-| Evidence challenges the current method | [Route revision](references/hypothesis-formation.md#change-routes-without-changing-the-goal) |
+| Evidence changes a load-bearing premise, dependent conclusion or current method | [Belief updates and route revision](references/hypothesis-formation.md#resolve-claims-without-rewriting-history) |
 | Open research has a consequential coverage gap, one-sided sources or unresolved source disagreement | [Perspective discovery](references/perspective-discovery.md); not supplied-text summaries or narrow checks |
 | Predictive-model inputs/timing, probability forecasts or stochastic simulators | [Prediction validation](references/prediction-validation.md) |
 | Recurring failure, regression or diminishing optimization returns | [Trace attribution](references/trace-attribution.md) |
@@ -54,7 +54,7 @@ Separate:
 
 Never redefine success to rescue the candidate in the same round. Exploratory combinations can find a direction, but attributing a gain to one component needs a discriminating comparison. Predeclare comparable search/tuning resources when claiming superiority; unequal trials, compute or human intervention limit attribution.
 
-Candidate-generation filters are not final acceptance gates. If an early proxy may discard useful directions, inspect a proportionate sample of rejects or near-threshold cases. Preserve missing evidence versus actual failure and reopening conditions; broaden discovery without weakening the frozen evaluator.
+Candidate-generation filters are not final acceptance gates. If an early proxy may discard useful directions, inspect a proportionate sample of rejects or near-threshold cases. An unfamiliar candidate with a plausible mechanism and a cheap discriminating test can merit a probe; neither familiarity nor novelty establishes quality. Preserve missing evidence versus actual failure and reopening conditions; broaden discovery without weakening the frozen evaluator.
 
 ## Inspect reality and preserve the distinctions that matter
 
@@ -75,6 +75,8 @@ For learned inputs, consult [representation and availability](references/predict
 Keep the simpler model when it preserves the required distinctions; add only what an evidenced failure requires. Fewer concepts, a fixed variable count or a hand-picked pair proves neither quality nor generality. Transfer an analogy only after checking its load-bearing mechanism and boundaries.
 
 ## Run the cheapest informative test
+
+Judge a probe by decision-relevant evidence gained relative to its full cost, not subjective confidence gained. Discovering a missing mechanism or unreliable measurement can usefully increase uncertainty; unrelated information gain does not justify a detour.
 
 Choose the probe for the uncertainty:
 

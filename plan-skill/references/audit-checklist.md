@@ -47,6 +47,8 @@ When recovery behavior is being designed or changed, test a representative inter
 
 Include the consequential boundary: a tool succeeded but its reply or plan update was lost. Check authoritative receipts/state before retrying; use an idempotent path where supported. If the effect cannot be resolved safely, report that uncertainty rather than blindly repeating it. Also test relevant source changes invalidating old evidence when evidence-validity checking is enabled. Do not add snapshots to legacy plans merely for this probe.
 
+When recovery depends on research findings, include a newly contradicted premise with unchanged source files. Check that the executor reassesses the dependent judgment and changes the next action where warranted, preserving unrelated verified work and any genuinely independent support. An expired or unsupported premise is not automatically false; the original observation remains historical evidence. Inspect the actual resumed action, not a summary that mentions the new evidence but follows an unsupported old route.
+
 Passing means no duplicate external effect, no skipped unfinished node, no stale evidence treated as current, and no unnecessary reconfirmation of recorded authorization. Run with fixtures or a sandbox, not live publication. A Markdown validator cannot certify these behaviors. Fix the smallest missing state or recovery rule; do not add a parallel ledger or require a probe for every ordinary task.
 
 ### Structural Checks
