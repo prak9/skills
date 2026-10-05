@@ -1,6 +1,6 @@
 ---
 name: research-craft
-description: 设计和评估可证伪的研究或 Agent Harness 实验，包括 Prompt、Skill、AGENTS、模型迁移、自我改进与自动化研究；用于需要固定基线、可观测证据和接受门槛的比较，不用于普通事实检索、一次性解释或仅需做选择的决策。
+description: 对复杂问题开展证据研究，组织依赖子问题、缺口回补与综合判断；设计和评估可证伪的研究或 Agent Harness 实验，包括 Prompt、Skill、AGENTS、模型迁移与自我改进。不用于普通事实检索、一次性解释或仅需做选择的决策。
 ---
 
 # Research Craft
@@ -19,6 +19,7 @@ Load specialist detail only when its condition applies:
 
 | Condition | Reference |
 |---|---|
+| Multi-part evidence research needs dependent sub-questions, gap filling or cross-worker synthesis | [Dependency-aware research](references/deep-research.md); no graph for a narrow lookup or supplied-text explanation |
 | Ambiguous construct, unfamiliar mechanism, observational tie, consequential delay/feedback, or pressure-testing a research thesis | [Hypothesis formation](references/hypothesis-formation.md) |
 | Evidence changes a load-bearing premise, dependent conclusion or current method | [Belief updates and route revision](references/hypothesis-formation.md#resolve-claims-without-rewriting-history) |
 | Open research has a consequential coverage gap, one-sided sources or unresolved source disagreement | [Perspective discovery](references/perspective-discovery.md); not supplied-text summaries or narrow checks |

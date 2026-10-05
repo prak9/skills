@@ -2,6 +2,8 @@
 
 Use this adapter when agents or ML systems will decompose a scientific or engineering problem, run experiments, compare results, and improve the candidate system. Automation is useful only when it increases trustworthy learning throughput; a fast loop around a weak objective is an automated way to become confidently wrong.
 
+For source-based investigations without candidate-system experiments, use [dependency-aware research](deep-research.md) instead. Its question scheduling, evidence handoff and gap reconciliation do not require this adapter's experiment infrastructure.
+
 ```text
 important, partly tractable problem
   -> explicit decomposition and fixed evaluator
