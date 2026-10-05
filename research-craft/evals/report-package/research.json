@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "genre": "validation",
+  "as_of": "synthetic-fixture-v1",
+  "report": "report.md",
+  "questions": [
+    {"id": "Q1", "question": "How much did the fixture count grow?", "status": "answered", "claim_ids": ["C1"], "reason": "Two supplied synthetic counts."},
+    {"id": "Q2", "question": "Does the proposed method always reduce latency?", "status": "answered", "claim_ids": ["C2"], "reason": "The supplied observations disagree across workloads; no universal claim is supported."}
+  ]
+}

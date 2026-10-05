@@ -1,0 +1,88 @@
+{
+  "reviewer": "instruction-author",
+  "method": "Self-review of synthetic supplied fixtures, not independent source verification or a model capability evaluation.",
+  "input_hashes": {
+    "claims.csv": "15cc9b0d34368d7223bf136613fd8d1aa6c706c6838718b238f1ee8544700be7",
+    "evidence.csv": "ab6b0d05323f137646b97eaac2b6558f8cda58ef4cedfe86cdbe843bcbef573c",
+    "memo.md": "0bbda9df09c94c7f7d39fc54d85b190ca052c3e6ea47a6151ca1431d78804cb2",
+    "numbers.csv": "f32a35ce91dec5b891efd79aa5d2f9afb6231cdd7a878385edaf63f43705233c",
+    "outline.csv": "08ccd6cf40b558b13648e5dce20e2a157476abd2979a4e998a27c3a7c8774c3e",
+    "plan.md": "95fa353566ab901ce3710bada997eac3b7d54e2472ea25ab22d9589bc4ab6dee",
+    "refresh.md": "18a16d8b9c11b0da5be1265e1eab371465ad79332421947b2875c306ac62320b",
+    "report.md": "d570ab25bf458d485d2bc79532f7d4da15117b5c4e8269dd3de9fc6f0d514851",
+    "research.json": "771ed20f68a43ad2c3d4bf40cf6dd48a0769814fdf11a0843e04f4d756fdbd6a",
+    "review.md": "4b39e625543f7780d2c1b6878538a0119dc4325858012f72cedf5ad5b7f815ac",
+    "sources/s01.md": "7952b3f40fa77ac2dc0ad26d02f002065e2c52777adc75edcb0add1e2b0670b6",
+    "sources/s02.md": "82c8fcda4deee68e8d5a56bdaab9289b130313df23e0caf5da5d478b44adeac4",
+    "sources.csv": "907042962f9894203e511b6d3c06454ac1d4009f2e0c228222ea5050a98c7a4e",
+    "state.md": "80dfd53d3447c68df3addbcc8334d94d16ced37c67fca0b550325d493fc7f3eb"
+  },
+  "checks": [
+    {
+      "kind": "access",
+      "target": "s01",
+      "status": "pass",
+      "reason": "Read the synthetic source card; full fixture text is present, not a web retrieval."
+    },
+    {
+      "kind": "access",
+      "target": "s02",
+      "status": "pass",
+      "reason": "Read the opposing synthetic source card; no external access claim."
+    },
+    {
+      "kind": "authority",
+      "target": "C1",
+      "status": "pass",
+      "reason": "Supplied counts define this fixture-only arithmetic question."
+    },
+    {
+      "kind": "support",
+      "target": "C1",
+      "status": "pass",
+      "reason": "100 to 125 implies 25% under the explicitly documented formula."
+    },
+    {
+      "kind": "qualifiers",
+      "target": "C1",
+      "status": "pass",
+      "reason": "Both memo and report retain the synthetic-fixture limitation."
+    },
+    {
+      "kind": "authority",
+      "target": "C2",
+      "status": "limited",
+      "reason": "Synthetic single observations do not establish real population performance."
+    },
+    {
+      "kind": "support",
+      "target": "C2",
+      "status": "limited",
+      "reason": "Opposing workload directions leave the universal proposition contested; report does not assert it."
+    },
+    {
+      "kind": "qualifiers",
+      "target": "C2",
+      "status": "pass",
+      "reason": "Both short and long deliverables retain workload differences and missing repeated measurements."
+    },
+    {
+      "kind": "constructs",
+      "target": "report",
+      "status": "pass",
+      "reason": "No named external framework or law is asserted."
+    },
+    {
+      "kind": "counterevidence",
+      "target": "report",
+      "status": "pass",
+      "reason": "E3 and the workload-B source are present in ledger, outline, memo and report."
+    },
+    {
+      "kind": "numbers",
+      "target": "report",
+      "status": "pass",
+      "reason": "The only derived value is 25%, from the stated counts; there is no exhaustive share-group claim."
+    }
+  ]
+}

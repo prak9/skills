@@ -1,4 +1,4 @@
 interface:
   display_name: "Research Craft"
-  short_description: "Investigate complex questions and test research changes"
-  default_prompt: "Use $research-craft to investigate this complex question or evaluate this research change, resolving consequential gaps and preserving checkable evidence."
+  short_description: "Deliver deep research reports with traceable evidence"
+  default_prompt: "Use $research-craft to investigate this question, deliver a genre-appropriate report and concise summary with traceable evidence, test consequential counterarguments, and state verification limits."

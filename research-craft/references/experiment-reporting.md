@@ -8,6 +8,8 @@ Record the question, hypothesis, baseline identity and reason for its selection,
 
 Show each arm's configuration differences in the report; retain resolved effective configurations, including material defaults, in machine-readable artifacts. Link shared fixed settings instead of repeating them. Record actual tuning budgets, seeds/repeats and failed attempts where relevant. A different dataset, evaluator, cost model or budget limits comparability; label it rather than calling the result a controlled improvement.
 
+For component attribution, follow [ablation design](ablation-design.md). Include the component-on/off matrix, the specific full-minus/base-plus or interaction contrast, fixed versus retuned settings, intervention stage and paired observations where applicable. A four-cell interaction needs all four comparable cells; a failure or missing cell is not a zero score. Do not sum conditional removal effects into a total contribution.
+
 ## Detailed supporting tables are part of the result
 
 A headline table or screenshot is not the underlying evidence. Retain readable, machine-readable tables (existing CSV, Parquet, JSONL or workbook formats are fine) at the granularity needed to reproduce the reported metrics and investigate the important heterogeneity:

@@ -1,0 +1,3 @@
+id,claim,status,confidence,rationale,limitations,evidence_ids,dissent_ids,excluded_reason
+C1,The supplied fixture record count increased by 25%.,supported,high,Exact arithmetic on the supplied counts.,Synthetic counts only; no population generalization.,E1,,
+C2,Method M reduces latency across workloads.,contested,low,Workload A supports the direction but workload B contradicts generalization.,Synthetic single observations; no independent repetitions or uncertainty estimates.,E2,E3,

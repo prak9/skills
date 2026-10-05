@@ -1,0 +1,2 @@
+id,claim_id,value,unit,kind,formula,inputs,source_ids,as_of,tolerance
+N1,C1,25,%,derived,(b-a)/a*100,"{""a"":{""value"":100,""source_id"":""s01"",""locator"":""Counts""},""b"":{""value"":125,""source_id"":""s01"",""locator"":""Counts""}}",s01,synthetic-fixture-v1,0

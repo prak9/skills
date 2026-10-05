@@ -1,0 +1,3 @@
+id,title,url,file,type,root,discovery_path,published_at,accessed_at,access,caveat
+s01,Synthetic run A,fixture:run-a,sources/s01.md,fixture,fixture-run-a,supplied-fixture,not-applicable,not-applicable,full,synthetic
+s02,Synthetic run B,fixture:run-b,sources/s02.md,fixture,fixture-run-b,supplied-fixture,not-applicable,not-applicable,full,synthetic

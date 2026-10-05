@@ -1,0 +1,4 @@
+id,claim_id,source_id,relation,kind,text,locator,authority,root
+E1,C1,s01,supports,quote,The earlier batch contained 100 records. The later batch contained 125 records.,Counts,qualified,fixture-counts
+E2,C2,s01,supports,quote,"On fixture workload A, method M had lower latency than the baseline.",Latency,limited,fixture-run-a
+E3,C2,s02,contradicts,quote,"On fixture workload B, method M had higher latency than the baseline.",Latency,limited,fixture-run-b
