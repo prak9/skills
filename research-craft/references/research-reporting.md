@@ -19,7 +19,7 @@ Preserve necessary source excerpts, raw measurements and failed attempts in ever
 | Genre | Body must accomplish | Typical useful structure |
 |---|---|---|
 | `qa` | Resolve connected questions and synthesize their joint implication | Summary → scope/background → question/answer sections → integrated finding → counterevidence/gaps |
-| `explainer` | Explain the mechanism and its limits rather than list facts | Summary → needed terms → components and causal/operational path → worked example → variants/failure boundaries → what remains uncertain |
+| `explainer` | Answer the reader's load-bearing questions and explain the mechanism and its limits rather than list facts | Summary → needed terms → original and changed causal/operational path → worked example when needed → variants/failure boundaries → what remains uncertain |
 | `comparison` | Compare the same options on consistent axes and expose conditions that change the ranking | Context/constraints → options matrix → evidence and full costs → tradeoffs → conditional conclusion and reversal conditions |
 | `decision` | Provide evidence for an explicitly requested real choice, using `decision` for the decision process | Decision/constraints → options and common-axis comparison → conditional recommendation → risks/reversal conditions → authorized next step |
 | `landscape` | Give a defensible map, not an arbitrary list of familiar names | Scope/inclusion → categories → comparable profiles → relationships/value chain → trends/coverage limits → update triggers |
@@ -27,6 +27,8 @@ Preserve necessary source excerpts, raw measurements and failed attempts in ever
 | `custom` | Combine the needed functions without repeating sections | Name the chosen functions and check each against the question |
 
 An action-oriented comparison can include a recommendation and a separate decision memo; it does not authorize making or executing the user's decision. An unresolved factual condition calls for a bounded conclusion, not a forced recommendation. Understanding-only research does not need an action plan.
+
+For an explainer, recover what the reader should be able to understand or judge after reading and let those questions control source selection and section weight. When a design replaces or optimizes an existing path, show where the original cost arises, which step changes, how the effect reaches the reported outcome and which conditions reverse it. Do not default to a definition–features–benefits–challenges catalog. Keep verification and implementation detail in an appendix when it would interrupt the explanation, but retain every detail that carries the mechanism or limits the conclusion.
 
 ## Common Delivery Contract
 
@@ -64,7 +66,7 @@ Map sections to claims before drafting, revise the map when findings change, and
 
 Use five challenge lenses proportionately: factual support, strongest rival, missing coverage, reader usability, and protected dissent. Record consequential defects and their resolution, not ceremonial grades. If another agent is authorized to check, give it actual evidence and the task contract, isolate its judgment from other reviewers, and disclose shared model/source limitations. Otherwise name the check self-review; role names do not make it independent.
 
-When the report itself is the main deliverable, use the available `writing` skill for final expression, preserving citations, definitions, caveats and uncertainty. Then recheck the changed summary and claims. Do not launch code-review-craft for prose review.
+When the report itself is the main deliverable, use the available `writing` skill for final expression, preserving citations, definitions, caveats and uncertainty. For technical explainers, also pass the reader background, load-bearing questions, original path, changed path and failure boundaries into writing so the research checklist does not become the article outline. Then recheck the changed summary and claims, including whether the reader must silently invent a consequential step. Do not launch code-review-craft for prose review.
 
 ## Export And Handoff
 
