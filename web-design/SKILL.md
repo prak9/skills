@@ -7,53 +7,24 @@ description: "Design, build, redesign, or visually review responsive and accessi
 
 Create interfaces specific to the user's job, content, brand and constraints. Define what good means, build the smallest coherent direction, render it and verify the relevant claims. Reviews inspect; implementation requests may edit.
 
-## Protect This Priority Order
+## Preserve Outcomes And Boundaries
 
-1. Preserve supplied facts, content meaning, brand rules, user flows, privacy, and task constraints.
-2. Preserve the host framework, routes, component conventions, design tokens, and delivery surface.
-3. Make the user's primary job and the interface's next action immediately legible.
-4. Choose a composition and visual language specific to the material instead of a reusable AI template.
-5. Make every important state keyboard-usable, responsive, accessible, and recoverable.
-6. Refine detail and delight only after structure, behavior, and verification are sound.
+Preserve supplied facts, content meaning, brand rules, user flows, privacy, task constraints, and the host product's framework and conventions. The result should make the user's primary job and next action legible, use a composition specific to the material, and keep important states responsive, accessible, keyboard-usable, and recoverable. Visual polish cannot compensate for broken meaning or behavior.
 
-When direction is underspecified, infer a reversible choice from the brief and product; contrasting sketches are evidence, not a mandatory selection gate.
+When direction is underspecified, infer a reversible choice from the brief and product. Alternatives are useful only when they resolve a material uncertainty; they are not a mandatory approval gate.
 
-## Inspect Before Designing
+## Inspect And Choose A Direction
 
-- Read the actual routes, components, styles, tokens, assets, tests, and copy that own the experience. Do not design from filenames or a screenshot alone when the implementation is available.
-- Identify the user, context, job and observable success.
-- Inventory content, actions, states, evidence, unknowns, and constraints. Distinguish supplied facts from invented placeholder copy.
-- Inspect supplied references directly. Extract hierarchy, rhythm, geometry, typography, interaction, and density; do not copy brand assets or surface decoration blindly.
-- In an existing product, reuse its primitives before adding new ones. In a greenfield task, choose the smallest runnable stack; semantic HTML, CSS, and small JavaScript are the fallback.
-- Reuse dependencies. Add one only when its concrete value exceeds its maintenance cost; paid services, tracking, external transfers or architecture commitments require scope coverage.
+Read the implementation and supplied references that own the experience, enough to identify the user job, observable success, content, actions, states, constraints, and existing design language. Reuse established primitives and dependencies unless a concrete requirement justifies a change; external services, tracking, data transfer, or architecture commitments still require scope coverage.
 
-## Establish The Design Direction
-
-Read `references/composition-and-taste.md` for a new page, major redesign, weak hierarchy or unclear direction.
-
-Privately define:
-
-- the primary user job and first-viewport promise;
-- the one dominant object or relationship;
-- the content order and primary action;
-- the design-system inheritance and allowed deviations;
-- concrete type, color, spacing, shape, imagery, and motion rules;
-- empty, loading, error, success, long-content, and narrow-screen behavior.
-
-If comparison is useful, vary topology, density or evidence placement—not merely color. Use an established direction directly when it fits.
-
-Choose geometry before components. Use position, length, sequence, proportion, alignment, and grouping to express relationships. Treat cards, accordions, tabs, charts, and carousels as mechanisms, not default decorations.
+Read `references/composition-and-taste.md` for a new page, major redesign, weak hierarchy, unclear direction, or anti-template review. It contains the optional methods for comparing directions, mapping meaning to geometry, building hierarchy, and testing visual taste. An established direction that satisfies the task needs no invented alternative.
 
 ## Build The Interface
 
-- Choose a checkable implementation slice; use a representative slice first only when direction remains uncertain.
-- Establish hierarchy through type, alignment, spacing, and proportion before adding surfaces, borders, shadows, color, or motion.
-- Compose the page as a connected field with deliberate pacing. Repetition is for true peers; unequal content should not be forced into equal cards.
-- Use semantic HTML and native controls. Links navigate; buttons act. Preserve source order as reading order.
-- Keep responsive behavior intrinsic with grid, flex, wrapping, `min-width: 0`, and content-driven breakpoints before measuring layout in JavaScript.
-- Design all meaningful states. Never leave users at an empty screen, unexplained error, irreversible action, or interaction dead end.
-- Keep copy concrete and action-oriented. Do not invent claims, urgency, testimonials, metrics, or fake product screenshots.
-- Use motion only to explain state, preserve continuity, or confirm action. The complete experience must work without it and respect reduced-motion preferences.
+- Implement the smallest coherent slice that can establish the requested experience; a representative slice is useful when direction remains uncertain, not a required phase.
+- Use semantic controls and resilient responsive layout. Preserve reading order, keyboard operation, recovery paths, and every meaningful state the chosen flow can enter.
+- Keep copy and media grounded in supplied or authorized material. Do not invent claims, urgency, testimonials, metrics, or fake product screenshots.
+- Motion may explain state or continuity, but the experience must work without it and respect reduced-motion preferences.
 
 Read `references/interface-quality.md` before implementing forms, navigation, data-dense UI, motion, responsive behavior, or final interaction polish.
 
@@ -74,18 +45,7 @@ Checks must cover changed behavior and localize defects. A redesign cannot close
 
 ## Render, Inspect, And Revise
 
-Render the actual implementation when tooling permits. Inspect at minimum a narrow mobile viewport and a representative laptop viewport; add wide, dark, high-density, reduced-motion, or slow-network cases when the product supports or risks them.
-
-Use these questions where relevant, prioritizing the highest-risk changes:
-
-1. **Task:** Is the primary job and next action obvious without explanation?
-2. **First read:** Is one object dominant, and does the first viewport communicate value rather than merely mood?
-3. **Composition:** Does every section advance a new question? Are alignment and whitespace intentional?
-4. **Typography:** Are roles, measures, line breaks, numerals, and peer values consistent?
-5. **Behavior:** Do keyboard, focus, loading, error, empty, destructive, and navigation states work?
-6. **Reflow:** Does content recompose without clipping, accidental scrollbars, tiny text, or character-level wrapping?
-7. **Trust:** Are semantics, contrast, labels, sources, privacy, and claims sound?
-8. **Restraint:** Can any card, border, pill, icon, effect, label, or paragraph be removed without losing meaning or affordance? Remove it when changes are authorized; otherwise report consequential excess.
+Render the actual implementation when tooling permits. Choose viewports, themes, content extremes, network conditions, and interaction states from the changed behavior and product risks; a general responsive redesign normally includes narrow mobile and representative laptop evidence. Inspect whether the primary task, hierarchy, behavior, reflow, semantics, trust, and visual restraint satisfy the brief. `references/composition-and-taste.md` and `references/interface-quality.md` provide deeper diagnostic questions when needed.
 
 Fix material defects and rerun affected checks. A first successful slice does not complete a broader request; stop polishing once acceptance passes and report any real limit accurately.
 

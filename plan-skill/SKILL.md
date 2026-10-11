@@ -30,24 +30,25 @@ For an authorized repeated research loop, link existing case/run/grade/finding/c
 
 ## Create Or Refresh
 
-1. Read the request and the repository evidence needed to recover intent, current state and constraints.
-2. State the observable outcome, inherited defaults, tactical objective, locked and negotiable bounds, material assumptions, acceptance evidence and next useful action.
-3. Choose Inline, Lite, Full, or Loop. For Inline, skip `init_plan.py` and continue directly without plan files.
-4. Load only the branch that changes the plan:
-   - several plausible directions: `references/concept-refinement.md`;
-   - unfamiliar territory or hidden constraints: `references/unknowns-contract.md`;
-   - material solution preferences or method/objective conflict: `references/preference-contract.md`;
-   - unresolved readiness judgment: `references/pre-execution-grill.md`;
-   - Loop, unattended repetition, or explicit verification/recovery controls: `references/foundation-contract.md` and `references/loop-contract.md`;
-   - parallel work, ports, migrations, reference preservation or public workflow changes: `references/executable-spec-contract.md`.
-5. Initialize durable state and replace every applicable placeholder:
+A durable plan is ready when another agent can recover the observable outcome, current state, inherited constraints, acceptance evidence, material assumptions or unknowns, and next useful action without chat history. Choose the lightest surface that can hold that information. Inline work continues directly without plan files and should skip `init_plan.py`.
 
-   ```bash
-   python3 <plan-skill>/scripts/init_plan.py <project-root> --title "<work title>"
-   # Use --profile full only when Full/Loop is already justified.
-   ```
+For Lite, Full, or Loop, use the bundled initializer when it is the shortest reliable way to create conforming state:
 
-6. Run `scripts/validate_plan.py --strict <project-root>` before execution or handoff.
+```bash
+python3 <plan-skill>/scripts/init_plan.py <project-root> --title "<work title>"
+# Use --profile full only when Full/Loop is already justified.
+```
+
+The template is an implementation aid, not an additional planning objective. Fill applicable fields from evidence and omit or mark genuinely inapplicable material rather than inventing it. New or upgraded durable state should pass `scripts/validate_plan.py --strict <project-root>` before it becomes the authority for continued execution or handoff.
+
+Load only a branch that changes the plan:
+
+- several plausible directions: `references/concept-refinement.md`;
+- unfamiliar territory or hidden constraints: `references/unknowns-contract.md`;
+- material solution preferences or method/objective conflict: `references/preference-contract.md`;
+- unresolved readiness judgment: `references/pre-execution-grill.md`;
+- Loop, unattended repetition, or explicit verification/recovery controls: `references/foundation-contract.md` and `references/loop-contract.md`;
+- parallel work, ports, migrations, reference preservation or public workflow changes: `references/executable-spec-contract.md`.
 
 Opt into `references/evidence-validity.md` only when old evidence validity must survive interruption or handoff; its snapshot is never created by default.
 
@@ -62,11 +63,11 @@ python3 <plan-skill>/scripts/upgrade_plan.py <project-root>
 
 - Resume from `program.md`, the active task and only its referenced memory/evidence. Reconcile changes to load-bearing premises before following the saved next action; reassess affected conclusions while preserving unrelated verified work.
 - If the territory reveals a material unknown or deviation, read `references/unknowns-contract.md`, resolve discoverable facts from evidence, and update or stop the plan before crossing a bound.
-- Execute the smallest useful node and its verifier. Apply `references/reflection-contract.md`: Lite and Full Linear reflect only on its trigger; Loop keeps one evidence-linked reflection per verified attempt.
+- Execute according to dependencies and risk, and link completed nodes to their acceptance evidence. Read `references/reflection-contract.md` only when a material event triggers reflection or the plan uses Loop; routine success needs no invented lesson.
 - Create later task packages just in time, after their dependencies and acceptance conditions are known.
 - A failed verifier changes the plan, retires an assumption, or triggers escalation; repeating output without new information is not progress.
 - If a checker passes but reality fails, treat it as a foundation defect: reopen acceptance, identify the escaped failure class, and add the cheapest decisive sensor.
-- Before handoff or a terminal status, apply `references/clean-contract.md`; concise aligned state needs only a no-op consistency record.
+- Apply `references/clean-contract.md` when accumulated state impairs recovery or a handoff/terminal transition requires reconciliation; concise aligned state needs only the contract's no-op marker.
 - Before `阻塞`, `待验收`, or `完成`, read `references/status-and-completion.md`.
 - For a shared abstraction change, read `references/abstraction-quality.md`.
 - To audit or repair existing plan state, read `references/audit-checklist.md`.
