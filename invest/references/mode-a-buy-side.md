@@ -20,6 +20,7 @@ For Standard and Full, examine the company across the perspectives below before 
 | Business and financial quality | A: who pays, why this company wins, cash conversion, governance and capital allocation; distinguish demand, accounting and financing explanations. |
 | Competing outcomes and belief updates | [B — Joint scenarios](mode-b-bayesian-growth.md): which coherent paths fit the evidence, what separates them, and how new evidence changes support; probabilities may remain unquantified. |
 | Expectations and valuation | A + B: independently supported cash-flow/per-share outcomes versus dated consensus and conditional price requirements; use economically compatible valuation cross-checks. |
+| Options-market distribution | [One-year option-implied distribution](options-implied-distribution.md): when reliable data exist, show the dated risk-neutral probabilities attached to terminal price thresholds/ranges and compare them with—not substitute them for—the fundamental scenarios. |
 | Runway and competition | [E — Runway/quality](mode-e-tam-adj-peg.md): obtainable profitable demand, penetration, growth duration, reinvestment and competitive response; use normalized economics when PEG is inapplicable. |
 | Change and transmission | [D — News to financials](mode-d-serenity-alpha.md): how a product, contract, supply, cost or regulatory change reaches cash, on what timing and with which offsets. Search for relevant changes rather than wait for pasted news. |
 | Downside and survivability | [Uncertainty and exposure](uncertainty-exposure.md) for opportunity/risk research: joint failure, funding, dilution, liquidity and the strongest countercase; a good business or upside scenario is not sufficient. |
@@ -60,6 +61,8 @@ End each consequential inquiry with the supported inference and its limit. Unsup
 
 Keep three objects distinct: dated observed consensus, conditional price-implied requirements and an independently supported forecast. Missing consensus stays missing; a conditional reverse valuation may still be useful. One price does not identify a unique growth path or probability distribution. Forward and reverse models sharing assumptions are not independent confirmations.
 
+A liquid option surface can identify a dated risk-neutral terminal-price distribution under explicit market and contract assumptions. It is a fourth, distinct object: market state prices shaped by risk premia, hedging demand and technical frictions—not the market's objective forecast. Use the approximately one-year expiry and [the option-distribution method](options-implied-distribution.md) when reliable inputs are accessible; do not infer the distribution from spot price or implied volatility alone.
+
 Use price to locate the hurdle, not to tune the forecast until mispricing appears. To claim a variant, show the specific difference, original evidence, credible rival and effect on per-share value. Public good news, a target above the quote or low coverage alone does not establish neglect. A conditional positive or negative value gap can be reported without inventing market beliefs; label assumption-sensitive conclusions accordingly.
 
 Choose DCF, normalized earnings, reverse DCF, SOTP, NAV, EV/revenue, EV/EBITDA or other methods by economic fit. Full triangulates where informative; do not force incompatible models. Distinguish present-value gaps from dated holding-period returns, and reported growth from value reaching common shareholders. A risk-free yield is not the equity discount rate; long-run moat analysis does not justify precise annual forecasts for a decade.
@@ -73,7 +76,7 @@ Lead with the answer and what the research changed or clarified. Then expose the
 | Depth | Preserve in the deliverable, where applicable |
 |---|---|
 | Quick | Concise answer from the most informative lenses; decisive evidence, countercase, uncertainty and next check, with valuation only where in scope |
-| Standard multi-lens | Business/quality and operating changes; competing scenarios, expectations/value, runway and material event transmission; downside, material disagreements across lenses, evidence gaps and falsifiers |
+| Standard multi-lens | Business/quality and operating changes; competing scenarios, expectations/value, approximately one-year option-implied distribution when reliably observable, runway and material event transmission; downside, material disagreements across lenses, evidence gaps and falsifiers |
 | Full | Standard conclusions plus source/history coverage, customer/value-chain/competitive economics, reproducible financial model and allocation/financing bridges, assumption support, valuation triangulation/attribution and coherent scenarios with detailed tables |
 | Monitoring | Prior claim and due observation, actual evidence, what changed in mechanism/estimate/price, consequence and next validation point; retain old versions |
 

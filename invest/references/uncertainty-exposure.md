@@ -8,6 +8,8 @@ Keep three judgments distinct: **thesis quality** (supported mechanism and falsi
 
 Use conditional outcomes rather than a lone target. A distribution needs defensible probabilities; otherwise give scenarios and sensitivities, not invented odds. Respect an explicitly chosen strategy as a constraint, not a universal market law.
 
+An option-implied distribution is an observable pricing distribution, not a shortcut around that requirement. Label its expiry, extraction time, spot/forward basis, rate, contract style, liquidity screen and method. Risk-neutral probabilities incorporate risk premia and hedging pressure and therefore must not be inserted as objective bull/base/bear probabilities or used alone for sizing. Use [the dedicated method](options-implied-distribution.md) to expose threshold/range probabilities and data-quality limits.
+
 ## Update Only What The Evidence Changes
 
 Define the event, population, horizon and resolution rule before assigning a probability. Ground priors in applicable base rates and company economics, retaining comparability limits. Use ranges when evidence is weak; unsupported likelihoods do not become precise posteriors. Coexisting mechanisms are not mutually exclusive scenarios and need not sum to one.

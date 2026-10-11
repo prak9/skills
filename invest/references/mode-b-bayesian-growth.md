@@ -6,6 +6,8 @@ The decision question is whether evidence-backed joint operating scenarios offer
 
 When the reverse-valuation question specifically uses PE and normalized EPS, [conditional PE implied growth](pe-implied-growth.md) provides an optional deterministic calculation. It produces neither priors nor posteriors and does not replace coherent joint scenarios.
 
+When a reliable approximately one-year option surface is available, [the option-implied distribution](options-implied-distribution.md) can show which terminal prices the market currently makes expensive or cheap to insure. Keep those risk-neutral probabilities separate from evidence-based scenario probabilities: neither is a prior for the other without a justified bridge from state prices to real-world likelihoods.
+
 ## Inputs
 
 Use verified company fundamentals, industry cycle, demand/supply, historical and guided growth, TAM and penetration, competitive position, valuation, price/multiple changes, consensus revisions, and the new information being evaluated. Mark missing inputs instead of manufacturing precision.
