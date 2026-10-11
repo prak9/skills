@@ -1,6 +1,6 @@
 ---
 name: eli5
-description: Explain a topic, code, concept, or error at a requested level or for a stated audience, and guide practice when explicitly requested. Use for ELI5, 'explain like I am', 'break this down for', or help learning through exercises and feedback. Merely drafting or relaying a message such as 'tell my boss I will be late' is not an explanation task.
+description: Explain concepts, code, or errors for a stated audience, with guided practice when requested. Use for explanation and learning, not drafting or relaying messages.
 ---
 
 # Explain Like I Am... (ELI5)

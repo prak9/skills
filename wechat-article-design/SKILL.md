@@ -1,6 +1,6 @@
 ---
 name: wechat-article-design
-description: 将 Markdown 或已有中文长文排成可复制到微信公众号编辑器的内联样式 HTML，提供公众号兼容性校验、主题选择、自定义配色和一键复制预览。用于“公众号排版”“微信文章排版”“把这篇 Markdown 转成公众号 HTML”“生成可粘贴富文本”“gzh 排版”等请求。只负责结构与视觉呈现，不代写文章；普通网页、落地页、PPT、海报或其他社交平台内容不要触发。
+description: 将 Markdown 或中文长文排成可复制到微信公众号编辑器的内联样式 HTML，并检查兼容性。仅用于公众号排版，不代写文章，也不用于普通网页、海报或其他平台。
 ---
 
 # WeChat Article Design

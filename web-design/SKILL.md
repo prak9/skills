@@ -1,6 +1,6 @@
 ---
 name: web-design
-description: "Design, build, redesign, and visually review production web interfaces with intentional information architecture, composition, responsive behavior, accessibility, interaction states, and evidence-backed rendered verification. Use when Codex creates or substantially changes landing pages, product pages, dashboards, forms, web apps, reports, design systems, or HTML/CSS/React/Next.js/Vue/Svelte UI; or when a user asks to improve aesthetics, UX, visual hierarchy, responsiveness, accessibility, or generic AI-generated design. Do not trigger for backend-only work or a narrow logic-only frontend fix with no interface impact."
+description: "Design, build, redesign, or visually review responsive and accessible web interfaces with rendered verification. Use for substantial UI/UX work, not backend-only or narrow logic fixes."
 ---
 
 # Web Design

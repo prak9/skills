@@ -1,6 +1,6 @@
 ---
 name: invest
-description: Generate source-backed financial-statement and earnings-call extraction, business understanding, business-quality assessment, buy-side equity research and thesis monitoring. Use for U.S./Hong Kong/A-share reports, earnings transcripts, company economics, stock analysis, valuation or thesis updates; default company research combines complementary analytical lenses.
+description: Research public companies and stocks using filings, earnings calls, business quality, valuation, and thesis monitoring. Use for U.S., Hong Kong, or A-share equity analysis.
 ---
 
 # Invest

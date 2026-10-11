@@ -1,6 +1,6 @@
 ---
 name: read-xiaohongshu
-description: "Extract Xiaohongshu (RedNote) note text and ordered images directly from xhslink.cn or xiaohongshu.com links and pasted share text, without MCP. Use for reading/OCR of notes or authorized local-browser login and liked-post archiving. Public HTTP first; an authorized browser or saved HTML handles login-required notes. Use watch for video content, not cover-only transcription."
+description: "Extract text and ordered images from Xiaohongshu links or authorized saved browser content. Use for note reading, OCR, and liked-post archiving; use watch for video."
 ---
 
 # Read Xiaohongshu image posts

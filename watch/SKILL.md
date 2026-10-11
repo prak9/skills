@@ -1,6 +1,6 @@
 ---
 name: watch
-description: "Analyze video URLs or local video files by extracting timestamped captions, optional Whisper transcripts, and representative frames with yt-dlp and ffmpeg. Use when Codex needs to watch, summarize, inspect, or answer questions about YouTube, Vimeo, X, TikTok, Twitch, or local MP4, MOV, MKV, or WebM content, including requests about a specific timestamp or range."
+description: "Analyze video URLs or local videos using captions, transcripts, and representative frames. Use for summaries, visual inspection, or timestamp-specific questions."
 ---
 
 # Watch videos

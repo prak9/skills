@@ -1,6 +1,6 @@
 ---
 name: code-review-craft
-description: Review code changes or implemented subsystems for evidence-backed defects and code-health risks. Use for code-bearing PRs, diffs, commits or explicit code audits; do not invoke merely because a request says review, concerns Skill instructions, documents, research or plans, asks only for a code explanation, or involves implementation. Do not implement fixes unless requested.
+description: Review code diffs, commits, PRs, or implemented subsystems for evidence-backed defects and code-health risks; do not invoke merely because a request says review. Exclude prose, Skill, research, plan, and explanation reviews. Do not fix unless asked.
 ---
 
 # Code Review Craft
