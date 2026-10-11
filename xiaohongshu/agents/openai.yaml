@@ -1,0 +1,4 @@
+interface:
+  display_name: "小红书浏览器工作流"
+  short_description: "连接已授权 Chrome 会话，搜索读取小红书并按确认发布及互动"
+  default_prompt: "使用 $xiaohongshu 完成这项小红书任务；读取与发布分别确认权限，结果以实际证据为准。"

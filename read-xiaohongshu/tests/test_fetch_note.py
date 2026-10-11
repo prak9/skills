@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+import io
 import json
 import sys
 import tempfile
@@ -37,6 +38,56 @@ def note(note_id, count=1):
     return {"noteId": note_id, "title": note_id, "imageList": [
         {"urlDefault": f"https://ci.xhscdn.com/image-{index}"} for index in range(count)
     ]}
+
+
+class LoginDiagnosticsTests(unittest.TestCase):
+    def test_cookie_http_login_wall_preserves_file_and_never_opens_browser(self):
+        with tempfile.TemporaryDirectory() as directory:
+            cookies = Path(directory) / 'cookies.json'
+            original = json.dumps([{'name': 'web_session', 'value': 'private-fixture',
+                                    'domain': '.xiaohongshu.com', 'expires': -1}])
+            cookies.write_text(original)
+            login_url = 'https://www.xiaohongshu.com/login?redirectPath=' + quote(NOTE_URL + '?xsec_token=private-token', safe='')
+            with patch.object(sys, 'argv', ['fetch_note', NOTE_URL, '--cookie-file', str(cookies)]), \
+                    patch.object(fetch, 'request_url', return_value=(b'<html>Login</html>', login_url, 'text/html')) as request, \
+                    patch.object(fetch, 'read_browser_page') as browser_read, \
+                    patch.object(sys, 'stderr', new_callable=io.StringIO) as stderr:
+                self.assertEqual(3, fetch.main())
+                result = json.loads(stderr.getvalue())
+                self.assertEqual('login_required', result['status'])
+                self.assertEqual('supplied_cookie_file', result['session_source'])
+                self.assertEqual('unverified', result['session_validity'])
+                self.assertEqual(NOTE_A, result['note_id'])
+                self.assertNotIn('private-', stderr.getvalue())
+                request.assert_called_once()
+                browser_read.assert_not_called()
+            self.assertEqual(original, cookies.read_text())
+
+    def test_login_wall_identifies_route_without_claiming_session_expired(self):
+        for flags, source in (([], 'public_http'), (['--cookie-file', '/private/cookies.json'], 'supplied_cookie_file'),
+                              (['--browser'], 'dedicated_browser'), (['--html-file', '/private/page.html'], 'saved_html')):
+            with self.subTest(source=source), patch.object(sys, 'argv', ['fetch_note', NOTE_URL, *flags]), \
+                    patch.object(fetch, 'run', side_effect=fetch.FetchError('Login page', 3, status='login_required', retryable=False)) as run, \
+                    patch.object(sys, 'stderr', new_callable=io.StringIO) as stderr:
+                self.assertEqual(3, fetch.main())
+                result = json.loads(stderr.getvalue())
+                self.assertEqual(source, result['session_source'])
+                self.assertEqual('unverified', result['session_validity'])
+                self.assertFalse(result['content_verified'])
+                self.assertFalse(result['retryable'])
+                self.assertNotIn('/private/', stderr.getvalue())
+                run.assert_called_once()
+
+    def test_security_block_does_not_offer_session_recovery(self):
+        with patch.object(sys, 'argv', ['fetch_note', NOTE_URL]), \
+                patch.object(fetch, 'run', side_effect=fetch.FetchError('Verification required', 3, status='security_block', retryable=False)) as run, \
+                patch.object(sys, 'stderr', new_callable=io.StringIO) as stderr:
+            self.assertEqual(3, fetch.main())
+            result = json.loads(stderr.getvalue())
+            self.assertEqual('security_block', result['status'])
+            self.assertFalse(result['retryable'])
+            self.assertNotIn('session_validity', result)
+            run.assert_called_once()
 
 
 class IdentityTests(unittest.TestCase):

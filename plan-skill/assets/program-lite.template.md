@@ -19,6 +19,7 @@
 
 - Problem: <observable problem>
 - Success: <observable result>
+- Collaboration intent: delivery, co-research, or learning; preserve the human judgment or learning outcome implied by the request.
 - Non-goals: <scope intentionally excluded>
 
 ## Constraints

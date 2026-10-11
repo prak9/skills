@@ -575,7 +575,7 @@ def read_browser_page(source_url: str, timeout: float, *, headed: bool = False) 
     validate_request_url(source_url, NOTE_HOSTS)
     from browser_common import PROFILE_DIR, has_login_session, launch_context, risk_reason
     if not PROFILE_DIR.is_dir():
-        raise FetchError("Dedicated browser session is absent; authorize and complete login.py first", 3,
+        raise FetchError("Selected dedicated browser profile is absent; other session sources are unverified", 3,
                          status="login_required", retryable=False)
     try:
         from playwright.sync_api import sync_playwright
@@ -587,7 +587,7 @@ def read_browser_page(source_url: str, timeout: float, *, headed: bool = False) 
             context = launch_context(playwright, headless=not headed)
             try:
                 if not has_login_session(context):
-                    raise FetchError("Dedicated browser session has no login; complete login.py first", 3,
+                    raise FetchError("Selected dedicated browser has no login marker; other session sources are unverified", 3,
                                      status="login_required", retryable=False)
                 # A fresh tab avoids overwriting a user's existing browser page.
                 page = context.new_page()
@@ -625,7 +625,7 @@ def read_browser_page(source_url: str, timeout: float, *, headed: bool = False) 
                     raise FetchError("Browser encountered a security restriction", 3,
                                      status="security_block", retryable=False)
                 if not has_login_session(context):
-                    raise FetchError("Browser login expired during retrieval", 3,
+                    raise FetchError("Selected dedicated browser no longer exposes a login marker", 3,
                                      status="login_required", retryable=False)
                 return html, page.url
             finally:
@@ -788,10 +788,16 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    args = parse_args()
     try:
-        result = run(parse_args())
+        result = run(args)
     except FetchError as exc:
-        print(json.dumps({"ok": False, "error": str(exc), **exc.details}, ensure_ascii=False), file=sys.stderr)
+        details = dict(exc.details)
+        if details.get("status") == "login_required":
+            source = ("dedicated_browser" if args.browser else "saved_html" if args.html_file
+                      else "supplied_cookie_file" if args.cookie_file else "public_http")
+            details.update(session_source=source, session_validity="unverified", content_verified=False)
+        print(json.dumps({"ok": False, "error": str(exc), **details}, ensure_ascii=False), file=sys.stderr)
         return exc.exit_code
     except KeyboardInterrupt:
         print(json.dumps({"ok": False, "error": "Interrupted"}), file=sys.stderr)

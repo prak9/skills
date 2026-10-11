@@ -5,9 +5,7 @@ description: "Design, build, redesign, and visually review production web interf
 
 # Web Design
 
-Create interfaces that are specific to the user's job, content, brand, and constraints. Treat visual quality as an engineered outcome: define what good means, build the smallest coherent direction, render it, and verify it with the right sensors.
-
-Match actions to the request. A review alone authorizes inspection, rendering, and relevant read-only diagnostics, not source edits or external changes. Apply the building and revision instructions only when implementation or fixes are authorized; a finding does not create that authorization.
+Create interfaces specific to the user's job, content, brand and constraints. Define what good means, build the smallest coherent direction, render it and verify the relevant claims. Reviews inspect; implementation requests may edit.
 
 ## Protect This Priority Order
 
@@ -18,20 +16,20 @@ Match actions to the request. A review alone authorizes inspection, rendering, a
 5. Make every important state keyboard-usable, responsive, accessible, and recoverable.
 6. Refine detail and delight only after structure, behavior, and verification are sound.
 
-Ask only when missing human judgment materially changes the result and cannot be inferred from the supplied brief, product, or references. Otherwise choose a reversible direction and proceed. Cheap contrasting directions can inform that choice; they are not a mandatory user-selection gate.
+When direction is underspecified, infer a reversible choice from the brief and product; contrasting sketches are evidence, not a mandatory selection gate.
 
 ## Inspect Before Designing
 
 - Read the actual routes, components, styles, tokens, assets, tests, and copy that own the experience. Do not design from filenames or a screenshot alone when the implementation is available.
-- Identify who opens the interface, in what context, to understand or accomplish what, and what success looks like.
+- Identify the user, context, job and observable success.
 - Inventory content, actions, states, evidence, unknowns, and constraints. Distinguish supplied facts from invented placeholder copy.
 - Inspect supplied references directly. Extract hierarchy, rhythm, geometry, typography, interaction, and density; do not copy brand assets or surface decoration blindly.
 - In an existing product, reuse its primitives before adding new ones. In a greenfield task, choose the smallest runnable stack; semantic HTML, CSS, and small JavaScript are the fallback.
-- Reuse existing dependencies. Add a justified task-local dependency when covered by the requested implementation, and explain its value; do not ask again for ordinary setup. A new paid service, external data transfer, tracking, or material architecture commitment outside the brief needs its own authorization.
+- Reuse dependencies. Add one only when its concrete value exceeds its maintenance cost; paid services, tracking, external transfers or architecture commitments require scope coverage.
 
 ## Establish The Design Direction
 
-Before broad implementation, read `references/composition-and-taste.md` for a new page, major redesign, weak hierarchy, or unclear visual direction.
+Read `references/composition-and-taste.md` for a new page, major redesign, weak hierarchy or unclear direction.
 
 Privately define:
 
@@ -42,13 +40,13 @@ Privately define:
 - concrete type, color, spacing, shape, imagery, and motion rules;
 - empty, loading, error, success, long-content, and narrow-screen behavior.
 
-When the direction is unclear, comparing structurally different options can help: vary topology, density, or evidence placement, not merely color. Use an established direction directly when it serves the brief; no fixed number of alternatives is required.
+If comparison is useful, vary topology, density or evidence placement—not merely color. Use an established direction directly when it fits.
 
 Choose geometry before components. Use position, length, sequence, proportion, alignment, and grouping to express relationships. Treat cards, accordions, tabs, charts, and carousels as mechanisms, not default decorations.
 
 ## Build The Interface
 
-- Choose an implementation scope that can be meaningfully checked. For an uncertain direction, a representative slice can prove the visual language and primary flow before expanding; it is not a mandatory staging sequence for every task.
+- Choose a checkable implementation slice; use a representative slice first only when direction remains uncertain.
 - Establish hierarchy through type, alignment, spacing, and proportion before adding surfaces, borders, shadows, color, or motion.
 - Compose the page as a connected field with deliberate pacing. Repetition is for true peers; unequal content should not be forced into equal cards.
 - Use semantic HTML and native controls. Links navigate; buttons act. Preserve source order as reading order.
@@ -61,7 +59,7 @@ Read `references/interface-quality.md` before implementing forms, navigation, da
 
 ## Verify The Relevant Claims
 
-For ordinary implementation, match each material requirement to an appropriate check. Read `references/verification-foundation.md` for formal multi-round comparisons, automated design optimization, or promotion of a new design rule across a system; those tasks need a stable evaluator and comparable evidence. Routine work does not require a coverage table, memory-event log, or evaluator version.
+Match each material requirement to a check. Read `references/verification-foundation.md` only for formal comparisons, automated optimization or system-wide rule promotion requiring a stable evaluator.
 
 Use the cheapest check that can decide the claim; the maker's statement that a page “looks good” is not evidence:
 
@@ -72,7 +70,7 @@ Use the cheapest check that can decide the claim; the maker's statement that a p
 - performance traces for latency, layout shift, and expensive interaction;
 - evidence-based visual review for taste and brand fit; use an independent reviewer when valuable and retain only consequential human decisions not already delegated.
 
-Checks must cover the changed behavior and localize material defects. A whole-page redesign cannot close on “build passes”; render representative viewports and exercise the changed flows. Preserve acceptance criteria rather than redefining a defect away.
+Checks must cover changed behavior and localize defects. A redesign cannot close on “build passes”; render representative viewports and exercise changed flows.
 
 ## Render, Inspect, And Revise
 
@@ -89,7 +87,7 @@ Use these questions where relevant, prioritizing the highest-risk changes:
 7. **Trust:** Are semantics, contrast, labels, sources, privacy, and claims sound?
 8. **Restraint:** Can any card, border, pill, icon, effect, label, or paragraph be removed without losing meaning or affordance? Remove it when changes are authorized; otherwise report consequential excess.
 
-For authorized implementation, fix material defects and rerun the affected checks; independent fixes may be combined when their effects remain verifiable. A vertical slice or first successful build is not the end of a broader implementation request. Stop polishing once acceptance passes; a self-imposed iteration count is a checkpoint, not permission to abandon unfinished work. At a real limit or necessary human decision, report the incomplete portion accurately. Keep critique notes internal unless requested.
+Fix material defects and rerun affected checks. A first successful slice does not complete a broader request; stop polishing once acceptance passes and report any real limit accurately.
 
 ## Deliver The Result
 

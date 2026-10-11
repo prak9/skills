@@ -13,16 +13,9 @@ metadata:
 
 # Performance skill (merged)
 
-Unified entry for performance work: Linux `perf` profiling and reporting,
-Phoronix benchmark handling, and performance-pattern guided code optimization.
-
-The user's task determines the stopping point: diagnosis/report requests return
-evidence and recommendations without source edits; fix/optimize requests continue
-through in-scope changes and comparable verification. A flow or pattern does not
-introduce a second approval gate for work already authorized. Ask only for a
-material unknown, expanded scope, unapproved system/production change, or resource
-cost beyond the task's bounds. Technical choices such as call graphs are yours to
-make from the evidence and overhead, not preference questions for the user.
+Unified entry for Linux `perf`, Phoronix benchmarks and source-level optimization.
+Diagnosis returns evidence; authorized optimization continues through comparable
+before/after measurement and correctness verification.
 
 ---
 
@@ -30,16 +23,13 @@ make from the evidence and overhead, not preference questions for the user.
 
 ### Establish the performance argument
 
-Use the supplied workload, metric, correctness constraint, baseline and evidence
-boundary; recover only what is missing and material to the request. Existing
-profiles can be interpreted without starting new measurement. Never claim a
-measured speedup without comparable before/after evidence and correctness checks.
+Recover the workload, metric, correctness constraint and baseline. Existing profiles
+can be interpreted directly; a speedup claim requires comparable before/after
+evidence and correctness checks.
 
-Read [performance foundations](references/performance-foundations.md) when
-choosing or challenging an optimization mechanism, cost model, baseline or
-resource tradeoff. Read [structural optimization](references/structural-optimization.md)
-when reformulating a problem or permanently pruning/merging states. A local
-counter explanation does not require either full analysis.
+Read [performance foundations](references/performance-foundations.md) for mechanisms,
+cost models or baseline/resource tradeoffs, and [structural optimization](references/structural-optimization.md)
+when reformulating a problem or permanently pruning states.
 
 Select only the relevant branch below. Source-only diagnosis can start with
 `triggers/from-source.md`; it does not require PTS setup or a perf recording.
@@ -58,20 +48,18 @@ interpreted without installing or rerunning the suite.
 
 ### Setup before new collection
 
-Check only when collecting new evidence, not merely reading supplied counters:
+Only for new collection, check:
 - availability of `perf` and the requested events (`perf list`); do not assume a CPU-specific PMU name exists
 - `/proc/sys/kernel/perf_event_paranoid` and permission mode
 - debug symbols (`-g`) presence for `perf annotate`
-- command context (who owns build, expected baseline, acceptable runtime)
+- build ownership, baseline and acceptable runtime
 
-- If debug symbols are missing, follow the scoped rebuild or assembly fallback in `references/building-blocks.md`; do not stop an authorized local optimization merely to reconfirm its build step.
+If symbols are missing, use the scoped rebuild or assembly fallback in `references/building-blocks.md`.
 
 ### Choose a flow
 
-Read only the flow needed by this question. Its collection and annotation steps
-apply when they add material evidence within the authorized runtime, not as a
-requirement to repeat already-matching work. The building-block reference is a
-shared mechanics library, not an additional set of tasks to execute.
+Read only the flow needed. Do not repeat matching evidence; `references/building-blocks.md`
+is a mechanics library, not another workflow.
 
 | Flow | Purpose | Read |
 | --- | --- | --- |
@@ -111,16 +99,12 @@ Keep the resolution order explicit:
 - `tools/branchprob.py` — runtime branch probability sampling from hot functions
 - `tools/gccbranchprob.py` — GCC static branch-probability hints from profile-estimate dumps
 
-Use one or two changes per iteration and remeasure each change before broad
-refactoring.
+Prefer isolated changes and remeasure before broad refactoring.
 
-For repeated experiment infrastructure, measure the full preparation, execution,
-verification and retry cycle as well as the hot path. Relate an optimization to
-plausible downstream reuse at unchanged correctness and measurement quality;
-track valid negative experiments separately from infrastructure failures. Use
-[research flywheel](../research-craft/references/research-flywheel.md) when results
-drive a continuing research queue. A shorter benchmark call alone does not prove
-higher research throughput, and ordinary profiling needs no new ledger.
+For repeated experiments, include preparation, verification and retry cost, and
+separate valid negative results from infrastructure failures. Use the
+[research flywheel](../research-craft/references/research-flywheel.md) only when
+results drive a continuing queue; ordinary profiling needs no ledger.
 
 ### Common fix map
 

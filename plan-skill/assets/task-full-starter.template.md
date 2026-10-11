@@ -29,6 +29,8 @@
 
 **Preference refs / tactical overrides:** Inherit `program.md`; overrides: None.
 
+**Collaboration intent:** Inherit `program.md`; do not turn co-research or learning into pure artifact delivery.
+
 **Locked constraints:** None beyond accepted scope and program imperative bounds.
 
 **Negotiable space:** Implementation details within the declarative objective and acceptance criteria.

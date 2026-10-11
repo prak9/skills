@@ -1,4 +1,4 @@
 interface:
   display_name: "Iterate"
-  short_description: "自主探索、实验与多 Agent 协作，保留最佳已验证成果并可恢复交接"
-  default_prompt: "使用 $iterate，在已确认目标、预算和授权范围内自主探索、实验、验证并交付最佳已验证结果；只有独立工作值得委派时才使用多 Agent。"
+  short_description: "在预算内自主探索、验证并保留最佳成果"
+  default_prompt: "使用 $iterate，沿用已确认的目标、预算、评价与权限，判断交付、共研或学习意图，自主完成证据驱动的探索、验证、成果保留和交接。"

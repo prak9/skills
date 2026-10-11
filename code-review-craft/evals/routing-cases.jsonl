@@ -1,0 +1,5 @@
+{"id":"skill-logic-review","prompt":"review 下当前 research-craft skill 的研究逻辑、适用范围和输出约定，不审查脚本实现，也不要修改。","expected_behavior":"inspect_skill_logic_without_code_review_workflow","required_skills":[],"forbidden_skills":["code-review-craft"]}
+{"id":"doc-only-pr-review","prompt":"review 这个只修改研究方法说明的 PR，检查论证是否自洽；没有代码、配置或可执行示例变更。","expected_behavior":"review_document_reasoning_without_treating_pr_as_code","required_skills":[],"forbidden_skills":["code-review-craft"]}
+{"id":"code-explanation-only","prompt":"解释这段函数的执行过程，帮助我理解它；不要求代码审查或缺陷审计。","expected_behavior":"explain_code_without_code_review_workflow","required_skills":[],"forbidden_skills":["code-review-craft"]}
+{"id":"skill-script-audit","prompt":"审查 research-craft/scripts/run_experiment.py 的超时处理和错误路径，找出有证据的实现缺陷；不要修改。","expected_behavior":"review_executable_skill_code_without_implementation","required_skills":["code-review-craft"],"forbidden_skills":[]}
+{"id":"code-pr-review","prompt":"审查这个修改登录会话回收逻辑的代码 PR，检查并发和资源泄漏风险；不要修改。","expected_behavior":"review_code_behavior_and_report_supported_findings","required_skills":["code-review-craft"],"forbidden_skills":[]}
