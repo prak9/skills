@@ -1,6 +1,6 @@
 # Versioned Skill Behavior Evaluation
 
-The frozen core suite contains 24 cases: six each for `decision`, `writing`, `invest`, and `plan-skill`. Four cases per skill are development cases; two are acceptance cases. The separate instruction-migration suite contains eight cases for skill routing, question behavior, and proportional verification. Acceptance cases should not be used to tune the next prompt or rule before the recorded run is graded.
+The frozen core suite contains 26 cases: six each for `decision`, `writing`, and `invest`, plus eight for `plan-skill`. Each skill has four development cases; the first three have two acceptance cases each and `plan-skill` has four. The separate instruction-migration suite contains eight cases for skill routing, question behavior, and proportional verification. Acceptance cases should not be used to tune the next prompt or rule before the recorded run is graded.
 
 Each harness configuration writes one schema-v2 JSONL record per case:
 
@@ -14,7 +14,7 @@ Each harness configuration writes one schema-v2 JSONL record per case:
     "harness": "codex-cli 1.2.3",
     "instruction_revision": "git:abc123",
     "skill_revision": "git:def456",
-    "case_set_version": "core-v2",
+    "case_set_version": "core-v3",
     "run_at": "2026-09-05T12:00:00Z",
     "evaluator": "independent-reviewer-v1"
   },
@@ -34,9 +34,11 @@ Each harness configuration writes one schema-v2 JSONL record per case:
 
 `operations` counts tool calls and other harness actions beyond producing the answer; keep its counting rule fixed across compared runs. `reference_reads` counts on-demand instruction or skill-reference files beyond the selected skill entry, not the project source and evidence that the task necessarily inspects; count those reads as operations or in an additional harness-specific metric. A required external write counts as both an operation and an external mutation. `skills_loaded` records actual activation, not the skills the evaluator expected to see.
 
-Every non-obvious run-context field is required so results from different models, reasoning profiles, harnesses, instructions, or case revisions cannot be compared as if only one variable changed. All selected records in one results file must share that run identity; `run_at` may differ by case. The evaluator requires `core-v2`, `instruction-migration-v1`, or `all-v2` to match the selected suite. Use `not-applicable` rather than an empty value when a field genuinely does not apply.
+Every non-obvious run-context field is required so results from different models, reasoning profiles, harnesses, instructions, or case revisions cannot be compared as if only one variable changed. All selected records in one results file must share that run identity; `run_at` may differ by case. The evaluator requires `core-v3`, `instruction-migration-v1`, or `all-v3` to match the selected suite. Use `not-applicable` rather than an empty value when a field genuinely does not apply.
 
 Core v2 changes only the generic invest development case to the user-requested multi-lens default, with a larger reference-read allowance for the additional lenses; its external-mutation and operation limits are unchanged. Explicit Quick and Full acceptance cases are unchanged. This is a requested behavior/coverage change, not a gain measured against the old Quick objective or a proven cost improvement. Historical v1 runs remain historical; do not relabel them v2. The additional qualitative criteria require actual behavior grading, not keyword matches.
+
+Core v3 adds two `plan-skill` acceptance cases for the boundary between implementation completion and an explicitly required adoption or operating outcome. Historical v2 runs remain historical; the added cases require new results rather than being inferred from earlier passes. `all-v3` is core v3 plus the unchanged instruction-migration v1 suite.
 
 The supplementary `invest/evals/cases.jsonl` adds loss-maker/missing-input, narrow-arithmetic and model-disagreement controls for this change. These are development cases outside the core evaluator, not executed model runs. They remain behavior-unrun until actual prompt-only responses and actions are recorded and graded; repository test passes establish structural and calculator compatibility only.
 
@@ -54,7 +56,7 @@ When a new rule raises reads, questions, or operations, compare it with the froz
 
 The deterministic evaluator and its unit-test fixtures validate the result envelope; they are not model runs. A model or instruction migration is not verified until real harness records with raw outputs and observed actions have been graded.
 
-For new bounded command-based artifact experiments, use the separate [captured experiment path](../research-craft/references/research-flywheel.md#captured-command-experiments). It records process receipts and invokes a distinct grader; it does not convert self-reported `behavior_pass` or costs into trusted telemetry. Keep this v2 envelope and its frozen cases compatible. `--suite all` means core plus instruction-migration only, not every case packet in the repository; inventory other packets as unrun, artifact-replayed or behavior-graded with evidence links. Captured artifact checks and independently graded agent behavior remain different evidence scopes.
+For new bounded command-based artifact experiments, use the separate [captured experiment path](../research-craft/references/research-flywheel.md#captured-command-experiments). It records process receipts and invokes a distinct grader; it does not convert self-reported `behavior_pass` or costs into trusted telemetry. Keep this versioned envelope and its frozen cases compatible. `--suite all` means core plus instruction-migration only, not every case packet in the repository; inventory other packets as unrun, artifact-replayed or behavior-graded with evidence links. Captured artifact checks and independently graded agent behavior remain different evidence scopes.
 
 ## Judgment Quality Development Packet
 

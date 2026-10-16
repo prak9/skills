@@ -13,9 +13,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 CORE_SKILLS = ("decision", "writing", "invest", "plan-skill")
 SUITE_VERSIONS = {
-    "core": "core-v2",
+    "core": "core-v3",
     "instruction-migration": "instruction-migration-v1",
-    "all": "all-v2",
+    "all": "all-v3",
 }
 RUN_CONTEXT_FIELDS = (
     "model",

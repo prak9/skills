@@ -191,14 +191,23 @@ class SkillContractTests(unittest.TestCase):
         self.assertIn("off-CPU", flow)
         self.assertIn("user/system", flow)
 
-    def test_core_skill_behavior_suite_has_24_cases_and_holdouts(self) -> None:
+    def test_core_skill_behavior_suite_has_expected_cases_and_holdouts(self) -> None:
+        expected_counts = {
+            "decision": (6, 2),
+            "writing": (6, 2),
+            "invest": (6, 2),
+            "plan-skill": (8, 4),
+        }
         all_cases = []
-        for skill in ("decision", "writing", "invest", "plan-skill"):
+        for skill, (expected_total, expected_acceptance) in expected_counts.items():
             path = ROOT / skill / "evals" / "behavior-cases.jsonl"
             cases = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
             with self.subTest(skill=skill):
-                self.assertEqual(6, len(cases))
-                self.assertEqual(2, sum(case["split"] == "acceptance" for case in cases))
+                self.assertEqual(expected_total, len(cases))
+                self.assertEqual(
+                    expected_acceptance,
+                    sum(case["split"] == "acceptance" for case in cases),
+                )
                 self.assertTrue(all(case["skill"] == skill for case in cases))
                 self.assertTrue(all("expected_behavior" in case for case in cases))
                 self.assertTrue(all("cost_limits" in case for case in cases))
@@ -215,8 +224,9 @@ class SkillContractTests(unittest.TestCase):
                     )
                 )
             all_cases.extend(cases)
-        self.assertEqual(24, len(all_cases))
-        self.assertEqual(24, len({case["id"] for case in all_cases}))
+        expected_total = sum(total for total, _ in expected_counts.values())
+        self.assertEqual(expected_total, len(all_cases))
+        self.assertEqual(expected_total, len({case["id"] for case in all_cases}))
 
     def test_instruction_migration_suite_has_routing_negatives_and_holdouts(self) -> None:
         path = ROOT / "tests" / "instruction-migration-cases.jsonl"

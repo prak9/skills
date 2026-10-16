@@ -17,7 +17,7 @@ RUN_CONTEXT = {
     "harness": "test-harness",
     "instruction_revision": "test-instructions",
     "skill_revision": "test-skills",
-    "case_set_version": "core-v2",
+    "case_set_version": "core-v3",
     "run_at": "2026-09-05T00:00:00Z",
     "evaluator": "test-evaluator",
 }
@@ -53,7 +53,7 @@ class BehaviorCaseEvaluatorTests(unittest.TestCase):
                         "case_set_version": (
                             "instruction-migration-v1"
                             if suite == "instruction-migration"
-                            else "all-v2" if suite == "all" else "core-v2"
+                            else "all-v3" if suite == "all" else "core-v3"
                         ),
                     },
                     "output": "；".join(case.get("must_include", [])),
@@ -100,20 +100,25 @@ class BehaviorCaseEvaluatorTests(unittest.TestCase):
                 text=True,
             )
 
-    def test_complete_results_pass_all_24_cases(self) -> None:
+    def test_complete_results_pass_all_26_cases(self) -> None:
         process = self.run_evaluator(self.passing_results())
 
         self.assertEqual(0, process.returncode, process.stdout + process.stderr)
         result = json.loads(process.stdout)
-        self.assertEqual(24, result["summary"]["passed"])
+        self.assertEqual(26, result["summary"]["passed"])
         self.assertEqual(0, result["summary"]["failed"])
 
-    def test_acceptance_split_requires_all_eight_holdouts(self) -> None:
-        results = [item for item in self.passing_results() if "holdout" in item["id"]]
+    def test_acceptance_split_requires_all_ten_cases(self) -> None:
+        acceptance_ids = {
+            case["id"] for case in self.load_cases() if case["split"] == "acceptance"
+        }
+        results = [
+            item for item in self.passing_results() if item["id"] in acceptance_ids
+        ]
         process = self.run_evaluator(results, split="acceptance")
 
         self.assertEqual(0, process.returncode, process.stdout + process.stderr)
-        self.assertEqual(8, json.loads(process.stdout)["summary"]["passed"])
+        self.assertEqual(10, json.loads(process.stdout)["summary"]["passed"])
 
     def test_instruction_migration_suite_passes_all_eight_cases(self) -> None:
         process = self.run_evaluator(
@@ -126,11 +131,11 @@ class BehaviorCaseEvaluatorTests(unittest.TestCase):
         self.assertEqual("instruction-migration", result["suite"])
         self.assertEqual(8, result["summary"]["passed"])
 
-    def test_all_suite_passes_all_32_cases(self) -> None:
+    def test_all_suite_passes_all_34_cases(self) -> None:
         process = self.run_evaluator(self.passing_results("all"), suite="all")
 
         self.assertEqual(0, process.returncode, process.stdout + process.stderr)
-        self.assertEqual(32, json.loads(process.stdout)["summary"]["passed"])
+        self.assertEqual(34, json.loads(process.stdout)["summary"]["passed"])
 
     def test_missing_required_content_fails_case(self) -> None:
         results = self.passing_results()
@@ -189,7 +194,7 @@ class BehaviorCaseEvaluatorTests(unittest.TestCase):
         self.assertEqual(1, process.returncode)
         report = json.loads(process.stdout)
         self.assertTrue(
-            any("must be core-v2" in failure for failure in report["cases"][0]["failures"])
+            any("must be core-v3" in failure for failure in report["cases"][0]["failures"])
         )
 
 
