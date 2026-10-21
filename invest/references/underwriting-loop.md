@@ -12,6 +12,7 @@ Include the relevant parts of:
 
 - annual and quarterly filings, earnings releases, and segment disclosures;
 - earnings-call transcripts, prepared remarks, Q&A, and management guidance;
+- contemporaneous histories, biographies and interviews when they can expose a consequential decision or capability-formation path, with their selective narrative and motive claims independently checked;
 - competitor, customer, and supplier disclosures;
 - industry supply, demand, capacity, inventory, pricing, and policy data;
 - point-in-time sell-side consensus and estimate revisions;
@@ -56,6 +57,8 @@ End the pass with what the selected recent material adds, contradicts or leaves 
 ### Investigate The Mechanism, Not Just The Metric
 
 Start with competing explanations for the opportunity. Reconstruct the relevant history: what changed in customer behavior, pricing, competition, capital use or reporting; what management previously promised; what actually happened; and why the stock could rationally deserve its current valuation. Select a window that exposes both favorable and adverse episodes, not just the period supporting the thesis. A long time series without an explanation of the turning points is not deep research.
+
+When present quality depends on a capability accumulated over time, apply the formation-and-replication test in [business quality](business-quality.md#reconstruct-how-the-advantage-was-built). Connect dated decisions and constraints to the current customer behavior and cash economics, then test why apparently similar rivals did not obtain the same result. Do not count a chronology, a biography or many hours of reading as understanding unless it identifies a causal link, a credible rival explanation and evidence that the link still operates.
 
 When management quality is decisive, reconstruct a consequential decision: diagnosed problem -> chosen action and resource commitment -> observable operating milestones -> financial and per-share outcome, including elapsed time and cost. Test management's contribution against industry recovery and other rival causes; stated intent and personal access, rapport or charisma are not evidence of execution. Use interviews to uncover mechanisms and testable commitments, then check them against filings, relevant external observations and subsequent outcomes. Several well-connected investors repeating the same management account remain one source lineage, not independent confirmation. Reuse the existing evidence record rather than adding a management scorecard to every memo.
 

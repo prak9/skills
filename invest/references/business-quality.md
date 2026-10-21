@@ -10,6 +10,16 @@ Trace the value chain, distribution, suppliers, workforce/technology/assets, cap
 
 Use the dimensions below to find material gaps, not as a fixed scored checklist. Investigate beyond the initial bull/bear thesis where a neglected dependency could change the business model. Only then compress to the decisive drivers; few variables in the final model must not mean shallow discovery. Bound the research by materiality and the requested depth, not an impossible promise to know everything.
 
+## Reconstruct How The Advantage Was Built
+
+When durability or a moat is load-bearing, a current snapshot is insufficient. Reconstruct the dated formation path that produced today's economics: the customer problem and initial constraint; consequential product, distribution, pricing, organization or capital-allocation choices; capabilities and relationships accumulated; failed paths or tradeoffs absorbed; and the resulting behavior in retention, price, cost, reinvestment or cash. Financial statements are outcomes to explain, not the explanation itself.
+
+Test path dependence rather than writing a founder legend. Ask why a capable rival using the same visible business-model label has not reproduced the result. Identify the missing complements, sequencing, installed base, data/learning loop, trust, regulation, channel access, operating discipline, capital and elapsed time required for replication. Estimate or bound the cost and time to recreate the system where evidence permits. A strategy that is easy to describe can remain hard to execute; a complicated history can also leave no present advantage.
+
+Use filings, contemporaneous company records and relevant customer, supplier and competitor evidence as the factual spine. Biographies, histories and interviews can reveal decisions, constraints and hypotheses, but are selected narratives: verify consequential episodes, stated motives and claimed causality against dated records and rival explanations. Avoid survivor bias and hindsight inevitability by examining feasible alternatives and comparable firms that made similar choices without the same outcome.
+
+End the history at the present mechanism. State which accumulated asset or feedback still causes customers to choose, economics to improve or competitors to remain constrained; what is merely legacy reputation; and which observable change would show that the engine has weakened. Research hours, familiarity and narrative coherence do not raise conviction unless they resolve one of these links.
+
 ## Quality Signals And Their Competing Explanations
 
 | Dimension | Concrete evidence to seek | What can imitate quality or hide weakness |
