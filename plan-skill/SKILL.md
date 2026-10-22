@@ -41,6 +41,14 @@ python3 <plan-skill>/scripts/init_plan.py <project-root> --title "<work title>"
 
 The template is an implementation aid, not an additional planning objective. Fill applicable fields from evidence and omit or mark genuinely inapplicable material rather than inventing it. New or upgraded durable state should pass `scripts/validate_plan.py --strict <project-root>` before it becomes the authority for continued execution or handoff.
 
+For implementation work, turn problem decomposition, rapid implementation, and strict verification into one feedback discipline:
+
+- Decompose by observable behavior, material uncertainty, and independently verifiable outcomes—not by file lists or architecture layers. Prefer the smallest end-to-end slice that proves a useful path; split further when dependencies or the verifier cannot localize failure.
+- Optimize implementation speed for time to trustworthy evidence. Reuse established patterns and build the minimum runnable path, but never buy speed by weakening the accepted contract, hiding failure modes, or postponing the only meaningful check.
+- Give each node a decisive verifier before execution. Cover the success path and the boundary or failure path most capable of disproving the claim, in proportion to risk. Let the result determine whether to expand, revise, or stop.
+
+For research, operations, or non-code work, use the same logic with the cheapest decisive probe, rehearsal, comparison, or reviewable artifact instead of forcing a runnable-code slice.
+
 Load only a branch that changes the plan:
 
 - several plausible directions: `references/concept-refinement.md`;
