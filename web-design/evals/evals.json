@@ -38,6 +38,38 @@
       ]
     },
     {
+      "id": "existing-design-system-is-working-context",
+      "prompt": "Use web-design to describe how you would redesign an existing account settings flow; do not run tools. The repository includes maintained design tokens, a shared component library, and current screens. The user also attached a visually appealing reference from another product and asked for a clearer flow, but did not ask to rebrand. What do you inspect and preserve before choosing the new direction?",
+      "expected_output": "Treats the product's implementation and design system as authoritative working context, uses the external reference only for relevant ideas, and preserves or deliberately explains departures from established primitives rather than creating a parallel style.",
+      "files": [],
+      "assertions": [
+        {"id": "authoritative-context", "text": "It inspects the current flow, tokens, and representative shared components before selecting visual values or structure, and distinguishes those authoritative sources from the external inspiration.", "kind": "model", "required": true},
+        {"id": "no-parallel-system", "text": "It reuses established primitives and calls out any task-justified exception instead of copying the reference's palette, typography, or components into a parallel design system.", "kind": "model", "required": true}
+      ]
+    },
+    {
+      "id": "relative-target-needs-current-evidence",
+      "prompt": "Use web-design to respond without running tools. A user says, ‘Make this button less prominent and move the panel on the left below it.’ There are four screens in the project, no screenshot or annotation is attached, and the conversation does not identify a screen. Should you pick likely elements and edit them?",
+      "expected_output": "Does not guess a screen-relative target that cannot be observed; asks for or obtains an unambiguous target, while avoiding a broad design questionnaire.",
+      "files": [],
+      "assertions": [
+        {"id": "no-invented-view-context", "text": "It explains that the referenced button and panel cannot be resolved from the available current evidence and does not select likely elements by guesswork.", "kind": "model", "required": true},
+        {"id": "narrow-recovery", "text": "It asks only for the missing screen, screenshot, annotation, or exact component identifier needed to resolve the target, not for unrelated style or product requirements.", "kind": "model", "required": true}
+      ]
+    },
+    {
+      "id": "extract-system-from-real-product",
+      "prompt": "Use web-design to plan a design-system extraction from a mature web app; do not run tools. The app has CSS variables, repeated React components, a short brand PDF, several screenshots, and years of one-off exceptions. The user wants a maintainable first version, not a rebrand. Explain what becomes authoritative, what enters the first version, how you handle conflicts and exceptions, and what must be verified before calling a rule reusable.",
+      "expected_output": "Builds a small source-backed system from actual recurring needs, keeps code-owned values authoritative over screenshots, preserves or migrates intentional exceptions, and validates reusable claims on representative independent consumers.",
+      "files": [],
+      "assertions": [
+        {"id": "source-priority-and-conflicts", "text": "It establishes which current contract or implementation owns each decision, does not infer code-owned values from screenshots, and records material conflicts rather than silently choosing one.", "kind": "model", "required": true},
+        {"id": "small-consumer-backed-contract", "text": "The first version contains only recurring, consumer-backed tokens, components, assets, and usage rules; it does not catalogue every one-off value or invent speculative abstractions.", "kind": "model", "required": true},
+        {"id": "exceptions-and-migration", "text": "It distinguishes intentional variants from accidental drift and preserves compatibility or defines an explicit migration path instead of normalizing everything for visual tidiness.", "kind": "model", "required": true},
+        {"id": "promotion-needs-independent-evidence", "text": "It requires structural checks plus rendered and behavioral verification on representative states and at least one independent consumer before promoting a local choice as a system rule.", "kind": "model", "required": true}
+      ]
+    },
+    {
       "id": "repair-cafe-landing",
       "prompt": "Build a standalone production-quality single-page website for Repair Night, a neighborhood repair cafe. The primary job is to understand the next monthly session and book a repair slot. Include accepted and rejected items, the process, a volunteer path, location and hours, and meaningful empty, validation, loading, success, and error behavior for booking. Use only HTML, CSS, and small JavaScript with no external dependencies or assets. Make it responsive and accessible.",
       "expected_output": "A runnable, distinctive interface whose first viewport prioritizes the next session and booking, with resilient responsive behavior and evidence-backed interaction states.",
