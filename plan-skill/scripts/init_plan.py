@@ -168,7 +168,7 @@ def main() -> int:
         shlex.quote(str(part))
         for part in (sys.executable, validator, "--strict", root)
     )
-    print("Next: replace remaining <...> fields, then run:")
+    print("Next: confirm Outcome and Acceptance, set Contract status to Confirmed, replace remaining <...> fields, then run:")
     print(command)
     return 0
 

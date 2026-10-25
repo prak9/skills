@@ -18,6 +18,12 @@ Create the lightest durable control surface that lets work resume without chat h
 
 Prefer the lighter surface when uncertain. Upgrade Lite in place when its state no longer fits one file.
 
+## Confirm The Contract First
+
+Before decomposing work or starting execution, state the goal and acceptance boundary in plain language: the observable outcome, what is out of scope, and the evidence that will count as passed. Acceptance must be specific enough that completion is decidable; implementation activity, effort, or an agent's own claim is not acceptance evidence.
+
+Resolve any ambiguity that would materially change the result or pass/fail judgment. For a plan-only request or an explicitly retained confirmation gate, show this compact contract and wait for the user's confirmation before marking it `Confirmed`. For an already authorized build/fix request whose goal and acceptance are unambiguous, confirmation means restating and recording the contract before execution—not asking for a redundant approval. Record `Contract status: Draft` until this is resolved; do not create executable nodes or start work while it remains Draft.
+
 ## Authority
 
 - In Lite, `program.md` is the only plan artifact and owns its `Reflection Log`.
@@ -30,7 +36,7 @@ For an authorized repeated research loop, link existing case/run/grade/finding/c
 
 ## Create Or Refresh
 
-A durable plan is ready when another agent can recover the observable outcome, current state, inherited constraints, acceptance evidence, material assumptions or unknowns, and next useful action without chat history. Choose the lightest surface that can hold that information. Inline work continues directly without plan files and should skip `init_plan.py`.
+A durable plan is ready when its contract is Confirmed and another agent can recover the observable outcome, current state, inherited constraints, acceptance evidence, material assumptions or unknowns, and next useful action without chat history. Choose the lightest surface that can hold that information. Inline work continues directly without plan files and should skip `init_plan.py`, but still establishes the goal and acceptance boundary before execution.
 
 For Lite, Full, or Loop, use the bundled initializer when it is the shortest reliable way to create conforming state:
 

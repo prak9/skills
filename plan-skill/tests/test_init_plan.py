@@ -50,6 +50,7 @@ class InitPlanTests(unittest.TestCase):
         program = (self.root / "program.md").read_text(encoding="utf-8")
         self.assertIn("# Program: Timeout Validation", program)
         self.assertIn("- Profile: `Lite`", program)
+        self.assertIn("- Contract status: `Draft`", program)
         self.assertIn("## Outcome", program)
         self.assertIn("- Strategic defaults:", program)
         self.assertIn("- Tactical objective:", program)
@@ -68,7 +69,7 @@ class InitPlanTests(unittest.TestCase):
             program,
         )
         self.assertIn("## Reflection Log", program)
-        self.assertLessEqual(len(program.splitlines()), 52)
+        self.assertLessEqual(len(program.splitlines()), 53)
         self.assertFalse((self.root / "tasks").exists())
         self.assertFalse((self.root / "memory.md").exists())
         self.assertFalse((self.root / ".gitignore").exists())
@@ -92,6 +93,7 @@ class InitPlanTests(unittest.TestCase):
         program = (self.root / "program.md").read_text(encoding="utf-8")
         task = self.root / "tasks" / "TASK-001-csv-export.md"
         self.assertIn("- Profile: `Full`", program)
+        self.assertIn("- Contract status: `Draft`", program)
         self.assertIn("- Plan mode: `Linear`", program)
         self.assertIn("- Execution readiness: `Blocked`", program)
         self.assertIn("- Clean state: `Not due`", program)
@@ -147,7 +149,7 @@ class InitPlanTests(unittest.TestCase):
         result = self.validate_generated_plan()
         self.assertEqual("Full", result["profile"])
         self.assertEqual([], result["errors"])
-        self.assertLessEqual(result["warning_count"], 3)
+        self.assertLessEqual(result["warning_count"], 4)
 
     def test_existing_files_are_never_partially_overwritten(self) -> None:
         first = self.run_initializer("--title", "Safe Plan")

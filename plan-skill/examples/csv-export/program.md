@@ -2,6 +2,7 @@
 
 - Overall status: `进行中`
 - Profile: `Full`
+- Contract status: `Confirmed`
 - Plan mode: `Linear`
 - Execution readiness: `Not required`
 - Loop state: `Not applicable`

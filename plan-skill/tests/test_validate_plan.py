@@ -305,6 +305,27 @@ class ValidatePlanTests(unittest.TestCase):
 
         self.assert_rejected("Overall status", "task package Status")
 
+    def test_draft_contract_prevents_execution(self) -> None:
+        self.replace(
+            "program.md",
+            "- Contract status: `Confirmed`",
+            "- Contract status: `Draft`",
+        )
+
+        self.assert_rejected(
+            "Contract status is `Draft`",
+            "confirm the goal and observable acceptance boundary before execution",
+        )
+
+    def test_invalid_contract_status_is_rejected(self) -> None:
+        self.replace(
+            "program.md",
+            "- Contract status: `Confirmed`",
+            "- Contract status: `Maybe`",
+        )
+
+        self.assert_rejected("Contract status must be exactly one of")
+
     def test_blocked_readiness_prevents_execution(self) -> None:
         self.replace(
             "program.md",

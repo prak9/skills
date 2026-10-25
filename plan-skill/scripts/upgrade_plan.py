@@ -319,6 +319,9 @@ def upgrade_inline_lite(
         or "A preference conflicts or a better option requires changing a bound."
     )
     overall_status = metadata_value(text, "Overall status") or "待开始"
+    contract_status = metadata_value(text, "Contract status") or (
+        "Draft" if overall_status == "待开始" else "Confirmed"
+    )
     evidence_complete = overall_status in {"待验收", "完成"}
     terminal = overall_status in {"完成", "已取消"}
     project_slug = slugify(title)
@@ -332,6 +335,11 @@ def upgrade_inline_lite(
     program = program.replace(
         "- Overall status: `待开始`",
         f"- Overall status: `{overall_status}`",
+        1,
+    )
+    program = program.replace(
+        "- Contract status: `Draft`",
+        f"- Contract status: `{contract_status}`",
         1,
     )
     program = program.replace(
@@ -563,6 +571,20 @@ def upgrade_program(text: str, today: str, change_id: str) -> str:
         raise UpgradeError("program.md is not a declared Lite plan")
     text = re.sub(r"^##\s+\d+\.\s+", "## ", text, flags=re.MULTILINE)
     text = text.replace("- Profile: `Lite`", "- Profile: `Full`", 1)
+    if metadata_value(text, "Contract status") is None:
+        overall_status = metadata_value(text, "Overall status") or "待开始"
+        contract_status = "Draft" if overall_status == "待开始" else "Confirmed"
+        profile_line = next(
+            (line for line in text.splitlines() if line.startswith("- Profile:")),
+            None,
+        )
+        if profile_line is None:
+            raise UpgradeError("program.md is missing Profile")
+        text = insert_after_line(
+            text,
+            profile_line,
+            f"- Contract status: `{contract_status}`",
+        )
     text = re.sub(r"^- Memory:.*$", "- Memory: `memory.md`", text, count=1, flags=re.MULTILINE)
 
     plan_mode = metadata_value(text, "Plan mode")

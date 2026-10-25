@@ -4,6 +4,7 @@
 
 - Overall status: `待开始`
 - Profile: `Full`
+- Contract status: `Draft`
 - Plan mode: `Linear`
 - Execution readiness: `Blocked`
 - Loop state: `Not applicable`

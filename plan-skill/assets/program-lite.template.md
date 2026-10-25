@@ -4,6 +4,7 @@
 
 - Overall status: `<待开始 / 进行中 / 阻塞 / 待验收 / 完成 / 已取消 — choose one>`
 - Profile: `Lite`
+- Contract status: `Draft`
 - Active plan node: `NODE-001`
 - Latest evidence: `None`
 - Current blocker: `None`

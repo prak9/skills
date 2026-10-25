@@ -2,6 +2,7 @@
 
 - Overall status: `进行中`
 - Profile: `Lite`
+- Contract status: `Confirmed`
 - Active plan node: `NODE-001`
 - Latest evidence: `None`
 - Current blocker: `None`

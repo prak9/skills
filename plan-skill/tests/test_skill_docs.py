@@ -142,7 +142,9 @@ class SkillDocsTests(unittest.TestCase):
         )
 
         self.assertLessEqual(len(skill.splitlines()), 130)
-        self.assertLessEqual(len(lite.splitlines()), 52)
+        self.assertLessEqual(len(lite.splitlines()), 53)
+        for text in (lite, full):
+            self.assertIn("Contract status", text)
         for text in (lite, full):
             self.assertIn("Strategic defaults", text)
             self.assertIn("Tactical objective", text)

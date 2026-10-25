@@ -184,6 +184,7 @@ VALID_ABSTRACTION_IMPACTS = {"none", "reuse", "new", "modify", "remove"}
 STRUCTURAL_ABSTRACTION_IMPACTS = {"new", "modify", "remove"}
 VALID_EXECUTION_READINESS = {"Blocked", "Ready", "Not required"}
 VALID_CLEAN_STATES = {"Not due", "Due"}
+VALID_CONTRACT_STATUSES = {"Draft", "Confirmed"}
 EXECUTION_READINESS_GATE_FIELDS = (
     "Decision this work informs",
     "Claim / hypothesis",
@@ -687,6 +688,43 @@ def check_execution_readiness_gate(
         errors.append(
             f"{path} Execution Readiness Gate is incomplete: " + ", ".join(missing)
         )
+
+
+def check_contract_status(
+    path: Path,
+    text: str,
+    program_status: str | None,
+    errors: list[str],
+    warnings: list[str],
+) -> None:
+    """Keep execution behind an explicit goal-and-acceptance contract."""
+    contract_status = metadata_value(text, "Contract status")
+    if contract_status is None:
+        message = (
+            f"{path} is missing Contract status; confirm Outcome and Acceptance, "
+            "then record `Contract status: Confirmed` before execution"
+        )
+        if program_status in {"探索中", "进行中", "待验证", "待验收", "完成"}:
+            errors.append(message)
+        else:
+            warnings.append(message)
+        return
+    if contract_status not in VALID_CONTRACT_STATUSES:
+        choices = " / ".join(sorted(VALID_CONTRACT_STATUSES))
+        errors.append(
+            f"{path} Contract status must be exactly one of `{choices}`, "
+            f"got `{contract_status}`"
+        )
+        return
+    if contract_status == "Draft":
+        message = (
+            f"{path} Contract status is `Draft`; confirm the goal and observable "
+            "acceptance boundary before execution"
+        )
+        if program_status in {"探索中", "进行中", "待验证", "待验收", "完成"}:
+            errors.append(message)
+        else:
+            warnings.append(message)
 
 
 def check_task_completion_contract(
@@ -1488,6 +1526,13 @@ def main() -> int:
             VALID_PROGRAM_STATUSES,
             "Overall status",
             errors,
+        )
+        check_contract_status(
+            program_path,
+            program_text,
+            program_status,
+            errors,
+            warnings,
         )
         if lean_lite:
             program_mode = "Linear"
