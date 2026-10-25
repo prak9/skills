@@ -1,4 +1,4 @@
-# Value Transmission And Incidence
+# Value Creation, Capture And Incidence
 
 Use this contract when technology progress, national development, industrial policy, real estate, household wealth, capital flows or another macro narrative is used to support a company or stock conclusion. It is a bridge into company underwriting, not a standalone macro template. Skip it for narrow arithmetic and business questions that do not rely on such a narrative.
 
@@ -15,6 +15,8 @@ Locate each claim before linking it:
 7. **Investor:** what return remains after the purchase price, time, distributions, taxes/costs and exit assumptions, measured in the relevant liability currency and real purchasing power when material?
 
 Do not skip a layer merely because the preceding claim is important or well supported. AI capability does not establish a vendor's margins; manufacturing strength does not establish household wealth; industry growth does not establish per-share growth; company success does not establish an attractive stock at today's price.
+
+The shared research question is: **where is value produced, who can retain it, who bears the cost, and under what rights, price and time horizon can the investor receive it?** A large social benefit can coexist with thin producer margins; a national success can coexist with household or incumbent-equity losses; a strong company can remain a poor purchase.
 
 ## Trace Rights To Per-Share Payoff
 
@@ -35,6 +37,37 @@ At each arrow name the mechanism, timing, offset, strongest rival and observable
 
 For growth, compare incremental economics rather than only scale. Revenue or production can rise while margins, cash generation, return on new capital or per-share value falls. Reconcile capacity additions, price pressure, subsidies, working capital, debt, dilution and capital allocation. State who can capture the incremental surplus and for how long.
 
+Use economic profit when policy, AI infrastructure or manufacturing expansion is capital-intensive:
+
+```text
+incremental economic profit
+= incremental invested capital * (incremental return on capital - capital cost)
+```
+
+Accounting growth can be real while economic profit and per-share value decline. Do not give policy-supported growth a valuation premium before testing incremental returns and minority-shareholder treatment.
+
+## Translate Technology Into Paid Useful Work
+
+Technical capability is the first link, not the equity conclusion. Trace:
+
+```text
+capability -> reliable task completion -> adoption and willingness to pay
+-> realized task contribution -> corporate profit after fixed and capital needs
+-> common-equity cash per share
+```
+
+For AI or automation, use a decision-relevant unit such as a completed, accepted task rather than tokens, model scores or raw usage alone:
+
+```text
+task contribution
+= realized task revenue or verified customer saving
+- inference, tools, retries, human review and other direct delivery cost
+```
+
+Then include research, sales, support, depreciation, working capital and capital refresh before claiming shareholder value. Unit prices can fall while usage and total spend rise; total spend can rise while unit economics improve. Neither direction alone settles profitability. Read [AI/cloud and compute costs](ai-cloud-costs.md) when this chain materially carries the thesis.
+
+Claims about technical limits or inevitability require evidence appropriate to the claim. Human-generated inputs do not by themselves prove a system can only reproduce known outputs; physical constraints do not preclude productivity improvements in design, control, scheduling or experimentation. Conversely, technical demonstrations do not establish dependable deployment, permissions, governance or commercial returns.
+
 ## Distinguish Policy Target, Protection And Cost
 
 For a material policy claim, identify:
@@ -47,7 +80,11 @@ For a material policy claim, identify:
 
 Support can improve one constraint while imposing another. A strategically important industry may gain financing and lose pricing power; protection of customers or the financial system need not protect incumbent equity. Treat “target” and “cost” as questions that can coexist, not permanent labels. Policy importance is neither a bailout promise nor a valuation premium.
 
-Economic interdependence raises the cost of conflict but does not rule it out. For geopolitical claims, map the company's exposed markets, critical inputs, legal rights and realistic substitutes; then distinguish effects on volume, cost, capital access and asset ownership. Do not turn a costly policy outcome into an impossible one.
+Distinguish four claims that often get compressed into one: two outcomes occurred together; policy affected both; one cost was necessary to produce the benefit; the benefit outweighed the cost. Each step needs additional evidence. To call a cost necessary, compare a feasible counterfactual: could similar productive investment have occurred with earlier restructuring, different financing or less household/equity impairment? To call it worthwhile, identify beneficiaries, losers, timing and compensation rather than comparing aggregates alone.
+
+Policy-backed demand can unlock a real learning loop—orders create use, use reveals defects, revenue funds improvement and improved products win more orders. Underwrite its prerequisites: an initially usable product, solvable bottlenecks, financing runway, feedback that improves out-of-sample performance and continued competition that rewards improvement. Protected orders can also sustain weak economics or transfer cost to customers; orders are evidence of demand, not proof of durable returns.
+
+Economic interdependence raises the cost of conflict but does not rule it out. It can preserve trade or induce rerouting while legal ownership, sanctions, currency conversion and cash repatriation deteriorate. For geopolitical claims, map the company's exposed markets, critical inputs, legal rights and realistic substitutes; distinguish operating globalization from investor-rights globalization, then distinguish effects on volume, cost, capital access and asset ownership. Do not turn a costly policy outcome into an impossible one.
 
 ## Audit Stocks, Flows And Causality
 
@@ -65,6 +102,25 @@ Separate accounting from behavior. For a household with housing value `H`, other
 
 Deposit growth can coexist with lower total wealth, deleveraging and weak risk appetite. In a secondary-market stock purchase, the buyer's deposit normally becomes the seller's deposit; system-wide deposits do not mechanically disappear into equities. Claims about “cash on the sidelines” need evidence about holders, issuance/fund flows, risk tolerance, valuation and the behavior that changes equilibrium prices.
 
+A household need for a new wealth carrier does not make public equities an automatic successor to property. The transmission requires durable distributable earnings, enforceable minority rights, sound capital allocation, limited dilution, reasonable purchase prices, investable diversified vehicles and household income/tenor able to bear volatility. Treat these as institutional and company conditions, not a timetable for index appreciation.
+
+Likewise, market capitalization is not a fixed cash pool. Revaluation of a crowded asset does not prove equal cash left neglected companies. Attention, benchmark constraints, career risk, mandate design and research competition can create under-examined areas, but neglect remains a search prior; company economics and price still determine the investment.
+
+## Replace Inevitable Outcomes With Testable Conditions
+
+When a thesis says an outcome “must,” “will eventually” or “cannot fail,” rewrite it as:
+
+```text
+directional reason
+-> necessary operating, institutional and financing conditions
+-> actor with authority and incentive to deliver them
+-> observable milestones and time window
+-> feasible counterfactual or rival path
+-> failure and reopening evidence
+```
+
+Common examples include coordination successfully containing AI risk, property wealth shifting into stocks, policy support creating shareholder returns, global integration preventing conflict, and knowledge automatically becoming capital. A directional argument can remain useful after certainty is removed; its investability depends on the missing bridges.
+
 ## Translate The Narrative Into Underwriting
 
 Use a compact layer table or equivalent prose only for material links:
@@ -72,12 +128,13 @@ Use a compact layer table or equivalent prose only for material links:
 | Layer | Supported observation | Mechanism to next layer | Leakage / rival | Investment consequence | Falsifier |
 |---|---|---|---|---|---|
 
-Then answer four questions:
+Then answer five questions:
 
 1. What right does the security confer, and what cash or control can actually reach it?
 2. Which party benefits from the underlying change, and which party bears the cost?
 3. Which company economics and per-share variables must improve for the narrative to matter?
 4. What current-price requirement and future observation would confirm or break the case?
+5. Which statement is only a directional expectation, and what conditions would have to hold before it becomes an investable forecast?
 
 When the conclusion depends on a broad average, inspect distribution and aggregation. When it depends on a historical analogy or famous investor's statement, preserve the speaker's claim but independently verify numbers, definitions, causal steps and current applicability. An insightful mechanism can survive while its headline magnitude remains unverified.
 

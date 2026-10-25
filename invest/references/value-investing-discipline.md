@@ -2,6 +2,21 @@
 
 Use for value-investing principles, source-of-return questions, market discipline, ability boundaries, patience, mandate design and real purchasing-power returns. Apply only the parts that change security analysis, valuation, position sizing or portfolio execution.
 
+## Use The Principles As One System
+
+The familiar value-investing principles answer different failure points and should work together:
+
+| Principle | Decision question | Error prevented |
+|---|---|---|
+| Ownership | What legal and economic claim is actually owned? | Treating a quote as the asset |
+| Market service | What independent evidence supports value, and what is price newly signaling? | Letting price decide truth or ignoring market evidence |
+| Margin of safety | What survives forecast error and discontinuous downside? | Treating an optimistic forecast as a fact |
+| Ability boundary | Which load-bearing links can be bounded? | Precision outside genuine understanding |
+| Uneven attention | Where is research competition lower without confusing neglect with quality? | Treating popularity or obscurity as a verdict |
+| Purchasing power | What real capability or liability coverage improves? | Mistaking nominal gains for wealth |
+
+Do not quote these as independent slogans. Use them to connect the owned right, return mechanism, estimation reliability, search process, capital terms and real payoff.
+
 ## Start With The Claim And Return Source
 
 A stock is a legal and economic claim on a business, not merely a moving quote. Identify the exact security, voting and distribution rights, senior claims, dilution path and the mechanism by which common shareholders can receive or compound value.
@@ -54,3 +69,7 @@ The capital base must be able to survive the thesis clock. Examine redemption te
 ## Preserve A Testable Research Record
 
 Keep dated judgments, assumptions, forecast errors, mechanisms and boundary conditions when they can improve later underwriting. A prominent investor's view is a source hypothesis, not proof. Extract the investment-relevant mechanism, verify its premises against primary evidence and preserve contrary outcomes.
+
+Knowledge compounds only when it improves later decisions. Preserve transferable mechanisms, discriminating evidence, forecast errors and boundary conditions—not a pile of current conclusions. A short-lived signal can decay while experimental design, market mechanics, engineering judgment and risk control remain reusable. Research volume, narrative coherence and time spent create no entitlement to conviction or return.
+
+Replace “eventually” with a contract: what must occur, who must deliver it, which right captures it, the plausible evidence window, the capital-survival requirement and the fact that would end the wait. Protect the capacity to continue compounding—capital, trust, knowledge and operational freedom—while discarding invalid beliefs and exiting broken claims.
