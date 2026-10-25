@@ -8,6 +8,8 @@ State the authorized universe, information cutoff, data coverage and material un
 
 Combine broad screening, relevant operating events and leads from related-company research only where they serve the request. Do not default to exhaustive global coverage, unsolicited outreach, paid data or persistent monitoring. Public tips are leads to verify, not independent evidence merely because several people repeat them.
 
+Attention and ownership concentration can make neglected areas more worth searching, but do not prove that capital was mechanically removed from them or that they are underpriced. A crowded asset can remain attractive and a lonely one can deserve its price. Treat low coverage, forced mandates and narrative concentration as candidate-generation clues; establish mispricing only through business economics, current price requirements and evidence about why the gap can persist or close.
+
 ## Inspect What The Filter Discards
 
 When an early filter could hide relevant opportunities, inspect a proportionate sample of near-threshold and excluded candidates. Check missing or stale fields, accounting differences, one-off items and business-stage effects against original evidence. Missing data, a failed user constraint and a failed economic mechanism are different exclusion reasons. A temporary loss may warrant investigation; it does not establish normalized profitability or investment merit.

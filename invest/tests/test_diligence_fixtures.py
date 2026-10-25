@@ -14,6 +14,8 @@ EARNINGS_PACKET = PACKET.with_name("earnings-continuity-cases.jsonl")
 DISCOVERY_PACKET = PACKET.with_name("discovery-patience-cases.jsonl")
 ALLOCATION_PACKET = PACKET.with_name("allocation-comparison-cases.jsonl")
 JUDGMENT_PACKET = PACKET.with_name("judgment-quality-cases.jsonl")
+VALUE_TRANSMISSION_PACKET = PACKET.with_name("value-transmission-cases.jsonl")
+VALUE_DISCIPLINE_PACKET = PACKET.with_name("value-discipline-cases.jsonl")
 
 
 class DiligenceFixtureTests(unittest.TestCase):
@@ -22,7 +24,8 @@ class DiligenceFixtureTests(unittest.TestCase):
         cls.cases = [
             json.loads(line)
             for packet in (PACKET, SOURCE_PACKET, DAYU_PACKET, EARNINGS_PACKET,
-                           DISCOVERY_PACKET, ALLOCATION_PACKET, JUDGMENT_PACKET)
+                           DISCOVERY_PACKET, ALLOCATION_PACKET, JUDGMENT_PACKET,
+                           VALUE_TRANSMISSION_PACKET, VALUE_DISCIPLINE_PACKET)
             for line in packet.read_text().splitlines()
         ]
         cls.by_id = {case["id"]: case for case in cls.cases}
@@ -166,6 +169,22 @@ class DiligenceFixtureTests(unittest.TestCase):
         self.assert_numeric("judgment-simple-clean-control", {
             "terminal_price": terminal_price,
             "cumulative_return": terminal_price / 20 - 1,
+        })
+
+    def test_value_transmission_oracles_separate_layers_and_leverage(self) -> None:
+        self.assert_numeric("transmission-national-success-not-shareholder-return", {
+            "prior_net_profit": 100 * .10,
+            "current_net_profit": 200 * .03,
+            "prior_eps": 100 * .10 / 10,
+            "current_eps": 200 * .03 / 15,
+        })
+        prior_net_worth = 500 + 50 - 250
+        housing_loss = 500 * .40
+        self.assert_numeric("transmission-housing-leverage-not-population-average", {
+            "prior_net_worth": prior_net_worth,
+            "housing_loss": housing_loss,
+            "current_net_worth": prior_net_worth - housing_loss,
+            "net_worth_loss_ratio": housing_loss / prior_net_worth,
         })
 
 

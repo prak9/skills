@@ -2,6 +2,14 @@
 
 Read only when compute/cloud costs, data-center investment or AI infrastructure economics are material to the thesis. This is a diligence lens, not a full checklist for every technology stock. Use the recent research/interview pass in `underwriting-loop.md`; keep changing prices and industry estimates in the dated research artifact, not as permanent Skill constants.
 
+## Separate Capability, Use, Economics And Permission
+
+Treat claims about intelligence, autonomy or frontier capability as technical propositions, not evidence of customer value or equity value. Trace demonstrated capability to a real workflow, user/customer willingness to pay, delivered output quality, adoption friction and the incumbent task or cost displaced. Exploration-led and customer-application-led development are different commercial strategies; evaluate their observed economics rather than assigning them by country or company label.
+
+Separate one-time research/training/build costs from recurring inference, serving, support, refresh and safety/compliance costs. AI can have positive marginal delivery cost while unit cost falls sharply; neither “software scales for free” nor “AI will always be prohibitively expensive” is an underwriting conclusion. Compare the full incremental cost of reliable useful work with realized incremental revenue or avoided cost, including utilization, retries, human review and capital refresh. Technical progress can expand demand faster than unit cost falls, so absolute spending, unit economics and shareholder cash can move differently.
+
+Regulation, liability, energy availability and labor or review requirements matter when they change deployability, adoption timing, cost, pricing or demand. Incorporate supported financial effects and observable milestones; do not import broad claims about AI's ultimate trajectory directly into terminal value.
+
 ## Define Whose Economics And Which Unit
 
 Separate the chip supplier, facility/power owner, GPU cloud operator, model lab and end customer. A customer's rental bill is an operator's revenue, not the operator's hardware purchase cost. Hyperscaler segment margins are not stand-alone AI margins. State hardware generation, location, vintage, workload, contract duration, currency and period. Training, inference and idle capacity have different cost/performance profiles.

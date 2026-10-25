@@ -6,6 +6,8 @@ Use for opportunity/risk, price, allocation comparisons, sizing, portfolio fit, 
 
 Keep three judgments distinct: **thesis quality** (supported mechanism and falsifier), **price attractiveness** (forward net payoffs from today's quote), and **exposure** (estimation error, tail loss, correlation, liquidity and opportunity cost). A better business can offer a worse return after its price rises. A small position does not validate a weak thesis, and concentrated research need not mean concentrated capital.
 
+A margin of safety depends on both the price discount and the reliability of the value range. A quote below a precise-looking point estimate offers little protection when the plausible range is wide, key rights are uncertain or downside is discontinuous. Show which uncertainty the discount can absorb and which thesis failure it cannot; do not use a low multiple or a large drawdown as a substitute for bounded value.
+
 Use conditional outcomes rather than a lone target. A distribution needs defensible probabilities; otherwise give scenarios and sensitivities, not invented odds. Respect an explicitly chosen strategy as a constraint, not a universal market law.
 
 An option-implied distribution is an observable pricing distribution, not a shortcut around that requirement. Label its expiry, extraction time, spot/forward basis, rate, contract style, liquidity screen and method. Risk-neutral probabilities incorporate risk premia and hedging pressure and therefore must not be inserted as objective bull/base/bear probabilities or used alone for sizing. Use [the dedicated method](options-implied-distribution.md) to expose threshold/range probabilities and data-quality limits.
@@ -43,6 +45,8 @@ Assess **all existing exposure at current market value**, including positions en
 Do not derive a position percentage without sufficient portfolio/exposure, loss-budget, liquidity, tax/financing and payoff inputs. Give a conditional posture and binding gate instead. Kelly is at most a diagnostic upper bound for sufficiently repeatable, estimable bets with bounded losses and modeled dependence, never a universal `mu / variance` recommendation. Shrink uncertain edge estimates and cap model-derived weights by stressed-loss, concentration/factor and executable-liquidity constraints, all expressed on the same portfolio-weight basis. Explain the binding constraint; unknown caps do not justify a guessed percentage.
 
 Where holdings are supplied, inspect shared market, duration, size, rates, FX, commodity, geography, sector and thesis-specific exposures as relevant. Ticker count is not independent risk count. Stress correlated losses during deleveraging and illiquidity; with missing holdings, mark the portfolio conclusion unverified.
+
+Match the thesis clock to the capital and mandate clock. A sound long-duration case can still be uninvestable for a vehicle facing near-term redemptions, leverage, benchmark limits or other forced-liquidity conditions. Conversely, long-locked capital does not make a weak thesis correct. State the operating evidence window, plausible repricing window and earliest forced-liquidity date separately. A strategy that requires patient ownership needs funding and liquidity terms capable of surviving its expected drawdowns and periods of relative underperformance.
 
 ## Define Waiting And Exit Conditions
 
