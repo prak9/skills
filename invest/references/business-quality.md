@@ -6,6 +6,15 @@ Use for fundamental company research and business-quality questions, not a manda
 
 Follow one representative customer transaction from need to choice, purchase, delivery, renewal and collected cash. Distinguish user, decision-maker and payer; product, charging unit, contract duration, discounts, refunds and service obligations. Then identify material segments or customer cohorts that break that example. A company description or revenue-segment list is not this map.
 
+For each load-bearing value engine, answer four separate questions:
+
+1. **Value produced:** what measurable cost, risk, time or revenue outcome improves for the customer or stakeholder relative to the best alternative, including doing nothing?
+2. **Value monetized:** who pays, how realized price and volume relate to that benefit, and whether renewal or repeat purchase confirms willingness to pay rather than subsidized usage?
+3. **Value retained:** after delivery, support, acquisition, maintenance, working capital and required growth investment, what incremental cash or economic profit remains, and why competition or a critical supplier does not take it away?
+4. **Value attributable:** after financing, taxes, senior claims, minority leakage, capital allocation and dilution, what reaches the owned security per share?
+
+Large customer surplus can coexist with weak corporate economics, and high corporate profit can coexist with poor per-share outcomes. For an investment request, preserve the few quantities and causal links that drive this engine so the valuation can test them; do not substitute a moat label or accounting margin for the map.
+
 Trace the value chain, distribution, suppliers, workforce/technology/assets, capacity constraints, funding and regulation that make delivery possible. Explain which party owns the customer relationship, sets terms, bears failure risk and can withhold a critical input. Separate customer value created from value retained by this company and ultimately common shareholders.
 
 When growth is attributed to industrial policy, public procurement, national capability or a broad technology wave, trace the claim through [value transmission and incidence](value-transmission.md). Being useful to a country, receiving support or increasing output does not establish attractive incremental returns, minority-shareholder treatment or a return from today's price.

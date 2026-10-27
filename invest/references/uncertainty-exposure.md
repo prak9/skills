@@ -6,6 +6,8 @@ Use for opportunity/risk, price, allocation comparisons, sizing, portfolio fit, 
 
 Keep three judgments distinct: **thesis quality** (supported mechanism and falsifier), **price attractiveness** (forward net payoffs from today's quote), and **exposure** (estimation error, tail loss, correlation, liquidity and opportunity cost). A better business can offer a worse return after its price rises. A small position does not validate a weak thesis, and concentrated research need not mean concentrated capital.
 
+Price attractiveness is a relation, not a company attribute. State both sides on the same security, currency and date: the evidence-supported per-share payoff/value range and the current price plus its implied operating requirements. Then show the horizon, distributions, dilution, realization route and loss under the strongest credible failure case. Historical cost, distance from a prior high, a low multiple or a target above the quote cannot supply the missing side of that comparison.
+
 A margin of safety depends on both the price discount and the reliability of the value range. A quote below a precise-looking point estimate offers little protection when the plausible range is wide, key rights are uncertain or downside is discontinuous. Show which uncertainty the discount can absorb and which thesis failure it cannot; do not use a low multiple or a large drawdown as a substitute for bounded value.
 
 Use conditional outcomes rather than a lone target. A distribution needs defensible probabilities; otherwise give scenarios and sensitivities, not invented odds. Respect an explicitly chosen strategy as a constraint, not a universal market law.

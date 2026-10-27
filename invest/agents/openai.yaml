@@ -1,4 +1,4 @@
 interface:
   display_name: "Invest"
-  short_description: "Multi-lens equity research with evidence-backed synthesis"
-  default_prompt: "Use $invest for multi-lens company research by default: combine business quality, joint scenarios, valuation, a reliable approximately one-year option-implied distribution when available, relevant runway and event transmission, downside risks, and trend diagnostics when informative; reconcile their evidence and disagreements into one judgment."
+  short_description: "Trace value creation, per-share capture, and price-implied returns"
+  default_prompt: "Use $invest to trace where economic value is created, how much reaches the owned security per share, and what return or loss that supports from the current price. Combine business quality, coherent scenarios, price-implied requirements, downside and relevant specialist lenses into one evidence-backed judgment."
