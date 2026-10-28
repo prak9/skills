@@ -15,6 +15,27 @@ For each load-bearing value engine, answer four separate questions:
 
 Large customer surplus can coexist with weak corporate economics, and high corporate profit can coexist with poor per-share outcomes. For an investment request, preserve the few quantities and causal links that drive this engine so the valuation can test them; do not substitute a moat label or accounting margin for the map.
 
+## Reconstruct Sustainable Earning Power
+
+Write the operating equation in the units that management and customers actually transact. Depending on the business, this may be customers × usage × realized price, units × price, GMV × net take rate, stores × sales per store, capacity × utilization × spread, or earning assets × net yield minus losses. Split materially different segments or cohorts; consolidated revenue growth can hide a shrinking core, acquisitions or mix. Financial institutions use funding, underwriting, losses and required capital rather than an industrial free-cash-flow formula.
+
+Bridge the economic unit to owner cash:
+
+```text
+paid volume × realized net price or take rate
+- variable delivery and service cost
+- necessary fixed operating cost
+- maintenance and required growth investment
+- working-capital, tax and financing needs
+= cash attributable to the security before/after dilution, as labeled
+```
+
+Adapt rather than force this identity where accounting and cash timing differ. Reconcile reported profit to cash and identify the source of the spread: customer switching cost, lower delivered cost, scarce capacity/input, brand/trust, risk underwriting, distribution, regulation, temporary shortage, subsidy or cycle. “It has high margins” describes the result; it does not explain why those margins exist or who can erode them.
+
+Test persistence one driver at a time. Ask whether paid demand repeats without uneconomic acquisition, realized price survives customer and competitor response, input and service costs remain controlled, capacity can support the forecast, and required reinvestment earns above its cost. Separate contracted revenue from cancellable backlog, recurring billing from customer retention, current capacity from a funded expansion, and peak-cycle earnings from normalized earning power. Use cohorts, renewal/repurchase, price-volume response, competitive wins/losses, utilization, unit contribution and incremental capital returns where they distinguish explanations.
+
+Estimate **current normalized earning power** and **future earning power** separately. Start from a comparable operating base, then bridge volume, price, mix, contribution, fixed costs, capacity, reinvestment, working capital, financing and net shares under coherent paths. State the binding constraint and fade/duration assumption. A range or break-even threshold is preferable when one decisive driver is unbounded; a precise five-year EPS produced by extending recent growth is not evidence.
+
 Trace the value chain, distribution, suppliers, workforce/technology/assets, capacity constraints, funding and regulation that make delivery possible. Explain which party owns the customer relationship, sets terms, bears failure risk and can withhold a critical input. Separate customer value created from value retained by this company and ultimately common shareholders.
 
 When growth is attributed to industrial policy, public procurement, national capability or a broad technology wave, trace the claim through [value transmission and incidence](value-transmission.md). Being useful to a country, receiving support or increasing output does not establish attractive incremental returns, minority-shareholder treatment or a return from today's price.
@@ -85,6 +106,6 @@ Maintain distinctions among: customer love, pricing power, operational efficienc
 
 ## Deliver Understanding, Not Labels
 
-Synthesize: how the business makes money; what is genuinely strong and the concrete evidence; weaknesses and dependencies; what is changing; what remains unverified. Explain technical industry terms through their economic consequence. Avoid using “network effect,” “culture,” “recurring revenue” or “high ROIC” as self-explanatory verdicts.
+Synthesize: the operating equation; how much normalized owner cash it produces now; why the spread exists; which conditions determine whether it persists; what it could earn under coherent future paths; weaknesses, dependencies and what remains unverified. Explain technical industry terms through their economic consequence. Avoid using “network effect,” “culture,” “recurring revenue” or “high ROIC” as self-explanatory verdicts.
 
 For an investment request, carry these findings into independent operating assumptions, capital requirements, valuation and falsifiers. Do not charge twice for the same quality through both optimistic cash flows and an unexplained multiple premium. For a business-only request, this synthesis and the highest-value unresolved questions are a complete deliverable; no target price or non-consensus claim is required.

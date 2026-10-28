@@ -1,4 +1,4 @@
 interface:
   display_name: "Invest"
-  short_description: "Trace value creation, per-share capture, and price-implied returns"
-  default_prompt: "Use $invest to trace where economic value is created, how much reaches the owned security per share, and what return or loss that supports from the current price. Combine business quality, coherent scenarios, price-implied requirements, downside and relevant specialist lenses into one evidence-backed judgment."
+  short_description: "Explain earning power, per-share value, and price-implied returns"
+  default_prompt: "Use $invest to explain how the business earns money, why its profit exists, whether it can persist, and how much normalized and future owner cash it can produce. Then trace what reaches each share and what return or loss that supports from the current price, using coherent scenarios and evidence-backed constraints."
