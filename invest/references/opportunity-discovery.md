@@ -10,6 +10,12 @@ Combine broad screening, relevant operating events and leads from related-compan
 
 Attention and ownership concentration can make neglected areas more worth searching, but do not prove that capital was mechanically removed from them or that they are underpriced. A crowded asset can remain attractive and a lonely one can deserve its price. Treat low coverage, forced mandates and narrative concentration as candidate-generation clues; establish mispricing only through business economics, current price requirements and evidence about why the gap can persist or close.
 
+## Triage An Apparent Anomaly Before Deep Research
+
+When a quoted company appears unusually cheap, use approximate same-basis arithmetic to decide whether it deserves deeper work. Decompose book value into realizable liquid assets, operating assets and claims ahead of common equity; normalize seasonal working capital against comparable periods; and compare unlevered operating earnings with the capital actually required to run the business. Then ask what adverse outcome the quote already appears to require and why investors may rationally avoid the security.
+
+This is a research-priority test, not an intrinsic-value conclusion. Haircut receivables and inventory for collectability and obsolescence, include leases, maintenance capital, pension/legal liabilities, minority leakage and other claims, and distinguish surplus assets from cash the business must retain. A new low, price below book value or high historical return on tangible capital has no standalone meaning. The useful output is the smallest load-bearing uncertainty to investigate next: for example whether an industry shock is being mechanically applied to a company with different exposure, whether reported assets are realizable, or whether governance prevents value from reaching common shareholders.
+
 ## Inspect What The Filter Discards
 
 When an early filter could hide relevant opportunities, inspect a proportionate sample of near-threshold and excluded candidates. Check missing or stale fields, accounting differences, one-off items and business-stage effects against original evidence. Missing data, a failed user constraint and a failed economic mechanism are different exclusion reasons. A temporary loss may warrant investigation; it does not establish normalized profitability or investment merit.

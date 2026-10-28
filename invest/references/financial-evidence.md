@@ -29,6 +29,12 @@ These are locator semantics, not required invented fields or a new JSON schema. 
 
 For each load-bearing assumption, identify whether support comes from regulatory/audited records, issuer statements, independently collected or processed third-party evidence, or secondary narrative. Preserve source lineage, and expose any assumption whose conclusion still rests mainly on processed or narrative evidence; do not replace this judgment with a universal source-percentage quota.
 
+## Resolve Legal And Governance Allegations From Originals
+
+When litigation, control rights, related-party conduct or an alleged disclosure failure carries the thesis, trace repeated reports back to the underlying event. Read the original complaint or petition, material docket entries and orders, settlement terms, proxy/control disclosures and relevant issuer filings when accessible. Cluster copycat actions and articles that rest on the same allegation instead of counting repetition as independent confirmation.
+
+Keep allegation, company response, judicial finding and settlement without admission distinct. Translate the unresolved issue into the economic question that matters: probable remedy and cash cost, voting or transfer rights, dilution, restrictions on capital allocation, management incentives and whether value can reach common shareholders. Management silence, anger or reassurance does not settle the issue; neither does the absence of analyst coverage. If the decisive originals remain inaccessible, preserve the allegation as unresolved, bound its scenario effect and state what document or finding would change the conclusion. Public records and lawfully accessible evidence are the default; this workflow does not authorize personal outreach, private information or material non-public information.
+
 ## Check Support Before Repairing Prose
 
 For each thesis-bearing claim or flagged material statement, compare its actual words and model use with the cited original—not only the existence of a URL. Check subject, amount, scope, time, certainty, attribution and causal strength. Two individually supported facts do not prove a stronger identity, allocation or causal link: “bought GPUs” plus “customer expanded” does not establish those GPUs' customer, use or contracted revenue. A valid derived ratio need not appear verbatim in the source if the cited numerator, denominator and formula support it.
