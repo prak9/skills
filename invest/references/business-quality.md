@@ -70,6 +70,14 @@ Use filings, contemporaneous company records and relevant customer, supplier and
 
 End the history at the present mechanism. State which accumulated asset or feedback still causes customers to choose, economics to improve or competitors to remain constrained; what is merely legacy reputation; and which observable change would show that the engine has weakened. Research hours, familiarity and narrative coherence do not raise conviction unless they resolve one of these links.
 
+### Test Incumbent Advantage Against Incumbent Burden
+
+When established position carries the thesis, map the starting-state asymmetry rather than assigning a leadership premium. Identify the customer trust or installed workflow, distribution and supplier access, accumulated operating knowledge, approvals/standards, scale or data feedback, and internally generated cash that let the incumbent defend or extend its economics before a new entrant can reproduce the system. Verify the mechanism through customer choice, repeat demand, realized price, channel behavior, service outcomes, cost, capital turnover and responses to prior shocks; age, share and brand awareness alone establish no advantage.
+
+Run the reverse test at the same time. Determine whether legacy technology, fixed cost, channel conflict, fear of cannibalization, slow decision-making, brand constraints, governance or capital allocation turns incumbency into a burden. A challenger may not need to reproduce the whole company: identify the smallest product, customer cohort, distribution point or high-margin profit pool it can attack, the switching/qualification path, and how quickly the incumbent can respond without destroying its own economics. Compare the entrant's replication cost and time with this wedge path; testing only full replacement overstates incumbent durability.
+
+Translate the supported result into cash-flow duration, incremental reinvestment returns and competitive fade. Do not add a separate “incumbent” or “moat” multiple premium on top of cash flows that already assume protected margins and long duration. State the observable customer, channel, unit-economic or capital-allocation change that would shorten the advantage period, and keep operating durability separate from whether today's price offers an attractive return.
+
 ## Quality Signals And Their Competing Explanations
 
 | Dimension | Concrete evidence to seek | What can imitate quality or hide weakness |
