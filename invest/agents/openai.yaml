@@ -1,4 +1,4 @@
 interface:
   display_name: "Invest"
   short_description: "Explain earning power, per-share value, and price-implied returns"
-  default_prompt: "Use $invest to explain how the business earns money, why its profit exists, whether it can persist, and how much normalized and future owner cash it can produce. Then trace what reaches each share and what return or loss that supports from the current price, using coherent scenarios and evidence-backed constraints."
+  default_prompt: "Use $invest to explain how the business earns money, why its profit exists, whether it can persist, and how much normalized and future owner cash it can produce. Lead with the provisional thesis and live debate, test the strongest evidence-based countercase, then trace what reaches each share and what return or loss that supports from the current price. End investment-value or valuation work with coherent future scenarios, evidence-based probabilities or explicit probability sensitivity, per-share valuation/return analysis, and the next falsifying observation."

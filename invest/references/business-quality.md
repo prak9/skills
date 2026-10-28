@@ -38,6 +38,14 @@ Estimate **current normalized earning power** and **future earning power** separ
 
 Trace the value chain, distribution, suppliers, workforce/technology/assets, capacity constraints, funding and regulation that make delivery possible. Explain which party owns the customer relationship, sets terms, bears failure risk and can withhold a critical input. Separate customer value created from value retained by this company and ultimately common shareholders.
 
+For a complex multi-stage business, compress the system into an auditable economic flow rather than a decorative organization chart:
+
+```text
+resources and funding -> core assets/capabilities -> delivery -> monetization -> retained cash/reinvestment -> renewed inputs
+```
+
+At each material transition, name the economic valve (conversion, yield, utilization, retention, take rate or cash conversion), the party with bargaining power, the principal leakage or single point of failure, and the KPI that would reveal deterioration. Include only nodes that can change earning power, survival or valuation; do not promise an exhaustive diagram or force irrelevant metrics.
+
 When growth is attributed to industrial policy, public procurement, national capability or a broad technology wave, trace the claim through [value transmission and incidence](value-transmission.md). Being useful to a country, receiving support or increasing output does not establish attractive incremental returns, minority-shareholder treatment or a return from today's price.
 
 Use the dimensions below to find material gaps, not as a fixed scored checklist. Investigate beyond the initial bull/bear thesis where a neglected dependency could change the business model. Only then compress to the decisive drivers; few variables in the final model must not mean shallow discovery. Bound the research by materiality and the requested depth, not an impossible promise to know everything.

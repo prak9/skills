@@ -27,6 +27,8 @@ Locators should match the evidence type, for example:
 
 These are locator semantics, not required invented fields or a new JSON schema. Missing location details stay missing. Put original citations next to the claims, including summary/table claims; a full source inventory is supplementary.
 
+For each load-bearing assumption, identify whether support comes from regulatory/audited records, issuer statements, independently collected or processed third-party evidence, or secondary narrative. Preserve source lineage, and expose any assumption whose conclusion still rests mainly on processed or narrative evidence; do not replace this judgment with a universal source-percentage quota.
+
 ## Check Support Before Repairing Prose
 
 For each thesis-bearing claim or flagged material statement, compare its actual words and model use with the cited original—not only the existence of a URL. Check subject, amount, scope, time, certainty, attribution and causal strength. Two individually supported facts do not prove a stronger identity, allocation or causal link: “bought GPUs” plus “customer expanded” does not establish those GPUs' customer, use or contracted revenue. A valid derived ratio need not appear verbatim in the source if the cited numerator, denominator and formula support it.
