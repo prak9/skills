@@ -49,6 +49,8 @@ dated premise/evidence
 
 The sandbox should change the final scenarios: merge branches whose cash-flow outcomes are economically equivalent, split branches whose financing or common-shareholder outcomes differ, reject internally impossible combinations, and make dependencies visible. Depth follows value sensitivity and uncertainty rather than a fixed number of rounds. A long narrative with no changed assumption, prediction or value consequence is not a deeper simulation.
 
+Keep the sandbox in the same evidence and model record used for the final scenarios. The delivered report should show the decisive transitions and discarded assumption that changes the verdict, not dump every exploratory branch or create a second scenario system.
+
 ## Workflow
 
 1. **Ground the prior.** Use an applicable reference class, company economics, cycle, TAM, and competition; expose selection and comparability limits. Put downside caution into scenario and risk tests rather than an arbitrary probability haircut. Market excitement alone does not justify an expansion scenario.
@@ -64,7 +66,7 @@ The sandbox should change the final scenarios: merge branches whose cash-flow ou
 
 When integrated into Mode A, contribute the relevant scenarios, belief update, price requirements and uncertainty to one report; the standalone outline below is not a second mandatory report. Skip out-of-scope valuation/exposure sections for business-only work.
 
-For company-level stock-opportunity or valuation work, the integrated report must close with one compact table containing: scenario and horizon; causal operating assumptions; normalized earnings/FCF and financing/dilution; analyst probability or conditional sensitivity; per-share value; return/downside from the dated quote; decisive evidence and falsifier. Follow it with the probability-weighted value/return when a distribution is defensible, or the break-even probability and valuation sensitivity when it is not. Then list the discriminating signals to observe and genuine potential catalysts within the next six months under the entrypoint's definitions. Do not merge option-implied risk-neutral probabilities into the analyst distribution.
+For company-level stock-opportunity or valuation work, the integrated report must close with one compact table containing: scenario and horizon; the decisive causal transition from starting state through participant response and constraint; normalized earnings/FCF and financing/dilution; analyst probability or conditional sensitivity; per-share value; return/downside from the dated quote; decisive evidence and falsifier. Follow it with the probability-weighted value/return when a distribution is defensible, or the break-even probability and valuation sensitivity when it is not. Then list the discriminating signals to observe and genuine potential catalysts within the next six months under the entrypoint's definitions. Do not merge option-implied risk-neutral probabilities into the analyst distribution.
 
 ```markdown
 ## Company And Decision
