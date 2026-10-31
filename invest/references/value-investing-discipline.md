@@ -36,6 +36,8 @@ Price determines the available transaction and can reveal information about fina
 
 Keep an independently supported operating view, the conditional requirements embedded in price and observable market evidence as separate objects. Investigate meaningful disagreement. Do not tune the forecast until it justifies the desired verdict, and do not dismiss adverse price action with a story about irrational participants without evidence.
 
+When a psychology or forced-trading explanation supports mispricing, identify whose incentive, mandate, funding or holding horizon could cause it, seek observable support and compare it with rational operating or financing concerns. Also test whether anchoring, familiarity or sunk research effort is distorting one's own interpretation. An investor identity, a presumed percentage of irrational traders or a claim that trading inevitably fails supplies neither evidence of an edge nor a guarantee of profit. Evaluate public offers, issuers and existing holders on their actual rights, economics and prices rather than excluding them by category.
+
 ## Join Ability Boundary To Margin Of Safety
 
 Ability is not a sector badge or familiarity score. It is the set of load-bearing links whose economics, uncertainty and failure modes can be bounded well enough for the decision. Knowing what remains unbounded is part of the boundary. Research may expand it gradually; reading volume and confidence do not.

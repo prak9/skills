@@ -8,6 +8,8 @@ State the authorized universe, information cutoff, data coverage and material un
 
 Combine broad screening, relevant operating events and leads from related-company research only where they serve the request. Do not default to exhaustive global coverage, unsolicited outreach, paid data or persistent monitoring. Public tips are leads to verify, not independent evidence merely because several people repeat them.
 
+Histories, biographies, science, psychology and ordinary observations can also generate leads. Translate an analogy into a candidate economic mechanism, the conditions under which it transfers, a company-specific observable prediction and an observation that would refute it; then seek direct business evidence. For example, repeated use may suggest habit but does not establish switching cost, paid retention or retained profit. The reading or observation is the origin of the question, not confirmation of the answer. Use relevant accumulated knowledge without imposing a reading quota or expanding an authorized search into unrelated fields or securities.
+
 Attention and ownership concentration can make neglected areas more worth searching, but do not prove that capital was mechanically removed from them or that they are underpriced. A crowded asset can remain attractive and a lonely one can deserve its price. Treat low coverage, forced mandates and narrative concentration as candidate-generation clues; establish mispricing only through business economics, current price requirements and evidence about why the gap can persist or close.
 
 ## Triage An Apparent Anomaly Before Deep Research
