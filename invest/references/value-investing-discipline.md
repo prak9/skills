@@ -68,6 +68,8 @@ Define milestones and falsifiers for the first two; the third can remain uncerta
 
 The capital base must be able to survive the thesis clock. Examine redemption terms, leverage, benchmark or mandate limits and asset liquidity. A long-horizon thesis held in a vehicle with near-term forced-liquidity risk can be uninvestable even when the operating thesis is sound. Align the strategy, position size and capital terms rather than assuming patience can repeal contractual constraints.
 
+Preparation should make a later decision faster, not less demanding: preserve the current earnings/asset bridge, strongest countercase, unresolved legal/governance issue, price hurdle and next decisive observation. During a dislocation, prioritize checks that could reverse the conclusion or reveal permanent loss; stop low-information repetition once the requested judgment is supported. Readiness is distinct from transaction authority. Neither urgency nor a famous investor's historical success supplies missing evidence, permission, position size or a fixed timetable for mean reversion.
+
 ## Preserve A Testable Research Record
 
 Keep dated judgments, assumptions, forecast errors, mechanisms and boundary conditions when they can improve later underwriting. A prominent investor's view is a source hypothesis, not proof. Extract the investment-relevant mechanism, verify its premises against primary evidence and preserve contrary outcomes.

@@ -15,6 +15,8 @@ Reconstruct normalized and future earning power from economic drivers. Distingui
 
 The central work is **investment logic and verification of its key assumptions**. Seek evidence that changes an estimate, separates rival explanations or exposes a constraint; complete accessible decisive checks. Convert “inevitable” claims into necessary conditions and falsifiers. No forced contrarianism, novelty, source quota or composite score. An unresolved case or no demonstrated edge is valid. Mark missing inputs `未核验` and bound the conclusion rather than manufacture precision.
 
+Substantive company reports include a compact **company snapshot with reproducible calculations**: the material operating, financial, capital-return and price/valuation metrics, their comparable history where available, and what changes the investment judgment. For derived metrics show the formula, substituted inputs, units/period/basis, result and sources; a ratio or rating alone is insufficient. Use [the snapshot contract](references/mode-a-buy-side.md#company-snapshot-and-calculation-trail), adapting metrics to the business without expanding narrow requests.
+
 ## Select The Needed References
 
 For general company research, read [buy-side research](references/mode-a-buy-side.md). Standard multi-dimensional analysis is the default; Quick requires a brief/quick request, Full covers deep research, IC memos, re-underwriting and substantive model reconstruction, and Monitoring updates affected prior claims. Depth does not mean a separate report for every analytical lens.

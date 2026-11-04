@@ -11,6 +11,33 @@ Use for business understanding, a bare ticker, stock analysis, an IC memo, re-un
 
 Business-only work can end with supported economics and unresolved questions. Narrow supplied-input arithmetic follows its direct route.
 
+## Company Snapshot And Calculation Trail
+
+Borrow the compact, comparable company-snapshot idea associated with Value Line, not its ratings, marketing language or a subscription dependency. After the research answer, let a reader quickly identify the business's earnings engine, financial condition and price hurdle. Use original disclosures for material facts; a commercial summary is a lead or cross-check, not a replacement for source verification.
+
+Select the metrics that explain this company. Normally cover revenue and growth, profitability, cash conversion, cash/debt and share count, capital efficiency, and current valuation when in scope; add the decisive business unit or cohort metric. Show comparable annual history (often three years when available) plus the latest meaningful reported/TTM period. Preserve actual reporting cadence and missing data; do not invent quarters or annualize a seasonal quarter. A short supplied-data analysis uses its available periods rather than fabricating history.
+
+For comparable additive flows, TTM may be derived as latest FY + current YTD − prior-year matching YTD; rebuild EPS and ratios from appropriate inputs instead of applying that identity mechanically. Monitoring reuses the verified snapshot and updates affected rows rather than reconstructing unchanged history.
+
+The snapshot may use `metric/basis | current and comparable history | meaning/source`. Each material derived value also needs a trace: **definition/formula → substituted sourced inputs → arithmetic/result → investment implication and limit**. Put decisive calculations beside the snapshot or claim; longer reconciliations can use linked appendix rows. Define a formula once across comparable years, but retain the inputs for each result. A spreadsheet link, unexplained score or bare percentage is not the calculation process.
+
+Keep the lead board compact and put the full calculation trail below it or in an appendix. Do not list every computable multiple or per-share restatement merely because inputs exist; retain alternative representations when requested or when their basis changes the judgment. Shared units, sources and proxy caveats can live in table notes, with material local qualifications beside the affected value.
+
+| Economic question | Typical metrics and calculation |
+|---|---|
+| Scale and direction | Revenue growth = current/prior − 1; CAGR = (end/start)^(1/years) − 1 when positive, comparable endpoints support it. Separate volume, realized price/mix, acquisitions and FX where material. |
+| Profit retained | Gross/operating/net margin = the matching profit/revenue. Distinguish EBIT, pretax profit, consolidated net profit and profit attributable to common shareholders. |
+| Profit becomes cash | Show CFO, cash capex and `CFO − cash capex` as a labeled FCF proxy; CFO/net income requires matching scope and becomes uninformative around zero or losses. Reconcile maintenance, growth investment, leases, financing and SBC before calling it sustainable owner cash. |
+| Capital efficiency | ROIC = normalized NOPAT/average operating invested capital; NOPAT = normalized EBIT × (1 − supported operating tax rate), with actual adjustments shown. ROE = common-attributable net profit/average common equity. Never label pretax earnings/capital as after-tax ROIC. |
+| Financial survival | Show gross debt, maturities, unrestricted/restricted cash and necessary operating cash; define the cash deducted in net debt and the claims included. Book equity or inventory is not a liquidation floor. |
+| Shareholder claim and price | Market cap = dated price × corresponding current shares. Historical diluted EPS uses period weighted-average diluted shares; forward per-share values use the supported future diluted count. Reconcile ADS/share-class and FX bases rather than interchanging these counts. |
+| Valuation and cash yield | P/E = price/matching EPS; P/B = corresponding equity market value/common book equity. EV = equity value + included senior/minority claims − qualifying nonoperating assets/cash; specify lease and cash treatment. Use enterprise earnings/cash with EV and common-equity earnings/cash with equity price; explain reported versus economic adjustments. |
+| What the current price permits | Show conditional operating requirements, per-share values and return arithmetic. Discount to value = (V − P)/V; upside from price = V/P − 1. These have different denominators and neither proves safety when V is unreliable. |
+
+For every load-bearing ratio, make the numerator, denominator, tax treatment, date/period and source visible. Negative or unstable denominators may make a ratio `不适用`; unavailable inputs remain `未核验`, not zero. State assumptions separately from disclosed facts and preserve precision until final rounding.
+
+Adapt the board rather than force an industrial template: banks/insurers may need book capital, credit/underwriting, funding and regulatory metrics; retailers need store/inventory economics; software needs retention and acquisition/service economics. The snapshot should help answer **how it earns, why the spread persists, how much cash can reach each share, and whether the price compensates for error**. It does not replace the countercase, causal sandbox or final scenario distribution.
+
 ## Broad Perspectives, One Judgment
 
 For Standard/Full, proactively inspect each relevant perspective before narrowing to the decisive debates. These are distinct questions, not separate language-model calls, votes or compulsory sections.
