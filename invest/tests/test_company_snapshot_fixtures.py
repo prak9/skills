@@ -22,7 +22,7 @@ class CompanySnapshotFixtureTests(unittest.TestCase):
                 self.assertAlmostEqual(expected[key], value, places=8)
 
     def test_case_packet_has_unique_scoped_development_requests(self):
-        self.assertEqual(6, len(self.cases))
+        self.assertEqual(11, len(self.cases))
         self.assertEqual(len(self.cases), len(self.by_id))
         for case in self.cases:
             with self.subTest(case=case["id"]):
@@ -30,6 +30,61 @@ class CompanySnapshotFixtureTests(unittest.TestCase):
                 self.assertEqual("invest", case["skill"])
                 self.assertTrue(case["prompt"] and case["expected_behavior"])
                 self.assertTrue(case["criteria"])
+
+    def test_generic_company_snapshot_has_reconstructible_group_roic(self):
+        x = self.by_id["snapshot-implicit-group-roic"]["inputs"]
+        opening = (x["total_equity_start"] + x["debt_start"]
+                   - x["excess_cash_start"] - x["nonoperating_assets_start"])
+        closing = (x["total_equity_end"] + x["debt_end"]
+                   - x["excess_cash_end"] - x["nonoperating_assets_end"])
+        nopat = x["ebit"] * (1 - x["operating_tax_rate"])
+        self.assert_numeric("snapshot-implicit-group-roic", {
+            "capital_start": opening, "capital_end": closing,
+            "average_capital": (opening + closing) / 2,
+            "nopat": nopat, "roic": nopat / ((opening + closing) / 2),
+            "operating_margin": x["ebit"] / x["revenue"],
+            "fcf_proxy": x["cfo"] - x["cash_capex"],
+        })
+
+    def test_missing_operating_tax_supports_only_a_conditional_roic_range(self):
+        x = self.by_id["snapshot-roic-tax-range"]["inputs"]
+        capital = (x["capital_start"] + x["capital_end"]) / 2
+        low = x["ebit"] * (1 - x["tax_rate_high"])
+        high = x["ebit"] * (1 - x["tax_rate_low"])
+        self.assert_numeric("snapshot-roic-tax-range", {
+            "average_capital": capital, "nopat_low": low,
+            "nopat_high": high, "roic_low": low / capital,
+            "roic_high": high / capital,
+        })
+
+    def test_unmatured_investment_remains_in_group_capital(self):
+        x = self.by_id["snapshot-roic-investment-lag"]["inputs"]
+        capital = (x["capital_start"] + x["capital_end"]) / 2
+        self.assert_numeric("snapshot-roic-investment-lag", {
+            "average_capital": capital, "group_roic": x["nopat"] / capital,
+            "conditional_mature_incremental_roic": (
+                x["guided_incremental_nopat"] / x["guided_incremental_capital"]
+            ),
+        })
+
+    def test_bank_uses_equity_and_asset_returns_not_industrial_capital(self):
+        x = self.by_id["snapshot-bank-capital-return-alternative"]["inputs"]
+        self.assert_numeric("snapshot-bank-capital-return-alternative", {
+            "roe": x["common_net_profit"] / x["average_common_equity"],
+            "roa": x["net_profit"] / x["average_assets"],
+        })
+
+    def test_negative_operating_capital_does_not_produce_a_meaningful_roic(self):
+        case = self.by_id["snapshot-roic-negative-capital"]
+        x = case["inputs"]
+        capital = (x["capital_start"] + x["capital_end"]) / 2
+        self.assertLessEqual(capital, 0)
+        self.assertEqual("not_meaningful", case["expected_roic_status"])
+        self.assert_numeric("snapshot-roic-negative-capital", {
+            "average_capital": capital,
+            "nopat": x["ebit"] * (1 - x["operating_tax_rate"]),
+            "operating_margin": x["ebit"] / x["revenue"],
+        })
 
     def test_snapshot_oracle_preserves_tax_capital_and_cash_bases(self):
         x = self.by_id["snapshot-standard-ratios"]["inputs"]

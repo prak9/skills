@@ -66,3 +66,35 @@ token, cost and independent action telemetry were unavailable. No real-company
 forecast, live trading, legal merits investigation, publication or Notion write
 was performed. These checks support the scoped contract, not general model,
 cost or investment-performance improvement. Commit/push was not requested.
+
+## ROIC coverage correction — 2026-11-04
+
+Subsequent real use exposed a delivery failure: the BABA report discussed
+uncertain AI investment returns but omitted group ROIC. The instructions
+already defined ROIC, and the original synthetic ratio request explicitly
+asked for it. That did not test whether an ordinary company report would
+deliver the metric without being reminded. Project-data gaps also incorrectly
+became a reason to leave out a separately reconstructible group return.
+
+The entrypoint now makes ROIC coverage explicit for substantive non-financial
+company reports. Mode A defines the delivered metric/status, comparable
+history, calculation trail and specific unresolved inputs; business-quality
+owns measurement detail. Historical group returns remain separate from
+incremental/project returns, and construction/ramping capital is not removed
+merely because it has yet to earn revenue. Banks and uninterpretable capital
+bases retain appropriate alternatives, and narrow requests keep their scope.
+
+Five additional visible development cases cover an implicit group-ROIC
+request with missing project data, an unidentified operating tax rate,
+investment maturation lag, a bank, and negative operating capital. The five
+new fixture checks first failed on absent case IDs; after adding the packets,
+all **11 fixture tests and 66 numeric subtests passed**. These are checked
+fixtures and human-reviewed semantic criteria, not five executed model runs
+or proof that the revised skill can no longer omit ROIC. The original observed
+outputs remain unchanged. No new live research, external write or deployment
+is part of this correction.
+
+The final scoped suite (`invest/tests`, Skill contracts, hygiene and
+simplification checks) passed **112 tests and 514 subtests**; skill validation
+and scoped diff checks also passed. These checks do not evaluate a new model's
+real-company report or update an already frozen external method snapshot.
