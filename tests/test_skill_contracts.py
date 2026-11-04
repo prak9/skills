@@ -17,6 +17,8 @@ REMOVED_SKILLS = (
     "alpha-research",
     "linux-perf",
     "performance-patterns",
+    "iterate",
+    "eli5",
 )
 
 
@@ -30,10 +32,11 @@ MARKDOWN_LINK = re.compile(r"\]\(([^)]+)\)")
 
 
 def skill_dirs() -> list[Path]:
+    # Linked bundles are maintained by their owning repositories, not this one.
     return sorted(
         d
         for d in ROOT.iterdir()
-        if not d.name.startswith(".") and (d / "SKILL.md").is_file()
+        if not d.name.startswith(".") and not d.is_symlink() and (d / "SKILL.md").is_file()
     )
 
 
@@ -194,9 +197,9 @@ class SkillContractTests(unittest.TestCase):
     def test_core_skill_behavior_suite_has_expected_cases_and_holdouts(self) -> None:
         expected_counts = {
             "decision": (6, 2),
-            "writing": (6, 2),
-            "invest": (6, 2),
-            "plan-skill": (8, 4),
+            "writing": (10, 2),
+            "invest": (14, 8),
+            "plan-skill": (10, 6),
         }
         all_cases = []
         for skill, (expected_total, expected_acceptance) in expected_counts.items():
@@ -279,16 +282,12 @@ class SkillContractTests(unittest.TestCase):
         )
 
     def test_every_skill_has_openai_interface_metadata(self) -> None:
-        for skill_dir in sorted(ROOT.iterdir()):
-            if skill_dir.name.startswith(".") or not (skill_dir / "SKILL.md").is_file():
-                continue
+        for skill_dir in skill_dirs():
             with self.subTest(skill=skill_dir.name):
                 self.assertTrue((skill_dir / "agents" / "openai.yaml").is_file())
 
     def test_no_skill_references_a_removed_skill(self) -> None:
-        for skill_dir in sorted(ROOT.iterdir()):
-            if skill_dir.name.startswith(".") or not (skill_dir / "SKILL.md").is_file():
-                continue
+        for skill_dir in skill_dirs():
             text = skill_text(skill_dir.name)
             for removed in REMOVED_SKILLS:
                 with self.subTest(skill=skill_dir.name, removed=removed):
@@ -322,7 +321,7 @@ class SkillContractTests(unittest.TestCase):
             ROOT / "research-craft" / "references" / "harness-engineering.md"
         ).read_text(encoding="utf-8")
 
-        self.assertIn("verification closure", skill)
+        self.assertIn("verification closure", skill.lower())
         self.assertIn("Close the verifier loop before scaling", harness)
         self.assertIn("Human-verification debt", harness)
         self.assertIn("User surface / entry", harness)

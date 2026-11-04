@@ -10,6 +10,8 @@ from pathlib import Path
 
 
 EVALS = Path(__file__).resolve().parent
+# Frozen pre-retirement input, not an active Skill or a test of current routing.
+INSTRUCTION = EVALS / "archived-instruction.md"
 
 
 def fingerprint(path: Path) -> str:
@@ -29,7 +31,7 @@ def prepare(case_id: str, destination: Path) -> dict:
     destination.mkdir(parents=True, exist_ok=False)
     workspace = destination / "workspace"
     shutil.copytree(fixture, workspace, ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
-    shutil.copyfile(EVALS.parent / "SKILL.md", destination / "instruction.md")
+    shutil.copyfile(INSTRUCTION, destination / "instruction.md")
     (destination / "task.md").write_text(case["prompt"] + "\n", encoding="utf-8")
     if case.get("resume_note"):
         (workspace / "evidence").mkdir()
@@ -47,6 +49,8 @@ def prepare(case_id: str, destination: Path) -> dict:
         "case": case_id,
         "case_packet_sha256": fingerprint(EVALS / "execution-cases.json"),
         "instruction_sha256": fingerprint(destination / "instruction.md"),
+        "instruction_source": "iterate/evals/archived-instruction.md",
+        "instruction_revision": "3ffb4089468f346f7155dcc797229bded90c2099",
         "fixture_sha256": {
             str(path.relative_to(workspace)): fingerprint(path)
             for path in sorted(workspace.rglob("*")) if path.is_file()

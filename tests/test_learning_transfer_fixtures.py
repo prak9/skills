@@ -14,6 +14,31 @@ FIXTURE = ROOT / "tests/fixtures/learning-transfer/pagination"
 
 
 class LearningTransferFixtureTests(unittest.TestCase):
+    def confirm_historical_fixture_contract(self, directory: Path) -> None:
+        """Adapt only a replay copy after checking the frozen accepted contract."""
+        self.assertNotEqual(FIXTURE.resolve(), directory.resolve())
+        program = directory / "program.md"
+        text = program.read_text()
+        original = (FIXTURE / "program.md").read_text()
+        for section in ("Outcome", "Acceptance"):
+            heading = f"## {section}\n"
+            self.assertEqual(
+                original.split(heading, 1)[1].split("\n## ", 1)[0],
+                text.split(heading, 1)[1].split("\n## ", 1)[0],
+            )
+        # The frozen plan request explicitly authorizes the recorded goal/bounds.
+        # This test-only opt-in is not automatic confirmation of arbitrary plans.
+        self.assertNotIn("- Contract status:", text)
+        anchor = "- Profile: `Lite`\n"
+        self.assertEqual(1, text.count(anchor))
+        confirmed = text.replace(
+            anchor, anchor + "- Contract status: `Confirmed`\n", 1
+        )
+        self.assertEqual(
+            text, confirmed.replace("- Contract status: `Confirmed`\n", "", 1)
+        )
+        program.write_text(confirmed)
+
     def test_sequence_packet_has_distinct_turns_and_criteria(self):
         packet = json.loads((ROOT / "tests/learning-transfer-cases.json").read_text())
         sequences = packet["sequences"]
@@ -48,14 +73,27 @@ class LearningTransferFixtureTests(unittest.TestCase):
             self.assertEqual(list(range(1, 101)), [row["id"] for row in result["rows"]])
             self.assertNotEqual(set(range(1, 121)), {row["id"] for row in result["rows"]})
 
-    def test_initial_lite_state_is_valid_but_not_complete(self):
+    def test_legacy_lite_requires_explicit_contract_confirmation(self):
         result = subprocess.run(
             [sys.executable, "-B", str(ROOT / "plan-skill/scripts/validate_plan.py"),
              "--strict", str(FIXTURE)],
             capture_output=True, text=True, timeout=10,
         )
-        self.assertEqual(0, result.returncode, result.stdout + result.stderr)
+        self.assertNotEqual(0, result.returncode)
+        self.assertIn("missing Contract status", result.stdout)
         self.assertIn("Overall status: `进行中`", (FIXTURE / "program.md").read_text())
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary) / "project"
+            shutil.copytree(FIXTURE, directory)
+            self.confirm_historical_fixture_contract(directory)
+            confirmed = subprocess.run(
+                [sys.executable, "-B", str(ROOT / "plan-skill/scripts/validate_plan.py"),
+                 "--strict", str(directory)],
+                capture_output=True, text=True, timeout=10,
+            )
+            self.assertEqual(0, confirmed.returncode, confirmed.stdout + confirmed.stderr)
+            self.assertIn("Overall status: `进行中`", (directory / "program.md").read_text())
+            self.assertNotIn("- Contract status:", (FIXTURE / "program.md").read_text())
 
     def test_observed_turns_preserve_frozen_prompts(self):
         packet = json.loads((ROOT / "tests/learning-transfer-cases.json").read_text())
@@ -99,6 +137,7 @@ class LearningTransferFixtureTests(unittest.TestCase):
                 cwd=directory, capture_output=True, text=True, timeout=10,
             )
             self.assertEqual(0, content.returncode, content.stderr)
+            self.confirm_historical_fixture_contract(directory)
             validation = subprocess.run(
                 [sys.executable, "-B", str(ROOT / "plan-skill/scripts/validate_plan.py"),
                  "--strict", str(directory)],

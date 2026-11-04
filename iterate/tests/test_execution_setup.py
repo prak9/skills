@@ -21,7 +21,7 @@ class ExecutionSetupTests(unittest.TestCase):
             root = Path(temporary) / "run"
             SETUP.prepare("noisy-promotion", root)
             self.assertEqual(
-                (EVALS.parent / "SKILL.md").read_bytes(),
+                SETUP.INSTRUCTION.read_bytes(),
                 (root / "instruction.md").read_bytes(),
             )
             self.assertNotIn("criteria", (root / "task.md").read_text())
@@ -31,6 +31,8 @@ class ExecutionSetupTests(unittest.TestCase):
             )
             manifest = json.loads((root / "manifest.json").read_text())
             self.assertEqual("noisy-promotion", manifest["case"])
+            self.assertEqual("iterate/evals/archived-instruction.md", manifest["instruction_source"])
+            self.assertEqual("3ffb4089468f346f7155dcc797229bded90c2099", manifest["instruction_revision"])
             self.assertEqual(64, len(manifest["instruction_sha256"]))
             self.assertEqual(3, len(manifest["fixture_sha256"]))
 

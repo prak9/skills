@@ -308,7 +308,12 @@ class ResearchExperimentTests(unittest.TestCase):
         pairs = {}
         for case in cases:
             self.assertEqual("development", case["split"])
-            self.assertTrue((ROOT / case["skill"] / "SKILL.md").is_file())
+            if case["skill"] == "iterate":
+                # Preserve the frozen historical packet without reviving its entry.
+                instruction = ROOT / "iterate/evals/archived-instruction.md"
+            else:
+                instruction = ROOT / case["skill"] / "SKILL.md"
+            self.assertTrue(instruction.is_file())
             self.assertTrue(case["prompt"] and case["criteria"])
             if "pair_id" in case:
                 pairs.setdefault(case["pair_id"], []).append(case)

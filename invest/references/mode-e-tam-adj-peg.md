@@ -1,6 +1,6 @@
 # Mode E — TAM-Adjusted PEG
 
-Use in default Standard/Full research whenever growth duration, penetration, competition or reinvestment runway materially affects the case, without requiring the user to name this mode. Also use for explicit TAM-Adj-PEG or quality-adjusted growth valuation. Apply the qualitative runway/quality lens first; activating it does not require an adjusted PEG number.
+Use only for explicit TAM-Adj-PEG or quality-adjusted PEG calculations. Ordinary research analyzes growth duration, penetration, competition and reinvestment directly in business economics and joint scenarios; it does not require this heuristic. Even when requested, establish the qualitative runway/quality evidence before calculating an adjusted PEG.
 
 This is an **uncalibrated screening heuristic**, not a fair-value model or a standalone trade signal. Its factors and legacy bands have no demonstrated out-of-sample calibration here. Report that status with any calculation; a lower adjusted PEG alone does not establish cheapness.
 

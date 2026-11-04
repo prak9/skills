@@ -61,8 +61,8 @@ class InitPlanTests(unittest.TestCase):
         self.assertIn("## Plan", program)
         self.assertNotRegex(program, r"(?m)^##\s+\d+\.")
         self.assertIn("- Overall status: `待开始`", program)
-        self.assertIn("- Clean state: `Not due`", program)
-        self.assertIn("- Last clean: `Not run`", program)
+        self.assertNotIn("- Clean state:", program)
+        self.assertNotIn("- Last clean:", program)
         self.assertIn("- Owner: `Platform Team`", program)
         self.assertIn(
             "| Node | Status | Action | Verification | Evidence | Reflection |",

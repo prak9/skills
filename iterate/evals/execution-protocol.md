@@ -1,5 +1,13 @@
 # Iterate execution probes
 
+Retirement note (2026-11-04): the independent `iterate` entry is no longer active.
+`prepare_execution.py` now copies `archived-instruction.md`, frozen from revision
+`3ffb4089468f346f7155dcc797229bded90c2099`; its manifest identifies that source.
+Earlier baseline/candidate instructions remain in `execution-evidence.json`.
+The historical protocol below is provenance, not a claim that a live Skill still
+exists. Testing current project/domain rules needs a new versioned comparison;
+replaying these fixtures alone does not validate the replacement workflow.
+
 ## Frozen question and scope
 
 Baseline: `7c86bf24bc3f5e397c4945e55d8875fd9a551a77`, unchanged `iterate/SKILL.md`.

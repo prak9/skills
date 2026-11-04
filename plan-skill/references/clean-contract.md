@@ -4,16 +4,15 @@ Clean is a periodic compression and alignment pass over durable planning state. 
 
 ## Triggers
 
-Set `Clean state` to `Due` when any of these occurs:
+Use Clean when one of these materially impairs recovery:
 
-- before a handoff, long pause, or transition to `待验收` or `完成`;
 - when accumulated nodes or consequential runs make recovery materially harder; use a numeric cadence only if the project explicitly sets one;
 - when `program.md`, the active task, `memory.md`, or referenced living docs duplicate, contradict, or obscure the current state;
 - when a plan exceeds its context budget or added concepts no longer earn their maintenance cost;
 - when generated output is no longer traceable from intent through change and evidence, or the owner cannot explain the active system well enough to re-judge it;
 - during Loop `Reflect` when stale hypotheses or repeated attempts make the next action harder to recover.
 
-Do not run Clean on every update. If none of the triggers fired, leave the state alone. At a handoff or terminal transition, an already concise and consistent plan needs only a brief check and explicit `Last clean: N/A`; no reason is required. Do not manufacture rewrites, reflections, or approval work. `Not run` still means the check has not happened.
+Do not run Clean on every update or create metadata for an already concise, consistent Lite plan. Handoff and terminal transitions need a state consistency check, not an extra cleanup ceremony. Existing plans with `Clean state` / `Last clean` remain compatible: an outstanding `Due` must be resolved, and an opted-in terminal plan still records a dated pass or `N/A`. `Not run` is not evidence of a completed check.
 
 ## Procedure
 
@@ -21,7 +20,7 @@ Do not run Clean on every update. If none of the triggers fired, leave the state
 2. Re-establish authority: one owner for each status, decision, constraint, next action, and evidence pointer.
 3. Distill repeated observations into the smallest decision or finding that still changes future work.
 4. Retire stale or superseded state with a stable-ID pointer and reason; remove duplicate prose and completed operational detail already preserved by evidence.
-5. Update cross-references, `Clean state`, and `Last clean`, then run strict validation.
+5. Update cross-references and any existing Clean metadata, then run strict validation. When explicitly adopting tracked Clean, add both fields together.
 
 ## Preserve And Retire
 
@@ -54,4 +53,4 @@ Clean is complete only when:
 - line count, retrieval surface, and concept count do not increase except for triggered reflection entries or another concrete reason;
 - `scripts/validate_plan.py --strict <project-root>` passes.
 
-Set `Clean state` to `Not due`. Set `Last clean` to a date plus evidence pointer, or explicit `N/A` when the pass found no accumulated state to change. Existing `N/A: <concrete reason>` records remain valid.
+For opted-in metadata, set `Clean state` to `Not due` and `Last clean` to a date plus evidence pointer, or `N/A` after a no-op check. Existing `N/A: <concrete reason>` records remain valid. Do not add those fields solely to close an otherwise aligned Lite plan.

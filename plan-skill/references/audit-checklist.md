@@ -33,11 +33,11 @@ Audit the plan by checking authority, usefulness, and evidence rather than templ
 
 ## Clean And Complexity
 
-- `Clean state` becomes `Due` at handoff or terminal boundaries, after the fixed accumulation thresholds, or when durable state drifts.
+- Clean is triggered by recovery difficulty or conflicting/stale state, not handoff alone. Projects may opt into tracked Clean; existing due checks remain binding.
 - Clean preserves stable IDs, raw evidence, and unique recorded reflections while retiring duplicate, stale, or superseded Markdown state with pointers.
 - Program, active task, memory, and referenced living docs agree on authority, constraints, decisions, and next action.
 - A responsible owner can replay why the result passed and name residual gaps without relying on hidden chat history.
-- The pass reduces retrieval surface or records a concrete no-op reason; it does not add an unbounded cleanup log.
+- The pass reduces retrieval surface or leaves already aligned state unchanged; it does not add an unbounded cleanup log or require a no-op marker in an ordinary Lite plan.
 
 ## Validation
 

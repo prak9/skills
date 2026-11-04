@@ -1,4 +1,4 @@
 interface:
-  display_name: "Research Craft"
-  short_description: "Deliver deep research reports with traceable evidence"
-  default_prompt: "Use $research-craft to investigate this question, deliver a genre-appropriate report and concise summary with traceable evidence, test consequential counterarguments, and state verification limits."
+  display_name: "Research Methods"
+  short_description: "Design experiments, ablations and validity checks"
+  default_prompt: "Use $research-craft to design or audit this empirical comparison, preserve the evaluation boundary, and report what the observed evidence can establish."
