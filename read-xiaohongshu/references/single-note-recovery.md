@@ -1,6 +1,8 @@
 # Single-note login recovery
 
-Use this branch when a public note resolves to an ordinary login page, or the user requests retrieval through an authorized local browser. No MCP service is needed or checked. This is distinct from captcha or risky-IP restrictions, which require stopping. Do not retry anonymously through the login `redirectPath`: the ID/type in that target are diagnostic hints only.
+Use this branch only after the fetcher's bounded anonymous mobile-share attempt did not acquire content and an account route is authorized, or when the user explicitly requests that session. Do not start it merely because the desktop page displayed login. If the request requires no login, stay with public or user-supplied evidence. No MCP service is needed or checked. Captcha or risky-IP restrictions require stopping.
+
+The fetcher may reuse one validated first-party `redirectPath` to request the same public note's mobile page without cookies. Its ID/type are still only identity hints until actual note state is acquired and matched. Do not manually repeat that fallback, enumerate endpoints or convert it into automatic account setup.
 
 ## Authorization and runtime
 

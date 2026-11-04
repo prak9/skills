@@ -1,19 +1,21 @@
 ---
 name: read-xiaohongshu
-description: "Extract text and ordered images from Xiaohongshu links or authorized saved browser content. Use for note reading, OCR, and liked-post archiving; use watch for video."
+description: "Extract public Xiaohongshu notes and ordered images without login, cookies or MCP; use authorized saved content or sessions only when needed. Use for note reading and OCR; use watch for video."
 ---
 
 # Read Xiaohongshu image posts
 
 Resolve a note, classify image/video content, and preserve its source evidence. Read images visually; hand videos to `watch`. Treat downloaded media and the manifest as evidence; do not infer content from the share title alone.
 
-## Direct retrieval; no MCP dependency
+## Public retrieval first; no login or MCP prerequisite
 
 Use the bundled fetcher, not MCP discovery, login checks, or feed tools. It resolves the supplied share link, identifies the primary note from page state, exports its text, and downloads the ordered images. Do not search for a similarly titled note as a substitute for the requested link.
 
-Start with public HTTP unless the user supplies saved HTML or already authorizes use of a specific cookie file/browser session. An ordinary login wall can be handled by reusing that authorized login state; do not silently open an account or require installing an MCP server. No-MCP does not mean every note is anonymously readable. Captcha or risky-IP restrictions require stopping, not route switching.
+For a supplied share/note link, start with the public fetcher without checking login, opening Chrome, requesting a QR scan or installing MCP. It can recover an ordinary desktop login redirect by trying the **same note's public mobile share page once**, using only the actual share parameters. This is a normal anonymous page representation, not account access; an initial login prompt alone does not prove the note requires login.
 
-When the user says to use their login, resolve the intended source from this conversation first. Prefer that existing authorized source over an empty dedicated browser; do not repeat anonymous retrieval or ask for authorization already given. Follow [single-note recovery](references/single-note-recovery.md) before choosing the route. A question about whether MCP was used calls for a truthful method explanation, not a silent change of method.
+Use supplied saved HTML directly. Take an authenticated route only when the current request calls for that session or public retrieval is exhausted and account access is separately authorized. When the user requests no login, stay on public/supplied evidence and do not start login setup. Preserve existing content-use authorization without asking again; it does not itself authorize an account or external publication. Captcha, risky-IP, access denial and rate limits stop the affected path—no token, account or proxy cycling. Public retrieval is not guaranteed for every note.
+
+When the current request explicitly asks to use a login, resolve the intended source from this conversation first. Prefer it over an empty dedicated browser; do not ask again for that permission. Follow [single-note recovery](references/single-note-recovery.md). A question about whether MCP was used calls for a truthful method explanation, not a silent change of method.
 
 For an authorized actual Chrome session, the adjacent `xiaohongshu` Skill adds a local extension Bridge and `export-note`: read its setup and explore references, export only the exact note, then continue the image/video checks here. This is distinct from the dedicated Playwright profile and does not require importing cookies. Search, publishing and social actions belong to that Skill, not to a request to extract one note.
 

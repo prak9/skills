@@ -5,11 +5,11 @@ description: "通过用户授权的 Chrome 登录会话搜索小红书、读取�
 
 # 小红书浏览器工作流
 
-使用真实 Chrome 会话，通过本地 Bridge 和随附 CLI 执行。读取、创作、上传、发布、互动是不同权限，不因任务包含“小红书”就全部开启。
+本 Skill 负责需要实际账号的 Chrome/Bridge 工作流，不是单篇公开笔记的默认入口。公开正文和图片先用 `read-xiaohongshu` 免登录抓取，包括其一次移动分享页回退；不先检查账号、安装扩展或展示二维码。读取、创作、上传、发布、互动是不同权限，不因任务包含“小红书”就全部开启。
 
 ## 选择最短路径
 
-- 单篇正文、轮播图提取：用 `read-xiaohongshu`。需要已授权的真实 Chrome 会话时，走本 Skill 的 `export-note`，再回到原读取流程检查全部图片；视频交给 `watch`。
+- 单篇正文、轮播图提取：先用 `read-xiaohongshu`；桌面登录提示不等于移动公开页不可读。用户要求免登录时不转账号流程。确需且已授权使用真实 Chrome 会话时，走 `export-note`，再回到原读取流程检查全部图片；视频交给 `watch`。
 - 安装、连接、登录：先读 [setup.md](references/setup.md)。`status` 只检查连接，不能证明登录或笔记可读。
 - 搜索、主页、评论、具体笔记：读 [explore.md](references/explore.md)。来源身份、图片顺序与完整性优先于标题相似。
 - 图文、视频、长文、预览、草稿、定时发布：读 [publish.md](references/publish.md)。写作或改写确为交付物时调用 `writing`。

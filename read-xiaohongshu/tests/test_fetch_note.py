@@ -257,6 +257,100 @@ class ManifestTests(unittest.TestCase):
         self.assertIn('未包含图片 OCR', body)
         self.assertNotIn('xsec_token', body)
 
+    def test_login_shell_recovers_same_note_from_public_mobile_page(self):
+        self.args.source = 'https://xhslink.cn/o/example'
+        self.args.html_file = None
+        target = NOTE_URL + '?xsec_token=share-token&xsec_source=pc_share'
+        login = 'https://www.xiaohongshu.com/login?redirectPath=' + quote(target, safe='')
+        mobile = NOTE_URL.replace('/explore/', '/discovery/item/')
+        with patch.object(fetch, 'request_url', side_effect=[
+            (b'<html>login</html>', login, 'text/html'),
+            (self.html.read_bytes(), mobile, 'text/html'),
+            *[(b'GIF89aimage', 'https://ci.xhscdn.com/image', 'image/gif')] * 3,
+        ]) as request, patch.object(fetch, 'read_browser_page') as browser_read, \
+                patch.object(fetch, 'build_opener', wraps=fetch.build_opener) as build:
+            result = fetch.run(self.args)
+        self.assertTrue(result['ok'])
+        self.assertTrue(result['downloaded'])
+        self.assertEqual('complete', result['completeness'])
+        self.assertEqual(NOTE_A, result['note_id'])
+        self.assertEqual('public_mobile', result['retrieval_route'])
+        self.assertEqual([1, 2, 3], [row['index'] for row in result['images']])
+        self.assertEqual(mobile + '?xsec_token=share-token&xsec_source=pc_share',
+                         request.call_args_list[1].args[1])
+        self.assertEqual(fetch.MOBILE_USER_AGENT,
+                         request.call_args_list[1].kwargs['user_agent'])
+        self.assertEqual(5, request.call_count)
+        build.assert_called_once_with(None)
+        browser_read.assert_not_called()
+        manifest = json.loads(Path(result['manifest']).read_text())
+        self.assertEqual('public_mobile', manifest['retrieval_route'])
+        self.assertNotIn('share-token', Path(result['text_file']).read_text())
+
+    def test_mobile_recovery_rejects_changed_note_identity(self):
+        self.args.source = 'https://xhslink.cn/o/example'
+        self.args.html_file = None
+        login = 'https://www.xiaohongshu.com/login?redirectPath=' + quote(NOTE_URL, safe='')
+        other_url = NOTE_URL.replace(NOTE_A, NOTE_B)
+        other_page = '<script>window.__INITIAL_STATE__=' + json.dumps({
+            'note': {'noteDetailMap': {NOTE_B: {'note': note(NOTE_B)}}}
+        }) + '</script>'
+        with patch.object(fetch, 'request_url', side_effect=[
+            (b'login', login, 'text/html'), (other_page.encode(), other_url, 'text/html')
+        ]) as request, self.assertRaises(fetch.FetchError) as caught:
+            fetch.run(self.args)
+        self.assertEqual(5, caught.exception.exit_code)
+        self.assertEqual(2, request.call_count)
+        self.assertFalse(Path(self.args.out_dir).exists())
+
+    def test_login_return_target_must_match_supplied_note(self):
+        self.args.html_file = None
+        login = 'https://www.xiaohongshu.com/login?redirectPath=' + quote(
+            NOTE_URL.replace(NOTE_A, NOTE_B), safe='')
+        with patch.object(fetch, 'request_url', return_value=(b'login', login, 'text/html')) as request, \
+                self.assertRaises(fetch.FetchError) as caught:
+            fetch.run(self.args)
+        self.assertEqual(5, caught.exception.exit_code)
+        request.assert_called_once()
+
+    def test_invalid_login_return_target_never_causes_another_request(self):
+        self.args.html_file = None
+        targets = (
+            'https://example.com/explore/' + NOTE_A,
+            'https://www.xiaohongshu.com:8765/explore/' + NOTE_A,
+            'https://www.xiaohongshu.com/user/profile/' + NOTE_A,
+        )
+        for target in targets:
+            login = 'https://www.xiaohongshu.com/login?redirectPath=' + quote(target, safe='')
+            with self.subTest(target=target), patch.object(
+                    fetch, 'request_url', return_value=(b'login', login, 'text/html')) as request, \
+                    self.assertRaises(fetch.FetchError) as caught:
+                fetch.run(self.args)
+            self.assertEqual('login_required', caught.exception.details['status'])
+            request.assert_called_once()
+
+    def test_security_blocks_stop_before_or_during_public_recovery(self):
+        self.args.html_file = None
+        login = 'https://www.xiaohongshu.com/login?redirectPath=' + quote(NOTE_URL, safe='')
+        blocked = (b'verification', 'https://www.xiaohongshu.com/website-login/captcha', 'text/html')
+        for responses in ([blocked], [(b'login', login, 'text/html'), blocked]):
+            with self.subTest(requests=len(responses)), patch.object(
+                    fetch, 'request_url', side_effect=responses) as request, \
+                    self.assertRaises(fetch.FetchError) as caught:
+                fetch.run(self.args)
+            self.assertEqual('security_block', caught.exception.details['status'])
+            self.assertEqual(len(responses), request.call_count)
+            self.assertFalse(Path(self.args.out_dir).exists())
+
+    def test_public_http_denial_is_not_retried_via_mobile(self):
+        self.args.html_file = None
+        for code in (401, 403, 404, 429):
+            with self.subTest(code=code), patch.object(
+                    fetch, 'request_url', side_effect=fetch.FetchError(f'HTTP {code}', 3)) as request, \
+                    self.assertRaises(fetch.FetchError):
+                fetch.run(self.args)
+            request.assert_called_once()
+
     def test_body_survives_image_failure(self):
         with patch.object(fetch, 'request_url', side_effect=fetch.FetchError('HTTP 403', 3)):
             result = fetch.run(self.args)
@@ -311,7 +405,7 @@ class ManifestTests(unittest.TestCase):
         with patch.object(fetch, "request_url", return_value=(page.encode(), NOTE_URL.replace(NOTE_A, NOTE_B), "text/html")), self.assertRaises(fetch.FetchError):
             fetch.run(self.args)
 
-    def test_login_is_classified_before_parsing_without_downloading(self):
+    def test_public_login_stops_after_one_mobile_attempt_without_content(self):
         self.args.html_file = None
         target = NOTE_URL + '?type=video&xsec_token=private-token'
         login = 'https://www.xiaohongshu.com/login?redirectPath=' + quote(target, safe='')
@@ -322,8 +416,25 @@ class ManifestTests(unittest.TestCase):
         self.assertEqual(NOTE_A, caught.exception.details['note_id'])
         self.assertEqual('video', caught.exception.details['note_type_hint'])
         self.assertNotIn('private-token', json.dumps(caught.exception.details))
-        self.assertEqual(1, request.call_count)
+        self.assertTrue(caught.exception.details['public_mobile_attempted'])
+        self.assertEqual(2, request.call_count)
         self.assertFalse(Path(self.args.out_dir).exists())
+
+    def test_login_without_a_unique_note_target_does_not_guess_an_endpoint(self):
+        self.args.source = 'https://xhslink.cn/o/example'
+        self.args.html_file = None
+        for login in (
+            'https://www.xiaohongshu.com/login',
+            'https://www.xiaohongshu.com/login?redirectPath=',
+            'https://www.xiaohongshu.com/login?redirectPath=' + quote(NOTE_URL, safe='')
+            + '&redirectPath=' + quote(NOTE_URL.replace(NOTE_A, NOTE_B), safe=''),
+        ):
+            with self.subTest(login=login), patch.object(
+                    fetch, 'request_url', return_value=(b'login', login, 'text/html')) as request, \
+                    self.assertRaises(fetch.FetchError) as caught:
+                fetch.run(self.args)
+            self.assertEqual('login_required', caught.exception.details['status'])
+            request.assert_called_once()
 
     def test_video_without_images_returns_handoff_not_ocr_success(self):
         video = {'noteId': NOTE_A, 'type': 'video', 'title': 'video', 'desc': 'caption',

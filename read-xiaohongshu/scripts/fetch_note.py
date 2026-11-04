@@ -23,6 +23,11 @@ USER_AGENT = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 )
+MOBILE_USER_AGENT = (
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) "
+    "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+    "Version/17.5 Mobile/15E148 Safari/604.1"
+)
 MAX_HTML_BYTES = 20 * 1024 * 1024
 MAX_IMAGE_BYTES = 40 * 1024 * 1024
 MAX_IMAGES = 30
@@ -180,11 +185,12 @@ def request_url(
     timeout: float,
     *,
     referer: str | None = None,
+    user_agent: str = USER_AGENT,
 ) -> tuple[bytes, str, str]:
     hosts = NOTE_HOSTS if referer is None else IMAGE_HOSTS
     validate_request_url(url, hosts)
     headers = {
-        "User-Agent": USER_AGENT,
+        "User-Agent": user_agent,
         "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.7",
         "Accept": "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.8",
     }
@@ -249,21 +255,58 @@ def classify_access_page(final_url: str, page: str) -> None:
         )
 
 
-def login_target_hint(url: str) -> dict[str, Any]:
-    """Read, but never request, a login return target. Do not expose share tokens."""
-    targets = urllib.parse.parse_qs(urllib.parse.urlsplit(url).query).get("redirectPath", [])
+def login_note_target(url: str) -> str | None:
+    """Accept only one first-party return target with an exact public note path."""
+    targets = urllib.parse.parse_qs(
+        urllib.parse.urlsplit(url).query, keep_blank_values=True
+    ).get("redirectPath", [])
     if len(targets) != 1:
-        return {}
+        return None
     target = urllib.parse.urljoin("https://www.xiaohongshu.com", targets[0])
     try:
         validate_request_url(target, ("xiaohongshu.com",))
     except FetchError:
+        return None
+    if not NOTE_ID_RE.fullmatch(urllib.parse.urlsplit(target).path):
+        return None
+    return target
+
+
+def public_mobile_target(source_url: str, login_url: str) -> tuple[str, str] | None:
+    """One ordinary mobile share page; no account, new token or endpoint search."""
+    target = login_note_target(login_url)
+    query = urllib.parse.parse_qs(urllib.parse.urlsplit(login_url).query, keep_blank_values=True)
+    if "redirectPath" in query and target is None:
+        return None
+    if target is None:
+        source = urllib.parse.urlsplit(source_url)
+        if not host_matches(source.hostname, ("xiaohongshu.com",)) or not NOTE_ID_RE.fullmatch(source.path):
+            return None
+        target = source_url
+    validate_request_url(target, ("xiaohongshu.com",))
+    parsed = urllib.parse.urlsplit(target)
+    match = NOTE_ID_RE.fullmatch(parsed.path)
+    if not match:
+        return None
+    note_id = match.group(1).lower()
+    source_match = NOTE_ID_RE.search(urllib.parse.urlsplit(source_url).path)
+    if source_match and source_match.group(1).lower() != note_id:
+        raise FetchError("The login return target changed the requested note identity", 5)
+    return (
+        urllib.parse.urlunsplit((
+            "https", "www.xiaohongshu.com", f"/discovery/item/{note_id}", parsed.query, ""
+        )),
+        note_id,
+    )
+
+
+def login_target_hint(url: str) -> dict[str, Any]:
+    """Expose only sanitized identity hints, not share tokens or acquired content."""
+    target = login_note_target(url)
+    if target is None:
         return {}
     parsed = urllib.parse.urlsplit(target)
-    match = NOTE_ID_RE.search(parsed.path)
-    if not match:
-        return {}
-    note_id = match.group(1).lower()
+    note_id = NOTE_ID_RE.fullmatch(parsed.path).group(1).lower()
     return {
         "note_id": note_id,
         "canonical_url": f"https://www.xiaohongshu.com/explore/{note_id}",
@@ -644,6 +687,9 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
     opener = build_opener(cookie_file)
 
     browser_mode = getattr(args, "browser", False)
+    public_expected_id = None
+    retrieval_route = ("dedicated_browser" if browser_mode else "saved_html" if args.html_file
+                       else "cookie_http" if cookie_file else "public_http")
     if browser_mode and (args.html_file or cookie_file):
         raise FetchError("--browser cannot be combined with --html-file or --cookie-file", 2)
 
@@ -659,14 +705,43 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         data, final_url, content_type = request_url(opener, source_url, args.timeout)
         page = decode_html(data, content_type)
     if not args.html_file or host_matches(urllib.parse.urlsplit(final_url).hostname, ("xiaohongshu.com",)):
-        classify_access_page(final_url, page)
+        try:
+            classify_access_page(final_url, page)
+        except FetchError as access_error:
+            if (access_error.details.get("status") != "login_required"
+                    or browser_mode or args.html_file or cookie_file):
+                raise
+            fallback = public_mobile_target(source_url, final_url)
+            if fallback is None:
+                raise
+            mobile_url, public_expected_id = fallback
+            try:
+                data, final_url, content_type = request_url(
+                    opener, mobile_url, args.timeout, user_agent=MOBILE_USER_AGENT
+                )
+                page = decode_html(data, content_type)
+                classify_access_page(final_url, page)
+            except FetchError as fallback_error:
+                fallback_error.details["public_mobile_attempted"] = True
+                if fallback_error.details.get("status") == "login_required":
+                    for key in ("note_id", "canonical_url", "note_type_hint", "hint_basis"):
+                        if key in access_error.details:
+                            fallback_error.details.setdefault(key, access_error.details[key])
+                    fallback_error.details.setdefault("note_id", public_expected_id)
+                    fallback_error.details.setdefault(
+                        "canonical_url", f"https://www.xiaohongshu.com/explore/{public_expected_id}"
+                    )
+                raise
+            retrieval_route = "public_mobile"
 
     source_match = NOTE_ID_RE.search(urllib.parse.urlsplit(source_url).path)
     final_match = NOTE_ID_RE.search(urllib.parse.urlsplit(final_url).path)
     if source_match and final_match and source_match.group(1).lower() != final_match.group(1).lower():
         raise FetchError("The note redirect changed the requested note identity", 5)
+    if public_expected_id and final_match and public_expected_id != final_match.group(1).lower():
+        raise FetchError("The public mobile redirect changed the requested note identity", 5)
     expected_match = source_match or final_match
-    expected_id = expected_match.group(1).lower() if expected_match else None
+    expected_id = expected_match.group(1).lower() if expected_match else public_expected_id
     state = parse_initial_state(page)
     note = select_note(state, expected_id)
     is_video = note.get("type") == "video" or bool(note.get("video"))
@@ -704,6 +779,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
             "schema_version": 1, "fetched_at": datetime.now(timezone.utc).isoformat(),
             "source_url": source_url, "resolved_url": final_url, **metadata,
             "note_type": "video", "status": "video_handoff", "access_mode": access_mode,
+            "retrieval_route": retrieval_route,
             "canonical_url": canonical_url, "text_file": "note.txt",
             "downloaded": False, "completeness": "none", "image_count": 0, "images": [],
             "handoff": {"skill": "watch", "source_url": final_url,
@@ -732,6 +808,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "resolved_url": final_url,
         "canonical_url": canonical_url,
         "access_mode": access_mode,
+        "retrieval_route": retrieval_route,
         "text_file": "note.txt",
         **metadata,
         "image_count": len(images),
@@ -749,6 +826,7 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
         "resolved_url": final_url,
         "canonical_url": canonical_url,
         "access_mode": access_mode,
+        "retrieval_route": retrieval_route,
         "text_file": str(text_path),
         "author": metadata["author"],
         "note_id": metadata["note_id"],

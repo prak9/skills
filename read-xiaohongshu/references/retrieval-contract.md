@@ -1,6 +1,6 @@
 # Retrieval Contract
 
-Read this file when invoking the fetcher, diagnosing acquisition, or handling video/partial results. Public fetching remains the default; authenticated recovery additionally requires `single-note-recovery.md`.
+Read this file when invoking the fetcher, diagnosing acquisition, or handling video/partial results. Public fetching requires no login, cookies, browser runtime or MCP. Authenticated recovery additionally requires `single-note-recovery.md`.
 
 ## Inputs And Options
 
@@ -16,10 +16,18 @@ The public path uses Python's standard library. JavaScript-only page state can r
 
 Use the token-free `canonical_url` for citations and keep signed retrieval URLs local. `manifest.json` owns media order, completeness, missing pages and per-item status.
 
+## Bounded Public Mobile Recovery
+
+An ordinary desktop `/login` redirect is not a global access verdict. For anonymous HTTP only, the fetcher makes at most one additional page request using a normal mobile browser profile and the same note's `/discovery/item/ID` share page. The target must come from the supplied exact note URL or one validated first-party `redirectPath`; preserve actual query parameters, never generate a token or guess a note ID.
+
+Validate host, port, path and identity before the additional request and again against the returned page/state. Conflicting note IDs or ambiguous/external targets are rejected. A captcha/security block or HTTP 401/403/404/429 does not trigger this fallback. A second ordinary login response ends the attempt; no endpoint search, retries, session discovery or QR login follows automatically.
+
+Successful manifests retain `access_mode=http` and add `retrieval_route=public_mobile`; direct public HTTP is `public_http`. Other routes are `cookie_http`, `saved_html` and `dedicated_browser`. A failed mobile attempt adds the token-free `public_mobile_attempted=true` diagnostic. None of these markers proves OCR, video transcription or a valid account session.
+
 ## Identity And Failure Classification
 
 - **Expired/invalid share URL:** after one confirmed `404`, request a fresh share URL, original explore URL, saved HTML or screenshots.
-- **`login_required`:** the selected route saw a login page or lacks a login marker. This does not prove another session expired. Preserve `session_source`, `session_validity=unverified` and `content_verified=false`; use `single-note-recovery.md` rather than retrying anonymously or routing to MCP.
+- **`login_required`:** the selected route still lacks usable content after its bounded public attempt, or an explicitly selected session lacks a login marker. This does not prove every route needs login or another session expired. Preserve `session_source`, `session_validity=unverified` and `content_verified=false`. Do not repeat the exhausted public attempt. If no-login is required, offer saved HTML/images or a fresh share link; otherwise use `single-note-recovery.md` only within account authorization.
 - **`security_block`:** captcha, risky IP or verification. Stop; do not cycle endpoints, accounts or proxies.
 - **`video_handoff`:** identity/metadata were resolved, but video acquisition, transcript and frames remain unfinished.
 - **No primary note/media sequence:** report a schema or identity problem; do not reinterpret it as a video or login failure.

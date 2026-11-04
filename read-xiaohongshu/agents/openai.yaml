@@ -1,4 +1,4 @@
 interface:
   display_name: "Read Xiaohongshu"
-  short_description: "Extract Xiaohongshu text and images without MCP"
-  default_prompt: "Use $read-xiaohongshu to extract this link with the direct fetcher, or an authorized local browser if login is required, without MCP."
+  short_description: "Read public Xiaohongshu notes without login or MCP"
+  default_prompt: "Use $read-xiaohongshu to read this public note without login, including its bounded mobile-share fallback; inspect all images and report actual gaps without starting account setup."

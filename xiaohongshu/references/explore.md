@@ -1,5 +1,7 @@
 # 搜索、读取与证据
 
+单篇公开链接先交给相邻 `read-xiaohongshu` 的免登录 HTTP/移动分享页路径，不需要执行下列 Bridge 命令。已有内容提取授权直接沿用；只有任务确需且已授权访问账号时才进入本流程，普通登录提示不自动触发扫码。
+
 以下命令在 Skill 目录运行，省略解释器前缀时均指 `runtime/.venv/bin/python scripts/xhs.py`。
 
 ```bash
