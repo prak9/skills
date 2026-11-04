@@ -22,7 +22,7 @@ class CompanySnapshotFixtureTests(unittest.TestCase):
                 self.assertAlmostEqual(expected[key], value, places=8)
 
     def test_case_packet_has_unique_scoped_development_requests(self):
-        self.assertEqual(11, len(self.cases))
+        self.assertEqual(15, len(self.cases))
         self.assertEqual(len(self.cases), len(self.by_id))
         for case in self.cases:
             with self.subTest(case=case["id"]):
@@ -30,6 +30,60 @@ class CompanySnapshotFixtureTests(unittest.TestCase):
                 self.assertEqual("invest", case["skill"])
                 self.assertTrue(case["prompt"] and case["expected_behavior"])
                 self.assertTrue(case["criteria"])
+
+    def test_value_line_style_preserves_per_share_and_cash_definitions(self):
+        x = self.by_id["snapshot-valueline-statistical-array"]["inputs"]
+        common_profit = x["parent_net_profit"] - x["preferred_dividends"]
+        cash_proxy = common_profit + x["depreciation_amortization"]
+        fcf = x["cfo"] - x["cash_capex"]
+        eps = common_profit / x["weighted_diluted_shares"]
+        self.assert_numeric("snapshot-valueline-statistical-array", {
+            "sales_per_share": x["revenue"] / x["year_end_common_shares"],
+            "vl_style_cash_proxy_per_share": cash_proxy / x["year_end_common_shares"],
+            "reported_diluted_eps": eps,
+            "declared_dividends_per_share": (
+                x["common_declared_dividends"] / x["year_end_common_shares"]
+            ),
+            "cash_capex_per_share": x["cash_capex"] / x["year_end_common_shares"],
+            "book_value_per_share": x["common_equity_end"] / x["year_end_common_shares"],
+            "fcf_proxy_per_share": fcf / x["year_end_common_shares"],
+            "average_annual_pe": x["average_annual_price"] / eps,
+            "current_price_over_reported_eps": x["current_price"] / eps,
+            "retained_to_common_equity_end_basis": (
+                common_profit - x["common_declared_dividends"]
+            ) / x["common_equity_end"],
+            "all_dividends_to_parent_profit": (
+                x["common_declared_dividends"] + x["preferred_dividends"]
+            ) / x["parent_net_profit"],
+        })
+
+    def test_value_line_style_metrics_are_not_silent_accounting_substitutes(self):
+        x = self.by_id["snapshot-valueline-definition-boundaries"]["inputs"]
+        shares = x["year_end_common_shares"]
+        self.assert_numeric("snapshot-valueline-definition-boundaries", {
+            "ebit_margin": x["ebit"] / x["revenue"],
+            "ebitda_style_margin": (x["ebit"] + x["depreciation_amortization"]) / x["revenue"],
+            "vl_style_cash_proxy_per_share": (
+                x["parent_net_profit"] + x["depreciation_amortization"]
+                - x["preferred_dividends"]
+            ) / shares,
+            "cfo_per_share": x["cfo"] / shares,
+            "fcf_proxy_per_share": (x["cfo"] - x["cash_capex"]) / shares,
+            "roic": x["ebit"] * (1 - x["operating_tax_rate"]) / x["average_capital"],
+            "supplied_vl_total_capital_return": x["supplied_vl_total_capital_return"],
+        })
+
+    def test_value_line_current_year_stays_incomplete_until_actually_reported(self):
+        case = self.by_id["snapshot-valueline-incomplete-year"]
+        self.assertEqual("incomplete_reported_period", case["current_year_status"])
+        self.assertIsNone(case["inputs"]["current_year_full_year_revenue"])
+        self.assertIsNone(case["inputs"]["three_to_five_year_target"])
+
+    def test_value_line_layout_does_not_expand_an_explicit_eps_calculation(self):
+        x = self.by_id["snapshot-valueline-narrow-eps"]["inputs"]
+        self.assert_numeric("snapshot-valueline-narrow-eps", {
+            "eps": x["common_net_profit"] / x["weighted_diluted_shares"],
+        })
 
     def test_generic_company_snapshot_has_reconstructible_group_roic(self):
         x = self.by_id["snapshot-implicit-group-roic"]["inputs"]

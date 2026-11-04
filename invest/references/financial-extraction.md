@@ -2,6 +2,53 @@
 
 Use for requested filing extraction or material statement inputs to research. Read the common rules and only the applicable market branch. For a dual-listed issuer, both may be needed to reconcile documents; two listings do not create two sets of consolidated earnings. This module structures evidence, not an investment verdict. Use [financial-evidence.md](financial-evidence.md) for original-source verification and [data-contract.md](data-contract.md) for calculations.
 
+## Direct Parser Entry: No Research Session
+
+`invest` owns extraction and interpretation. When financial tools are already exposed, use their document/statement/table operations directly. Do not start an Alpha research session just to unlock financial tools. If the available MCP only exposes research-session controls, the bundled `scripts/read_financial_statements.py` bypasses that control plane and calls the same Fins parsing/storage backend locally. Do not invoke `alpha-research`, load its frozen method, create a mandate, or submit a report for an extraction task.
+
+The helper requires a Python environment with the existing `alpha.fins` backend and an existing Fins workspace. It is an optional backend, not a copied parser or a standalone replacement for Fins. Use the environment where Fins is installed; do not change `sys.path`, guess a repository path, install packages or initialize a model merely to hide a missing dependency. Backend absence leaves the original SEC/iXBRL and PDF paths available. `--help` itself uses only the standard library.
+
+From a configured project environment, replace `/path/to/invest` with this Skill's actual directory:
+
+```bash
+python /path/to/invest/scripts/read_financial_statements.py \
+  --workspace ./workspace --output ./workspace/tmp/company-documents.json \
+  list --ticker META
+
+python /path/to/invest/scripts/read_financial_statements.py \
+  --workspace ./workspace --output ./workspace/tmp/company-statements.json \
+  extract --ticker META --document-id ACTUAL_DOCUMENT_ID
+```
+
+Choose the actual filing ID from the returned inventory after checking issuer, report type, period and amendment. There is no automatic "latest" selection: the newest 6-K, for example, may not contain the intended financial results. `extract` prepares just that document, reuses matching processing versions and reads income, balance sheet and cash flow by default. `--statement income cash_flow` limits an explicitly narrow request. It uses SEC-native XBRL/HTML or the existing Docling grid parser as supported by that document; it does not download or convert every filing.
+
+If the intended original is not yet stored, use an existing financial downloader/importer. In an already configured Alpha installation the existing command is, for example:
+
+```bash
+alpha download --base ./workspace --ticker AAPL --forms 10-Q \
+  --start 2026-01-01 --end 2026-11-04
+```
+
+The dates are illustrative: choose the user's requested evidence window. Local PDF import likewise needs explicit issuer/report metadata through the existing Fins importer. Do not directly write financial warehouse files. Download/import success is not statement extraction success. No new downloader, identity, credentials or model configuration is introduced by this Skill.
+
+Discover document-local tables before reading notes, reconciliations or missing standard lines:
+
+```bash
+python /path/to/invest/scripts/read_financial_statements.py \
+  --workspace ./workspace --output ./workspace/tmp/company-tables.json \
+  tables --ticker META --document-id ACTUAL_DOCUMENT_ID
+
+python /path/to/invest/scripts/read_financial_statements.py \
+  --workspace ./workspace --output ./workspace/tmp/company-note.json \
+  table --ticker META --document-id ACTUAL_DOCUMENT_ID --table-ref ACTUAL_TABLE_REF
+```
+
+The full JSON export preserves each statement's raw result and receipt: source and processing hashes, source metadata, actual access time, currency/units/scale, original periods/rows and available table/page locators. It does not silently normalize amounts, infer consolidation, subtract cumulative EPS, or replace unknown currency with the trading currency. With `--output`, stdout is a small status/path summary; inspect the saved JSON before using numbers. The export is an evidence artifact, not an Alpha research database entry or formal coverage receipt.
+
+Exit `0` means the requested operation completed; statement status `extracted` means only that finite numeric values, dated columns, currency and units passed basic checks. Exit `2` means partial/unavailable coverage: all returned statement receipts remain available, with per-statement issues. Missing currency, generic `NUMBER` units, empty values, period/value mismatches and unsupported statements remain gaps. Exit `1` means execution/dependency failure. A table status `table_read` is an original table read, not proof of standard three-statement completeness.
+
+After extraction, apply the common and market-specific rules below: verify consolidated scope, actual duration, scaling, signs, ownership and key footnotes against the original. Hashes prove content identity, not economic correctness or first-publication time. Reuse unchanged valid evidence with its original date/version; new filings, amendments or changed processor versions need fresh preparation/verification. If a parser field is missing, inspect the original and label any manual correction with its source; do not rewrite the raw receipt as a successful automated extraction. Image-only pages still require the [PDF/OCR fallback](pdf-retrieval.md).
+
 ## Three Layers, One Evidence Chain
 
 Keep these distinguishable in a compact table, JSON or the existing model, according to the requested output:
@@ -54,7 +101,7 @@ For material cash-quality questions, inspect the notes connecting `货币资金`
 
 Keep period-end share capital, weighted-average shares and basic/diluted EPS distinct. Preserve effective dates and restated comparatives for bonus shares, capitalization issues, repurchases, issuance and convertibles; do not apply a current share count retroactively without a justified bridge. Units such as 元、万元、亿元 and negative parentheses must follow the table, not the portal default.
 
-Use the existing contract: encode consolidated/parent scope and profit/adjustment attribution explicitly in `basis` for flat v1 sums/basis checks, and use matching `statement.scope`, `concept` and version fields for v2 period differences. Automated equality checks cannot infer scope from a Chinese row label. Do not imply a new A-share parser exists: source selection, forecast/preliminary/final classification and note interpretation still require original-document checks.
+Use the existing contract: encode consolidated/parent scope and profit/adjustment attribution explicitly in `basis` for flat v1 sums/basis checks, and use matching `statement.scope`, `concept` and version fields for v2 period differences. Automated equality checks cannot infer scope from a Chinese row label. One successful parse does not establish complete A-share coverage: source selection, forecast/preliminary/final classification and note interpretation still require original-document checks.
 
 ## Operating Information Beyond Three Statements
 

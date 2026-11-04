@@ -98,3 +98,41 @@ The final scoped suite (`invest/tests`, Skill contracts, hygiene and
 simplification checks) passed **112 tests and 514 subtests**; skill validation
 and scoped diff checks also passed. These checks do not evaluate a new model's
 real-company report or update an already frozen external method snapshot.
+
+## Official Value Line format alignment — 2026-11-04
+
+The next request clarified that borrowing the compact-snapshot idea was not
+enough: the user wants the classic Investment Survey information architecture.
+Read the official [2024 Product Guide](https://investor.valueline.com/hubfs/Guides/1502514_Product_Guide_VLIS_WEB.pdf)
+and [2017 reading guide](https://investor.valueline.com/hubfs/Guides/1503516_Reading_VL_Report_WEB_2.7.17.pdf),
+and visually inspected their rendered Home Depot and Disney sample pages
+(physical PDF pages 18 and 13 respectively). Cross-checked definitions against
+official institutional education and the Small & Mid-Cap guide. No paid data,
+account access or current issuer estimates were inferred from old samples.
+
+The new [snapshot reference](../references/company-snapshot.md) owns the dated
+quote header, annual metrics-as-rows/years-as-columns array, per-share fields,
+capital/current-position panels, five/ten-year growth, recent reporting cadence
+and separately labeled estimates/scenarios. Standard/Full seeks ten comparable
+years when accessible; short history and incomplete years stay explicit.
+Mode A no longer licenses replacing these fields with a few summary ratios.
+Chat/Notion can reflow the page without claiming a pixel-identical vendor report.
+
+Important boundaries are explicit: the Value Line earnings-plus-D&A cash proxy
+is neither CFO nor FCF; its EBITDA-style margin is not reported EBIT margin;
+its total-capital return is not automatically tax-adjusted ROIC; historical
+average P/E differs from current-price P/E. Current/year-end/weighted-diluted
+shares, preferred dividends, declared/paid distributions, equity denominators
+and actual/estimated years retain their bases. ROIC remains a delivered metric
+or an explicit gap. Vendor ratings and unidentified methods are not fabricated.
+
+Four new development fixtures cover the statistical array and per-share cash
+definitions, vendor/analyst accounting boundaries, incomplete fiscal years,
+and an explicit narrow EPS request. The new checks first failed on the absent
+case IDs; adding the fixtures produced **15 tests and 89 subtests passed**.
+The scoped investment/Skill-contract/hygiene/simplification suite passed
+**116 tests and 538 subtests**, and skill validation passed. These independently
+check fixture arithmetic and repository invariants, **not four executed model
+reports or a behavioral proof of layout compliance**. Original observed outputs
+remain unchanged; no new real-company research, Notion write, commit, push or
+deployment was requested as part of this alignment.
