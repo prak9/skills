@@ -1,4 +1,0 @@
-interface:
-  display_name: "期货 Result 分析"
-  short_description: "按当前问题解释 py 期货结果数据，核对口径并按需深入归因"
-  default_prompt: "Use $result-analysis 分析当前提供的 py 期货结果数据，回答我的问题并说明关键证据与不确定性。"

@@ -1,11 +1,13 @@
 ---
-name: result-analysis
-description: 解释 py 期货仓库 result.py 的日报、周报及 winress/detail/trades/signals/capacity 数据，诊断交易结果、SIM/REAL 差异与相关研究问题。仅在需要这些项目数据或指标口径时使用；不用于泛指的结果分析、软件测试结果、普通统计、论文实验或无关模型调优。
+name: hf-futures-analysis
+description: 专用于 py 高频期货项目 result.py 的日报、周报和 winress/detail/trades/signals/capacity 数据分析，诊断预测优势、机会重复、持仓转化、成本与 SIM/实盘盈利残差。仅在问题涉及该项目结果或口径时触发；不用于通用结果分析、普通统计、软件测试、股票研究或无关模型评估。
 ---
 
-# Result Analysis
+# 高频期货结果分析
 
 提供 py 期货项目的指标语义与证据边界。分析什么、检查多深、如何表达，由当前问题和证据决定，不默认生成完整复盘。
+
+对“为什么预测准确却不赚钱、收益尾部集中、SIM/实盘差异、下一步改进瓶颈”等问题，按需沿预测优势 → 独立机会代理 → 持仓转化 → 成本 → 净收益分布定位；这是高频交易诊断框架，不把 IC/BR/TC 理论直接变成策略 Sharpe 公式。单字段解释无需展开全链条。
 
 ## 按问题工作
 
@@ -29,6 +31,7 @@ description: 解释 py 期货仓库 result.py 的日报、周报及 winress/deta
 | 需要解决的问题 | 参考 |
 |---|---|
 | bundle/字段含义、聚合或身份比较不清楚 | [数据与指标](references/analysis-contract.md) |
+| 预测到盈利的瓶颈、延迟与期限、机会聚集、反手路径或收益尾部 | [高频预测—盈利框架](references/prediction-to-profit.md)；按问题选层，不自动执行实验 |
 | 逐笔、部署传导、因子、容量或 P&L 归因 | [深度归因](references/deep-attribution.md) |
 | 标签、模型、训练或参数的专业诊断 | [训练诊断](references/model-training-tuning.md)；只提出相关假设，不自动跑脚本 |
 | 新信号边际价值、组合、仓位、衰减或 regime | [经济与风险边界](references/edge-portfolio-controls.md) |

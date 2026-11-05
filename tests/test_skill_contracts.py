@@ -377,14 +377,14 @@ class SkillContractTests(unittest.TestCase):
     def test_result_analysis_daily_loop_keeps_live_and_research_gates_separate(
         self,
     ) -> None:
-        skill = skill_text("result-analysis")
+        skill = skill_text("hf-futures-analysis")
         daily = (
             ROOT
-            / "result-analysis"
+            / "hf-futures-analysis"
             / "references"
             / "daily-decision-loop.md"
         ).read_text(encoding="utf-8")
-        policy = reference_text("result-analysis", "project-policy.md")
+        policy = reference_text("hf-futures-analysis", "project-policy.md")
 
         self.assertIn("references/daily-decision-loop.md", skill)
         self.assertIn("PREAPPROVED_LIVE", daily)

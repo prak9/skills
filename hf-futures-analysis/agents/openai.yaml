@@ -1,0 +1,4 @@
+interface:
+  display_name: "高频期货结果分析"
+  short_description: "专用于 py 高频期货 SIM 与实盘复盘，定位预测到盈利的瓶颈及证据缺口"
+  default_prompt: "Use $hf-futures-analysis 分析 py 高频期货结果，按需定位预测、持仓、成本与盈利差异，并区分事实和未验证解释。"
