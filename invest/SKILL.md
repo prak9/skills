@@ -65,11 +65,13 @@ For stock-opportunity work, attempt the approximately one-year options distribut
 
 Close with **signals to observe** (baseline, discriminating expected direction/range, source/date, threshold and implication for probabilities/value) and genuine **potential catalysts in the next six months** (date/window, transmission, scenario affected and what may already be priced). A scheduled event is not a catalyst without that link; say when none is identifiable.
 
+After that synthesis, end investment-value/valuation reports with an explicit **下注建议** under [the probability-versus-payoff decision contract](references/uncertainty-exposure.md#required-final-bet-recommendation): commit conditionally, wait or decline; distinguish hold/add/reduce/exit only when an existing holding is known. Show **dated evidence → key assumptions and probability support → scenario net payoffs → substituted expected-return/break-even calculations → uncertainty and survival constraints → recommendation and reversal signals**. A high win rate, good company or positive average alone is insufficient. Missing point-probability support calls for conditional thresholds or defensible bounds, not an invented point edge; missing portfolio constraints permits a research posture, not a fabricated position percentage. Narrow arithmetic and business-only exemptions remain intact; research never authorizes a trade.
+
 ## Downside, Exposure And Updates
 
 For opportunity/risk, sizing, allocation comparisons, evidence overlap or a thesis-changing event, read [uncertainty and exposure](references/uncertainty-exposure.md), including adversarial underwriting before concentration. Keep business quality, valuation and capital commitment separate; gains or losses alone do not justify adding.
 
-Monitoring distinguishes no change, confidence update, valuation-only change, assumption breach and new regime. Reuse valid history and preserve prior judgments. Research does not authorize trades, watchlist mutation, alerts or continuous monitoring; those require authority and actual persistent tooling.
+Monitoring distinguishes no change, confidence update, valuation-only change, assumption breach and new regime. Material updates follow [the sequential Bayesian loop](references/mode-b-bayesian-growth.md#sequential-bayesian-updates): preserve the prior judgment, compare new evidence under rival explanations, update only its incremental support, and carry the posterior into the next update. Show the resulting value/payoff and bet-decision change, or why none is warranted; do not reset to the original prior or count old evidence again. Research does not authorize trades, watchlist mutation, alerts or continuous monitoring; those require authority and actual persistent tooling.
 
 ## Skill Boundary And Handoff
 

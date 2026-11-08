@@ -62,11 +62,35 @@ Keep the sandbox in the same evidence and model record used for the final scenar
 7. **Measure price/fundamental divergence.** Separate changes in operating expectations from multiple expansion, liquidity, theme crowding, short squeeze, and index flow.
 8. **Define verification.** Name competing observable predictions, the source and comparable metric, economically justified breakpoint, maturation/disclosure lag and decision effect. Where the decisive variable is unreported, expose proxy limitations instead of treating absent disclosure as falsification.
 
+## Sequential Bayesian Updates
+
+Use the latest recoverable dated judgment as the starting state, not a new opinion assembled around the latest headline. Preserve its hypotheses, information cutoff, probabilities/ranges and payoffs. **This update's posterior becomes the next update's prior**; it already incorporates the evidence used to reach it. If the prior is unavailable, say so and establish a new dated baseline rather than invent a history or default to 50/50.
+
+For each material new observation, ask: **if explanation A were true, how expected would this evidence be, compared with explanation B?** A favorable observation can fit both and therefore discriminate little. `P(evidence | hypothesis)` is not `P(hypothesis | evidence)`. Keep verified observations separate from the analyst's likelihood assumptions and explain source reliability, observation timing and alternative causes where they matter.
+
+When the likelihoods are supported, the sequential calculation is:
+
+```text
+L_i = P(E_t | H_i, evidence already used)
+p_t(H_i) = p_previous(H_i) * L_i / sum_j(p_previous(H_j) * L_j)
+posterior odds(A:B) = prior odds(A:B) * L_A/L_B
+```
+
+Belief odds `P(A)/P(B)` are not offered payoff odds `G/L`: the former update with relative evidence, while the latter come from the quote and state-contingent net payoffs. Do not substitute one for the other.
+
+Show prior, likelihood/basis, substitution, posterior and uncertainty. The odds form requires finite applicable ratios; impossible-evidence or structural-zero cases need model/source review, not division by zero or a convenient epsilon. The product of unconditional likelihoods is valid only with justified conditional independence. Several articles repeating one contract are one underlying observation; for correlated new evidence use its support **conditional on the history**, not another full credit for the shared cause. Never reuse an old observation simply because it was retrieved again.
+
+Without support for numeric likelihoods, give the warranted direction/range or unchanged judgment, what the evidence distinguishes and what remains unresolved; do not invent likelihood ratios, confidence-point increments or precise posteriors. Non-discriminating/already-incorporated evidence can warrant no change. Missing or not-yet-due disclosure is not automatically adverse evidence; an observable milestone failing when due may be. If a new mechanism lies outside the existing hypothesis set, revise and version the model rather than force every observation into old buckets or convenient zero probabilities.
+
+In the **existing** thesis row or equivalent prose, connect: `previous judgment/cutoff → new evidence and overlap → relative support for rivals → updated judgment → changed scenario cash flows/value/net EV → current bet posture → next discriminating observation`. Recalculate only affected assumptions, then reconcile their joint consequence. A higher success probability need not justify adding if price, costs or concentration worsen; a price-only change can alter the offered payoff without a warranted business-probability update. Reapply the [bet decision constraints](uncertainty-exposure.md#required-final-bet-recommendation), keeping numerical sizing conditional on actual portfolio inputs.
+
+Choose the next observation by its ability to distinguish the live explanations and change the decision, not by how reassuring it would be. No new diary, automatic watchlist, recurring polling or trade is authorized by this loop; the next evidence arrival starts another scoped update with the preserved posterior.
+
 ## Output
 
 When integrated into Mode A, contribute the relevant scenarios, belief update, price requirements and uncertainty to one report; the standalone outline below is not a second mandatory report. Skip out-of-scope valuation/exposure sections for business-only work.
 
-For company-level stock-opportunity or valuation work, the integrated report must close with one compact table containing: scenario and horizon; the decisive causal transition from starting state through participant response and constraint; normalized earnings/FCF and financing/dilution; analyst probability or conditional sensitivity; per-share value; return/downside from the dated quote; decisive evidence and falsifier. Follow it with the probability-weighted value/return when a distribution is defensible, or the break-even probability and valuation sensitivity when it is not. Then list the discriminating signals to observe and genuine potential catalysts within the next six months under the entrypoint's definitions. Do not merge option-implied risk-neutral probabilities into the analyst distribution.
+For company-level stock-opportunity or valuation work, the integrated report's closing synthesis contains one compact table: scenario and horizon; the decisive causal transition from starting state through participant response and constraint; normalized earnings/FCF and financing/dilution; analyst probability or conditional sensitivity; per-share value; return/downside from the dated quote; decisive evidence and falsifier. Follow it with the probability-weighted value/return when a distribution is defensible, or the break-even probability and valuation sensitivity when it is not. Then list the discriminating signals to observe and genuine potential catalysts within the next six months, and end with [the supported bet recommendation](uncertainty-exposure.md#required-final-bet-recommendation). Do not merge option-implied risk-neutral probabilities into the analyst distribution.
 
 ```markdown
 ## Company And Decision
@@ -78,6 +102,7 @@ For company-level stock-opportunity or valuation work, the integrated report mus
 ## Upside Requirements And Downside Risks
 ## Verification Window, Falsifier, And Conditional Exposure Posture
 ## Sources And Missing Inputs
+## Final Bet / No-Bet Recommendation And Binding Constraints
 ```
 
-Keep thesis quality, valuation, and exposure separate. Position language must be conditional research guidance—observe, small test, add after proof, trade-only, reduce, or exit—not personalized instruction.
+Keep thesis quality, valuation and exposure separate. The final conditional research posture needs evidence, substituted payoff calculations, uncertainty and a binding risk gate; numerical sizing requires actual portfolio constraints. Do not default to a starter position, infer an existing holding or treat the research conclusion as trade authorization.
