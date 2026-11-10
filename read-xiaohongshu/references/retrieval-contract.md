@@ -14,6 +14,8 @@ Read this file when invoking the fetcher, diagnosing acquisition, or handling vi
 
 The public path uses Python's standard library. JavaScript-only page state can require `yt_dlp`; first check existing isolated interpreters, then use a task-local install only when covered. Playwright is needed only for `--browser`. Do not change system packages or enter an account merely because public retrieval failed.
 
+`image_count`, `completeness` and `missing_pages` describe acquisition of the identified note's declared image sequence; `missing_pages` indexes that sequence, not pages of an embedded book or exported document. They do not certify that the publisher supplied the original article in full. Compare visible pagination/continuation with the user's requested range during inspection, retain both acquisition and source-content limits, and do not infer the unseen text or synthesize URLs to fill it. Missing pagination is not by itself evidence of truncation.
+
 Use the token-free `canonical_url` for citations and keep signed retrieval URLs local. `manifest.json` owns media order, completeness, missing pages and per-item status.
 
 ## Bounded Public Mobile Recovery

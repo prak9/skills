@@ -40,6 +40,8 @@ For `video_handoff`, use `watch` with the resolved public or authorized media so
 
 Read `manifest.json`, then call `view_image` with `detail=original` on every successfully downloaded image in ascending `index`. Entries without a path are missing evidence. Do not sample a carousel: omitted pages can change the argument or contain the only qualification.
 
+Check visible page numbering, continuation cues and the ending against the requested scope. Manifest download completeness covers the note's media list, not necessarily the underlying article: 18 downloaded images showing pages 1–18 of 28 are an acquired excerpt, not the full source. Report the observed range and unacquired remainder without inventing it or guessing more media URLs. Missing pagination alone does not establish truncation; a fully acquired requested excerpt need not wait for the rest of its source.
+
 For dense or small text, inspect the page again at original detail or a focused crop before marking it unreadable. Keep uncertainty visible:
 
 - transcribe visible wording rather than autocorrecting it into a more plausible sentence;

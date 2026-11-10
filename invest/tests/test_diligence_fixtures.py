@@ -16,6 +16,7 @@ ALLOCATION_PACKET = PACKET.with_name("allocation-comparison-cases.jsonl")
 JUDGMENT_PACKET = PACKET.with_name("judgment-quality-cases.jsonl")
 VALUE_TRANSMISSION_PACKET = PACKET.with_name("value-transmission-cases.jsonl")
 VALUE_DISCIPLINE_PACKET = PACKET.with_name("value-discipline-cases.jsonl")
+INSIGHT_PACKET = PACKET.with_name("insight-validation-cases.jsonl")
 
 
 class DiligenceFixtureTests(unittest.TestCase):
@@ -25,7 +26,8 @@ class DiligenceFixtureTests(unittest.TestCase):
             json.loads(line)
             for packet in (PACKET, SOURCE_PACKET, DAYU_PACKET, EARNINGS_PACKET,
                            DISCOVERY_PACKET, ALLOCATION_PACKET, JUDGMENT_PACKET,
-                           VALUE_TRANSMISSION_PACKET, VALUE_DISCIPLINE_PACKET)
+                           VALUE_TRANSMISSION_PACKET, VALUE_DISCIPLINE_PACKET,
+                           INSIGHT_PACKET)
             for line in packet.read_text().splitlines()
         ]
         cls.by_id = {case["id"]: case for case in cls.cases}
@@ -159,6 +161,24 @@ class DiligenceFixtureTests(unittest.TestCase):
         self.assert_numeric("judgment-hidden-offset", {
             "prior_contribution": 100 * .40 - 15,
             "current_contribution": 130 * .40 - 30,
+        })
+
+    def test_vague_collection_clue_survives_acquisition_reconciliation(self) -> None:
+        organic_revenue = 130 - 20
+        organic_receivables = 39 - 9
+        self.assert_numeric("insight-vague-collection-clue", {
+            "organic_revenue": organic_revenue,
+            "organic_revenue_growth": organic_revenue / 100 - 1,
+            "organic_receivables": organic_receivables,
+            "organic_receivables_growth": organic_receivables / 20 - 1,
+            "operating_cash_change": 7 - 14,
+        })
+
+    def test_same_capex_does_not_imply_the_same_funding_gap(self) -> None:
+        before_customer_prepayment = 10 + 100 - 120 - 20
+        self.assert_numeric("insight-same-capex-different-funding", {
+            "a_year_end_funding_balance": before_customer_prepayment,
+            "b_year_end_funding_balance": before_customer_prepayment + 30,
         })
 
     def test_narrow_judgment_controls_do_not_need_a_full_model(self) -> None:

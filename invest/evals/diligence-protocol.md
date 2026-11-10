@@ -8,6 +8,8 @@
 
 `earnings-continuity-cases.jsonl` adds two visible development cases for four-quarter extraction, guidance/commitment changes, Q&A attribution, annual/Q4 deduplication and missing calls or mixed reporting cadence. Keep the quarterly operating window distinct from the external three-month discovery window. These self-contained cases require no live retrieval and follow the same grading limits.
 
+`insight-validation-cases.jsonl` adds two visible development cases: preserve a vague observation without inventing its explanation, and distinguish a common capex headline from company-specific funding and investment merit. Use the existing `depth-priced-good-news` case as a no-new-edge control. Grade the actual discriminating evidence and decision consequence, not originality, a talent label or a required checklist; the same execution and evidence limits below apply.
+
 ## Execution
 
 Freeze the skill snapshot, packet and criteria before candidate edits. Give the executor only each ID and prompt, the selected skill entry and routed resources, not criteria, expected behavior, numeric checks, a diff or prior findings. Inputs are self-contained hypotheticals; no live stock search, external mutation or invented source is needed. Local arithmetic is allowed. Keep model/effort, tool access and inputs fixed; record unavailable metadata as unknown, not an invented version.
