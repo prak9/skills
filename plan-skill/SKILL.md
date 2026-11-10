@@ -32,6 +32,8 @@ Decompose around observable behavior and uncertainty, not file lists. Prefer the
 
 Resume from `program.md`, the active task and their referenced evidence. Reconcile changed load-bearing premises and actual effects before using the saved next action; preserve unrelated verified work. A failed attempt must not overwrite the best verified result. A failed verifier changes an assumption, plan or implementation; if the checker passes but reality fails, repair the acceptance sensor rather than trusting the green mark.
 
+Recover why the current route was chosen, its still-supported premises, unresolved questions and next acceptance check—not only node status. Read the smallest linked evidence set that can settle the next action; unchanged source bytes do not validate a finding contradicted by new evidence. Keep domain facts in their existing records and link their decision consequence here rather than copying a second research ledger into the plan.
+
 Update existing records when evidence changes the route. Research discoverable unknowns and choose reversible details within accepted bounds; stop dependent work only when changing a locked outcome, acceptance, authority or real risk requires the user's decision. Do not add a parallel diary or approval process.
 
 Handoff and completion need consistent state, not an automatic cleanup pass or `N/A` marker. Use Clean only when accumulated or conflicting state impairs recovery; preserve existing opted-in metadata. Evidence that still covers unchanged code, inputs and conditions can be reused.

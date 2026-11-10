@@ -71,6 +71,8 @@ After that synthesis, end investment-value/valuation reports with an explicit **
 
 For opportunity/risk, sizing, allocation comparisons, evidence overlap or a thesis-changing event, read [uncertainty and exposure](references/uncertainty-exposure.md), including adversarial underwriting before concentration. Keep business quality, valuation and capital commitment separate; gains or losses alone do not justify adding.
 
+For repeated company work, recover the minimum sufficient context from authorized records before judging what the new material changes: the last supported dated thesis, material forecasts/falsifiers, reporting/per-share definitions and unresolved checks. Use [thesis reconciliation](references/thesis-reconciliation.md); do not ask the user to repeat retrievable context or load the whole archive. A missing prior stays explicit. One-off extraction or arithmetic does not require reconstructing the company's research history.
+
 Monitoring distinguishes no change, confidence update, valuation-only change, assumption breach and new regime. Material updates follow [the sequential Bayesian loop](references/mode-b-bayesian-growth.md#sequential-bayesian-updates): preserve the prior judgment, compare new evidence under rival explanations, update only its incremental support, and carry the posterior into the next update. Show the resulting value/payoff and bet-decision change, or why none is warranted; do not reset to the original prior or count old evidence again. Research does not authorize trades, watchlist mutation, alerts or continuous monitoring; those require authority and actual persistent tooling.
 
 ## Skill Boundary And Handoff

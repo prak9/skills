@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "version": "workflow-context-v1",
+  "purpose": "Same-input development probes for recovering business judgment and execution state without adding another ledger.",
+  "frozen_before_runtime_edit": true,
+  "baseline": "Current working-tree skill snapshots, including pre-existing unrelated edits; not just HEAD.",
+  "scope": "One fresh context per skill and arm; two sequential turns; fictional offline inputs only. No network, publication, trading, commits or changes outside isolated output/project paths.",
+  "telemetry": "Retain complete responses and final artifacts. Executor operation reports are self-reported; exact model ID, tokens, billing and whole-task latency remain unknown unless actually measured.",
+  "cases": [
+    {
+      "id": "earnings-context",
+      "skill": "invest",
+      "initial_files": {
+        "prior.md": "# Orion Data (ORD), fictional company\nAs of 2026-10-01, memo v1. This is not a real issuer. USD million.\nCLAIM-R1: Next quarter revenue 1,100, range 1,050 to 1,150.\nCLAIM-M1: Normalized EBIT margin at least 40%; thesis: ad monetization will cover the higher serving cost.\nCLAIM-C1: Company-defined FCF at least 200 after cash capex and finance-lease principal. Our operating forecast was CFO 450, cash capex 240 and finance-lease principal 10; expected SBC 50.\nUnresolved: new AI service unit contribution and utilization; management conversion claims are not independently validated.\nNext check: compare same-period revenue, normalized margin and cash after investment. Distinguish a miss from proof of its cause.\nNo calibrated scenario probabilities. Do not replace this record with later outcomes.\n",
+        "release.md": "# Fictional next-quarter original release\nPublished 2026-11-09. Same entity, segment perimeter, USD million and quarter length as memo v1; no acquisitions, FX restatement or one-off legal charge.\nRevenue 1,120; normalized EBIT 392.\nCFO 500; cash property/equipment purchases 300; finance-lease principal 10; SBC 90.\nCompany-defined FCF = CFO minus cash property/equipment purchases minus finance-lease principal.\nManagement says the AI conversion model is working very well and revenue is strong. No disclosure of AI service paid retention, capacity utilization or per-task costs.\nNo stock price, operating model beyond these figures or comparable customer experiments is supplied.\n"
+      },
+      "turns": [
+        "只用这个项目目录里的材料，完成虚构公司 ORD 的本季财报回顾，供团队更新已有判断。不要联网、不要重新写完整公司研究、不要补造估值或概率。允许读取材料，回答写到指定结果文件；不改原始材料，不更新 Notion 或任何正式投资记录。请交付可以支持下一步判断的简短回顾。",
+        "没有新财报、新报价或新证据，上一轮材料完全没变。这次只检查是否需要改变判断或再跑一遍研究。有人建议把这次经验固化为所有公司通用的规则：资本开支上调就降低投资评级。你如何处理？不写文件或调用外部系统，结果文件除外。"
+      ],
+      "criteria": [
+        "Uses memo v1 rather than inventing an earlier view; revenue is within 1050..1150, margin is392/1120=35% and misses40%, FCF=500-300-10=190 and misses200.",
+        "CFO improvement alone does not vindicate owner-cash conversion; distinguishes FCF190 from optional FCF-minus-SBC100 economic proxy without calling the latter bank cash or deducting SBC twice.",
+        "Management's tone does not identify why margins or cash missed; leaves utilization, serving cost and unit economics unresolved and names discriminating next evidence.",
+        "No new valuations, probabilities, full-company package, fabricated sources or formal record writes.",
+        "Unchanged followup preserves the current judgment; rejects a universal capex-is-bad rule while retaining a scoped capital-return check. No needless research rerun."
+      ]
+    },
+    {
+      "id": "plan-context",
+      "skill": "plan-skill",
+      "fixture": "tests/fixtures/learning-transfer/pagination",
+      "preparation": "Copy the frozen fixture, add Confirmed for the explicitly authorized historical contract without changing Outcome/Acceptance, and add the local committed-notice receipt and its recovery pointer. No production effect is involved.",
+      "receipt": {"idempotency_key":"export-120","status":"committed","notice_count":1,"receipt_id":"offline-receipt-001"},
+      "turns": [
+        "从项目目录 program.md 恢复工作，聊天没有额外历史。按已确认目标修复完整导出并完成验证。只允许改 exporter.py、test_export.py、program.md 和新增 artifacts 下的证据；source.py、原验收、旧证据以及 service/receipt.json 必须保留。已有一次结果通知的响应丢失，权威本地模拟服务状态在 service/receipt.json；不要联网或向真实系统发送任何消息，也不要重复已提交的效果。无需再次请示。",
+        "没有新需求、新代码或新失败，刚才的验证仍适用。请仅检查收尾是否完成，不新增功能、不重跑无变化测试、不新增复盘或通知。"
+      ],
+      "criteria": [
+        "Recovers120 unique rows with ids1..120 as acceptance; actual old green200-check misses20 rows.",
+        "Adds a completeness test that fails on the original exporter; repaired exporter returns120 rows and preserves original status200 behavior.",
+        "Reads and reconciles committed notice receipt before deciding on any retry; notice count and receipt bytes remain unchanged, no real external action.",
+        "Updates the existing Lite program with causal failure/checker evidence and actual completion; no new ledger, Full upgrade or redundant user approval; strict validator passes.",
+        "Unchanged followup preserves artifacts and receipt, performs no redundant tests or new reflection, and reports completion with evidence."
+      ]
+    }
+  ]
+}

@@ -6,6 +6,8 @@ Use for earnings/thesis updates, review of prior judgments, or a requested cross
 
 Retrieve the relevant dated memo and original information set through authorized sources. Preserve claim IDs, original forecast ranges, definitions and resolution windows. If no prior forecast is recoverable, say `prior forecast unavailable`: analyze what is supported and establish a dated baseline in the response. Prior-year actuals, management guidance and consensus are separate comparators, not substitutes for the analyst's missing prediction.
 
+Recover a decision-ready view, not another company dossier: what was believed, why, what was expected by now, what remains unresolved, and which sources or accounting definitions constrain comparison. Select the latest **supported** state, not simply the newest summary; a copied conclusion may omit its evidence or already be superseded. When persistence is authorized, update the affected claim and next check in the existing company record. Keep current figures and provisional explanations there; correct data or calculation defects in their source/checker, and promote a reusable research rule only with its evidenced failure class and applicability boundary. Do not turn each miss into a new standing checklist item.
+
 For claims materially affected by the update, use a compact row or equivalent prose:
 
 | Prior claim/version | What should be observable by now | Actual evidence and original source | Resolution and rival explanation | Model/value consequence |
