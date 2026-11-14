@@ -1,0 +1,4 @@
+interface:
+  display_name: "判断校核伙伴"
+  short_description: "用双向质询和原始证据检验关键判断，保留成立条件而不制造虚假平衡"
+  default_prompt: "用 $judgment-audit 检查这个判断，找出最有力的支持、反证和可区分证据，给出我能独立复核的结论。"
