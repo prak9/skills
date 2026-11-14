@@ -62,6 +62,8 @@ For an authorized repeated research loop, link existing run/grade/finding/change
 
 ## Completion
 
+Before advancing work that depends on a consequential result, write the result and its evidence to the existing authoritative record; a chat report alone is not durable writeback. Lite uses `program.md`; Full/Loop uses `memory.md` for decisions/findings and task packages for node evidence. Read `references/reflection-contract.md` when its material-learning trigger fires. Reuse domain records through links rather than duplicating their contents.
+
 A completed node has acceptance evidence, not merely a report that it ran. Lite/Full Linear record reflection only for material learning; Loop records an evidence-linked reflection per verified attempt. Preserve locked bounds, stable IDs, raw evidence and consequential history; summaries are decision records, not hidden chain-of-thought.
 
 Loop requires a finite budget, bounded scope, independent checker, sensor/granularity alignment, calibration and stop conditions. Keep goal completion, search convergence, budget exhaustion and blockage distinct; don't invent a budget or claim global optimality.

@@ -36,6 +36,7 @@ For every task:
 - every completed Full Linear node records either a triggered evidence-linked `R-*` or explicit `None` when no trigger fired; every verified Loop attempt points to an `R-*`;
 - the completion review states the observable result, evidence, unverified behavior or residual risk, remaining work, and completion date;
 - consequential decisions or findings are written once to the mode's authoritative record: Lite uses `program.md`; Full/Loop uses `memory.md`. Reuse existing evidence links; do not require a second record for Lite completion.
+- verify that required writeback actually exists and link its location in the completion review; promising to record it later does not satisfy completion. If project/user rules require long-term knowledge capture, distill reusable conclusions into the designated knowledge base under its rules and link the source evidence. Do not copy task status or raw result ledgers there, require a knowledge base when none is designated, or create plan files solely for an Inline task's knowledge capture. Honor read-only/no-record instructions; missing required writeback remains explicit unfinished work.
 
 For risky changes, also review applicable migration, compatibility, security, observability, rollback, and human-approval requirements. Add a deeper red-team checklist only when the risk warrants it; do not force an empty universal questionnaire.
 
