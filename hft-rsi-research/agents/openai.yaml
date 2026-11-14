@@ -1,0 +1,4 @@
+interface:
+  display_name: "HFT 有界自改进研究"
+  short_description: "为高频模型构建双层研究闭环，分别验证模型收益与研究配方改进"
+  default_prompt: "用 $hft-rsi-research 为当前 HFT 项目设计或执行授权内的研究，分别验证模型候选和研究配方的增量价值。"
