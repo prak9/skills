@@ -1,0 +1,4 @@
+interface:
+  display_name: "Source-Grounded Study"
+  short_description: "Map a field, examine debates, and test understanding"
+  default_prompt: "Use $source-grounded-study to build a knowledge map and evidence-based debates from my materials, then give me a closed-book assessment without answers."
