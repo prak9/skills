@@ -1,47 +1,48 @@
-# AGENTS.md
+CLAUDE.md: Field Notes on Getting a Language Model to Write Code You Will Not Rewrite
+A Short List of Rules, Earned by Watching the Same Mistakes Twice
 
-面向 GPT-6 Astra 等高能力模型：约定目标、边界和验收，不规定每一步姿势。本文件只在本仓库生效；`CLAUDE.md` 仅作兼容入口。
+Abstract. This file exists because language models make predictable mistakes when they write code. Not random mistakes, just the same ones, over and over, often enough that it was worth writing them down. What follows is not a set of suggestions but a set of rules. The throughline is the same in every section: the model is fast at generating plausible code and slow to notice that plausible is not the same as correct, so the discipline has to come from the process around it.
 
-## 沟通与优先级
+Index Terms. LLM-assisted programming, code review, software craftsmanship, minimal diffs, debugging, dependency hygiene.
 
-- 默认简体中文，代码、命令和技术标识保留英文。先给结论与影响，只保留有助于判断或复现的细节。
-- 遵守系统、平台与实际权限边界；用户当前明确要求优先于 Skill、历史记忆和工作流偏好。Skill 只补充领域约束，不重新索要已经明确的目标或授权。
+I. READ BEFORE YOU WRITE
+The biggest source of bad model-written code is writing before reading the codebase. Read the files you are about to touch; read, not skim. Copy the patterns that already exist, and check the imports to see what the project actually depends on, so you do not reach for axios where everything is fetch. Resolve searchable gaps from the code and tests before asking; do not invent a pattern that contradicts the project.
 
-## 自主执行与澄清
+II. THINK BEFORE YOU CODE
+Figure out what you are doing before you type. State material assumptions ("add authentication" is five different things, so name the one you picked) and name the tradeoffs. Point out a simpler approach when it meets the goal. Resolve ordinary gaps with reasonable assumptions; ask only when an unresolved ambiguity materially changes the result, scope, or real risk. Do not silently choose between consequential interpretations or add approval steps for hypothetical risks.
 
-- 区分询问与行动请求：分析、诊断、审阅不自动授权修改；要求实现或修复，就持续完成相关实现、检查和交付，不停在计划、第一版或“可以继续”。
-- 先读相关文件、调用和测试，用证据解决可查问题；普通缺口作合理假设后继续。会影响实现的重要假设和取舍须明示，不默默选择会显著改变结果的解释；有更简单且满足目标的方案时直接指出。仅当缺失信息会改变结果、范围或真实风险，且无法自行查明时，才向用户提问。
-- 提问前完成不依赖该答案的已授权工作。不要反复确认已回答的问题；有新的实质冲突时指出具体差异。建议偏离目标时直接说明，不为假想风险增加警告或审批流程。
+III. SIMPLICITY
+Write the minimum code that solves the problem in front of you now, not the minimum that could solve every future version of it. Resist premature abstraction, skip error handling for errors that cannot occur, and hardcode values until there is a real reason to configure them. The test: if the only reason something is abstracted is "in case we need to," you have over-built it.
 
-## 批准边界
+Do not add unrequested features, flexibility, or configuration. Keep simple single-use logic inline; extract a helper only for reuse, a genuinely complex boundary, or a real concept whose name improves understanding. Keep the main path readable rather than minimizing line count or scattering simple expressions across helpers. Comments explain non-obvious constraints and reasons, not obvious code.
 
-- 同一任务中明确、未撤销且范围未变的授权持续有效。必要的相关本地修改与验证不逐步请示；发布、推送、外部写入和生产变更必须落在用户授权内，不能仅凭工具可用或“持续推进”推断。
-- 需要新权限或用户保留的决定时，先准备可检查的结果、证据与具体待批准动作，只暂停受影响部分。评审结论不等于合并授权，技术验证通过也不代替明确保留的人工验收。
+Match defensive handling to actual boundaries, contracts, and known failure modes. Validate untrusted inputs at the owning boundary and pass validated values inward; do not repeatedly revalidate established internal contracts. Do not mask programming errors with broad catches, default values, or silent fallbacks. Fix the cause or expose the failure clearly; necessary recovery must have a concrete scenario and test evidence.
 
-## 实现与协作
+IV. SURGICAL CHANGES
+Your diff should be as small as the task allows. Do not touch what you were not asked to touch, match the existing style, and do not reformat; a formatter pass buries the three lines that matter inside three hundred that do not. The test is whether you can justify every changed line by the task. If a line is there because "while I was in there," revert it.
 
-- Skill 设计区分硬边界与方法建议：事实诚实、授权范围、明确验收及必要的数据/接口契约必须守住；步骤、模板、变量数量和思考框架默认按需选用，可省略、合并或换序。允许在目标与预算内做可逆试探、保留暂不能证实的想法、根据新证据换路线；不要把探索假设当成已验证结论，也不要为偏离推荐方法另设审批。
-- 做最小有效改动，复用现有模式与依赖，匹配原有风格；不顺手重构、调整无关格式或注释，不添加未要求的功能、灵活性或配置项，不预建未来抽象。每处改动都应能对应当前请求；清理本次改动造成的无用导入、变量和函数，既有无关死代码只指出、不擅自删除。复杂变更先明确目标、边界和完成证据，并简述主要步骤与各自验证方式；小型可逆修改不强制计划文件或架构评审。
-- 简单且仅用一次的逻辑优先就地表达；仅在复用、隔离复杂边界或命名真实概念能改善理解时提取辅助函数。主路径保持清晰，不为减少行数强行内联，也不把简单表达式拆成层层跳转。注释解释非显然的约束与原因，不复述代码。
-- 防御与真实边界、接口契约和已知故障模式相匹配。在外部输入和不可信边界验证数据；内部依赖已明确的契约，不逐层重复校验。不为不可达状态添加兜底，不用宽泛捕获、默认值或静默回退掩盖程序错误。异常应修复根因或清晰暴露；必要的容错须有具体场景和测试依据。
-- 修改生成物时先找源定义与生成入口，修改源后重新生成，不手工修补派生文件；接口或契约变化同步检查受影响调用方。沿用项目已有检查命令，不凭工具偏好另造验证路径。
-- 探索失败不覆盖最佳已验证成果；评价口径有误时单独修正并重测基线与候选，不靠改验收制造提升。开放优化可因收益收敛或预算耗尽停止，但须与目标完成区分。
-- 只读取当前分支所需的 Skill 参考，不默认串行运行多套流程。只委派可独立验收且能节省时间或提升质量的工作，明确输入、输出和边界；主 Agent 负责整合与验证。
+Remove imports, variables, and functions made unused by your own changes. Mention unrelated pre-existing dead code rather than deleting it. For generated artifacts, change the source definition and regenerate through the project's existing command instead of hand-patching derived files; check affected callers when contracts change.
 
-## Skill 设计与维护
+V. VERIFICATION
+The gap between code that works and code you think works is testing. When fixing a bug, write the failing test first, watch it fail, then fix it; that is the only proof you fixed the cause and not the symptom. Test behavior that can actually break, not that a constructor sets a field. If something is hard to test, that is information about the design, not permission to skip it.
 
-- `SKILL.md` 是按需加载的领域入口，不是项目规则副本。只保留触发边界、该领域独有的判断、最短执行主线、条件式参考路由，以及无法从通用规则推出的安全边界。
-- 优先固化可迁移的判断条件、更新规则和失效边界，不把一次有效路线、当前最优方案或领域结论提升为通用指令。能被机器可靠判定和阻止的硬约束优先落到类型、接口、检查器、权限或运行环境；Skill 保留仍需情境判断的部分。
-- 通用授权、澄清、最小改动、证据和完成标准以本文件为准。Skill 可简短指出领域例外，不重复整套纪律，也不建立所有 Skill 都必须读取的超级合同。
-- 命令参数、异常矩阵、长检查表、少见模式和实现细节放入按条件读取的 `references/`。常用主线若被拆得需要连续读取多个文件，则合并相邻参考；优先减少默认入口，不把清楚的说明压成更密、更难执行的文字。
-- Skill 之间按责任交接并复用已确认的目标、事实、约束、结论和证据。入口只说明本 Skill 的责任差异；独立分发所需的关键边界可作最短本地重述，不能依赖隐含上下文。
-- 脚本、测试、评测和示例是执行与回归证据，不因行数多而优先删除。精简后用代表性正反例或现有评测检查触发准确性、权限边界、交付质量和恢复能力；没有行为证据的字数下降不算优化完成。
-- 共享规则以实际支持模型的共同需求为基线，用同一组代表性任务检查不同模型。仅在观察到稳定失败时增加最小补偿，优先放入模型配置或专用入口，不把模型分支散落到各 Skill。
+Do not add redundant unit tests: inspect existing coverage first and extend or parameterize it rather than adding renamed copies with equivalent inputs and assertions. New tests must protect a distinct failure mode, meaningful boundary, or independent regression risk, not merely raise test counts or coverage numbers. Different test layers may legitimately exercise the same code to verify different contracts or integration risks.
 
-## 验证与完成
+Test the real implementation; do not duplicate its algorithm as the test oracle. Derive expected results independently from a contract, calculation, or trusted fixture. Mock only where isolating external dependencies, cost, or nondeterminism is necessary, never the core behavior being verified. Prefer local substitutes to global state changes and restore any necessary changes.
 
-- 禁止添加重复式单元测试：先检查已有覆盖，不为同一行为、等价输入和相同断言新增仅换名称或形式的用例。优先扩展现有用例或参数化；新增测试须覆盖不同故障模式、有效边界或独立回归风险，不以用例数或覆盖率数字为目的。不同测试层级若验证独立契约或集成风险，不因执行了相同代码就视为重复。
-- 测试调用真实实现，不复制被测算法作为断言依据；期望结果来自独立推导、明确契约或可信样例。仅在隔离外部依赖、成本或不可控因素确有必要时使用 mock，不把应验证的核心行为替换掉；局部替身优先于修改全局状态，必要修改须恢复。
-- 动手前把请求转成可验证结果，而不是“让它能用”：修复先建立可复现证据并优先观察相关测试失败，重构确认前后行为保持，校验覆盖有效输入与相关拒绝路径；测试保护会出错的行为，不复述实现。按影响检查相关路径；已有证据覆盖当前最终状态，且相关代码、输入、环境和验收未变时直接复用，不因阶段切换、汇报或交付机械重跑。仅因新改动、新失败或未解决疑点扩大或重复验证。
-- 完成意味着请求的成果已交付、必要检查有证据、授权内没有遗留必做项；不要求凑满模板、复盘或建议。可选改进不阻挡收尾，已授权的下一步骤不另等一句“继续”。
-- 真正阻塞时交付已有成果，指出缺什么、谁能解决及恢复动作，不冒称完成。收尾只清理本次产生且不再需要的临时文件，保留用户文件与必要证据。
+Use the project's established verification commands. Confirm preserved behavior before and after refactoring and cover valid inputs and relevant rejection paths for validation changes. Reuse evidence that already covers the unchanged final code, inputs, environment, and acceptance criteria; do not mechanically rerun checks after a status update or phase transition.
+
+VI. GOAL-DRIVEN EXECUTION
+Every task needs a success criterion before code is written. "Add validation" becomes "reject a missing or malformed email, return 400 with a clear message, and test both cases." For substantive multi-step work, state a brief plan with the check that demonstrates each major outcome; trivial reversible changes do not require a plan file or architecture review. Clear goals, boundaries, and acceptance evidence should support autonomous execution, not repeated requests for confirmation.
+
+VII. DEBUGGING
+When something breaks, investigate; do not guess. Read the whole error and the stack trace, reproduce the problem before you change anything, and change one thing at a time. Do not paper over an unexpected null with a null check; find out why it is null, or the bug just moves somewhere quieter.
+
+VIII. DEPENDENCIES
+Every dependency is permanent code you do not control. Before adding one, ask whether the project or the standard library can already do it with crypto.randomUUID() over a uuid package. When you do add one, say why, so the choice is visible rather than smuggled into the manifest.
+
+IX. COMMUNICATION
+Say what you did and why, not just a block of code. Flag concerns even when you did exactly what was asked, and be precise about uncertainty: "I am not sure this library supports streaming" tells the user what to verify; "I think this should work" does not.
+
+X. COMMON FAILURE MODES
+A few patterns recur often enough to name: the Kitchen Sink (restructuring half the codebase while you are at it), the Wrong Abstraction (copy-paste twice before you abstract), the Optimistic Path (the happy path handled and the 500 ignored), and the Runaway Refactor (a fix that cascades across files). Catch yourself in any of these and the right move is to stop, not to push through.
