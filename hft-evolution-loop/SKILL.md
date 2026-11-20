@@ -13,6 +13,7 @@ description: 在 py 高频期货项目中启动、恢复和推进基于 result.p
 2. **单节点单一可调面**：每次只改 `label_horizon` / `sample_policy` / `preprocess` / `model_selector` / `trade_policy` / `research_recipe` 之一（`combine` 仅限两个已保留/晋级父节点）。
 3. **可定制范围与预算**：每次启动或续跑均支持用户直接指定 `--max-nodes`（最大节点数）与 `--max-depth`（最大树深度），传参即实时写入/更新 `tree.json`；用户未指定时，新建默认 ROOT=`dce_t2`、品种池=`eb,eg,pp,l,y,pg`、`max_nodes=10`、`max_depth=3`，续跑沿用原树配置。
 4. **永不覆盖与防过拟合**：失败节点绝不覆盖父节点或 Champion，自动记入 `negative_index.jsonl`；`SIM_REAL_RESIDUAL` 切片只做执行核查，禁止触发模型调参；不触碰 `confirm holdout`，不自动上线生产。
+5. **分布式执行铁律**：`localhost` **永不进 worker 池，只做轻量总控/Coordinator**（刷底表、管进化树、沙盒改代码、跑 `pytest` 与轻量门禁）；所有真实特征生成、Ridge 训练与 SIM 回放必须配置 `resources.workers_from: conf/workers.yaml` 分发到远端 worker，启动前完成多机旧目录清理（遵守 `docs/research/AGENTS.md`），启动后核对 `config_snapshot` 的远端 `host:` 数。
 
 ## 标准执行步骤
 

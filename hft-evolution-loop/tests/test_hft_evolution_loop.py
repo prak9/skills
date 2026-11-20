@@ -21,6 +21,8 @@ class HftEvolutionLoopSkillTests(unittest.TestCase):
         self.assertIn("conf/features_v2.lst", skill_md)
         self.assertIn("backtest.py diagnose", skill_md)
         self.assertIn("backtest.py stress-test", skill_md)
+        self.assertIn("conf/workers.yaml", skill_md)
+        self.assertIn("localhost", skill_md)
         self.assertLessEqual(len(skill_md.splitlines()), 100)
         self.assertIn("display_name:", openai_yaml)
         self.assertIn("default_prompt:", openai_yaml)
