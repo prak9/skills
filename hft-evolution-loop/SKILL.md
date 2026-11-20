@@ -11,7 +11,7 @@ description: 在 py 高频期货项目中启动、恢复和推进基于 result.p
 
 1. **锁死控制面**：严禁修改 `sim.py`、`live_fill_*.py`、`sim_fill_policy.py`、`feature.py`、`conf/features_v2.lst`、`conf/features.json`、`cpp/l2factor/`、`exp/evaluator.py`、`analyze/promotion_gate.py`、`conf/stock_prop.csv`、`conf/validation_truth_set.yaml` 及生产 `conf/wintest.conf`。任何越界改动由 `exp/sandbox_guard.py` 硬拦截为 `INVALID_SANDBOX`。
 2. **单节点单一可调面**：每次只改 `label_horizon` / `sample_policy` / `preprocess` / `model_selector` / `trade_policy` / `research_recipe` 之一（`combine` 仅限两个已保留/晋级父节点）。
-3. **默认范围与预算**：除非用户覆盖，默认 ROOT=`dce_t2`，品种池=`eb,eg,pp,l,y,pg`，单轮上限 `max_nodes=10`、`max_depth=3`。
+3. **可定制范围与预算**：每次启动或续跑均支持用户直接指定 `--max-nodes`（最大节点数）与 `--max-depth`（最大树深度），传参即实时写入/更新 `tree.json`；用户未指定时，新建默认 ROOT=`dce_t2`、品种池=`eb,eg,pp,l,y,pg`、`max_nodes=10`、`max_depth=3`，续跑沿用原树配置。
 4. **永不覆盖与防过拟合**：失败节点绝不覆盖父节点或 Champion，自动记入 `negative_index.jsonl`；`SIM_REAL_RESIDUAL` 切片只做执行核查，禁止触发模型调参；不触碰 `confirm holdout`，不自动上线生产。
 
 ## 标准执行步骤

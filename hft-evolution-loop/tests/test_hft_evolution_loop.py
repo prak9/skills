@@ -64,7 +64,7 @@ class HftEvolutionLoopSkillTests(unittest.TestCase):
             self.assertTrue((cdir / "tree.json").is_file())
             self.assertTrue((cdir / "tree.md").is_file())
 
-            # Second run resumes existing tree without re-initializing
+            # Second run resumes existing tree and applies explicit user-specified max_nodes / max_depth
             proc2 = subprocess.run(
                 [
                     sys.executable,
@@ -75,6 +75,10 @@ class HftEvolutionLoopSkillTests(unittest.TestCase):
                     str(adir),
                     "--campaign-dir",
                     str(cdir),
+                    "--max-nodes",
+                    "25",
+                    "--max-depth",
+                    "5",
                 ],
                 capture_output=True,
                 text=True,
@@ -83,6 +87,8 @@ class HftEvolutionLoopSkillTests(unittest.TestCase):
             self.assertEqual(proc2.returncode, 0, proc2.stderr)
             out2 = json.loads(proc2.stdout)
             self.assertFalse(out2["initialized_now"])
+            self.assertEqual(out2["budget"]["max_nodes"], 25)
+            self.assertEqual(out2["budget"]["max_depth"], 5)
 
 
 if __name__ == "__main__":

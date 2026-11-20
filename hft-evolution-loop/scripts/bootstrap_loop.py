@@ -18,8 +18,8 @@ def run_bootstrap(
     campaign_id: Optional[str] = None,
     root_account: str = "dce_t2",
     symbols: Sequence[str] = ("eb", "eg", "pp", "l", "y", "pg"),
-    max_nodes: int = 10,
-    max_depth: int = 3,
+    max_nodes: Optional[int] = None,
+    max_depth: Optional[int] = None,
     lookback_days: int = 5,
     top_k: int = 8,
 ) -> Dict[str, Any]:
@@ -28,7 +28,7 @@ def run_bootstrap(
         sys.path.insert(0, str(py_root))
 
     from analyze.daily_metrics_ledger import build_daily_metrics_ledger, extract_failure_slices
-    from exp.evolution_tree import init_campaign
+    from exp.evolution_tree import init_campaign, update_budget
 
     cdir = Path(campaign_dir).resolve()
     cid = campaign_id or cdir.name
@@ -40,12 +40,15 @@ def run_bootstrap(
             campaign_id=cid,
             root_account=root_account,
             symbols=symbols,
-            max_nodes=max_nodes,
-            max_depth=max_depth,
+            max_nodes=10 if max_nodes is None else max_nodes,
+            max_depth=3 if max_depth is None else max_depth,
         )
         initialized_now = True
     else:
-        tree = json.loads(tree_path.read_text(encoding="utf-8"))
+        if max_nodes is not None or max_depth is not None:
+            tree = update_budget(cdir, max_nodes=max_nodes, max_depth=max_depth)
+        else:
+            tree = json.loads(tree_path.read_text(encoding="utf-8"))
         initialized_now = False
 
     ledger = build_daily_metrics_ledger(
@@ -117,8 +120,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--campaign-id", default=None, help="Optional campaign ID (defaults to dir name)")
     p.add_argument("--root-account", default="dce_t2", help="Baseline account (default: dce_t2)")
     p.add_argument("--symbols", default="eb,eg,pp,l,y,pg", help="Comma-separated symbol pool")
-    p.add_argument("--max-nodes", type=int, default=10)
-    p.add_argument("--max-depth", type=int, default=3)
+    p.add_argument("--max-nodes", type=int, default=None, help="Max nodes budget (default 10 on init; overrides existing tree if specified)")
+    p.add_argument("--max-depth", type=int, default=None, help="Max tree depth (default 3 on init; overrides existing tree if specified)")
     p.add_argument("--lookback-days", type=int, default=5)
     p.add_argument("--top-k", type=int, default=8)
     return p
