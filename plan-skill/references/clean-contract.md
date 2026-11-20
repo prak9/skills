@@ -54,3 +54,11 @@ Clean is complete only when:
 - `scripts/validate_plan.py --strict <project-root>` passes.
 
 For opted-in metadata, set `Clean state` to `Not due` and `Last clean` to a date plus evidence pointer, or `N/A` after a no-op check. Existing `N/A: <concrete reason>` records remain valid. Do not add those fields solely to close an otherwise aligned Lite plan.
+
+## Automated Slimming
+
+When `program.md` grows past its recovery budget (`> 300` lines or `> 5` leading `>` status banners) or `memory.md` exceeds `500` lines without a retrieval index, `scripts/validate_plan.py` emits a context-budget warning. Run the built-in lossless slimmer:
+
+1. Preview first: `scripts/slim_plan.py --dry-run <project-root>`
+2. Apply: `scripts/slim_plan.py <project-root>` (archives displaced banners, explicitly historical H2 sections, and older terminal table rows into `archive/program-archive-YYYY-MM-DD.md`, leaves concise pointers in `program.md`, and builds `archive/memory-index.jsonl` for oversized `memory.md` without deleting facts).
+3. Verify with `scripts/validate_plan.py --strict <project-root>` (or distill remaining active prose manually if `program.md` still exceeds the line budget).

@@ -36,7 +36,7 @@ Recover why the current route was chosen, its still-supported premises, unresolv
 
 Update existing records when evidence changes the route. Research discoverable unknowns and choose reversible details within accepted bounds; stop dependent work only when changing a locked outcome, acceptance, authority or real risk requires the user's decision. Do not add a parallel diary or approval process.
 
-Handoff and completion need consistent state, not an automatic cleanup pass or `N/A` marker. Use Clean only when accumulated or conflicting state impairs recovery; preserve existing opted-in metadata. Evidence that still covers unchanged code, inputs and conditions can be reused.
+Handoff and completion need consistent state, not an automatic cleanup pass or `N/A` marker. Use Clean only when accumulated or conflicting state impairs recovery; preserve existing opted-in metadata. When `program.md` exceeds its context budget (`> 300` lines or `> 5` leading status banners) or `memory.md` grows large (`> 500` lines), run `scripts/slim_plan.py --dry-run <project-root>` then `scripts/slim_plan.py <project-root>` to losslessly archive historical state and build `archive/memory-index.jsonl`. Evidence that still covers unchanged code, inputs and conditions can be reused.
 
 ## Conditional References
 

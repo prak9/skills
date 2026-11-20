@@ -547,6 +547,55 @@ def check_clean_contract(
         )
 
 
+def check_context_budget(
+    root: Path,
+    program_path: Path,
+    program_text: str,
+    memory_path: Path,
+    memory_text: str,
+    warnings: list[str],
+    *,
+    max_program_lines: int = 300,
+    max_leading_banners: int = 5,
+    max_unindexed_memory_lines: int = 500,
+) -> None:
+    """Warn when program.md or memory.md exceeds recovery context budgets."""
+    if program_text:
+        lines = program_text.splitlines()
+        if len(lines) > max_program_lines:
+            warnings.append(
+                f"{program_path} exceeds context budget ({len(lines)} > {max_program_lines} lines); "
+                "run `scripts/slim_plan.py --dry-run <project-root>` to archive historical state"
+            )
+        first_h1 = next(
+            (idx for idx, line in enumerate(lines) if re.match(r"^#\s+", line)),
+            -1,
+        )
+        if first_h1 > 0:
+            banner_blocks = 0
+            in_block = False
+            for line in lines[:first_h1]:
+                if line.lstrip().startswith(">"):
+                    if not in_block:
+                        banner_blocks += 1
+                        in_block = True
+                elif line.strip() == "":
+                    in_block = False
+            if banner_blocks > max_leading_banners:
+                warnings.append(
+                    f"{program_path} has {banner_blocks} leading status banners before H1 "
+                    f"(limit: {max_leading_banners}); run `scripts/slim_plan.py` to archive older banners"
+                )
+    if memory_text:
+        mem_lines = len(memory_text.splitlines())
+        index_path = root / "archive" / "memory-index.jsonl"
+        if mem_lines > max_unindexed_memory_lines and not index_path.is_file():
+            warnings.append(
+                f"{memory_path} has {mem_lines} lines without archive/memory-index.jsonl; "
+                "run `scripts/slim_plan.py --index-memory <project-root>` to build a retrieval index"
+            )
+
+
 def check_standing_checklist_completion(path: Path, text: str, errors: list[str]) -> None:
     """待验收/完成 task packages must have no unchecked Standing Checklist items."""
     status = task_status(text)
@@ -1635,6 +1684,15 @@ def main() -> int:
                 f"memory.md has {pending} run logs pending distillation; "
                 "set Clean state to `Due` and run Clean"
             )
+
+    check_context_budget(
+        root,
+        program_path,
+        program_text,
+        memory_path,
+        memory_text,
+        warnings,
+    )
 
     program_loop_maximum = check_program_loop_contract(
         program_path,
