@@ -151,6 +151,32 @@ class SlimPlanTests(unittest.TestCase):
                 data_after["warnings"],
             )
 
+    def test_checked_checklist_items_archived_and_idempotent(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            checked = "\n".join(f"- [x] NODE-{i:03d}: completed task {i}" for i in range(1, 10))
+            program = (
+                "# Program: Checklist Demo\n\n"
+                "## Implementation Plan\n\n"
+                f"{checked}\n"
+                "- [ ] NODE-010: still open\n"
+            )
+            (root / "program.md").write_text(program, encoding="utf-8")
+
+            first = slim_plan.slim_plan(root, keep_checked_items=3, today="2026-11-20")
+            self.assertTrue(first["changed_program"])
+            self.assertEqual(first["archived_checked_items"], 6)
+            slimmed = (root / "program.md").read_text(encoding="utf-8")
+            self.assertIn("NODE-010", slimmed)
+            self.assertIn("NODE-009", slimmed)
+            self.assertNotIn("NODE-001", slimmed)
+            archived = (root / "archive" / "program-archive-2026-11-20.md").read_text(encoding="utf-8")
+            self.assertIn("NODE-001", archived)
+
+            second = slim_plan.slim_plan(root, keep_checked_items=3, today="2026-11-20")
+            self.assertFalse(second["changed_program"])
+            self.assertEqual(second["archived_checked_items"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

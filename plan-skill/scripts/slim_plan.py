@@ -16,6 +16,7 @@ from plan_markdown import metadata_value, norm_cell, read_text, split_markdown_t
 DEFAULT_MAX_LINES = 300
 DEFAULT_KEEP_BANNERS = 3
 DEFAULT_KEEP_TERMINAL_ROWS = 5
+DEFAULT_KEEP_CHECKED_ITEMS = 5
 DEFAULT_MEMORY_INDEX_LINES = 500
 DEFAULT_MEMORY_INDEX_BYTES = 50_000
 
@@ -271,6 +272,45 @@ def _slim_tables_in_lines(
     return out, archived_tables
 
 
+def _slim_checked_items_in_lines(
+    lines: list[str],
+    keep_checked_items: int,
+    archive_rel_path: str,
+) -> tuple[list[str], list[str]]:
+    """Archive older completed `- [x]` checklist items, keeping unchecked + recent checked items."""
+    checked_indices: list[int] = []
+    in_fence = False
+    for idx, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped.startswith("```") or stripped.startswith("~~~"):
+            in_fence = not in_fence
+            continue
+        if not in_fence and re.match(r"^\s*[-*]\s+\[[xX]\]\s+", line):
+            checked_indices.append(idx)
+
+    if len(checked_indices) <= keep_checked_items:
+        return lines, []
+
+    archive_count = len(checked_indices) - keep_checked_items
+    to_archive = set(checked_indices[:archive_count])
+    archived_items = [lines[idx] for idx in checked_indices[:archive_count]]
+    first_archived = checked_indices[0]
+
+    out: list[str] = []
+    inserted_note = False
+    for idx, line in enumerate(lines):
+        if idx in to_archive:
+            if not inserted_note and idx == first_archived:
+                out.append(
+                    f"> 已归档 {len(archived_items)} 条已完成清单项至 "
+                    f"[{archive_rel_path}]({archive_rel_path})。"
+                )
+                inserted_note = True
+            continue
+        out.append(line)
+    return out, archived_items
+
+
 def _update_existing_clean_metadata(text: str, today: str, archive_rel_path: str) -> str:
     """Update Clean state / Last clean ONLY if the plan already opted into them."""
     if metadata_value(text, "Clean state") is None and metadata_value(text, "Last clean") is None:
@@ -355,6 +395,7 @@ def slim_plan(
     max_lines: int = DEFAULT_MAX_LINES,
     keep_banners: int = DEFAULT_KEEP_BANNERS,
     keep_terminal_rows: int = DEFAULT_KEEP_TERMINAL_ROWS,
+    keep_checked_items: int = DEFAULT_KEEP_CHECKED_ITEMS,
     archive_dir_name: str = "archive",
     index_memory: bool = False,
     today: str | None = None,
@@ -411,12 +452,17 @@ def slim_plan(
         else:
             kept_sections.append((title, sec_lines))
 
-    # 3. Terminal rows in Markdown tables inside kept sections (and preamble)
+    # 3. Terminal rows in Markdown tables and completed `- [x]` checklist items
     archived_tables: list[tuple[str, str, list[str]]] = []
+    archived_checked: list[str] = []
     slim_preamble, preamble_tables = _slim_tables_in_lines(
         preamble, keep_terminal_rows, archive_rel_path
     )
     archived_tables.extend(preamble_tables)
+    slim_preamble, pre_checked = _slim_checked_items_in_lines(
+        slim_preamble, keep_checked_items, archive_rel_path
+    )
+    archived_checked.extend(pre_checked)
 
     slim_sections: list[tuple[str, list[str]]] = []
     for title, sec_lines in kept_sections:
@@ -424,6 +470,10 @@ def slim_plan(
             sec_lines, keep_terminal_rows, archive_rel_path
         )
         archived_tables.extend(sec_tables)
+        new_sec_lines, sec_checked = _slim_checked_items_in_lines(
+            new_sec_lines, keep_checked_items, archive_rel_path
+        )
+        archived_checked.extend(sec_checked)
         slim_sections.append((title, new_sec_lines))
 
     # Append or update Archive Index if any H2 sections were archived
@@ -451,7 +501,9 @@ def slim_plan(
         rebuilt_lines.extend(sec_lines)
 
     new_text = "\n".join(rebuilt_lines).rstrip() + "\n"
-    changed_program = bool(archived_banners or archived_sections or archived_tables)
+    changed_program = bool(
+        archived_banners or archived_sections or archived_tables or archived_checked
+    )
     if changed_program:
         new_text = _update_existing_clean_metadata(new_text, today_str, archive_rel_path)
 
@@ -489,6 +541,11 @@ def slim_plan(
             archive_chunks.append(f"\n## Archived Terminal Table Rows ({total_rows})\n")
             for header, sep, rows in archived_tables:
                 archive_chunks.append(header + "\n" + sep + "\n" + "\n".join(rows) + "\n")
+        if archived_checked:
+            archive_chunks.append(
+                f"\n## Archived Completed Checklist Items ({len(archived_checked)})\n"
+            )
+            archive_chunks.append("\n".join(archived_checked) + "\n")
 
     if not dry_run:
         if changed_program:
@@ -528,6 +585,7 @@ def slim_plan(
         "archived_banners": len(archived_banners),
         "archived_sections": [title for title, _ in archived_sections],
         "archived_table_rows": sum(len(rows) for _, _, rows in archived_tables),
+        "archived_checked_items": len(archived_checked),
         "archive_path": str(archive_path) if changed_program else None,
         "memory_indexed": should_index_memory,
         "memory_index_entries": len(memory_entries),
@@ -564,6 +622,12 @@ def build_parser() -> argparse.ArgumentParser:
         help=f"Recent terminal status rows to keep in tables (default: {DEFAULT_KEEP_TERMINAL_ROWS})",
     )
     parser.add_argument(
+        "--keep-checked-items",
+        type=int,
+        default=DEFAULT_KEEP_CHECKED_ITEMS,
+        help=f"Recent completed `- [x]` items to keep in checklists (default: {DEFAULT_KEEP_CHECKED_ITEMS})",
+    )
+    parser.add_argument(
         "--archive-dir",
         default="archive",
         help="Relative archive directory under root (default: archive)",
@@ -591,6 +655,7 @@ def main() -> int:
             max_lines=args.max_lines,
             keep_banners=args.keep_banners,
             keep_terminal_rows=args.keep_terminal_rows,
+            keep_checked_items=args.keep_checked_items,
             archive_dir_name=args.archive_dir,
             index_memory=args.index_memory,
         )
