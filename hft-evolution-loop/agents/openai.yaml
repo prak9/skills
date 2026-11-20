@@ -1,0 +1,4 @@
+interface:
+  display_name: "HFT 离线沙盒自进化循环"
+  short_description: "基于 result.py 每日底表驱动离线沙盒进化树优化、早停与滑点压测"
+  default_prompt: "用 $hft-evolution-loop 刷新 result.py 跨日底表与失效切片，在授权预算内沿进化树推进离线沙盒优化并完成压测验收。"
