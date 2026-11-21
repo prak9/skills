@@ -1,0 +1,4 @@
+interface:
+  display_name: "Teach (Grounded Tradeoff & Mechanism Explainer)"
+  short_description: "Explain why a design or implementation works the way it does, comparing real alternatives and tradeoffs grounded in code and git history"
+  default_prompt: "Use $teach to read the actual code and history first, then explain the mental model, chosen approach vs. strongest alternative, concrete tradeoffs, and non-obvious gotchas."

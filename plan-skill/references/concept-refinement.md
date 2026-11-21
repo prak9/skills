@@ -23,7 +23,9 @@ Compare the viable directions on:
 
 For each serious direction, name what must be true, what could kill it, and what is intentionally ignored. Recommend one direction when the evidence supports it; do not preserve rejected alternatives as plan state.
 
-Avoid adversarial review on abstract paper plans alone—critiquing unbuilt prose tends to hallucinate theoretical edge cases. When API ergonomics or runtime behavior is the crux, settle open questions with **empirical design artifacts**: draft a concise caller-facing README/tutorial first to work backward from real usage, or build 2–3 minimal **throwaway code prototypes** and compare real measurements or outputs before locking the plan.
+Avoid adversarial review on abstract paper plans alone—critiquing unbuilt prose tends to hallucinate theoretical edge cases. When API ergonomics or runtime behavior is the crux, settle open questions with **empirical design artifacts**:
+- draft a concise caller-facing README/tutorial first to work backward from real usage; or
+- run an **isolated throwaway prototype** where the usual production-quality and smallest-change bars invert: build 2–3 labeled variants behind one switcher in an isolated scratch directory separate from production source (no production framework, no unit tests, no abstractions), treat the concrete observation (rendered screenshot, output, or measured timing) as the test, and deliver the **design decision**—not shippable code—before handing the winning direction to real implementation.
 
 ## Sharpen And Ship The Brief
 

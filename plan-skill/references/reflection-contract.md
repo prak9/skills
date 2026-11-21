@@ -39,6 +39,7 @@ Do not advance from a triggered event until its `R-*` entry is recorded. Do not 
 - Update the plan immediately when a reflection changes scope, order, verifier, preference, or risk. If it changes a durable project rule, distill it into `D-*` or `F-*` and link the originating `R-*`.
 - In Loop mode, create one `R-*` for every verified attempt; create `RUN-*` only for attempts whose raw execution details remain consequential.
 - If reality contradicts a passing checker, record the escaped failure class and revise the acceptance or sensor contract. Do not reinterpret the same evidence as success.
+- **Attack the premise:** when two or more fixes sharing one premise fail the same verifier, record the premise explicitly in `Wrong / changed` and make testing that premise directly the `Next rule` before attempting another fix under it.
 - If a rubric, sensor, or holdout set changes, record it as a versioned harness decision and re-evaluate affected claims; do not hide evaluator drift inside an implementation reflection.
 
 ## Preserve Learning

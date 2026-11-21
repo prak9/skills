@@ -61,6 +61,7 @@ Keep planned actions in `Atomic Plan`. Update only the current attempt here; pre
 - After verification, write one evidence-linked `R-*`, then move to `Pass`, `Reflect`, or `Blocked`.
 - Treat a change to acceptance, rubric, sensor, or holdout set as a versioned harness change. Freeze it for the next attempt; do not count moving the goalposts as implementation progress.
 - Continue only when the next attempt changes a belief, method, or falsifiable uncertainty.
+- **Attack the premise:** if two or more attempts sharing one premise fail the same gate, stop patching; write the shared premise down explicitly and test it directly before running another fix that assumes it.
 - A PASS requires the declared independent evidence path. Maker self-report, a broader-than-change smoke check, or an evaluator changed mid-attempt cannot close the loop.
 - During `Reflect`, set `Clean state` to `Due` when stale hypotheses, repeated state, or the Clean thresholds are reached; run Clean before handoff or a terminal transition.
 - Stop when success, the finite budget, a safety condition, or the escalation condition is reached.

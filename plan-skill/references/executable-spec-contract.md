@@ -10,7 +10,7 @@ Record only the layers the work needs, and name their authority:
 2. **Bounds:** compatibility, safety, performance, policy, and non-goals that cannot be violated.
 3. **Semantic contract:** invariants, state transitions, input/output behavior, error behavior, ordering, and side effects.
 4. **Reference evidence:** protocols, schemas, fixtures, tests, current implementation, traces, or production examples.
-5. **Executable acceptance:** commands and scenarios whose raw output lets an independent checker decide.
+5. **Executable acceptance:** commands and scenarios whose raw output lets an independent checker decide. For multi-phase or multi-PR work, declare a **dependency graph** (which units branch independently from trunk vs. wait on another, plus disjoint file ownership) and treat unit tests alone as insufficient when live behavior or performance matters: pair **unit** checks with a **live** scenario + pass predicate on the real surface, and when performance is in scope a **perf** check naming the metric, probe, trunk baseline measured first, and failure threshold. Mark user-interaction changes as review-gated before merge.
 6. **Work interfaces:** ownership, inputs, outputs, dependencies, and merge boundaries for each agent.
 7. **Unknowns:** unresolved choices, cheapest resolution, and the point at which an agent must stop rather than guess.
 
@@ -57,6 +57,10 @@ Completion and handoff destination:
 ```
 
 Align granularity: the task slice must be smaller than the verifier's ability to localize failure. Split a packet when its checker can only report "something in this module is wrong."
+
+**Delegation discipline:**
+- **The packet bar is the whole bar:** delegated workers must not invent extra approval gates, sign-offs, or review rounds above the packet contract. Hold or block only for a failing check at the current head or a real user-facing defect; report pre-existing base defects in one line without blocking unrelated work.
+- **Fresh subagents by default:** give fix rounds, retries, or the next queue item to a fresh subagent (passing the original packet, later directives, and the prior report/branch) rather than dragging a polluted context window forward. Resume an existing subagent only when its live state (checkout, uncommitted edits, or running process) is costly to move.
 
 ## Completion Gate
 

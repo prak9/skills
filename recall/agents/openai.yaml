@@ -1,0 +1,4 @@
+interface:
+  display_name: "Recall (Session Transcript Context Recovery)"
+  short_description: "Search and synthesize recent work, decisions, and open threads from local Antigravity, Codex, and Claude Code transcripts"
+  default_prompt: "Use $recall to search recent local session transcripts for this topic, inspect the relevant turns, and return a concise Recall Brief reconciled with current repo state."
