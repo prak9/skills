@@ -27,9 +27,11 @@ Use common valuation dates, currency, security basis, and return horizons. Growt
 
 ## Causal Sandbox Before Scenario Judgment
 
-Before assigning final scenario probabilities, target values or the investment verdict, simulate how the business system could evolve from the dated starting state. This is a structured thought experiment for testing causal completeness, not free-form storytelling and not a substitute for evidence.
+Before assigning final scenario probabilities, target values or the investment verdict, simulate how the business system could evolve from the dated starting state. This is a structured thought experiment for testing causal completeness—compressing raw reality into clear, decision-grade structure—not free-form storytelling and not a substitute for evidence.
 
-1. **Lock the initial state.** State the security, date, operating base, demand/backlog or customer state, price and unit economics, capacity and inventory, cost commitments, cash/debt and refinancing needs, diluted shares, competitive and regulatory position, and material unknowns. Separate observed facts, management guidance, third-party estimates and analyst assumptions.
+Apply a **decompose → decouple → abstract → recompose** pass: break the system to fundamental units (**elements, relationships, constraints, incentives and dynamics**), decouple single-driver effects holding other variables fixed, abstract the recurring structure, and recompose into the few load-bearing causal threads that govern direction. Push vague intuitions to **pixel-level** specification: governing variables, outcome distributions/ranges, risk borne and concrete action thresholds (retaining honest bounds when point probabilities are unidentifiable).
+
+1. **Lock the initial state.** State the security, date, operating base, demand/backlog or customer state, price and unit economics, capacity and inventory, cost commitments, cash/debt and refinancing needs, diluted shares, competitive/regulatory position, key participant incentives, and material unknowns. Separate observed facts, management guidance, third-party estimates and analyst assumptions.
 2. **Introduce branch-defining changes.** Select only shocks, continuations or management choices capable of changing value: demand, price, mix, technology, competition, input cost, capacity, regulation, capital allocation or financing. Specify magnitude/range, timing, duration and prerequisites. Include the rational-status-quo path and strongest adverse mechanism; do not design branches around desired target prices.
 3. **Simulate participant responses through time.** For each branch, trace customer, competitor, supplier, employee, regulator, financier and management responses where material. Distinguish immediate effects, adaptation and steady state. Include feedback and constraints: price cuts can change volume and rival behavior; growth can consume working capital and capacity; financing can enable delivery while diluting existing holders; a strong balance sheet can fund defense but cannot create demand.
 4. **Carry the mechanism into the statements and security.** Show the compact bridge from operating units and realized price through contribution, fixed cost, reinvestment, working capital, taxes and financing to normalized owner cash, net debt and diluted per-share value. Preserve correlated assumptions within each path and check liquidity/survival before terminal value. Do not average incompatible states or count the same benefit in both cash flow and multiple.
@@ -64,17 +66,28 @@ Keep the sandbox in the same evidence and model record used for the final scenar
 
 ## Sequential Bayesian Updates
 
-Use the latest recoverable dated judgment as the starting state, not a new opinion assembled around the latest headline. Preserve its hypotheses, information cutoff, probabilities/ranges and payoffs. **This update's posterior becomes the next update's prior**; it already incorporates the evidence used to reach it. If the prior is unavailable, say so and establish a new dated baseline rather than invent a history or default to 50/50.
+Use the latest recoverable dated judgment as the starting state, not a new opinion assembled around the latest headline. Preserve its hypotheses, **prior provenance** (reference class, base rate or economics), stated **failure conditions**, information cutoff, probabilities/ranges and payoffs. **This update's posterior becomes the next update's prior**; it already incorporates the evidence used to reach it. If the prior is unavailable, say so and establish a new dated baseline rather than invent a history or default to 50/50.
 
-For each material new observation, ask: **if explanation A were true, how expected would this evidence be, compared with explanation B?** A favorable observation can fit both and therefore discriminate little. `P(evidence | hypothesis)` is not `P(hypothesis | evidence)`. Keep verified observations separate from the analyst's likelihood assumptions and explain source reliability, observation timing and alternative causes where they matter.
+For each material new observation, do not update merely because the headline sounds bullish or bearish. Apply a **two-question diagnosticity gate**:
+
+1. **Diagnosticity (`区分力`):** `LR = P(E_t | H, E_{<t}) / P(E_t | ¬H, E_{<t})` — if explanation A were true versus its strongest rival B, how expected is this observation?
+   - `LR ≈ 1`: **noise** — occurs whether `H` or `¬H` is true; do **not** move conviction or position even if the headline looks favorable.
+   - `LR >> 1`: **strong confirming signal** — meaningfully shifts odds toward `H`.
+   - `LR << 1`: **strong disconfirming signal** — revise decisively against `H`.
+2. **Incremental diagnosticity (`新增区分力`):** conditional on evidence already incorporated (`E_{<t}`), how much *new* separating power does `E_t` add? Secondary commentary, media reprints or KOL threads repeating an already-counted fact carry **incremental `LR = 1` (zero update)**; guard against echo-chamber double-counting.
+
+`P(evidence | hypothesis)` is not `P(hypothesis | evidence)`. Keep verified observations separate from the analyst's likelihood assumptions and explain source reliability, observation timing and alternative causes where they matter.
 
 When the likelihoods are supported, the sequential calculation is:
 
 ```text
 L_i = P(E_t | H_i, evidence already used)
+LR(A:B) = L_A / L_B
 p_t(H_i) = p_previous(H_i) * L_i / sum_j(p_previous(H_j) * L_j)
-posterior odds(A:B) = prior odds(A:B) * L_A/L_B
+posterior odds(A:B) = prior odds(A:B) * LR(A:B)
 ```
+
+Illustrative contrast (illustrative assumptions only, not default numbers): testing `H` (genuine product moat) against `¬H` (marketing-bought growth) from a 30% prior (odds `0.43`): (1) revenue `+40%` alongside S&M `+50%` is likely under both (`80% / 75% => LR ≈ 1.07`, posterior `~31.5%` — noise, no position change); (2) a `20%` across-the-board price hike with flat churn is far likelier under a moat (`60% / 5% => LR = 12`, posterior `~84.7%` — high-diagnosticity update); (3) three KOL articles praising that same price hike add no independent fact (`incremental LR = 1`, posterior stays `84.7%`). Use this exact `LR ≈ 1 / >> 1 / << 1` and `incremental LR = 1` discipline qualitatively whenever numeric likelihoods are unsupported.
 
 Belief odds `P(A)/P(B)` are not offered payoff odds `G/L`: the former update with relative evidence, while the latter come from the quote and state-contingent net payoffs. Do not substitute one for the other.
 
@@ -82,7 +95,7 @@ Show prior, likelihood/basis, substitution, posterior and uncertainty. The odds 
 
 Without support for numeric likelihoods, give the warranted direction/range or unchanged judgment, what the evidence distinguishes and what remains unresolved; do not invent likelihood ratios, confidence-point increments or precise posteriors. Non-discriminating/already-incorporated evidence can warrant no change. Missing or not-yet-due disclosure is not automatically adverse evidence; an observable milestone failing when due may be. If a new mechanism lies outside the existing hypothesis set, revise and version the model rather than force every observation into old buckets or convenient zero probabilities.
 
-In the **existing** thesis row or equivalent prose, connect: `previous judgment/cutoff → new evidence and overlap → relative support for rivals → updated judgment → changed scenario cash flows/value/net EV → current bet posture → next discriminating observation`. Recalculate only affected assumptions, then reconcile their joint consequence. A higher success probability need not justify adding if price, costs or concentration worsen; a price-only change can alter the offered payoff without a warranted business-probability update. Reapply the [bet decision constraints](uncertainty-exposure.md#required-final-bet-recommendation), keeping numerical sizing conditional on actual portfolio inputs.
+In the **existing** thesis row or equivalent prose, connect: `previous judgment/cutoff → new evidence and overlap → relative support for rivals → updated judgment → changed scenario cash flows/value/net EV → current bet posture → next discriminating observation`. For parameter-level updates, recalculate affected assumptions and reconcile their joint consequence. When new discriminating evidence is strong enough to **change the choice** (breached core assumption, flipped odds or new regime), **step back into a clean-sheet re-evaluation ("think box")**: re-derive the mechanism, recompute commitment posture, downside risk and worst-case loss from scratch at today's quote rather than anchoring to legacy size or incremental tinkering, and align the conditional recommendation decisively with the updated judgment (subject to actual liquidity, tax and portfolio constraints). A higher success probability need not justify adding if price, costs or concentration worsen; a price-only change can alter the offered payoff without a warranted business-probability update. Reapply the [bet decision constraints](uncertainty-exposure.md#required-final-bet-recommendation), keeping numerical sizing conditional on actual portfolio inputs.
 
 Choose the next observation by its ability to distinguish the live explanations and change the decision, not by how reassuring it would be. No new diary, automatic watchlist, recurring polling or trade is authorized by this loop; the next evidence arrival starts another scoped update with the preserved posterior.
 
