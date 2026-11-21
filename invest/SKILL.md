@@ -7,7 +7,7 @@ description: Research public companies and stocks using filings, earnings calls,
 
 ## Research Contract
 
-Answer the requested question, not a report template. The causal spine is **how the business earns money, why it retains a profit spread, whether that can persist, how much owner cash it can produce, and what reaches the owned security per diluted share relative to the price paid**.
+Answer the requested question, not a report template. The causal spine is **how the business earns money, why it retains a profit spread, whether that can persist, how much owner cash it can produce, and what reaches the owned security per diluted share relative to the price paid**. Economic value is the present value of all future cash in and out of the business, judged by the same four questions as buying a farm or private business: **what you lay out now, what cash comes back over time, how certain that cash stream is, and how it compares to alternatives**. Financial statements are clues, not answers—if you cannot bound a business's future cash-flow range, you cannot know what it is worth today (skip/`Too Hard` instead of inventing a target price), and **favor certainty of the cash-flow range over apparent cheapness built on low-confidence estimates**.
 
 Separate customer value, industry or national progress, company success, security value and price attractiveness. Follow value from customer need and willingness to pay through charging unit, realized price/volume, costs, capital needs, taxes, debt, governance and dilution. Locate who captures the benefit, who bears the cost, and the weakest link. Growth without adequate incremental returns or shareholder access need not create investor value. A low quote cannot repair missing rights or a broken earnings engine.
 
