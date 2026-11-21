@@ -20,7 +20,7 @@ class HftEvolutionLoopSkillTests(unittest.TestCase):
         self.assertIn("sim.py", skill_md)
         self.assertIn("conf/features_v2.lst", skill_md)
         self.assertIn("backtest.py diagnose", skill_md)
-        self.assertIn("backtest.py stress-test", skill_md)
+        self.assertIn("忠实原生", skill_md)
         self.assertIn("conf/workers.yaml", skill_md)
         self.assertIn("localhost", skill_md)
         self.assertLessEqual(len(skill_md.splitlines()), 100)

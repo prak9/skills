@@ -1,6 +1,6 @@
 ---
 name: hft-evolution-loop
-description: 在 py 高频期货项目中启动、恢复和推进基于 result.py 每日实盘/模拟底表的离线沙盒自进化优化循环（Evolution Tree）。用于刷新跨日底表与失效切片、在隔离 git worktree 中迭代非 sim/非因子可调面、执行传导早停与滑点费用压测，并维护进化树；不用于纯日报解读（用 hf-futures-analysis）、通用方法论设计（用 hft-rsi-research）或直接修改生产配置。
+description: 在 py 高频期货项目中启动、恢复和推进基于 result.py 每日实盘/模拟底表的离线沙盒自进化优化循环（Evolution Tree）。用于刷新跨日底表与失效切片、在隔离 git worktree 中迭代非 sim/非因子可调面、执行传导早停与忠实原生 SIM+成交模型跨窗 OOS 验证，并维护进化树；不用于纯日报解读（用 hf-futures-analysis）、通用方法论设计（用 hft-rsi-research）或直接修改生产配置。
 ---
 
 # HFT 离线沙盒自进化循环 (`hft-evolution-loop`)
@@ -43,11 +43,11 @@ python3 /data/code/skills/hft-evolution-loop/scripts/bootstrap_loop.py \
   python3 backtest.py diagnose --input <stage1.json> --mcse <v> --cumulative-trials <N> --markdown
   ```
   未过 Decimal 现金核账、SNR/MCSE 门槛或去最大贡献日转负 → 直接剪枝记 `REJECTED`。
-- **Stage 2（多窗 OOS + 滑点/费用压测）**：
+- **Stage 2（多窗 OOS 忠实原生 SIM 验证）**：坚持忠实原生 `sim.py` + 已发布概率成交模型（MC5，固定随机盐）+ 真实 `cost_fee_gate` 口径，不默认叠加虚构滑点或费用倍增（避免与已校准成交模型重复扣成本）。在多窗 OOS 上运行：
   ```bash
-  python3 backtest.py stress-test --input <stage2.json> --fee-multiplier 1.2 --slippage-ticks 0.5 --markdown
+  python3 backtest.py diagnose --input <stage2_oos.json> --mcse <v> --cumulative-trials <N> --markdown
   ```
-  费用 ×1.2、额外 0.5 tick 滑点、联合压测、去最好日与分品种×session 改善比例任一不通过 → 记 `REJECTED`。
+  须满足跨窗扣费净利与 POT/`avgnwt` 改善、去最大贡献日仍 > 0 且分品种×session 明细无结构性恶化；否则记 `REJECTED`。（仅在用户显式要求敏感性压测时，另行可选运行 `backtest.py stress-test`。）
 - **Stage 3（正式门禁 → 影子晋级）**：`backtest.py finish` + `analyze/promotion_gate.py`（双北极星 `dret` + `avgnwt` + 动态曝光 `effective_k_sigma`）通过后，标为 `PROMOTED_SHADOW`。
 - 如需核对实盘成交单保真度，直接跑 `python3 backtest.py fidelity-check --input <fidelity.json> --markdown`。
 
