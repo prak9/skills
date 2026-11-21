@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architect (Sketch Arena & Boundary Design)"
+  short_description: "Design boundaries, data structures, and interfaces via multi-option type sketches, independent judging, and empirical scrap criteria"
+  default_prompt: "Use $architect to ground the problem, generate competing interface/type sketches, cross-judge them, and deliver a clean winning contract with explicit scrap triggers."

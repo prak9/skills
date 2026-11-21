@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify Harness (CLI & Feature Map)"
+  short_description: "Build an agent-friendly verification CLI and Feature Map so coding agents can reproduce and prove changes end to end"
+  default_prompt: "Use $verify-harness to audit verification friction in this repo and build a composable agent-friendly verification CLI plus a concise Feature Map."

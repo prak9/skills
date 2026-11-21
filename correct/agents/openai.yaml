@@ -1,0 +1,4 @@
+interface:
+  display_name: "Correct (Defect-to-Lint Hardening)"
+  short_description: "Turn recurring defects and crutch comments into architectural, type, lint, or test guardrails and prune obsolete prose rules"
+  default_prompt: "Use $correct to mine recurring failure modes or audit crutch comments, harden them in inverted-pyramid order with red-before-green proof, and prune redundant prose rules."

@@ -68,6 +68,6 @@ A completed node has acceptance evidence, not merely a report that it ran. Lite/
 
 Loop requires a finite budget, bounded scope, independent checker, sensor/granularity alignment, calibration and stop conditions. Keep goal completion, search convergence, budget exhaustion and blockage distinct; don't invent a budget or claim global optimality.
 
-Use `待验收` only for an explicitly retained owner decision after technical evidence passes. A blocker names the missing condition, owner and recovery action. Do not keep completed work open for optional polish or mark an authorized unfinished delivery complete.
+Use `待验收` only for an explicitly retained owner decision after technical evidence passes. A blocker names the missing condition, owner and recovery action. Do not keep completed work open for optional polish or mark an authorized unfinished delivery complete. When a temporary execution plan (`program.md` or task package) has served a finished change and is not an authorized long-lived ledger, archive or delete it on completion so stale plans do not pollute future codebase context.
 
 Reuse upstream goals, facts, constraints, conclusions and evidence. Boundary and handoff: do not rerun upstream work unless missing or contradictory, and do not invoke all four by default.

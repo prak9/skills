@@ -39,13 +39,13 @@ Before approval, be able to explain what the code does, why, what must remain tr
 
 ## Inspect structural cost
 
-Check the states, branches, flags, wrappers, type escapes and boundaries introduced by a meaningful change. Look for an evidenced, behavior-preserving simplification to ownership, representation or control flow that removes concepts—not merely more files that relocate them.
+Check the states, branches, flags, wrappers, type escapes and boundaries introduced by a meaningful change. Look for an evidenced, behavior-preserving simplification to ownership, representation or control flow that removes concepts—not merely more files that relocate them. Treat recurring workarounds across unrelated callers or forced type escape hatches (`any`, unsafe casts, suppression comments like `eslint-disable`/`@ts-ignore`/`noqa`) as empirical signals that the underlying boundary or abstraction is wrong.
 
 The rubric covers scattered policy, duplicate canonical logic, pass-through abstractions, dependency cost, avoidable serialization and partially applied updates. Follow existing patterns unless evidence supports departing.
 
 A structural finding needs a concrete maintenance or operational cost, repository evidence for a simpler direction, and the smallest safe migration/test boundary. File length and numeric thresholds are signals, not verdicts. A proven net-health regression can block even when tests pass; speculative rewrites or preferred style cannot.
 
-Recurring required defects—or one high-consequence systemic failure—may justify a guard at the earliest maintainable layer. Keep that hardening opportunity separate unless the absent guard makes this revision unsafe; one example does not justify a framework.
+Recurring required defects, crutch comments (`do not remove`, workaround justifications), or one high-consequence systemic failure justify hardening in strict inverted-pyramid order: **(1) eliminate via architecture/data structure → (2) enforce in the type system → (3) diff-only lint/CI rule whose error names the replacement file/type/API → (4) regression test → (5) prose rule only as a last resort**. Keep that hardening opportunity separate unless the absent guard makes this revision unsafe; one example does not justify a framework.
 
 ## Decide what is a finding
 

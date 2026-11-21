@@ -1,0 +1,4 @@
+interface:
+  display_name: "How (Codebase Explorer)"
+  short_description: "Explain how a subsystem or feature works in this codebase, with optional multi-model architectural critique"
+  default_prompt: "Use $how to explore the codebase and explain how this subsystem works end to end, citing real files, flows, and gotchas."

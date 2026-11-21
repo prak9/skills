@@ -19,11 +19,12 @@ Ask only for missing judgment that cannot be inferred safely, after useful indep
 
 ## Run The Grill
 
-1. Name the decision that would change after a pass or fail.
-2. Identify the one or two uncertainties capable of flipping that decision.
-3. Define evidence that permits execution and evidence that stops or redirects it.
-4. Put the cheapest belief-changing check before broad implementation.
-5. Ask one consequential question at a time only when its answer can change the plan.
+1. **Restate before acting (indirect prompting):** when input comes from a noisy thread, bug report, or tacit workflow, restate the underlying problem, goal, and constraints in plain language first—without importing unverified human guesses about the cause—so drift is caught before writing code.
+2. Name the decision that would change after a pass or fail.
+3. Identify the one or two uncertainties capable of flipping that decision.
+4. Define evidence that permits execution and evidence that stops or redirects it.
+5. Put the cheapest belief-changing check before broad implementation.
+6. Ask one consequential question at a time only when its answer can change the plan (surface tacit criteria or walk through 1–2 concrete edge cases when automating a human process).
 
 Do not turn the gate into a questionnaire. The stopping condition is decision readiness, not a quota.
 

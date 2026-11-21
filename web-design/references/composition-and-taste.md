@@ -28,6 +28,8 @@ When an open-ended design would benefit from comparing alternatives, vary meanin
 
 Choose the direction that reduces interpretation and action cost. A palette swap is not a different direction. An established direction that fits the brief needs no invented alternative or selection gate.
 
+When interaction feel or layout tradeoff remains uncertain after framing, run a **throwaway prototype pass** instead of debating prose: implement 2–3 disposable variants behind a temporary toggle, render and exercise each variant, capture screenshots and real layout/timing measurements, and let empirical behavior pick the winner before deleting the losing branches.
+
 ## Map Meaning To Geometry
 
 - Magnitude or rank: aligned position or length on a common scale.

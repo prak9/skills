@@ -23,6 +23,8 @@ Compare the viable directions on:
 
 For each serious direction, name what must be true, what could kill it, and what is intentionally ignored. Recommend one direction when the evidence supports it; do not preserve rejected alternatives as plan state.
 
+Avoid adversarial review on abstract paper plans alone—critiquing unbuilt prose tends to hallucinate theoretical edge cases. When API ergonomics or runtime behavior is the crux, settle open questions with **empirical design artifacts**: draft a concise caller-facing README/tutorial first to work backward from real usage, or build 2–3 minimal **throwaway code prototypes** and compare real measurements or outputs before locking the plan.
+
 ## Sharpen And Ship The Brief
 
 The confirmed brief needs only:
