@@ -1,0 +1,4 @@
+interface:
+  display_name: "TDD (Failing-First Bug Fix)"
+  short_description: "Write a focused failing regression test before fixing a bug when a cheap local test target exists; prefer no test over a brittle mock test"
+  default_prompt: "Use $tdd to write the narrowest failing test that reproduces this bug, verify it fails for the right reason, implement the minimal fix, and confirm it passes."

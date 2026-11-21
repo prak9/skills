@@ -1,0 +1,4 @@
+interface:
+  display_name: "Reflect (Session-to-Skill Learning)"
+  short_description: "Mine the active conversation transcript for durable 6-month learnings and propose concrete edits to existing skills"
+  default_prompt: "Use $reflect to mine this conversation transcript for durable learnings, filter out one-offs and machine-checkable items, and present Accepted, Rejected, and Backlog proposals for approval."

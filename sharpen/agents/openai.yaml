@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sharpen (Deepen & Rewrite Task Prompt)"
+  short_description: "Make a task deeper, not bigger, by surfacing practitioner methods, raw sources, and external proof before rewriting the prompt"
+  default_prompt: "Use $sharpen to answer the four depth questions (missing rigor, rawest material, concrete methods/tools, external proof) and rewrite my prompt accordingly."

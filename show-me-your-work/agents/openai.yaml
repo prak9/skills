@@ -1,0 +1,4 @@
+interface:
+  display_name: "Show Me Your Work (Decision Trail)"
+  short_description: "Keep an append-only TSV decision trail with evidence pointers and end-of-run audit for long-running or autonomous work"
+  default_prompt: "Use $show-me-your-work to record decision checkpoints via scripts/log.sh into an append-only TSV trail and audit it before handoff."

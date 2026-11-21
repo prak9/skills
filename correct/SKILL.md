@@ -1,11 +1,11 @@
 ---
 name: correct
-description: Turn recurring coding defects, reverts, review interventions, and crutch comments into permanent architectural, type, lint, or test guardrails; also audit diffs for workaround/suppression comments and prune obsolete prose rules. Use when hardening a codebase after repeated mistakes, not for routine one-off bug fixes or generic code review.
+description: Turn recurring coding defects, reverts, review interventions, and crutch comments into permanent architectural, type, lint, or test guardrails; also audit diffs for workaround/suppression comments and prune obsolete prose rules. Use for /correct or when hardening a codebase after repeated mistakes, not for routine one-off bug fixes or generic code review.
 ---
 
 # Correct
 
-Every repeated manual intervention is a system design signal. Turn recurring mistakes into deterministic checks so future agents and engineers cannot repeat them—and delete prose rules once machines enforce them.
+Every repeated manual intervention is a system design signal. Assume every contributor is an agent that sees only the files it opened, copies the nearest example, and takes the shortest path that compiles. Design the repo so a change that looks right from one file is right for the whole repo—and delete prose rules once machines enforce them.
 
 ## Scope Gate
 
@@ -20,22 +20,21 @@ Do not invent lint rules for one-off typos or speculative edge cases.
 
 Always harden at the highest feasible layer—never default to adding prose to `AGENTS.md`:
 
-1. **Architecture / data structure** — make the invalid state or wrong call path unrepresentable.
-2. **Type system / schema** — enforce invariants at compile/validation time with zero runtime escape hatches.
-3. **Lint / static check in CI** — catch the pattern deterministically before review.
-4. **Targeted regression test** — lock runtime invariants when static checks cannot express them.
-5. **Prose instruction** — last resort only when none of the above can catch the failure.
+1. **Architecture / data structure** — give each piece of state one owner and each task one supported way; hide internals so the wrong import fails; replace hand-synced lists with one source of truth; delete old ways and dead code an agent would copy.
+2. **Type system / schema** — make bad states unrepresentable at compile/validation time with zero runtime escape hatches.
+3. **Lint / static check in CI** — if bad code still compiles, add a lint/CI check whose error names the exact file, type, or function to use instead. If the pattern is already common in legacy code, fail only when a change adds more.
+4. **Targeted regression test** — test the behavior when static checks cannot express it; fix or delete any test that still passes when the behavior breaks, or fails when only internals change.
+5. **Prose instruction** — last resort, only for judgment calls. Nothing fails when an agent skips prose.
 
 ## Workflow
 
-1. **Harvest recurring failures.** Inspect recent `git log`, `revert` commits, PR review threads, `AGENTS.md`/`CLAUDE.md`, and workaround comments (`TODO`, `HACK`, `do not remove`, `eslint-disable`, `@ts-ignore`, `noqa`). Cluster by root cause; require `>= 2` real occurrences (or one high-severity failure) before creating a new rule.
-2. **Select the highest layer.** For each cluster, test layers 1 → 5 in order and justify why higher layers were insufficient if you drop down.
-3. **Build actionable, diff-scoped checks.** When writing a lint/CI rule, follow [the hardening playbook](references/hardening-playbook.md):
-   - **Actionable error message:** state what failed AND name the exact file, type, helper, or API the agent should use instead.
-   - **Ratchet legacy code:** if the bad pattern is widespread in old files, enforce strictly on added/changed lines or new files so CI adopts immediately without a massive rewrite.
-   - **Red-before-green proof:** verify the new check actually fails on a historical real bug commit or faithful reproduction before passing on the fixed code.
-   - **Scoped exceptions:** any inline suppression must live on the exact line with a concrete reason, expiry/review condition, and explicit human approval.
-4. **Prune obsolete prose.** Maintain a lightweight mapping between prose rules in `AGENTS.md`/skill files and the machine check enforcing them. Once architecture, types, or lint make a mistake impossible, **delete the redundant prose rule** to keep instruction context sharp.
+1. **Harvest recurring failures.** Inspect recent `git log`, `revert` commits, PR review threads, `AGENTS.md`/`CLAUDE.md`, and workaround comments (`TODO`, `HACK`, `do not remove`, `eslint-disable`, `@ts-ignore`, `noqa`). Group mistakes into classes; a class counts once it has happened twice (or once for a high-consequence systemic failure).
+2. **Fix the most frequent classes now (one commit each).** Test layers 1 → 5 in order and follow [the hardening playbook](references/hardening-playbook.md):
+   - **Actionable error message:** state what failed AND name the exact file, type, helper, or API to use instead.
+   - **Ratchet legacy code:** enforce strictly on added/changed lines or new files when legacy debt is widespread.
+   - **Red-before-green proof:** prove each new check fails on a real past mistake commit or faithful reproduction before passing on the fixed code; run the exact same command locally and in CI.
+   - **Scoped exceptions:** exceptions go on the offending line with a concrete reason, an expiry date, and human approval.
+3. **Maintain and prune the rule table.** Keep a table in the agent instruction file pairing each rule with what enforces it. When corrected, fix the mistake and add the rule. **If the rule was already there and nothing enforces it, that is a repeat—fix it at the highest level in the same change.** Drop a prose rule once its mistake can no longer happen.
 
 ## `no-comments` Audit Submode
 
@@ -46,4 +45,4 @@ When asked to audit comments in a diff or subsystem:
 
 ## Deliverable
 
-Report per failure cluster: root cause & historical evidence → chosen hardening layer → implemented check/refactor → red-before-green verification output → prose rules deleted (if any).
+Report each mistake class with its evidence, the hardening level picked, why a higher level did not work, red-before-green verification output, and any prose rules deleted.

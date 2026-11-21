@@ -1,0 +1,4 @@
+interface:
+  display_name: "Why (Historical Intent & Rationale)"
+  short_description: "Investigate git history, PRs, issues, and docs to explain why code or a design exists, separating cited record from inference"
+  default_prompt: "Use $why to trace git commits, PR discussions, and docs to explain why this was designed or changed this way, citing sources and marking inferences explicitly."

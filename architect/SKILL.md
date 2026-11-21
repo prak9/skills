@@ -5,37 +5,39 @@ description: Design system boundaries, data structures, and public interfaces th
 
 # Architect
 
-Spend human and senior-agent judgment on boundaries, data structures, and interfaces—not on verbose upfront implementation plans. Design through concrete type/interface sketches, test competing options, and scrap the sketch immediately when implementation evidence disproves it.
+Spend human and senior-agent judgment on boundaries, data structures, and interfaces—not on verbose upfront implementation plans. Trace every system the change touches, sketch competing shapes before writing code, pick the shape where **each piece of state has one owner, each task has one way to do it, and callers need to know least**, and scrap the sketch immediately if implementation evidence disproves it.
 
 ## Scope Gate
 
-Use when introducing a new subsystem, public API, shared package, cross-module boundary, or high-risk refactor. Skip for local single-file fixes where boundaries are already clear.
+Use for `/architect`, `"architect this"`, `"design this"`, or non-trivial work (new subsystem, public API, shared package, cross-module boundary, major refactor) where jumping straight to code would lock in the wrong shape. Skip for local single-file fixes where boundaries are already clear.
 
 ## Five-Step Closed Loop
 
 ### 1. Ground The Problem
-Before proposing any design, inspect the affected codebase to establish real responsibilities, invariants, call sites, and historical constraints (use `$how` if the subsystem is unfamiliar, and check `git log`/docs for *why* current boundaries exist). Summarize:
+Trace every system the change touches before sketching (use `$how` for unfamiliar subsystems, and check `git log`/docs for historical *why*). Summarize:
 - What job this boundary owns and what it explicitly does NOT own;
-- Existing callers, data flow, failure modes, and non-negotiable constraints;
-- Open unknowns that require a quick throwaway prototype instead of guessing.
+- Existing callers, state owners, data flow, failure modes, and non-negotiable constraints;
+- Open unknowns best settled by a tiny throwaway prototype instead of guessing.
 
-### 2. Interface Sketch Arena
-Do not accept the first design by default. Generate **2–3 materially different design packages** (using parallel subagents—ideally across distinct model perspectives when available—or cleanly isolated passes). Each candidate package contains **only** the contract layer, no full implementation:
-- **Caller sketch:** realistic call-site code (or a short Tutorial snippet) showing how callers actually use it;
-- **Core data structures & types:** key types, state representations, and invariants;
-- **Public function/method signatures** and error semantics;
-- **Tradeoff brief:** interface depth (deep module vs. shallow pass-through), failure modes on weaker models, and red-flag self-check (see [sketch and judge rubric](references/sketch-and-judge.md)).
+### 2. Sketch Competing Shapes (2-Sketch Default / Arena for Large or Contested Designs)
+Do not accept the first shape by default. Each candidate package contains **only** the contract layer (caller sketch, core data structures/types, public signatures, error semantics, and a short rationale naming alternatives considered and rejected—no full implementation).
 
-Resolve genuinely uncertain runtime/API questions with tiny **throwaway prototypes** rather than debating abstractions on paper.
+- **Standard boundary:** sketch **two materially different shapes** and compare them directly.
+- **Large or contested design (Arena mode):** run the full **Frame → Fan out → Cross-judge → Pick a base → Graft** loop from [sketch and judge rubric](references/sketch-and-judge.md):
+  1. **Frame:** derive 3–6 concrete, gradeable criteria for *this* task as the picker's rubric (**candidates see only the task and shared grounding, not the rubric**). Give each candidate an isolated output path (worktree or scratch dir).
+  2. **Fan out:** spawn `N` parallel candidates in one turn (across distinct models when available); if one drops out, proceed with `N-1` and note it.
 
-### 3. Independent Cross-Judge & Synthesize
-Have an independent reviewer pass (or distinct model subagent) evaluate all candidate sketches against [the rubric](references/sketch-and-judge.md):
-- Compare concept count, caller ergonomics, invalid-state prevention, testability, and blast radius.
-- Synthesize one winning sketch (cherry-picking verified strengths only when coherent—never frankensteining incompatible abstractions).
-- Present the winning sketch and decisive tradeoffs for human review before broad implementation when the boundary is high-impact or irreversible.
+### 3. Cross-Judge, Pick A Base, And Hand-Graft
+Score every candidate **criterion by criterion** (not holistic feel), pairing your read with an independent read-only cross-judge (preferring a different model/vendor when available) scored by path label:
+- **Agreement** confirms the base; **disagreement** signals bias or an ambiguous rubric—read both rationales before deciding.
+- **Pick the base** a future maintainer can extend most easily without breaking invariants; on a tie, prefer the cleaner boundary or smaller API.
+- **Hand-graft** 1–2 concrete strengths from losing candidates under one coherent mental model (never paste mechanically).
+- **Convergence vs. wild divergence:** if candidates converge on one shape, ship the consensus with no graft; if they wildly diverge, Framing was under-specified—**reframe and re-run** rather than averaging the divergence.
+
+Present the winning sketch and decisive tradeoffs for human review before broad implementation when the boundary is high-impact or irreversible.
 
 ### 4. Implement Against The Sketch
-Replace sketch placeholders with real implementation. Treat every deviation from the sketch as a signal: if a function suddenly needs unexpected parameters, hidden shared state, or extra flags, surface that drift explicitly instead of silently patching around it.
+Replace sketch placeholders with real implementation and stay in the loop as it fills in. Treat every deviation from the sketch as a signal: if a function suddenly needs unexpected parameters, hidden shared state, or extra flags, surface that drift explicitly instead of silently patching around it.
 
 ### 5. Scrap When Empirical Evidence Disproves The Design
 Never defend a bad sketch with sunk-cost patches. **Scrap and redesign from Step 1/2** if implementation triggers any empirical failure signal:
@@ -45,4 +47,4 @@ Never defend a bad sketch with sunk-cost patches. **Scrap and redesign from Step
 - Mocking or testing the boundary requires reproducing its internals.
 
 ## Output
-Deliver: (1) Grounding brief & constraints, (2) Winning interface/type sketch + caller example, (3) Key rejected alternative and why, (4) Open prototype checks (if any), and (5) Explicit scrap triggers to watch during implementation.
+Deliver: (1) Grounding brief & constraints, (2) Winning interface/type sketch + caller example, (3) Synthesis note (chosen base and why, cross-judge verdict or skipped reason, each graft with source candidate, rejected alternatives, any convergence or dropouts), (4) Open prototype checks (if any), and (5) Explicit scrap triggers to watch during implementation.
