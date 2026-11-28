@@ -5,6 +5,7 @@ Standalone mirror of [`cursor/plugins/pstack`](https://github.com/cursor/plugins
 ## Structure
 
 - [`pstack/`](./pstack/) — verbatim standalone sync of `cursor/plugins/pstack` (Cursor-native).
+- [`pstack/skills/poteto-mode/README.md`](./pstack/skills/poteto-mode/README.md) — `poteto-mode` 中文使用手册（安装配置、提示词写法、22 个 Playbooks 与 24 条工程原则速查）。
 - [`adapters/antigravity.md`](./adapters/antigravity.md) — harness adapter mapping Cursor tools, subagents, model tiers, rules, and paths to Antigravity.
 - [`harness/pstack/antigravity/`](./harness/pstack/antigravity/) — generated Google Antigravity plugin (`.antigravity-plugin/plugin.json`, `plugin.json`, `skills/`, adapted `agents/`, `assets/logo.png`, `docs/harness/antigravity.md`, `docs/guide/`).
 - [`harness/pstack/claude-code/`](./harness/pstack/claude-code/) — generated Claude Code plugin.
