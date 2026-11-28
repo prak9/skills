@@ -2,9 +2,33 @@
 
 Use for the company snapshot in substantive company reports. Align the information architecture and core fields with the classic **Value Line Investment Survey** page; do not claim to reproduce a licensed report, proprietary ratings or vendor-calculated values. This is the snapshot contract, not a template for the entire investment argument. Narrow calculations, raw extraction and price-only monitoring keep their scope.
 
+## Front Page — One-Page Company Brief
+
+The **first substantive output**, immediately after the report title, is an independently readable company page. Assemble it from the completed evidence and model, not a premature verdict. Use the financial-sheet information architecture below, not example issuers' numbers, branding or unsupported ratings. A reader should understand how cash is earned, what must be reinvested, what reaches each share, and what the price requires without first reading the full memo.
+
+| Front-page panel | Content |
+|---|---|
+| Identity, quote and judgment | Company/security/exchange; fiscal year-end, information cutoff, quote timestamp and currencies. Dated price, P/E, explicitly labeled P/FCF or P/CFO, dividend yield and book value/share when meaningful. Include the supported research posture and its binding condition; unknown inputs stay unknown. |
+| How it earns cash and business mix | Explain customer need → charging unit/price and volume → delivery and collection → recurring costs → reinvestment → shareholder cash. Show material segments' revenue/mix, growth and profitability on comparable periods, separating internal overlap and gross/net revenue. Name why the profit spread can persist and its weak link. |
+| Price context | A sourced historical chart or compact dated high/low/total-return table when available and in scope; no decorative invented curve. Identify adjustments and benchmark. A price/cash-flow overlay needs its multiple and method and is not a valuation proof. |
+| Financial and per-share history | A compact **metrics-as-rows, fiscal-years-as-columns** matrix: revenue/growth, margins, common profit/diluted EPS, CFO, cash capex, FCF with definition, ROIC, share count and relevant per-share cash measures. Distinguish annual actuals, latest reported/TTM and conditional estimates. Select readable comparable years here; the complete historical array and calculation trail below retain the existing coverage contract. |
+| Operating tracker and financial position | Business-specific leading measures, recent change and useful growth rates; dated liquidity, debt and material maturities. Keep group ROIC separate from unverified new-project returns. Cash balance, orders and backlog do not by themselves establish excess cash or collected revenue. |
+| Capital uses and net-share outcome | Over one named, reconciled fiscal window show cumulative CFO, cash capex, labeled FCF, dividends paid and actual buyback cash; distinguish the repurchase program from the cash-flow statement line. Show opening/closing split-adjusted shares and verified issuance/repurchase drivers. Explain the economic result per share, not just gross cash returned. |
+| Investment conditions and source strip | In scope, summarize the final scenario value/return range and probability basis or conditional threshold, the strongest surviving countercase, next discriminating observation/potential catalyst, and why commit/wait/decline. Add compact source keys, accounting/per-share bases and material gaps; expand the same model and sources below, not a second set of forecasts. Business-only work does not acquire price targets or a bet requirement. |
+
+In chat/Notion, use compact Markdown panels/tables; the brief comes before the long narrative and extended tables. Reuse the brief as the snapshot's front view, not an additional full snapshot or repeated executive summary. Keep decisive definitions and caveats beside the number and link the detailed substitutions below. Do not force an entire ten-year matrix and every formula into an unreadably wide table. If an actual single-sheet HTML/PDF/image is requested, render and check page count, clipping and text readability before calling it one page; Markdown alone has no fixed print-page guarantee. Quick and supplied-data work compress to the available evidence; a short material monitoring update leads with the changed panels and verdict, not rebuilt unchanged history. Narrow arithmetic and price-only monitoring are exempt.
+
+### Cash Uses And Share Bridge
+
+Use the **same fiscal window, currency and cash basis** for cumulative CFO and cash uses; sum flows, not per-share ratios. `ΣCFO − Σcash capex` is an FCF proxy, not automatically the issuer's reported FCF. Reconcile the difference. `ΣCFO − Σcapex − Σpaid dividends − Σbuyback cash` is only the residual after those selected uses, **not** the change in cash or proof of where funding came from; acquisitions, investment disposals, debt/equity flows, leases, FX and other items may matter. Returns can exceed internal cash; show a financing/reconciliation gap rather than cap a payout ratio at 100% or call it self-funded.
+
+Keep authorized repurchases, executed program repurchases and the CFS line distinct. Employee award tax-withholding settlements may sit in the latter; do not rename all of it discretionary buybacks. Bridge outstanding shares as `opening shares + actual issuance/conversions − shares removed from circulation ± other supported changes = closing shares` on a split/ADS-consistent basis. Do not subtract repurchase and later cancellation twice or mix a weighted-average diluted EPS denominator into this bridge. Missing issuance detail remains unreconciled; the net change alone cannot establish SBC dilution or the buyback program's causal effect.
+
+Show **net share change** and the accompanying EPS/FCF-per-share change. A large buyback spend need not reduce shares; a smaller denominator need not improve the business. Neither SBC expense nor gross repurchase cash equals net dilution. Do not add buyback yield again to returns already using the modeled share count.
+
 ## Output Order And Layout
 
-After the concise research answer, deliver these linked panels. Chat/Notion may stack the printed side panels vertically and split a wide matrix into adjacent year blocks with the same rows. Do not reduce the snapshot to three years of a few headline ratios when a longer comparable series is accessible.
+The front page and the following statistical/calculation layer are two views of **one snapshot**. Place the front page first; expand its supporting panels and calculations where needed rather than print it again. Chat/Notion may stack printed side panels vertically and split a wide matrix into adjacent year blocks with the same rows. Front-page compression does not remove the full report's longer comparable history.
 
 | Panel | Required content and boundaries |
 |---|---|

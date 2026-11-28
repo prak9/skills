@@ -1,0 +1,64 @@
+{
+  "date": "2026-11-08",
+  "scope": "Single-context synthetic development probe of default front-page layout and narrow-request scope; not a controlled improvement test, holdout, real-company valuation or print-layout verification.",
+  "baseline_commit": "1cd9b4d6f1a352ca7653a0d5b08340a29c6623f4",
+  "configuration": {
+    "model": "inherited; exact backend/version unknown",
+    "token_cost_latency": "unknown",
+    "permissions": "own frozen invest/writing instructions, supplied inputs, local arithmetic, own artifacts; no browsing or external writes",
+    "telemetry": "Read/tool boundaries self-reported, not independently logged",
+    "intervention": "Parent requested progress status and reminded original supplied-data scope; no answer, rubric or intended layout was supplied beyond the Skill."
+  },
+  "cases": [
+    {
+      "id": "front-page-default-synthetic-company",
+      "prompt": "请只根据下列模拟材料分析公司N的生意、财务质量及当前报价是否有优势，给一份中文投资研究。材料不足时给条件判断，不联网、不交易、不归档外部系统。报告保持紧凑，详细算式可放附录，不需要生成HTML/PDF。\n\nF1，FY2023/FY2024/FY2025三个完整年度，金额百万元，股数百万股：\n\n|指标|FY2023|FY2024|FY2025|\n|---|---:|---:|---:|\n|收入|800|1000|1200|\n|普通股应占净利|80|100|120|\n|EBIT|100|130|160|\n|经营税率|25%|25%|25%|\n|经营投入资本，年初|400|500|600|\n|经营投入资本，年末|500|600|800|\n|CFO|150|200|260|\n|现金资本开支|60|80|180|\n|年末流通普通股|100|98|97|\n\nFY2025加权平均稀释普通股97.5，无ADS或拆股。三年累计已支付普通股分红70；现金流表回购支出170，其中计划回购150、员工代扣税结算20。流通股桥接已核验：FY2023初100，三年实际发行新增6，回购退出流通9，FY2025末97；退休注销已经包含在退出流通中，回购与员工归属股数无法进一步拆分。\n\nF2：2026-11-08模拟报价50元/股。2026完整年度尚未报告。没有别的年度、近期季度、价格历史、业务分部或行业对比资料。财年截至12月31日，财务与报价均人民币。\n\n公司提供企业订阅服务，续约后按年收费，交付和收款可能不同步；新增算力投入较大。没有可核验的客户留存、订单/利用率、项目资本回报或预测资料。也没有净借款、投资处置、现金余额和其他资金来源明细；个人持仓、资金期限和损失预算未知。F1/F2都是任务提供的合成资料，不是真实公司或真实证券的事实。",
+      "output_artifact": "front-page-sample.md",
+      "parent_checks": {
+        "first_substantive_output_is_integrated_brief": true,
+        "annual_matrix_before_long_narrative": true,
+        "explicit_roic_and_capital_bridge": true,
+        "cash_uses_and_net_share_change": true,
+        "current_share_count_gap_not_hidden": true,
+        "full_statistical_and_calculation_detail_retained": true,
+        "front_and_final_stance_consistent": true
+      },
+      "limits": [
+        "Markdown information layout only: no actual one-sheet PDF/image rendered.",
+        "Scenario points and 25x capitalization parameter are explicitly hypothetical; this probe does not validate their usefulness or independent fair value.",
+        "Core historical arithmetic checked, not all investment claims certified."
+      ]
+    },
+    {
+      "id": "front-page-narrow-price-update",
+      "prompt": "独立小问题，不继承N公司数值：另一模拟股票报价100变120，同口径稀释EPS4，经营事实不变。只告诉我PE怎么变，不生成公司首页或完整估值，不联网。",
+      "output": "PE 从 100÷4＝25 倍升至 120÷4＝30 倍，增加 5 倍，即上升 20%。",
+      "parent_checks": {
+        "pe_25_to_30_correct": true,
+        "no_forced_front_page_or_full_report": true
+      }
+    }
+  ],
+  "observed_defects": [
+    {
+      "artifact": "front-page-sample.md",
+      "scope": "zero-EV inequality wording",
+      "description": "Sample correctly derives EV=-20-30d+50u, but calls u>0.4+0.6d the threshold to reach zero return. Equality already yields zero EV; >= is the nonnegative boundary and > is the positive-EV condition. At d=.2, u=.52 is exactly break-even.",
+      "disposition": "Original output preserved; do not claim error-free valuation or silently repair observed output. Existing bet contract already defines break-even correctly; no new rule inferred from this isolated wording defect."
+    }
+  ],
+  "checks": {
+    "unit_tests": {
+      "invest": 108,
+      "skill_contracts": 30,
+      "hygiene": 1,
+      "simplification": 6,
+      "total": 145
+    },
+    "skill_validator": "passed",
+    "fixture_tests": "17 tests passed after adding 3 new cases; initial failure due to absent new fixtures preserved in work transcript",
+    "link_check": "42 local references resolve",
+    "hashes": "34978c651caf052a330740f12e84f819cd148b4414f13d5024c317c6aaf3abb8  invest/SKILL.md\n67118cfc1d555a6d9943a79b6b794928caf716b77177d6165b761a51c034e03d  invest/references/company-snapshot.md\nff9bda2522ea24558e8dc4df93aee426ae75bd8c99c0fe474754b4484e66282a  invest/references/mode-a-buy-side.md\n820323193472e444337efeb2c2d94ad7ff7488a30bd2e63acaeb2be650bb2030  /data/tmp/invest-front-page-20261108.Wd19Mz/output.md"
+  },
+  "conclusion": "Default integrated front-page and narrow-scope behaviors observed; no general improvement, perfect arithmetic or physical-page-fit claim."
+}

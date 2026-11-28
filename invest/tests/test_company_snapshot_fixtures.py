@@ -22,7 +22,7 @@ class CompanySnapshotFixtureTests(unittest.TestCase):
                 self.assertAlmostEqual(expected[key], value, places=8)
 
     def test_case_packet_has_unique_scoped_development_requests(self):
-        self.assertEqual(15, len(self.cases))
+        self.assertEqual(18, len(self.cases))
         self.assertEqual(len(self.cases), len(self.by_id))
         for case in self.cases:
             with self.subTest(case=case["id"]):
@@ -209,6 +209,41 @@ class CompanySnapshotFixtureTests(unittest.TestCase):
             "initial_operating_profit": profit, "stressed_operating_profit": stressed,
             "revenue_loss_ratio": x["affected_revenue"] / revenue,
             "profit_loss_ratio": (profit - stressed) / profit,
+        })
+
+    def test_front_page_reconciles_cash_uses_and_net_shares(self):
+        x = self.by_id["snapshot-one-page-capital-and-shares"]["inputs"]
+        cfo = sum(x["cfo"])
+        capex = sum(x["cash_capex"])
+        fcf = cfo - capex
+        shares = x["opening_shares"] + x["issued_shares"] - x["repurchased_shares"]
+        eps = x["common_profit"][-1] / x["weighted_diluted_shares"]
+        market_cap = x["price"] * shares
+        self.assert_numeric("snapshot-one-page-capital-and-shares", {
+            "cumulative_cfo": cfo, "cumulative_capex": capex,
+            "cumulative_fcf_proxy": fcf,
+            "capex_over_cfo": capex / cfo,
+            "cfs_buybacks_over_cfo": x["cfs_buybacks"] / cfo,
+            "residual_after_selected_uses": fcf - x["cfs_buybacks"] - x["paid_dividends"],
+            "closing_shares": shares,
+            "net_share_change": shares / x["opening_shares"] - 1,
+            "current_price_over_reported_eps": x["price"] / eps,
+            "fcf_proxy_per_share": (x["cfo"][-1] - x["cash_capex"][-1]) / shares,
+            "price_over_fcf_proxy": market_cap / (x["cfo"][-1] - x["cash_capex"][-1]),
+            "fcf_proxy_yield": (x["cfo"][-1] - x["cash_capex"][-1]) / market_cap,
+        })
+
+    def test_cash_distributions_can_exceed_internal_cash_and_shares_can_grow(self):
+        x = self.by_id["snapshot-one-page-financing-gap"]["inputs"]
+        fcf = x["cfo"] - x["cash_capex"]
+        distributions = x["paid_dividends"] + x["cfs_buybacks"]
+        closing = x["opening_shares"] + x["issued_shares"] - x["repurchased_shares"]
+        self.assert_numeric("snapshot-one-page-financing-gap", {
+            "fcf_proxy": fcf, "cash_distributions": distributions,
+            "distributions_over_fcf_proxy": distributions / fcf,
+            "residual_after_selected_uses": fcf - distributions,
+            "closing_shares": closing,
+            "net_share_change": closing / x["opening_shares"] - 1,
         })
 
 

@@ -136,3 +136,30 @@ check fixture arithmetic and repository invariants, **not four executed model
 reports or a behavioral proof of layout compliance**. Original observed outputs
 remain unchanged; no new real-company research, Notion write, commit, push or
 deployment was requested as part of this alignment.
+
+## First-page company brief — 2026-11-08
+
+The supplied financial-sheet image adds an explicit **front-page** requirement,
+not another executive summary or a second research workflow. The existing
+snapshot now owns the integrated business/cash, quote, annual/per-share matrix,
+capital-use/net-share and investment-condition panels; full history and
+calculations remain available below without recopying the entire page.
+
+Three new development cases cover cash-use/share reconciliation, distributions
+beyond internal cash generation with net dilution, and a narrow price-ratio
+update. The fixture suite passed 17 tests; the scoped investment/contract/hygiene/
+simplification suite passed 145 tests. Skill validation and local references
+passed. These checks do not establish model behavior by themselves.
+
+A fresh agent then answered an ordinary supplied-data company request using
+the frozen candidate, followed by a PE-only request in the same context. The
+parent inspected the [actual sample](front-page-sample.md) and checked the
+historical arithmetic; [the observed record](front-page-observed.json) preserves
+inputs, boundaries and limitations. The sample begins with integrated panels
+before narrative/calculations, retains ROIC, cash and share bases, and the
+second answer remains limited to PE 25 to 30. An isolated strict-versus-nonstrict
+zero-EV inequality wording error is recorded, not silently repaired or turned
+into a new universal instruction. Conditional scenario assumptions are not
+validated company forecasts. This is a visible development probe, not an A/B
+quality gain or a verified one-sheet print artifact; no new dependency, external
+write, commit, push or deployment is introduced.
