@@ -1,0 +1,4 @@
+interface:
+  display_name: "Architecture De-Entropy"
+  short_description: "Systematically reduce codebase architectural entropy, canonicalize parallel implementations, decouple modules, and lock in enforceable guardrails in an isolated worktree"
+  default_prompt: "Use $arch-deentropy in an isolated git worktree to map architectural entropy across the codebase, converge modules toward Day-1 ideal invariants through closed-loop migrations and deletions, and lock in automated anti-regression checks."
