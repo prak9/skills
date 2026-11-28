@@ -1,0 +1,54 @@
+name: Sync pstack from cursor/plugins
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Upstream ref in cursor/plugins to sync from
+        required: false
+        default: main
+  schedule:
+    # Weekly on Monday at 02:00 UTC
+    - cron: "0 2 * * 1"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Sync pstack and regenerate harness trees
+        run: node scripts/sync-pstack.mjs --ref "${{ github.event.inputs.ref || 'main' }}"
+      - name: Check for changes
+        id: diff
+        run: |
+          if git status --porcelain | grep -q .; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            VERSION=$(node -e 'console.log(JSON.parse(require("fs").readFileSync(".pstack-upstream.json","utf8")).version)')
+            SHA=$(node -e 'console.log(JSON.parse(require("fs").readFileSync(".pstack-upstream.json","utf8")).commit.slice(0, 12))')
+            echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+            echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Open pull request
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="sync/pstack-${{ steps.diff.outputs.version }}-${{ steps.diff.outputs.sha }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add -A
+          git commit -m "chore(sync): sync pstack v${{ steps.diff.outputs.version }} (${{ steps.diff.outputs.sha }})"
+          git push -u origin "$BRANCH" --force
+          gh pr create \
+            --title "chore(sync): sync pstack v${{ steps.diff.outputs.version }} (${{ steps.diff.outputs.sha }})" \
+            --body "Automated sync of \`pstack/\` from \`cursor/plugins\` (\`${{ steps.diff.outputs.sha }}\`) with regenerated Claude Code and Antigravity harness trees."
